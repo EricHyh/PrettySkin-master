@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="skin_attr_names" format="string"/>
+    <attr name="skin_enabled" format="boolean"/>
+
+</resources>
