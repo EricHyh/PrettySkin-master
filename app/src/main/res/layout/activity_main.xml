@@ -2,20 +2,28 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:skin="http://schemas.android.com/android/skin"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
-    skin:skin_attr_names="background">
+    skin:skin_attrs="background=ma_bg"
+    tools:ignore="MissingPrefix">
 
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="按钮1"/>
+        android:onClick="changeSkin"
+        android:text="换肤"
+        android:textColor="#000000"
+        skin:skin_attrs="background=ma_btn_bg|textColor=ma_btn_text_color"/>
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        skin:skin_attrs="background=ma_iv_bg|src=ma_iv_src"/>
 
 </LinearLayout>

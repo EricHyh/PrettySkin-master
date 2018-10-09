@@ -8,4 +8,25 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <declare-styleable name="PrettySkin">
+
+        <attr name="ma_bg" format="color|reference"/>
+        <attr name="ma_btn_bg" format="color|reference"/>
+        <attr name="ma_btn_text_color" format="color"/>
+        <attr name="ma_iv_bg" format="color|reference"/>
+        <attr name="ma_iv_src" format="reference"/>
+
+    </declare-styleable>
+
+
+    <style name="PrettySkin_1">
+        <item name="ma_bg">#FF00FF</item>
+        <item name="ma_btn_bg">#00FFFF</item>
+        <item name="ma_btn_text_color">#FF0000</item>
+        <item name="ma_iv_bg">#0000FF</item>
+        <item name="ma_iv_src">@mipmap/icon1</item>
+    </style>
+
+
 </resources>

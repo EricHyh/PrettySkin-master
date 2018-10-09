@@ -4,9 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
+import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.R;
-import com.hyh.prettyskin.android.SkinInflateFactory;
 
 /**
  * @author Administrator
@@ -18,8 +19,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        //LayoutInflater.from(this).setFactory2();
-        getLayoutInflater().setFactory2(new SkinInflateFactory());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
@@ -27,5 +26,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public Object getSystemService(@NonNull String name) {
         return super.getSystemService(name);
+    }
+
+    public void changeSkin(View view) {
+        PrettySkin.getInstance().replaceSkin(this, R.style.PrettySkin_1, R.styleable.class.getName(), "PrettySkin");
     }
 }
