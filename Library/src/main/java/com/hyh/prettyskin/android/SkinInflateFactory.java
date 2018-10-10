@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.hyh.prettyskin.PrettySkin;
+import com.hyh.prettyskin.core.SkinView;
 
 import java.lang.reflect.Constructor;
 
@@ -50,7 +51,7 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
                 String[] attrArr = skinAttrs.split("\\|");
                 for (String attr : attrArr) {
                     String[] attrInfo = attr.split("=");
-                    PrettySkin.getInstance().addSkinAttrItem(new SkinAttrItem(view, attrInfo[0], attrInfo[1]));
+                    PrettySkin.getInstance().addSkinAttrItem(new SkinView(view, attrInfo[0], attrInfo[1]));
                 }
             }
         }

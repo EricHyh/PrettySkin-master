@@ -14,8 +14,11 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 
 import com.hyh.prettyskin.android.ActivityLifecycleAdapter;
-import com.hyh.prettyskin.android.SkinAttrItem;
 import com.hyh.prettyskin.android.SkinInflateFactory;
+import com.hyh.prettyskin.core.ISkin;
+import com.hyh.prettyskin.core.SkinAttr;
+import com.hyh.prettyskin.core.SkinReplaceListener;
+import com.hyh.prettyskin.core.SkinView;
 import com.hyh.prettyskin.utils.ReflectUtil;
 
 import java.lang.reflect.Field;
@@ -51,7 +54,7 @@ public class PrettySkin {
 
     private Context mContext;
 
-    private Map<String, List<SkinAttrItem>> mSkinAttrItemsMap = new HashMap<>();
+    private Map<String, List<SkinView>> mSkinAttrItemsMap = new HashMap<>();
 
     private PrettySkin() {
     }
@@ -113,22 +116,59 @@ public class PrettySkin {
         }
     }
 
-    public void addSkinAttrItem(SkinAttrItem item) {
+    public void addSkinAttrItem(SkinView item) {
         String attrValueKey = item.getAttrValueKey();
-        List<SkinAttrItem> skinAttrItems = mSkinAttrItemsMap.get(attrValueKey);
-        if (skinAttrItems == null) {
-            skinAttrItems = new ArrayList<>();
-            mSkinAttrItemsMap.put(attrValueKey, skinAttrItems);
+        List<SkinView> skinViews = mSkinAttrItemsMap.get(attrValueKey);
+        if (skinViews == null) {
+            skinViews = new ArrayList<>();
+            mSkinAttrItemsMap.put(attrValueKey, skinViews);
         }
-        skinAttrItems.add(item);
+        skinViews.add(item);
     }
 
-    public void recoverSkin() {
+    public void recoverDefaultSkin() {
 
     }
 
-    public void replaceSkin(Context context, int themeResId, String styleableClassPath, String styleableName) {
-        context = new ContextThemeWrapper(context, themeResId);
+    public void replaceSkinAsynch(ISkin skin, SkinReplaceListener listener) {
+        List<SkinAttr> skinAttrs = skin.getSkinAttrs();
+        if (skinAttrs != null && !skinAttrs.isEmpty()) {
+            for (SkinAttr skinAttr : skinAttrs) {
+                int valueType = skinAttr.getValueType();
+                Object attrValue = skinAttr.getAttrValue();
+                String attrName = skinAttr.getAttrName();
+                List<SkinView> skinViews = mSkinAttrItemsMap.get(attrName);
+                if (skinViews != null && !skinViews.isEmpty()) {
+                    for (SkinView skinView : skinViews) {
+                        skinView.notifySkinChanged(valueType, attrValue);
+                    }
+                }
+            }
+        }
+    }
+
+
+    public int replaceSkinSynch(ISkin skin) {
+        List<SkinAttr> skinAttrs = skin.getSkinAttrs();
+        if (skinAttrs != null && !skinAttrs.isEmpty()) {
+            for (SkinAttr skinAttr : skinAttrs) {
+                int valueType = skinAttr.getValueType();
+                Object attrValue = skinAttr.getAttrValue();
+                String attrName = skinAttr.getAttrName();
+                List<SkinView> skinViews = mSkinAttrItemsMap.get(attrName);
+                if (skinViews != null && !skinViews.isEmpty()) {
+                    for (SkinView skinView : skinViews) {
+                        skinView.notifySkinChanged(valueType, attrValue);
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
+
+    public void replaceSkin(int themeResId, String styleableClassPath, String styleableName) {
+        Context context = new ContextThemeWrapper(mContext, themeResId);
         Class styleableClass = ReflectUtil.getClassByPath(styleableClassPath);
         if (styleableClass == null) {
             return;
@@ -148,10 +188,10 @@ public class PrettySkin {
                 case TypedValue.TYPE_INT_COLOR_ARGB4:
                 case TypedValue.TYPE_INT_COLOR_RGB4: {
                     int color = typedArray.getColor(key, 0);
-                    List<SkinAttrItem> skinAttrItems = mSkinAttrItemsMap.get(value);
-                    if (skinAttrItems != null && !skinAttrItems.isEmpty()) {
-                        for (SkinAttrItem skinAttrItem : skinAttrItems) {
-                            skinAttrItem.notifySkinChanged(color);
+                    List<SkinView> skinViews = mSkinAttrItemsMap.get(value);
+                    if (skinViews != null && !skinViews.isEmpty()) {
+                        for (SkinView skinView : skinViews) {
+                            //skinView.notifySkinChanged(color);
                         }
                     }
                     break;
@@ -161,18 +201,18 @@ public class PrettySkin {
                     if (!TextUtils.isEmpty(string)) {
                         if (string.startsWith("res/mipmap") || string.startsWith("res/drawable")) {
                             Drawable drawable = typedArray.getDrawable(key);
-                            List<SkinAttrItem> skinAttrItems = mSkinAttrItemsMap.get(value);
-                            if (skinAttrItems != null && !skinAttrItems.isEmpty()) {
-                                for (SkinAttrItem skinAttrItem : skinAttrItems) {
-                                    skinAttrItem.notifySkinChanged(drawable);
+                            List<SkinView> skinViews = mSkinAttrItemsMap.get(value);
+                            if (skinViews != null && !skinViews.isEmpty()) {
+                                for (SkinView skinView : skinViews) {
+                                    //skinView.notifySkinChanged(drawable);
                                 }
                             }
                         } else if (string.startsWith("res/color")) {
                             ColorStateList colorStateList = typedArray.getColorStateList(key);
-                            List<SkinAttrItem> skinAttrItems = mSkinAttrItemsMap.get(value);
-                            if (skinAttrItems != null && !skinAttrItems.isEmpty()) {
-                                for (SkinAttrItem skinAttrItem : skinAttrItems) {
-                                    skinAttrItem.notifySkinChanged(colorStateList);
+                            List<SkinView> skinViews = mSkinAttrItemsMap.get(value);
+                            if (skinViews != null && !skinViews.isEmpty()) {
+                                for (SkinView skinView : skinViews) {
+                                    //skinView.notifySkinChanged(colorStateList);
                                 }
                             }
                         }

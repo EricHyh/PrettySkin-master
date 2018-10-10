@@ -1,4 +1,4 @@
-package com.hyh.prettyskin.load;
+package com.hyh.prettyskin.core;
 
 /**
  * @author Administrator

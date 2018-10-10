@@ -1,4 +1,4 @@
-package com.hyh.prettyskin.android;
+package com.hyh.prettyskin.core;
 
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -13,7 +13,7 @@ import java.lang.ref.WeakReference;
  * @data 2018/10/9
  */
 
-public class SkinAttrItem {
+public class SkinView {
 
     private WeakReference<View> mViewReference;
 
@@ -25,7 +25,7 @@ public class SkinAttrItem {
 
     private String currentAttrValue;*/
 
-    public SkinAttrItem(View view, String attrName, String attrValueKey) {
+    public SkinView(View view, String attrName, String attrValueKey) {
         this.mViewReference = new WeakReference<>(view);
         this.attrName = attrName;
         this.attrValueKey = attrValueKey;
@@ -35,7 +35,7 @@ public class SkinAttrItem {
         return attrValueKey;
     }
 
-    public void notifySkinChanged(Object object) {
+    public void notifySkinChanged(int valueType, Object attrValue) {
         View view = mViewReference.get();
         if (view == null) {
             return;
@@ -43,16 +43,16 @@ public class SkinAttrItem {
         switch (attrName) {
             case "textColor": {
                 TextView textView = (TextView) view;
-                textView.setTextColor((Integer) object);
+                textView.setTextColor((Integer) attrValue);
                 break;
             }
             case "background": {
-                view.setBackgroundColor((Integer) object);
+                view.setBackgroundColor((Integer) attrValue);
                 break;
             }
             case "src": {
                 ImageView imageView = (ImageView) view;
-                imageView.setImageDrawable((Drawable) object);
+                imageView.setImageDrawable((Drawable) attrValue);
                 break;
             }
         }

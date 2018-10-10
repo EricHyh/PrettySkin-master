@@ -1,4 +1,4 @@
-package com.hyh.prettyskin.load;
+package com.hyh.prettyskin.core;
 
 /**
  * @author Administrator
@@ -6,8 +6,5 @@ package com.hyh.prettyskin.load;
  * @data 2018/9/30
  */
 
-public interface SkinReplacer {
-
-
-
+public interface SkinReplaceable {
 }
