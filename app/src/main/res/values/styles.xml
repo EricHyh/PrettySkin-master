@@ -17,6 +17,7 @@
         <attr name="ma_iv_bg" format="color|reference"/>
         <attr name="ma_iv_src" format="reference"/>
 
+        <attr name="sc_bg" format="color|reference"/>
     </declare-styleable>
 
 
@@ -26,6 +27,8 @@
         <item name="ma_btn_text_color">#FF0000</item>
         <item name="ma_iv_bg">#0000FF</item>
         <item name="ma_iv_src">@mipmap/icon1</item>
+
+        <item name="sc_bg">#1155AA</item>
     </style>
 
 

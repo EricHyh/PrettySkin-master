@@ -1,5 +1,6 @@
 package com.hyh.prettyskin.demo.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.view.View;
 
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.R;
+import com.hyh.prettyskin.core.ThemeSkin;
 
 /**
  * @author Administrator
@@ -29,6 +31,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeSkin(View view) {
-        PrettySkin.getInstance().replaceSkin(R.style.PrettySkin_1, R.styleable.class.getName(), "PrettySkin");
+        ThemeSkin themeSkin = new ThemeSkin(this, R.style.PrettySkin_1, R.styleable.class.getName(), "PrettySkin");
+        PrettySkin.getInstance().replaceSkinSync(themeSkin);
+    }
+
+    public void startSecondAct(View view) {
+        startActivity(new Intent(this, SecondActivity.class));
     }
 }

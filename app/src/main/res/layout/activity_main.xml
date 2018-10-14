@@ -19,6 +19,12 @@
         android:textColor="#000000"
         skin:skin_attrs="background=ma_btn_bg|textColor=ma_btn_text_color"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="startSecondAct"
+        android:text="startSecondAct"/>
+
 
     <ImageView
         android:layout_width="wrap_content"

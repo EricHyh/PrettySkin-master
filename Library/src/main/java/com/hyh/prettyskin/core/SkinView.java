@@ -1,7 +1,9 @@
 package com.hyh.prettyskin.core;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +31,15 @@ public class SkinView {
         this.mViewReference = new WeakReference<>(view);
         this.attrName = attrName;
         this.attrValueKey = attrValueKey;
+
+
+        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                Log.d("", "onPreDraw: ");
+                return true;
+            }
+        });
     }
 
     public String getAttrValueKey() {

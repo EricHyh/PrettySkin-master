@@ -22,6 +22,10 @@
 
         </activity>
 
+        <activity
+            android:name=".demo.activity.SecondActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 

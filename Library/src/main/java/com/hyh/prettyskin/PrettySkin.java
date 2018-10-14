@@ -4,13 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 
 import com.hyh.prettyskin.android.ActivityLifecycleAdapter;
@@ -21,20 +15,16 @@ import com.hyh.prettyskin.core.SkinReplaceListener;
 import com.hyh.prettyskin.core.SkinView;
 import com.hyh.prettyskin.utils.ReflectUtil;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Administrator
  * @description
  * @data 2018/9/30
  */
-@SuppressLint("UseSparseArrays")
 public class PrettySkin {
 
     @SuppressLint("StaticFieldLeak")
@@ -130,7 +120,7 @@ public class PrettySkin {
 
     }
 
-    public void replaceSkinAsynch(ISkin skin, SkinReplaceListener listener) {
+    public void replaceSkinAsync(ISkin skin, SkinReplaceListener listener) {
         List<SkinAttr> skinAttrs = skin.getSkinAttrs();
         if (skinAttrs != null && !skinAttrs.isEmpty()) {
             for (SkinAttr skinAttr : skinAttrs) {
@@ -148,7 +138,7 @@ public class PrettySkin {
     }
 
 
-    public int replaceSkinSynch(ISkin skin) {
+    public int replaceSkinSync(ISkin skin) {
         List<SkinAttr> skinAttrs = skin.getSkinAttrs();
         if (skinAttrs != null && !skinAttrs.isEmpty()) {
             for (SkinAttr skinAttr : skinAttrs) {
@@ -164,79 +154,5 @@ public class PrettySkin {
             }
         }
         return 0;
-    }
-
-
-    public void replaceSkin(int themeResId, String styleableClassPath, String styleableName) {
-        Context context = new ContextThemeWrapper(mContext, themeResId);
-        Class styleableClass = ReflectUtil.getClassByPath(styleableClassPath);
-        if (styleableClass == null) {
-            return;
-        }
-        int[] attrs = (int[]) ReflectUtil.getStaticFieldValue(styleableClass, styleableName);
-        TypedArray typedArray = context.obtainStyledAttributes(attrs);
-        Map<Integer, String> filedNameMap = getStyleableAttrMap(styleableClass, styleableName);
-
-        Set<Map.Entry<Integer, String>> entrySet = filedNameMap.entrySet();
-        for (Map.Entry<Integer, String> entry : entrySet) {
-            Integer key = entry.getKey();
-            String value = entry.getValue().substring(styleableName.length() + 1);
-            int type = typedArray.getType(key);
-            switch (type) {
-                case TypedValue.TYPE_INT_COLOR_ARGB8:
-                case TypedValue.TYPE_INT_COLOR_RGB8:
-                case TypedValue.TYPE_INT_COLOR_ARGB4:
-                case TypedValue.TYPE_INT_COLOR_RGB4: {
-                    int color = typedArray.getColor(key, 0);
-                    List<SkinView> skinViews = mSkinAttrItemsMap.get(value);
-                    if (skinViews != null && !skinViews.isEmpty()) {
-                        for (SkinView skinView : skinViews) {
-                            //skinView.notifySkinChanged(color);
-                        }
-                    }
-                    break;
-                }
-                case TypedValue.TYPE_STRING: {
-                    String string = typedArray.getString(key);
-                    if (!TextUtils.isEmpty(string)) {
-                        if (string.startsWith("res/mipmap") || string.startsWith("res/drawable")) {
-                            Drawable drawable = typedArray.getDrawable(key);
-                            List<SkinView> skinViews = mSkinAttrItemsMap.get(value);
-                            if (skinViews != null && !skinViews.isEmpty()) {
-                                for (SkinView skinView : skinViews) {
-                                    //skinView.notifySkinChanged(drawable);
-                                }
-                            }
-                        } else if (string.startsWith("res/color")) {
-                            ColorStateList colorStateList = typedArray.getColorStateList(key);
-                            List<SkinView> skinViews = mSkinAttrItemsMap.get(value);
-                            if (skinViews != null && !skinViews.isEmpty()) {
-                                for (SkinView skinView : skinViews) {
-                                    //skinView.notifySkinChanged(colorStateList);
-                                }
-                            }
-                        }
-                    }
-                    break;
-                }
-            }
-        }
-        typedArray.recycle();
-    }
-
-    private Map<Integer, String> getStyleableAttrMap(Class styleableClass, String styleableName) {
-        Map<Integer, String> fieldNameMap = new HashMap<>();
-        try {
-            Field[] fields = styleableClass.getFields();
-            for (Field field : fields) {
-                if (Modifier.isStatic(field.getModifiers()) && field.getName().startsWith(styleableName + "_")) {
-                    Object o = field.get(null);
-                    fieldNameMap.put((Integer) o, field.getName());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return fieldNameMap;
     }
 }
