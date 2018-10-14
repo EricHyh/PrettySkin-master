@@ -29,6 +29,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeSkin(View view) {
-        PrettySkin.getInstance().replaceSkin(this, R.style.PrettySkin_1, R.styleable.class.getName(), "PrettySkin");
+        PrettySkin.getInstance().replaceSkin(R.style.PrettySkin_1, R.styleable.class.getName(), "PrettySkin");
     }
 }
