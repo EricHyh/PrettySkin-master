@@ -1,6 +1,5 @@
 package com.hyh.prettyskin;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -11,11 +10,12 @@ import android.view.LayoutInflater;
 import com.hyh.prettyskin.android.ActivityLifecycleAdapter;
 import com.hyh.prettyskin.android.SkinInflateFactory;
 import com.hyh.prettyskin.core.ISkin;
-import com.hyh.prettyskin.core.ISkinHandler;
-import com.hyh.prettyskin.core.NativeSkinHandler;
+import com.hyh.prettyskin.core.handler.ISkinHandler;
+import com.hyh.prettyskin.core.handler.NativeSkinHandler;
 import com.hyh.prettyskin.core.SkinAttr;
 import com.hyh.prettyskin.core.SkinReplaceListener;
 import com.hyh.prettyskin.core.SkinView;
+import com.hyh.prettyskin.core.parser.XmlAttrParser;
 import com.hyh.prettyskin.utils.ReflectUtil;
 
 import java.util.ArrayList;
@@ -30,13 +30,14 @@ import java.util.Map;
  * @description
  * @data 2018/9/30
  */
+@SuppressWarnings("all")
 public class PrettySkin {
 
     public static final int REPLACE_CODE_OK = 1;
     public static final int REPLACE_CODE_NULL_SKIN = 2;
     public static final int REPLACE_CODE_ALREADY_EXISTED = 3;
 
-    @SuppressLint("StaticFieldLeak")
+
     private static PrettySkin sPrettySkin;
 
     public static PrettySkin getInstance() {
@@ -54,6 +55,9 @@ public class PrettySkin {
     private Context mContext;
 
     private Map<String, List<SkinView>> mSkinAttrItemsMap = new HashMap<>();
+
+    private List<XmlAttrParser> mXmlAttrParsers = new ArrayList<>();
+
 
     private List<ISkinHandler> mSkinHandlers = new ArrayList<>();
 
@@ -88,6 +92,11 @@ public class PrettySkin {
 
     public synchronized ISkin getCurrentSkin() {
         return mCurrentSkin;
+    }
+
+
+    public synchronized List<XmlAttrParser> getXmlAttrParsers() {
+        return mXmlAttrParsers;
     }
 
     public synchronized List<ISkinHandler> getSkinHandlers() {
@@ -156,18 +165,18 @@ public class PrettySkin {
     }
 
 
+    public synchronized void addXmlAttrParser(XmlAttrParser parser) {
+        if (parser == null) {
+            return;
+        }
+        mXmlAttrParsers.add(parser);
+    }
+
     public synchronized void addSkinHandler(ISkinHandler skinHandler) {
         if (skinHandler == null) {
             return;
         }
         mSkinHandlers.add(skinHandler);
-    }
-
-    public synchronized void removeSkinHandler(ISkinHandler skinHandler) {
-        if (skinHandler == null) {
-            return;
-        }
-        mSkinHandlers.remove(skinHandler);
     }
 
     public synchronized void recoverDefaultSkin() {

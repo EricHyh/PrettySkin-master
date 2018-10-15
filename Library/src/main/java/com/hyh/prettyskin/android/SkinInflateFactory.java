@@ -1,18 +1,18 @@
 package com.hyh.prettyskin.android;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.core.ISkin;
 import com.hyh.prettyskin.core.SkinView;
+import com.hyh.prettyskin.core.parser.XmlAttrParser;
 
 import java.lang.reflect.Constructor;
+import java.util.List;
 
 /**
  * @author Administrator
@@ -57,7 +57,7 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
                     String[] attrInfo = attr.split("=");
                     String attrName = attrInfo[0];
                     String attrValueKey = attrInfo[1];
-                    Object defaultAttrValue = getDefaultAttrValue(context, view, attrs, attrName);
+                    Object defaultAttrValue = getDefaultAttrValue(view, attrs, attrName);
                     SkinView skinView = new SkinView(view, attrName, attrValueKey, defaultAttrValue);
                     PrettySkin.getInstance().addSkinAttrItem(skinView);
                     ISkin currentSkin = PrettySkin.getInstance().getCurrentSkin();
@@ -92,49 +92,16 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
         return null;
     }
 
-    private Object getDefaultAttrValue(Context context, View view, AttributeSet attrs, String attrName) {
-
-
-
-        if (attrs == null || TextUtils.isEmpty(attrName)) {
-            return null;
-        }
-        Object attrValue = null;
-        boolean isAttrParsed = false;
-        if (TextUtils.equals(attrName, "background")) {
-            attrValue = view.getBackground();
-            isAttrParsed = true;
-        } else if (TextUtils.equals(attrName, "textColor") && view instanceof TextView) {
-            TextView textView = (TextView) view;
-            attrValue = textView.getTextColors();
-            isAttrParsed = true;
-        }
-        if (!isAttrParsed) {
-            int attributeCount = attrs.getAttributeCount();
-            if (attributeCount > 0) {
-                for (int index = 0; index < attributeCount; index++) {
-                    String attributeName = attrs.getAttributeName(index);
-                    if (TextUtils.equals(attributeName, attrName)) {
-                        String attributeValue = attrs.getAttributeValue(index);
-                        if (!TextUtils.isEmpty(attributeName)) {
-                            if (attributeValue.startsWith("#")) {
-                                attrValue = Color.parseColor(attributeValue);
-                            } else if (attributeValue.startsWith("@")) {
-                                int attributeResourceValue = attrs.getAttributeResourceValue(index, 0);
-                                if (attributeResourceValue != 0) {
-                                    String resourceTypeName = context.getResources().getResourceTypeName(attributeResourceValue);
-                                    if ("color".equalsIgnoreCase(resourceTypeName)) {
-                                        attrValue = context.getResources().getDrawable(attributeResourceValue);
-                                    } else if ("mipmap".equalsIgnoreCase(resourceTypeName) || "drawable".equalsIgnoreCase(resourceTypeName)) {
-                                        attrValue = context.getResources().getDrawable(attributeResourceValue);
-                                    }
-                                }
-                            }
-                        }
-                    }
+    private Object getDefaultAttrValue(View view, AttributeSet attrs, String attrName) {
+        List<XmlAttrParser> xmlAttrParsers = PrettySkin.getInstance().getXmlAttrParsers();
+        for (XmlAttrParser xmlAttrParser : xmlAttrParsers) {
+            if (xmlAttrParser.isSupportAttrName(view, attrName)) {
+                Object attrValue = xmlAttrParser.parse(view, attrs, attrName);
+                if (attrValue != null) {
+                    return attrValue;
                 }
             }
         }
-        return attrValue;
+        return null;
     }
 }

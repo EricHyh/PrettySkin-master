@@ -3,6 +3,7 @@ package com.hyh.prettyskin.core;
 import android.view.View;
 
 import com.hyh.prettyskin.PrettySkin;
+import com.hyh.prettyskin.core.handler.ISkinHandler;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -50,7 +51,7 @@ public class SkinView {
         }
         List<ISkinHandler> skinHandlers = PrettySkin.getInstance().getSkinHandlers();
         for (ISkinHandler skinHandler : skinHandlers) {
-            if (skinHandler.isSupportAttrName(attrName)) {
+            if (skinHandler.isSupportAttrName(view, attrName)) {
                 skinHandler.replace(view, attrName, attrValue);
                 currentAttrValue = attrValue;
             }
@@ -64,7 +65,7 @@ public class SkinView {
         }
         List<ISkinHandler> skinHandlers = PrettySkin.getInstance().getSkinHandlers();
         for (ISkinHandler skinHandler : skinHandlers) {
-            if (skinHandler.isSupportAttrName(attrName)) {
+            if (skinHandler.isSupportAttrName(view, attrName)) {
                 skinHandler.replace(view, attrName, defaultAttrValue);
                 currentAttrValue = defaultAttrValue;
             }

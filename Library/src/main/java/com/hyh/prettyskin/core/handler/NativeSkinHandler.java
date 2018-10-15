@@ -1,4 +1,4 @@
-package com.hyh.prettyskin.core;
+package com.hyh.prettyskin.core.handler;
 
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
@@ -18,7 +18,7 @@ import android.widget.TextView;
 public class NativeSkinHandler implements ISkinHandler {
 
     @Override
-    public boolean isSupportAttrName(String attrName) {
+    public boolean isSupportAttrName(View view, String attrName) {
         return TextUtils.equals("background", attrName)
                 || TextUtils.equals("textColor", attrName)
                 || TextUtils.equals("src", attrName);

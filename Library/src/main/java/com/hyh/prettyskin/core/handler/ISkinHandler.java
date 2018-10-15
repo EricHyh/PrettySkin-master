@@ -1,4 +1,4 @@
-package com.hyh.prettyskin.core;
+package com.hyh.prettyskin.core.handler;
 
 import android.view.View;
 
@@ -10,7 +10,7 @@ import android.view.View;
 
 public interface ISkinHandler {
 
-    boolean isSupportAttrName(String attrName);
+    boolean isSupportAttrName(View view, String attrName);
 
     void replace(View view, String attrName, Object attrValue);
 
