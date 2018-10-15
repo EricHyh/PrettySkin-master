@@ -22,6 +22,13 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="recoverSkin"
+        android:text="恢复"
+        android:textColor="#000000"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:onClick="startSecondAct"
         android:text="startSecondAct"/>
 

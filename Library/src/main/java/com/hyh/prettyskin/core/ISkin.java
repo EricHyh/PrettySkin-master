@@ -12,4 +12,9 @@ public interface ISkin {
 
     List<SkinAttr> getSkinAttrs();
 
+    int getValueType(String attrValueKey);
+
+    Object getAttrValue(String attrValueKey);
+
+    boolean equals(ISkin skin);
 }

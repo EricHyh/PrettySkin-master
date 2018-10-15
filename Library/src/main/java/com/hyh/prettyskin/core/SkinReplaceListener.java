@@ -10,6 +10,6 @@ public interface SkinReplaceListener {
 
     void onSuccess();
 
-    void onFailure(int errorCode);
+    void onFailure(int replaceCode);
 
 }

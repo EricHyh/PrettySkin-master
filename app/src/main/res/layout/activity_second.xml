@@ -11,4 +11,11 @@
     skin:skin_attrs="background=sc_bg"
     tools:ignore="MissingPrefix">
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="按钮"
+        skin:skin_attrs="background=sc_bg|textColor=sc_btn_text_color"/>
+
+
 </LinearLayout>

@@ -1,12 +1,15 @@
 package com.hyh.prettyskin.android;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.hyh.prettyskin.PrettySkin;
+import com.hyh.prettyskin.core.ISkin;
 import com.hyh.prettyskin.core.SkinView;
 
 import java.lang.reflect.Constructor;
@@ -20,6 +23,7 @@ import java.lang.reflect.Constructor;
 public class SkinInflateFactory implements LayoutInflater.Factory2 {
 
     private static final String NAMESPACE = "http://schemas.android.com/android/skin";
+
     private static final String SKIN_ATTRS = "skin_attrs";
 
     private LayoutInflater.Factory mFactory;
@@ -51,11 +55,27 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
                 String[] attrArr = skinAttrs.split("\\|");
                 for (String attr : attrArr) {
                     String[] attrInfo = attr.split("=");
-                    PrettySkin.getInstance().addSkinAttrItem(new SkinView(view, attrInfo[0], attrInfo[1]));
+                    String attrName = attrInfo[0];
+                    String attrValueKey = attrInfo[1];
+                    Object defaultAttrValue = getDefaultAttrValue(context, view, attrs, attrName);
+                    SkinView skinView = new SkinView(view, attrName, attrValueKey, defaultAttrValue);
+                    PrettySkin.getInstance().addSkinAttrItem(skinView);
+                    ISkin currentSkin = PrettySkin.getInstance().getCurrentSkin();
+                    if (currentSkin != null) {
+                        int valueType = currentSkin.getValueType(attrValueKey);
+                        Object currentAttrValue = currentSkin.getAttrValue(attrValueKey);
+                        skinView.notifySkinChanged(valueType, currentAttrValue);
+                    }
                 }
             }
         }
         return view;
+    }
+
+
+    @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+        return onCreateView(null, name, context, attrs);
     }
 
     private View createView(String name, Context context, AttributeSet attrs) {
@@ -72,8 +92,49 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
         return null;
     }
 
-    @Override
-    public View onCreateView(String name, Context context, AttributeSet attrs) {
-        return onCreateView(null, name, context, attrs);
+    private Object getDefaultAttrValue(Context context, View view, AttributeSet attrs, String attrName) {
+
+
+
+        if (attrs == null || TextUtils.isEmpty(attrName)) {
+            return null;
+        }
+        Object attrValue = null;
+        boolean isAttrParsed = false;
+        if (TextUtils.equals(attrName, "background")) {
+            attrValue = view.getBackground();
+            isAttrParsed = true;
+        } else if (TextUtils.equals(attrName, "textColor") && view instanceof TextView) {
+            TextView textView = (TextView) view;
+            attrValue = textView.getTextColors();
+            isAttrParsed = true;
+        }
+        if (!isAttrParsed) {
+            int attributeCount = attrs.getAttributeCount();
+            if (attributeCount > 0) {
+                for (int index = 0; index < attributeCount; index++) {
+                    String attributeName = attrs.getAttributeName(index);
+                    if (TextUtils.equals(attributeName, attrName)) {
+                        String attributeValue = attrs.getAttributeValue(index);
+                        if (!TextUtils.isEmpty(attributeName)) {
+                            if (attributeValue.startsWith("#")) {
+                                attrValue = Color.parseColor(attributeValue);
+                            } else if (attributeValue.startsWith("@")) {
+                                int attributeResourceValue = attrs.getAttributeResourceValue(index, 0);
+                                if (attributeResourceValue != 0) {
+                                    String resourceTypeName = context.getResources().getResourceTypeName(attributeResourceValue);
+                                    if ("color".equalsIgnoreCase(resourceTypeName)) {
+                                        attrValue = context.getResources().getDrawable(attributeResourceValue);
+                                    } else if ("mipmap".equalsIgnoreCase(resourceTypeName) || "drawable".equalsIgnoreCase(resourceTypeName)) {
+                                        attrValue = context.getResources().getDrawable(attributeResourceValue);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return attrValue;
     }
 }

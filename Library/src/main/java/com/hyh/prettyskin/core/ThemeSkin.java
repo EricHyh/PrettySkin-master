@@ -6,7 +6,6 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 
 import com.hyh.prettyskin.utils.ReflectUtil;
@@ -31,7 +30,7 @@ public class ThemeSkin implements ISkin {
 
     private String mStyleableName;
 
-    private List<SkinAttr> mSkinAttrList;
+    private Map<String, SkinAttr> mSkinAttrMap;
 
     public ThemeSkin(Context context, int themeResId, String styleableClassPath, String styleableName) {
         mContext = new ContextThemeWrapper(context.getApplicationContext(), themeResId);
@@ -41,50 +40,79 @@ public class ThemeSkin implements ISkin {
 
     @Override
     public List<SkinAttr> getSkinAttrs() {
-        if (mSkinAttrList != null) {
-            return mSkinAttrList;
+        if (mSkinAttrMap != null) {
+            return new ArrayList<>(mSkinAttrMap.values());
         }
         Class styleableClass = ReflectUtil.getClassByPath(mStyleableClassPath);
         if (styleableClass == null) {
-            return mSkinAttrList;
+            return null;
         }
         int[] attrs = (int[]) ReflectUtil.getStaticFieldValue(styleableClass, mStyleableName);
         TypedArray typedArray = mContext.obtainStyledAttributes(attrs);
         Map<Integer, String> filedNameMap = getStyleableAttrMap(styleableClass, mStyleableName);
         if (filedNameMap != null && !filedNameMap.isEmpty()) {
-            mSkinAttrList = new ArrayList<>(filedNameMap.size());
+            mSkinAttrMap = new HashMap<>(filedNameMap.size());
             Set<Map.Entry<Integer, String>> entrySet = filedNameMap.entrySet();
             for (Map.Entry<Integer, String> entry : entrySet) {
-                Integer key = entry.getKey();
-                String value = entry.getValue().substring(mStyleableName.length() + 1);
-                int type = typedArray.getType(key);
-                switch (type) {
-                    case TypedValue.TYPE_INT_COLOR_ARGB8:
-                    case TypedValue.TYPE_INT_COLOR_RGB8:
-                    case TypedValue.TYPE_INT_COLOR_ARGB4:
-                    case TypedValue.TYPE_INT_COLOR_RGB4: {
-                        int color = typedArray.getColor(key, 0);
-                        mSkinAttrList.add(new SkinAttr(value, SkinAttr.TYPE_COLOR, color));
-                        break;
+                Integer attrIndex = entry.getKey();
+                String attrValueKey = entry.getValue().substring(mStyleableName.length() + 1);
+                int valueType = SkinAttr.TYPE_NULL;
+                Object attrValue = null;
+                String string = typedArray.getString(attrIndex);
+                if (!TextUtils.isEmpty(string)) {
+                    if (string.startsWith("#")) {
+                        int color = typedArray.getColor(attrIndex, 0);
+                        valueType = SkinAttr.TYPE_COLOR;
+                        attrValue = color;
+                    } else if (string.startsWith("res/color")) {
+                        ColorStateList colorStateList = typedArray.getColorStateList(attrIndex);
+                        valueType = SkinAttr.TYPE_COLOR_STATE_LIST;
+                        attrValue = colorStateList;
+                    } else if (string.startsWith("res/mipmap") || string.startsWith("res/drawable")) {
+                        Drawable drawable = typedArray.getDrawable(attrIndex);
+                        valueType = SkinAttr.TYPE_DRAWABLE;
+                        attrValue = drawable;
                     }
-                    case TypedValue.TYPE_STRING: {
-                        String string = typedArray.getString(key);
-                        if (!TextUtils.isEmpty(string)) {
-                            if (string.startsWith("res/mipmap") || string.startsWith("res/drawable")) {
-                                Drawable drawable = typedArray.getDrawable(key);
-                                mSkinAttrList.add(new SkinAttr(value, SkinAttr.TYPE_DRAWABLE, drawable));
-                            } else if (string.startsWith("res/color")) {
-                                ColorStateList colorStateList = typedArray.getColorStateList(key);
-                                mSkinAttrList.add(new SkinAttr(value, SkinAttr.TYPE_COLOR_STATE_LIST, colorStateList));
-                            }
-                        }
-                        break;
-                    }
+                }
+                if (attrValue != null) {
+                    SkinAttr skinAttr = new SkinAttr(attrValueKey, valueType, attrValue);
+                    mSkinAttrMap.put(attrValueKey, skinAttr);
                 }
             }
         }
         typedArray.recycle();
-        return mSkinAttrList;
+        if (mSkinAttrMap != null) {
+            return new ArrayList<>(mSkinAttrMap.values());
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public int getValueType(String attrValueKey) {
+        if (mSkinAttrMap != null) {
+            SkinAttr skinAttr = mSkinAttrMap.get(attrValueKey);
+            if (skinAttr != null) {
+                return skinAttr.getValueType();
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public Object getAttrValue(String attrValueKey) {
+        if (mSkinAttrMap != null) {
+            SkinAttr skinAttr = mSkinAttrMap.get(attrValueKey);
+            if (skinAttr != null) {
+                return skinAttr.getAttrValue();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean equals(ISkin skin) {
+        return super.equals(skin);
     }
 
     private Map<Integer, String> getStyleableAttrMap(Class styleableClass, String styleableName) {

@@ -14,20 +14,20 @@ public class SkinAttr {
     public static final int TYPE_COLOR_STATE_LIST = 3;
     public static final int TYPE_DRAWABLE = 4;
 
-    private String attrName;
+    private String attrValueKey;
 
     private int valueType;
 
     private Object attrValue;
 
-    public SkinAttr(String attrName, int valueType, Object attrValue) {
-        this.attrName = attrName;
+    public SkinAttr(String attrValueKey, int valueType, Object attrValue) {
+        this.attrValueKey = attrValueKey;
         this.valueType = valueType;
         this.attrValue = attrValue;
     }
 
-    public String getAttrName() {
-        return attrName;
+    public String getAttrValueKey() {
+        return attrValueKey;
     }
 
     public int getValueType() {

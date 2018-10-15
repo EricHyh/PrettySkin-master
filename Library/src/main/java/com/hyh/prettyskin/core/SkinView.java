@@ -1,13 +1,11 @@
 package com.hyh.prettyskin.core;
 
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.hyh.prettyskin.PrettySkin;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 /**
  * @author Administrator
@@ -17,29 +15,28 @@ import java.lang.ref.WeakReference;
 
 public class SkinView {
 
-    private WeakReference<View> mViewReference;
+    private WeakReference<View> viewReference;
 
     private String attrName;
 
     private String attrValueKey;
 
-/*    private String defaultAttrValue;
+    private Object defaultAttrValue;
 
-    private String currentAttrValue;*/
+    private Object currentAttrValue;
 
     public SkinView(View view, String attrName, String attrValueKey) {
-        this.mViewReference = new WeakReference<>(view);
+        this.viewReference = new WeakReference<>(view);
         this.attrName = attrName;
         this.attrValueKey = attrValueKey;
+    }
 
-
-        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                Log.d("", "onPreDraw: ");
-                return true;
-            }
-        });
+    public SkinView(View view, String attrName, String attrValueKey, Object defaultAttrValue) {
+        this.viewReference = new WeakReference<>(view);
+        this.attrName = attrName;
+        this.attrValueKey = attrValueKey;
+        this.defaultAttrValue = defaultAttrValue;
+        this.currentAttrValue = defaultAttrValue;
     }
 
     public String getAttrValueKey() {
@@ -47,25 +44,34 @@ public class SkinView {
     }
 
     public void notifySkinChanged(int valueType, Object attrValue) {
-        View view = mViewReference.get();
+        View view = viewReference.get();
         if (view == null) {
             return;
         }
-        switch (attrName) {
-            case "textColor": {
-                TextView textView = (TextView) view;
-                textView.setTextColor((Integer) attrValue);
-                break;
-            }
-            case "background": {
-                view.setBackgroundColor((Integer) attrValue);
-                break;
-            }
-            case "src": {
-                ImageView imageView = (ImageView) view;
-                imageView.setImageDrawable((Drawable) attrValue);
-                break;
+        List<ISkinHandler> skinHandlers = PrettySkin.getInstance().getSkinHandlers();
+        for (ISkinHandler skinHandler : skinHandlers) {
+            if (skinHandler.isSupportAttrName(attrName)) {
+                skinHandler.replace(view, attrName, attrValue);
+                currentAttrValue = attrValue;
             }
         }
+    }
+
+    public void notifySkinRecovered() {
+        View view = viewReference.get();
+        if (view == null) {
+            return;
+        }
+        List<ISkinHandler> skinHandlers = PrettySkin.getInstance().getSkinHandlers();
+        for (ISkinHandler skinHandler : skinHandlers) {
+            if (skinHandler.isSupportAttrName(attrName)) {
+                skinHandler.replace(view, attrName, defaultAttrValue);
+                currentAttrValue = defaultAttrValue;
+            }
+        }
+    }
+
+    public boolean isRecycled() {
+        return viewReference.get() == null;
     }
 }

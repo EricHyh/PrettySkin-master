@@ -35,7 +35,13 @@ public class MainActivity extends AppCompatActivity {
         PrettySkin.getInstance().replaceSkinSync(themeSkin);
     }
 
+    public void recoverSkin(View view) {
+        PrettySkin.getInstance().recoverDefaultSkin();
+    }
+
     public void startSecondAct(View view) {
         startActivity(new Intent(this, SecondActivity.class));
     }
+
+
 }
