@@ -10,6 +10,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+import com.hyh.prettyskin.utils.ReflectUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +24,17 @@ public class NativeAttrParser implements XmlAttrParser {
 
     private List<XmlAttrParser> mXmlAttrParsers = new ArrayList<>();
 
+    {
+        mXmlAttrParsers.add(new ViewAttrParser());
+    }
+
     @Override
     public boolean isSupportAttrName(View view, String attrName) {
+        for (XmlAttrParser xmlAttrParser : mXmlAttrParsers) {
+            if (xmlAttrParser.isSupportAttrName(view, attrName)) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -80,9 +91,106 @@ public class NativeAttrParser implements XmlAttrParser {
 
     private static class ViewAttrParser implements XmlAttrParser {
 
+        private List<String> mSupportAttrNames = new ArrayList<>();
+
+        {
+            mSupportAttrNames.add("background");
+            //mSupportAttrNames.add("padding");
+            mSupportAttrNames.add("paddingLeft");
+            mSupportAttrNames.add("paddingTop");
+            mSupportAttrNames.add("paddingRight");
+            mSupportAttrNames.add("paddingBottom");
+            //mSupportAttrNames.add("paddingStart");
+            //mSupportAttrNames.add("paddingEnd");
+            //mSupportAttrNames.add("paddingHorizontal");
+            //mSupportAttrNames.add("paddingVertical");
+            mSupportAttrNames.add("scrollX");
+            mSupportAttrNames.add("scrollY");
+            mSupportAttrNames.add("alpha");
+            mSupportAttrNames.add("transformPivotX");
+            mSupportAttrNames.add("transformPivotY");
+            mSupportAttrNames.add("translationX");
+            mSupportAttrNames.add("translationY");
+            mSupportAttrNames.add("translationZ");
+            mSupportAttrNames.add("elevation");
+            mSupportAttrNames.add("rotation");
+            mSupportAttrNames.add("rotationX");
+            mSupportAttrNames.add("rotationY");
+            mSupportAttrNames.add("scaleX");
+            mSupportAttrNames.add("scaleY");
+            mSupportAttrNames.add("fitsSystemWindows");
+            mSupportAttrNames.add("focusable");
+            mSupportAttrNames.add("focusableInTouchMode");
+            mSupportAttrNames.add("clickable");
+            mSupportAttrNames.add("longClickable");
+            mSupportAttrNames.add("contextClickable");
+            mSupportAttrNames.add("saveEnabled");
+            mSupportAttrNames.add("duplicateParentState");
+            mSupportAttrNames.add("visibility");
+            mSupportAttrNames.add("layoutDirection");
+            mSupportAttrNames.add("drawingCacheQuality");
+            mSupportAttrNames.add("contentDescription");
+            mSupportAttrNames.add("accessibilityTraversalBefore");
+            mSupportAttrNames.add("accessibilityTraversalAfter");
+            mSupportAttrNames.add("labelFor");
+            mSupportAttrNames.add("soundEffectsEnabled");
+            mSupportAttrNames.add("hapticFeedbackEnabled");
+            mSupportAttrNames.add("scrollbars");
+            mSupportAttrNames.add("fadeScrollbars");
+            mSupportAttrNames.add("scrollbarFadeDuration");
+            mSupportAttrNames.add("scrollbarDefaultDelayBeforeFade");
+            mSupportAttrNames.add("scrollbarSize");
+            //mSupportAttrNames.add("scrollbarTrackHorizontal");
+            //mSupportAttrNames.add("scrollbarThumbHorizontal");
+            //mSupportAttrNames.add("scrollbarAlwaysDrawHorizontalTrack");
+            //mSupportAttrNames.add("scrollbarTrackVertical");
+            //mSupportAttrNames.add("scrollbarThumbVertical");
+            //mSupportAttrNames.add("scrollbarAlwaysDrawVerticalTrack");
+            //mSupportAttrNames.add("fadingEdge");
+            mSupportAttrNames.add("requiresFadingEdge");
+            mSupportAttrNames.add("scrollbarStyle");
+            mSupportAttrNames.add("isScrollContainer");
+            mSupportAttrNames.add("keepScreenOn");
+            mSupportAttrNames.add("filterTouchesWhenObscured");
+            mSupportAttrNames.add("nextFocusLeft");
+            mSupportAttrNames.add("nextFocusRight");
+            mSupportAttrNames.add("nextFocusUp");
+            mSupportAttrNames.add("nextFocusDown");
+            mSupportAttrNames.add("nextFocusForward");
+            mSupportAttrNames.add("nextClusterForward");
+            mSupportAttrNames.add("minWidth");
+            mSupportAttrNames.add("minHeight");
+            mSupportAttrNames.add("overScrollMode");
+            mSupportAttrNames.add("verticalScrollbarPosition");
+            mSupportAttrNames.add("layerType");
+            mSupportAttrNames.add("textDirection");
+            mSupportAttrNames.add("textAlignment");
+            mSupportAttrNames.add("importantForAccessibility");
+            mSupportAttrNames.add("accessibilityLiveRegion");
+            mSupportAttrNames.add("transitionName");
+            mSupportAttrNames.add("nestedScrollingEnabled");
+            mSupportAttrNames.add("stateListAnimator");
+            mSupportAttrNames.add("backgroundTint");
+            mSupportAttrNames.add("backgroundTintMode");
+            mSupportAttrNames.add("outlineProvider");
+            mSupportAttrNames.add("foreground");
+            mSupportAttrNames.add("foregroundGravity");
+            mSupportAttrNames.add("foregroundTintMode");
+            //mSupportAttrNames.add("foregroundInsidePadding");
+            mSupportAttrNames.add("scrollIndicators");
+            mSupportAttrNames.add("pointerIcon");
+            //mSupportAttrNames.add("forceHasOverlappingRendering");
+            mSupportAttrNames.add("tooltipText");
+            mSupportAttrNames.add("keyboardNavigationCluster");
+            mSupportAttrNames.add("focusedByDefault");
+            mSupportAttrNames.add("autofillHints");
+            mSupportAttrNames.add("importantForAutofill");
+            mSupportAttrNames.add("defaultFocusHighlightEnabled");
+        }
+
         @Override
         public boolean isSupportAttrName(View view, String attrName) {
-            return false;
+            return mSupportAttrNames.contains(attrName);
         }
 
         @Override
@@ -280,6 +388,17 @@ public class NativeAttrParser implements XmlAttrParser {
                 case "scrollbars": {
                     boolean horizontalScrollBarEnabled = view.isHorizontalScrollBarEnabled();
                     boolean verticalScrollBarEnabled = view.isVerticalScrollBarEnabled();
+                    final int SCROLLBARS_NONE = 0x00000000;
+                    final int SCROLLBARS_HORIZONTAL = 0x00000100;
+                    final int SCROLLBARS_VERTICAL = 0x00000200;
+                    int scrollbars = SCROLLBARS_NONE;
+                    if (horizontalScrollBarEnabled) {
+                        scrollbars |= SCROLLBARS_HORIZONTAL;
+                    }
+                    if (verticalScrollBarEnabled) {
+                        scrollbars |= SCROLLBARS_VERTICAL;
+                    }
+                    attrValue = scrollbars;
                     break;
                 }
                 case "fadeScrollbars": {
@@ -335,6 +454,17 @@ public class NativeAttrParser implements XmlAttrParser {
                 case "requiresFadingEdge": {
                     boolean horizontalFadingEdgeEnabled = view.isHorizontalFadingEdgeEnabled();
                     boolean verticalFadingEdgeEnabled = view.isVerticalFadingEdgeEnabled();
+                    final int FADING_EDGE_NONE = 0x00000000;
+                    final int FADING_EDGE_HORIZONTAL = 0x00001000;
+                    final int FADING_EDGE_VERTICAL = 0x00002000;
+                    int requiresFadingEdge = FADING_EDGE_NONE;
+                    if (horizontalFadingEdgeEnabled) {
+                        requiresFadingEdge |= FADING_EDGE_HORIZONTAL;
+                    }
+                    if (verticalFadingEdgeEnabled) {
+                        requiresFadingEdge |= FADING_EDGE_VERTICAL;
+                    }
+                    attrValue = requiresFadingEdge;
                     break;
                 }
                 case "scrollbarStyle": {
@@ -550,6 +680,294 @@ public class NativeAttrParser implements XmlAttrParser {
                 }
             }
             return attrValue;
+        }
+    }
+
+    private static class TextViewAttrParser implements XmlAttrParser {
+
+        @Override
+        public boolean isSupportAttrName(View view, String attrName) {
+            return false;
+        }
+
+        @Override
+        public Object parse(View view, AttributeSet attrs, String attrName) {
+            if (!(view instanceof TextView)) {
+                return null;
+            }
+            TextView textView = (TextView) view;
+            Object attrValue = null;
+            switch (attrName) {
+                case "editable": {
+                    //TODO 暂不实现
+                    break;
+                }
+                case "inputMethod": {
+                    //TODO 暂不实现
+                    break;
+                }
+                case "numeric": {
+                    //TODO 暂不实现
+                    break;
+                }
+                case "digits": {
+                    //TODO 暂不实现
+                    break;
+                }
+                case "phoneNumber": {
+                    //TODO 暂不实现
+                    break;
+                }
+                case "autoText": {
+                    //TODO 暂不实现
+                    break;
+                }
+                case "capitalize": {
+                    //TODO 暂不实现
+                    break;
+                }
+                case "bufferType": {
+                    //TODO 暂不实现
+                    break;
+                }
+                case "selectAllOnFocus": {
+                    //TODO 暂不实现
+                    break;
+                }
+                case "autoLink": {
+                    attrValue = textView.getAutoLinkMask();
+                    break;
+                }
+                case "linksClickable": {
+                    attrValue = textView.getLinksClickable();
+                    break;
+                }
+                case "drawableLeft": {
+                    attrValue = textView.getCompoundDrawables()[0];
+                    break;
+                }
+                case "drawableTop": {
+                    attrValue = textView.getCompoundDrawables()[1];
+                    break;
+                }
+                case "drawableRight": {
+                    attrValue = textView.getCompoundDrawables()[2];
+                    break;
+                }
+                case "drawableBottom": {
+                    attrValue = textView.getCompoundDrawables()[3];
+                    break;
+                }
+                case "drawableStart": {
+                    //TODO 暂不实现
+                    break;
+                }
+                case "drawableEnd": {
+                    //TODO 暂不实现
+                    break;
+                }
+                case "drawableTint": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        attrValue = textView.getCompoundDrawableTintList();
+                    }
+                    break;
+                }
+                case "drawableTintMode": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        attrValue = textView.getCompoundDrawableTintMode();
+                    }
+                    break;
+                }
+                case "maxLines": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        attrValue = textView.getMaxLines();
+                    }
+                    break;
+                }
+                case "minLines": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        attrValue = textView.getMinLines();
+                    }
+                    break;
+                }
+                case "maxHeight": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        attrValue = textView.getMaxHeight();
+                    } else {
+                        try {
+                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mMaximum");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                }
+                case "minHeight": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        attrValue = textView.getMinHeight();
+                    } else {
+                        try {
+                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mMinimum");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                }
+                case "lines": {
+                    int maxLines = Integer.MAX_VALUE;
+                    int minLines = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        maxLines = textView.getMaxLines();
+                    } else {
+                        try {
+                            maxLines = (int) ReflectUtil.getFieldValue(textView, "mMaximum");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        minLines = textView.getMinLines();
+                    } else {
+                        try {
+                            minLines = (int) ReflectUtil.getFieldValue(textView, "mMinimum");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (maxLines != -1 && maxLines == minLines) {
+                        attrValue = maxLines;
+                    }
+                    break;
+                }
+                case "height": {
+                    int maxHeight = Integer.MAX_VALUE;
+                    int minHeight = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        maxHeight = textView.getMaxHeight();
+                    } else {
+                        try {
+                            maxHeight = (int) ReflectUtil.getFieldValue(textView, "mMaximum");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        minHeight = textView.getMinHeight();
+                    } else {
+                        try {
+                            minHeight = (int) ReflectUtil.getFieldValue(textView, "mMinimum");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (maxHeight != -1 && maxHeight == minHeight) {
+                        attrValue = maxHeight;
+                    }
+                    break;
+                }
+                case "maxEms": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        attrValue = textView.getMaxEms();
+                    } else {
+                        try {
+                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mMaxWidth");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                }
+                case "minEms": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        attrValue = textView.getMinEms();
+                    } else {
+                        try {
+                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mMinWidth");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                }
+                case "maxWidth": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        attrValue = textView.getMaxWidth();
+                    } else {
+                        try {
+                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mMaxWidth");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                }
+                case "minWidth": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        attrValue = textView.getMinWidth();
+                    } else {
+                        try {
+                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mMinWidth");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                }
+                case "ems": {
+                    int maxEms = Integer.MAX_VALUE;
+                    int minEms = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        maxEms = textView.getMaxEms();
+                    } else {
+                        try {
+                            maxEms = (int) ReflectUtil.getFieldValue(textView, "mMaxWidth");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        minEms = textView.getMinEms();
+                    } else {
+                        try {
+                            minEms = (int) ReflectUtil.getFieldValue(textView, "mMinWidth");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (maxEms != -1 && maxEms == minEms) {
+                        attrValue = maxEms;
+                    }
+                    break;
+                }
+                case "width": {
+                    int maxWidth = Integer.MAX_VALUE;
+                    int minWidth = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        maxWidth = textView.getMaxWidth();
+                    } else {
+                        try {
+                            maxWidth = (int) ReflectUtil.getFieldValue(textView, "mMaxWidth");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        minWidth = textView.getMinWidth();
+                    } else {
+                        try {
+                            minWidth = (int) ReflectUtil.getFieldValue(textView, "mMinWidth");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (maxWidth != -1 && maxWidth == minWidth) {
+                        attrValue = maxWidth;
+                    }
+                    break;
+                }
+            }
+            return null;
         }
     }
 }
