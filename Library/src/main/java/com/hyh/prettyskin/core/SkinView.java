@@ -6,7 +6,10 @@ import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.core.handler.ISkinHandler;
 
 import java.lang.ref.WeakReference;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Administrator
@@ -18,61 +21,69 @@ public class SkinView {
 
     private WeakReference<View> viewReference;
 
-    private String attrName;
+    private Map<String, ViewAttr> viewAttrMap;
 
-    private String attrValueKey;
-
-    private Object defaultAttrValue;
-
-    private Object currentAttrValue;
-
-    public SkinView(View view, String attrName, String attrValueKey) {
+    public SkinView(View view, Map<String, ViewAttr> viewAttrMap) {
         this.viewReference = new WeakReference<>(view);
-        this.attrName = attrName;
-        this.attrValueKey = attrValueKey;
+        this.viewAttrMap = viewAttrMap;
     }
 
-    public SkinView(View view, String attrName, String attrValueKey, Object defaultAttrValue) {
-        this.viewReference = new WeakReference<>(view);
-        this.attrName = attrName;
-        this.attrValueKey = attrValueKey;
-        this.defaultAttrValue = defaultAttrValue;
-        this.currentAttrValue = defaultAttrValue;
+    public boolean isRecycled() {
+        return viewReference.get() == null;
     }
 
-    public String getAttrValueKey() {
-        return attrValueKey;
+    public boolean hasAttrValueKey(String attrValueKey) {
+        if (viewAttrMap != null && !viewAttrMap.isEmpty()) {
+            Set<String> keySet = viewAttrMap.keySet();
+            return keySet.contains(attrValueKey);
+        }
+        return false;
     }
 
-    public void notifySkinChanged(int valueType, Object attrValue) {
+
+    public void notifySkinChanged(SkinAttr skinAttr) {
+        if (viewAttrMap == null || viewAttrMap.isEmpty()) {
+            return;
+        }
         View view = viewReference.get();
         if (view == null) {
             return;
         }
+        String attrValueKey = skinAttr.getAttrValueKey();
+        ViewAttr viewAttr = viewAttrMap.get(attrValueKey);
+        if (viewAttr == null) {
+            return;
+        }
+        String attrName = viewAttr.getAttrName();
+        Object attrValue = skinAttr.getAttrValue();
         List<ISkinHandler> skinHandlers = PrettySkin.getInstance().getSkinHandlers();
         for (ISkinHandler skinHandler : skinHandlers) {
             if (skinHandler.isSupportAttrName(view, attrName)) {
-                skinHandler.replace(view, attrName, attrValue);
-                currentAttrValue = attrValue;
+                skinHandler.replace(view, attrName, skinAttr.getAttrValue());
+                viewAttr.setCurrentAttrValue(attrValue);
             }
         }
     }
 
     public void notifySkinRecovered() {
+        if (viewAttrMap == null || viewAttrMap.isEmpty()) {
+            return;
+        }
         View view = viewReference.get();
         if (view == null) {
             return;
         }
         List<ISkinHandler> skinHandlers = PrettySkin.getInstance().getSkinHandlers();
-        for (ISkinHandler skinHandler : skinHandlers) {
-            if (skinHandler.isSupportAttrName(view, attrName)) {
-                skinHandler.replace(view, attrName, defaultAttrValue);
-                currentAttrValue = defaultAttrValue;
+        Collection<ViewAttr> viewAttrs = viewAttrMap.values();
+        for (ViewAttr viewAttr : viewAttrs) {
+            String attrName = viewAttr.getAttrName();
+            Object defaultAttrValue = viewAttr.getDefaultAttrValue();
+            for (ISkinHandler skinHandler : skinHandlers) {
+                if (skinHandler.isSupportAttrName(view, attrName)) {
+                    skinHandler.replace(view, attrName, defaultAttrValue);
+                    viewAttr.setCurrentAttrValue(defaultAttrValue);
+                }
             }
         }
-    }
-
-    public boolean isRecycled() {
-        return viewReference.get() == null;
     }
 }

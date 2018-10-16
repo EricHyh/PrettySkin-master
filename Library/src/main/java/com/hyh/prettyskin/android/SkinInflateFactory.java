@@ -8,10 +8,13 @@ import android.view.View;
 
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.core.ISkin;
+import com.hyh.prettyskin.core.SkinAttr;
 import com.hyh.prettyskin.core.SkinView;
+import com.hyh.prettyskin.core.ViewAttr;
 import com.hyh.prettyskin.core.parser.XmlAttrParser;
 
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -53,18 +56,20 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
             }
             if (view != null) {
                 String[] attrArr = skinAttrs.split("\\|");
+                HashMap<String, ViewAttr> viewAttrMap = new HashMap<>(attrArr.length);
+                SkinView skinView = new SkinView(view, viewAttrMap);
+                PrettySkin.getInstance().addSkinAttrItem(skinView);
                 for (String attr : attrArr) {
                     String[] attrInfo = attr.split("=");
                     String attrName = attrInfo[0];
                     String attrValueKey = attrInfo[1];
                     Object defaultAttrValue = getDefaultAttrValue(view, attrs, attrName);
-                    SkinView skinView = new SkinView(view, attrName, attrValueKey, defaultAttrValue);
-                    PrettySkin.getInstance().addSkinAttrItem(skinView);
+                    viewAttrMap.put(attrValueKey, new ViewAttr(attrName, attrValueKey, defaultAttrValue));
                     ISkin currentSkin = PrettySkin.getInstance().getCurrentSkin();
                     if (currentSkin != null) {
                         int valueType = currentSkin.getValueType(attrValueKey);
                         Object currentAttrValue = currentSkin.getAttrValue(attrValueKey);
-                        skinView.notifySkinChanged(valueType, currentAttrValue);
+                        skinView.notifySkinChanged(new SkinAttr(attrValueKey, valueType, currentAttrValue));
                     }
                 }
             }

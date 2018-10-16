@@ -23,6 +23,9 @@
         android:paddingStart="0dp"
         android:paddingTop="0dp"
         android:paddingVertical="0dp"
+        android:alpha="1.0"
+        android:focusedByDefault="true"
+
         android:scrollX="0dp"
         android:scrollY="0dp"/>
 
