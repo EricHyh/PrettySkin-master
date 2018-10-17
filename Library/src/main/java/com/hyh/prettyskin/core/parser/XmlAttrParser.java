@@ -11,6 +11,6 @@ public interface XmlAttrParser {
 
     boolean isSupportAttrName(View view, String attrName);
 
-    Object parse(View view, AttributeSet attrs, String attrName);
+    Object parse(View view, AttributeSet set, String attrName);
 
 }

@@ -15,6 +15,7 @@ import com.hyh.prettyskin.core.SkinReplaceListener;
 import com.hyh.prettyskin.core.SkinView;
 import com.hyh.prettyskin.core.handler.ISkinHandler;
 import com.hyh.prettyskin.core.handler.NativeSkinHandler;
+import com.hyh.prettyskin.core.parser.NativeAttrParser;
 import com.hyh.prettyskin.core.parser.XmlAttrParser;
 import com.hyh.prettyskin.utils.ReflectUtil;
 
@@ -59,6 +60,8 @@ public class PrettySkin {
 
     {
         mSkinHandlers.add(new NativeSkinHandler());
+
+        mXmlAttrParsers.add(new NativeAttrParser());
     }
 
     private ISkin mCurrentSkin;

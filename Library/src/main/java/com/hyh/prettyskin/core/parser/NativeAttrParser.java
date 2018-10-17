@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+import com.hyh.prettyskin.utils.AttrUtil;
 import com.hyh.prettyskin.utils.ReflectUtil;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class NativeAttrParser implements XmlAttrParser {
 
     {
         mXmlAttrParsers.add(new ViewAttrParser());
+        mXmlAttrParsers.add(new TextViewAttrParser());
     }
 
     @Override
@@ -39,46 +41,37 @@ public class NativeAttrParser implements XmlAttrParser {
     }
 
     @Override
-    public Object parse(View view, AttributeSet attrs, String attrName) {
-        if (attrs == null || TextUtils.isEmpty(attrName)) {
+    public Object parse(View view, AttributeSet set, String attrName) {
+        if (set == null || TextUtils.isEmpty(attrName)) {
             return null;
         }
-        Context context = view.getContext();
         Object attrValue = null;
-        boolean isAttrParsed = false;
-        if (TextUtils.equals(attrName, "background")) {
-            Drawable drawable = view.getBackground();
-            if (drawable != null && drawable instanceof ColorDrawable) {
-                ColorDrawable colorDrawable = (ColorDrawable) drawable;
-                attrValue = colorDrawable.getColor();
-            } else {
-                attrValue = drawable;
+        for (XmlAttrParser xmlAttrParser : mXmlAttrParsers) {
+            if (xmlAttrParser.isSupportAttrName(view, attrName)) {
+                attrValue = xmlAttrParser.parse(view, set, attrName);
             }
-            isAttrParsed = true;
-        } else if (TextUtils.equals(attrName, "textColor") && view instanceof TextView) {
-            TextView textView = (TextView) view;
-            attrValue = textView.getTextColors();
-            isAttrParsed = true;
         }
-        if (!isAttrParsed) {
-            int attributeCount = attrs.getAttributeCount();
-            if (attributeCount > 0) {
-                for (int index = 0; index < attributeCount; index++) {
-                    String attributeName = attrs.getAttributeName(index);
-                    if (TextUtils.equals(attributeName, attrName)) {
-                        String attributeValue = attrs.getAttributeValue(index);
-                        if (!TextUtils.isEmpty(attributeName)) {
-                            if (attributeValue.startsWith("#")) {
-                                attrValue = Color.parseColor(attributeValue);
-                            } else if (attributeValue.startsWith("@")) {
-                                int attributeResourceValue = attrs.getAttributeResourceValue(index, 0);
-                                if (attributeResourceValue != 0) {
-                                    String resourceTypeName = context.getResources().getResourceTypeName(attributeResourceValue);
-                                    if ("color".equalsIgnoreCase(resourceTypeName)) {
-                                        attrValue = context.getResources().getDrawable(attributeResourceValue);
-                                    } else if ("mipmap".equalsIgnoreCase(resourceTypeName) || "drawable".equalsIgnoreCase(resourceTypeName)) {
-                                        attrValue = context.getResources().getDrawable(attributeResourceValue);
-                                    }
+        if (attrValue != null) {
+            return attrValue;
+        }
+        Context context = view.getContext();
+        int attributeCount = set.getAttributeCount();
+        if (attributeCount > 0) {
+            for (int index = 0; index < attributeCount; index++) {
+                String attributeName = set.getAttributeName(index);
+                if (TextUtils.equals(attributeName, attrName)) {
+                    String attributeValue = set.getAttributeValue(index);
+                    if (!TextUtils.isEmpty(attributeName)) {
+                        if (attributeValue.startsWith("#")) {
+                            attrValue = Color.parseColor(attributeValue);
+                        } else if (attributeValue.startsWith("@")) {
+                            int attributeResourceValue = set.getAttributeResourceValue(index, 0);
+                            if (attributeResourceValue != 0) {
+                                String resourceTypeName = context.getResources().getResourceTypeName(attributeResourceValue);
+                                if ("color".equalsIgnoreCase(resourceTypeName)) {
+                                    attrValue = context.getResources().getDrawable(attributeResourceValue);
+                                } else if ("mipmap".equalsIgnoreCase(resourceTypeName) || "drawable".equalsIgnoreCase(resourceTypeName)) {
+                                    attrValue = context.getResources().getDrawable(attributeResourceValue);
                                 }
                             }
                         }
@@ -194,7 +187,7 @@ public class NativeAttrParser implements XmlAttrParser {
         }
 
         @Override
-        public Object parse(View view, AttributeSet attrs, String attrName) {
+        public Object parse(View view, AttributeSet set, String attrName) {
             Object attrValue = null;
             switch (attrName) {
                 case "background": {
@@ -685,14 +678,82 @@ public class NativeAttrParser implements XmlAttrParser {
 
     private static class TextViewAttrParser implements XmlAttrParser {
 
-        @Override
-        public boolean isSupportAttrName(View view, String attrName) {
-            return false;
+        private List<String> mSupportAttrNames = new ArrayList<>();
+
+        {
+            //mSupportAttrNames.add("editable");
+            //mSupportAttrNames.add("inputMethod");
+            //mSupportAttrNames.add("numeric");
+            //mSupportAttrNames.add("phoneNumber");
+            //mSupportAttrNames.add("autoText");
+            //mSupportAttrNames.add("capitalize");
+            //mSupportAttrNames.add("bufferType");
+            //mSupportAttrNames.add("selectAllOnFocus");
+            mSupportAttrNames.add("autoLink");
+            mSupportAttrNames.add("linksClickable");
+            mSupportAttrNames.add("drawableLeft");
+            mSupportAttrNames.add("drawableTop");
+            mSupportAttrNames.add("drawableRight");
+            mSupportAttrNames.add("drawableBottom");
+            //mSupportAttrNames.add("drawableStart");
+            //mSupportAttrNames.add("drawableEnd");
+            mSupportAttrNames.add("drawableTint");
+            mSupportAttrNames.add("drawableTintMode");
+            mSupportAttrNames.add("maxLines");
+            mSupportAttrNames.add("minLines");
+            mSupportAttrNames.add("maxHeight");
+            mSupportAttrNames.add("minHeight");
+            mSupportAttrNames.add("lines");
+            mSupportAttrNames.add("height");
+            mSupportAttrNames.add("maxEms");
+            mSupportAttrNames.add("minEms");
+            mSupportAttrNames.add("maxWidth");
+            mSupportAttrNames.add("minWidth");
+            mSupportAttrNames.add("ems");
+            mSupportAttrNames.add("width");
+            mSupportAttrNames.add("gravity");
+            mSupportAttrNames.add("hint");
+            mSupportAttrNames.add("text");
+            mSupportAttrNames.add("scrollHorizontally");
+            mSupportAttrNames.add("singleLine");
+            mSupportAttrNames.add("ellipsize");
+            mSupportAttrNames.add("marqueeRepeatLimit");
+            mSupportAttrNames.add("includeFontPadding");
+            mSupportAttrNames.add("cursorVisible");
+            mSupportAttrNames.add("maxLength");
+            mSupportAttrNames.add("textScaleX");
+            mSupportAttrNames.add("freezesText");
+            mSupportAttrNames.add("shadowColor");
+            mSupportAttrNames.add("shadowDx");
+            mSupportAttrNames.add("shadowDy");
+            mSupportAttrNames.add("shadowRadius");
+            mSupportAttrNames.add("enabled");
+            mSupportAttrNames.add("textColorHighlight");
+            mSupportAttrNames.add("textColor");
+            mSupportAttrNames.add("textColorHint");
+            mSupportAttrNames.add("textColorLink");
+            mSupportAttrNames.add("textSize");
+            mSupportAttrNames.add("typeface");
+            mSupportAttrNames.add("textStyle");
+            mSupportAttrNames.add("digits");
+            mSupportAttrNames.add("digits");
+            mSupportAttrNames.add("digits");
+            mSupportAttrNames.add("digits");
+            mSupportAttrNames.add("digits");
+            mSupportAttrNames.add("digits");
+            mSupportAttrNames.add("digits");
+            mSupportAttrNames.add("digits");
         }
 
         @Override
-        public Object parse(View view, AttributeSet attrs, String attrName) {
-            if (!(view instanceof TextView)) {
+        public boolean isSupportAttrName(View view, String attrName) {
+            return view instanceof TextView && mSupportAttrNames.contains(attrName);
+        }
+
+        @Override
+        public Object parse(View view, AttributeSet set, String attrName) {
+            Context context = view.getContext();
+            if (context == null && !(view instanceof TextView)) {
                 return null;
             }
             TextView textView = (TextView) view;
@@ -966,8 +1027,207 @@ public class NativeAttrParser implements XmlAttrParser {
                     }
                     break;
                 }
+                case "gravity": {
+                    attrValue = textView.getGravity();
+                    break;
+                }
+                case "hint": {
+                    attrValue = textView.getHint();
+                    break;
+                }
+                case "text": {
+                    attrValue = textView.getText();
+                    break;
+                }
+                case "scrollHorizontally": {
+                    try {
+                        attrValue = (boolean) ReflectUtil.getFieldValue(textView, "mHorizontallyScrolling");
+                    } catch (Exception e) {
+                        attrValue = false;
+                    }
+                    break;
+                }
+                case "singleLine": {
+                    try {
+                        attrValue = (boolean) ReflectUtil.getFieldValue(textView, "mSingleLine");
+                    } catch (Exception e) {
+                        attrValue = false;
+                    }
+                    break;
+                }
+                case "ellipsize": {
+                    attrValue = textView.getEllipsize();
+                    break;
+                }
+                case "marqueeRepeatLimit": {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                        attrValue = textView.getMarqueeRepeatLimit();
+                    } else {
+                        try {
+                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mMarqueeRepeatLimit");
+                        } catch (Exception e) {
+                            attrValue = 3;
+                        }
+                    }
+                    break;
+                }
+                case "includeFontPadding": {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                        attrValue = textView.getIncludeFontPadding();
+                    } else {
+                        try {
+                            attrValue = (boolean) ReflectUtil.getFieldValue(textView, "mIncludePad");
+                        } catch (Exception e) {
+                            attrValue = true;
+                        }
+                    }
+                    break;
+                }
+                case "cursorVisible": {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                        attrValue = textView.isCursorVisible();
+                    } else {
+                        try {
+                            Object editor = ReflectUtil.getFieldValue(textView, "mEditor");
+                            if (editor != null) {
+                                attrValue = (boolean) ReflectUtil.getFieldValue(editor, "mCursorVisible");
+                            }
+                        } catch (Exception e) {
+                            attrValue = true;
+                        }
+                    }
+                    break;
+                }
+                case "maxLength": {
+                    attrValue = textView.getFilters();
+                    break;
+                }
+                case "textScaleX": {
+                    attrValue = textView.getTextScaleX();
+                    break;
+                }
+                case "freezesText": {
+                    attrValue = textView.getFreezesText();
+                    break;
+                }
+                case "shadowColor": {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                        attrValue = textView.getShadowColor();
+                    } else {
+                        try {
+                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mShadowColor");
+                        } catch (Exception e) {
+                            attrValue = 0;
+                        }
+                    }
+                    break;
+                }
+                case "shadowDx": {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                        attrValue = textView.getShadowDx();
+                    } else {
+                        try {
+                            attrValue = (float) ReflectUtil.getFieldValue(textView, "mShadowDx");
+                        } catch (Exception e) {
+                            attrValue = 0.0f;
+                        }
+                    }
+                    break;
+                }
+                case "shadowDy": {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                        attrValue = textView.getShadowDy();
+                    } else {
+                        try {
+                            attrValue = (float) ReflectUtil.getFieldValue(textView, "mShadowDy");
+                        } catch (Exception e) {
+                            attrValue = 0.0f;
+                        }
+                    }
+                    break;
+                }
+                case "shadowRadius": {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                        attrValue = textView.getShadowRadius();
+                    } else {
+                        try {
+                            attrValue = (float) ReflectUtil.getFieldValue(textView, "mShadowRadius");
+                        } catch (Exception e) {
+                            attrValue = 0.0f;
+                        }
+                    }
+                    break;
+                }
+                case "enabled": {
+                    attrValue = textView.isEnabled();
+                    break;
+                }
+                case "textColorHighlight": {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                        attrValue = textView.getHighlightColor();
+                    } else {
+                        try {
+                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mHighlightColor");
+                        } catch (Exception e) {
+                            attrValue = 0x6633B5E5;
+                        }
+                    }
+                    break;
+                }
+                case "textColor": {
+                    attrValue = textView.getTextColors();
+                    break;
+                }
+                case "textColorHint": {
+                    attrValue = textView.getHintTextColors();
+                    break;
+                }
+                case "textColorLink": {
+                    attrValue = textView.getLinkTextColors();
+                    break;
+                }
+                case "textSize": {
+                    attrValue = textView.getTextSize();
+                    break;
+                }
+                case "typeface": {
+                    attrValue = textView.getTypeface();
+                    break;
+                }
+                case "textStyle": {
+                    AttrUtil.getAttrValueFromAttributeSet(context, set, attrName);
+                    break;
+                }
+                /*case "typeface": {
+                    attrValue = textView.getTypeface();
+                    break;
+                }
+                case "typeface": {
+                    attrValue = textView.getTypeface();
+                    break;
+                }
+                case "typeface": {
+                    attrValue = textView.getTypeface();
+                    break;
+                }
+                case "typeface": {
+                    attrValue = textView.getTypeface();
+                    break;
+                }
+                case "typeface": {
+                    attrValue = textView.getTypeface();
+                    break;
+                }
+                case "typeface": {
+                    attrValue = textView.getTypeface();
+                    break;
+                }
+                case "typeface": {
+                    attrValue = textView.getTypeface();
+                    break;
+                }*/
             }
-            return null;
+            return attrValue;
         }
     }
 }
