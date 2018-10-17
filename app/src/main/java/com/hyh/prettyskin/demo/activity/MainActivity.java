@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.R;
 import com.hyh.prettyskin.core.ThemeSkin;
+import com.hyh.prettyskin.utils.NumberUtil;
 
 /**
  * @author Administrator
@@ -19,6 +21,7 @@ import com.hyh.prettyskin.core.ThemeSkin;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void recoverSkin(View view) {
         PrettySkin.getInstance().recoverDefaultSkin();
+        boolean hexNumber = NumberUtil.isHexNumber("0x1");
+        Log.d(TAG, "recoverSkin: ");
     }
 
     public void startSecondAct(View view) {
