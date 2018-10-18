@@ -14,7 +14,7 @@ public interface ISkin {
 
     int getValueType(String attrValueKey);
 
-    Object getAttrValue(String attrValueKey);
+    AttrValue getAttrValue(String attrValueKey);
 
     boolean equals(ISkin skin);
 }

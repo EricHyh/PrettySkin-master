@@ -12,9 +12,9 @@ public class SkinAttr {
 
     private int valueType;
 
-    private Object attrValue;
+    private AttrValue attrValue;
 
-    public SkinAttr(String attrValueKey, int valueType, Object attrValue) {
+    public SkinAttr(String attrValueKey, int valueType, AttrValue attrValue) {
         this.attrValueKey = attrValueKey;
         this.valueType = valueType;
         this.attrValue = attrValue;
@@ -28,7 +28,7 @@ public class SkinAttr {
         return valueType;
     }
 
-    public Object getAttrValue() {
+    public AttrValue getAttrValue() {
         return attrValue;
     }
 }

@@ -2,6 +2,8 @@ package com.hyh.prettyskin.core.handler;
 
 import android.view.View;
 
+import com.hyh.prettyskin.core.AttrValue;
+
 /**
  * @author Administrator
  * @description
@@ -12,6 +14,6 @@ public interface ISkinHandler {
 
     boolean isSupportAttrName(View view, String attrName);
 
-    void replace(View view, String attrName, Object attrValue);
+    void replace(View view, String attrName, AttrValue attrValue);
 
 }

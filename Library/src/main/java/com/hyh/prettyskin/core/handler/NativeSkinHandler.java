@@ -1,13 +1,9 @@
 package com.hyh.prettyskin.core.handler;
 
-import android.content.res.ColorStateList;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.hyh.prettyskin.core.AttrValue;
 
 /**
  * @author Administrator
@@ -25,8 +21,8 @@ public class NativeSkinHandler implements ISkinHandler {
     }
 
     @Override
-    public void replace(View view, String attrName, Object attrValue) {
-        if ("background".equals(attrName)) {
+    public void replace(View view, String attrName, AttrValue attrValue) {
+        /*if ("background".equals(attrName)) {
             if (attrValue == null) {
                 view.setBackgroundDrawable(null);
             } else {
@@ -69,6 +65,6 @@ public class NativeSkinHandler implements ISkinHandler {
                     imageView.setImageDrawable((Drawable) attrValue);
                 }
             }
-        }
+        }*/
     }
 }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.hyh.prettyskin.PrettySkin;
+import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ISkin;
 import com.hyh.prettyskin.core.SkinAttr;
 import com.hyh.prettyskin.core.SkinView;
@@ -63,12 +64,12 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
                     String[] attrInfo = attr.split("=");
                     String attrName = attrInfo[0];
                     String attrValueKey = attrInfo[1];
-                    Object defaultAttrValue = getDefaultAttrValue(view, attrs, attrName);
+                    AttrValue defaultAttrValue = getDefaultAttrValue(view, attrs, attrName);
                     viewAttrMap.put(attrValueKey, new ViewAttr(attrName, attrValueKey, defaultAttrValue));
                     ISkin currentSkin = PrettySkin.getInstance().getCurrentSkin();
                     if (currentSkin != null) {
                         int valueType = currentSkin.getValueType(attrValueKey);
-                        Object currentAttrValue = currentSkin.getAttrValue(attrValueKey);
+                        AttrValue currentAttrValue = currentSkin.getAttrValue(attrValueKey);
                         skinView.notifySkinChanged(new SkinAttr(attrValueKey, valueType, currentAttrValue));
                     }
                 }
@@ -97,11 +98,11 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
         return null;
     }
 
-    private Object getDefaultAttrValue(View view, AttributeSet attrs, String attrName) {
+    private AttrValue getDefaultAttrValue(View view, AttributeSet attrs, String attrName) {
         List<XmlAttrParser> xmlAttrParsers = PrettySkin.getInstance().getXmlAttrParsers();
         for (XmlAttrParser xmlAttrParser : xmlAttrParsers) {
             if (xmlAttrParser.isSupportAttrName(view, attrName)) {
-                Object attrValue = xmlAttrParser.parse(view, attrs, attrName);
+                AttrValue attrValue = xmlAttrParser.parse(view, attrs, attrName);
                 if (attrValue != null) {
                     return attrValue;
                 }

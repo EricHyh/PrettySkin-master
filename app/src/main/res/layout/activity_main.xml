@@ -30,16 +30,17 @@
         android:scrollY="0dp"/>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="0.1"
-        android:textSize="12sp"
-        android:scaleX="0.95"
-        android:height="16dp"
-        android:textStyle="bold"
-        android:textColor="@color/colorPrimary"
+        android:layout_width="20px"
+        android:layout_height="20mm"
+        android:width="20pt"
+        android:height="16in"
         android:drawableLeft="@color/colorPrimary"
         android:drawableRight="@mipmap/ic_launcher"
+        android:scaleX="0.95"
+        android:text="0.1"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12sp"
+        android:textStyle="bold"
         skin:skin_attrs="textStyle=tv_text_style"/>
 
 

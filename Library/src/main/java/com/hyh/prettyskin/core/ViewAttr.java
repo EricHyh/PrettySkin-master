@@ -14,17 +14,17 @@ public class ViewAttr {
 
     private String attrValueKey;
 
-    private Object defaultAttrValue;
+    private AttrValue defaultAttrValue;
 
-    private Object currentAttrValue;
+    private AttrValue currentAttrValue;
 
-    public ViewAttr(String attrName, String attrValueKey, Object defaultAttrValue) {
+    public ViewAttr(String attrName, String attrValueKey, AttrValue defaultAttrValue) {
         this.attrName = attrName;
         this.attrValueKey = attrValueKey;
         this.defaultAttrValue = defaultAttrValue;
     }
 
-    public ViewAttr(String attrName, int minSdkVersion, String attrValueKey, Object defaultAttrValue) {
+    public ViewAttr(String attrName, int minSdkVersion, String attrValueKey, AttrValue defaultAttrValue) {
         this.attrName = attrName;
         this.minSdkVersion = minSdkVersion;
         this.attrValueKey = attrValueKey;
@@ -55,19 +55,19 @@ public class ViewAttr {
         this.attrValueKey = attrValueKey;
     }
 
-    public Object getDefaultAttrValue() {
+    public AttrValue getDefaultAttrValue() {
         return defaultAttrValue;
     }
 
-    public void setDefaultAttrValue(Object defaultAttrValue) {
+    public void setDefaultAttrValue(AttrValue defaultAttrValue) {
         this.defaultAttrValue = defaultAttrValue;
     }
 
-    public Object getCurrentAttrValue() {
+    public AttrValue getCurrentAttrValue() {
         return currentAttrValue;
     }
 
-    public void setCurrentAttrValue(Object currentAttrValue) {
+    public void setCurrentAttrValue(AttrValue currentAttrValue) {
         this.currentAttrValue = currentAttrValue;
     }
 }

@@ -10,6 +10,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+import com.hyh.prettyskin.core.AttrValue;
+import com.hyh.prettyskin.core.ValueType;
 import com.hyh.prettyskin.utils.AttrUtil;
 import com.hyh.prettyskin.utils.ReflectUtil;
 
@@ -41,11 +43,11 @@ public class NativeAttrParser implements XmlAttrParser {
     }
 
     @Override
-    public Object parse(View view, AttributeSet set, String attrName) {
+    public AttrValue parse(View view, AttributeSet set, String attrName) {
         if (set == null || TextUtils.isEmpty(attrName)) {
             return null;
         }
-        Object attrValue = null;
+        AttrValue attrValue = null;
         for (XmlAttrParser xmlAttrParser : mXmlAttrParsers) {
             if (xmlAttrParser.isSupportAttrName(view, attrName)) {
                 attrValue = xmlAttrParser.parse(view, set, attrName);
@@ -54,6 +56,8 @@ public class NativeAttrParser implements XmlAttrParser {
         if (attrValue != null) {
             return attrValue;
         }
+        int type = ValueType.TYPE_NULL;
+        Object value = null;
         Context context = view.getContext();
         int attributeCount = set.getAttributeCount();
         if (attributeCount > 0) {
@@ -63,15 +67,15 @@ public class NativeAttrParser implements XmlAttrParser {
                     String attributeValue = set.getAttributeValue(index);
                     if (!TextUtils.isEmpty(attributeName)) {
                         if (attributeValue.startsWith("#")) {
-                            attrValue = Color.parseColor(attributeValue);
+                            value = Color.parseColor(attributeValue);
                         } else if (attributeValue.startsWith("@")) {
                             int attributeResourceValue = set.getAttributeResourceValue(index, 0);
                             if (attributeResourceValue != 0) {
                                 String resourceTypeName = context.getResources().getResourceTypeName(attributeResourceValue);
                                 if ("color".equalsIgnoreCase(resourceTypeName)) {
-                                    attrValue = context.getResources().getDrawable(attributeResourceValue);
+                                    value = context.getResources().getDrawable(attributeResourceValue);
                                 } else if ("mipmap".equalsIgnoreCase(resourceTypeName) || "drawable".equalsIgnoreCase(resourceTypeName)) {
-                                    attrValue = context.getResources().getDrawable(attributeResourceValue);
+                                    value = context.getResources().getDrawable(attributeResourceValue);
                                 }
                             }
                         }
@@ -187,16 +191,20 @@ public class NativeAttrParser implements XmlAttrParser {
         }
 
         @Override
-        public Object parse(View view, AttributeSet set, String attrName) {
-            Object attrValue = null;
+        public AttrValue parse(View view, AttributeSet set, String attrName) {
+            AttrValue attrValue = null;
+            int type = ValueType.TYPE_NULL;
+            Object value = null;
             switch (attrName) {
                 case "background": {
                     Drawable drawable = view.getBackground();
                     if (drawable != null && drawable instanceof ColorDrawable) {
                         ColorDrawable colorDrawable = (ColorDrawable) drawable;
-                        attrValue = colorDrawable.getColor();
+                        type = ValueType.TYPE_COLOR_INT;
+                        value = colorDrawable.getColor();
                     } else {
-                        attrValue = drawable;
+                        type = ValueType.TYPE_DRAWABLE;
+                        value = drawable;
                     }
                     break;
                 }
@@ -205,19 +213,23 @@ public class NativeAttrParser implements XmlAttrParser {
                     break;
                 }
                 case "paddingLeft": {
-                    attrValue = view.getPaddingLeft();
+                    type = ValueType.TYPE_INT;
+                    value = view.getPaddingLeft();
                     break;
                 }
                 case "paddingTop": {
-                    attrValue = view.getPaddingTop();
+                    type = ValueType.TYPE_INT;
+                    value = view.getPaddingTop();
                     break;
                 }
                 case "paddingRight": {
-                    attrValue = view.getPaddingRight();
+                    type = ValueType.TYPE_INT;
+                    value = view.getPaddingRight();
                     break;
                 }
                 case "paddingBottom": {
-                    attrValue = view.getPaddingBottom();
+                    type = ValueType.TYPE_INT;
+                    value = view.getPaddingBottom();
                     break;
                 }
                 case "paddingStart": {
@@ -237,145 +249,177 @@ public class NativeAttrParser implements XmlAttrParser {
                     break;
                 }
                 case "scrollX": {
-                    attrValue = view.getScrollX();
+                    type = ValueType.TYPE_FLOAT;
+                    value = view.getScrollX();
                     break;
                 }
                 case "scrollY": {
-                    attrValue = view.getScaleY();
+                    type = ValueType.TYPE_FLOAT;
+                    value = view.getScaleY();
                     break;
                 }
                 case "alpha": {
-                    attrValue = view.getAlpha();
+                    type = ValueType.TYPE_FLOAT;
+                    value = view.getAlpha();
                     break;
                 }
                 case "transformPivotX": {
-                    attrValue = view.getPivotX();
+                    type = ValueType.TYPE_FLOAT;
+                    value = view.getPivotX();
                     break;
                 }
                 case "transformPivotY": {
-                    attrValue = view.getPivotY();
+                    type = ValueType.TYPE_FLOAT;
+                    value = view.getPivotY();
                     break;
                 }
                 case "translationX": {
-                    attrValue = view.getTranslationX();
+                    type = ValueType.TYPE_FLOAT;
+                    value = view.getTranslationX();
                     break;
                 }
                 case "translationY": {
-                    attrValue = view.getTranslationY();
+                    type = ValueType.TYPE_FLOAT;
+                    value = view.getTranslationY();
                     break;
                 }
                 case "translationZ": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        attrValue = view.getTranslationZ();
+                        type = ValueType.TYPE_FLOAT;
+                        value = view.getTranslationZ();
                     }
                     break;
                 }
                 case "elevation": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        attrValue = view.getElevation();
+                        type = ValueType.TYPE_FLOAT;
+                        value = view.getElevation();
                     }
                     break;
                 }
                 case "rotation": {
-                    attrValue = view.getRotation();
+                    type = ValueType.TYPE_FLOAT;
+                    value = view.getRotation();
                     break;
                 }
                 case "rotationX": {
-                    attrValue = view.getRotationX();
+                    type = ValueType.TYPE_FLOAT;
+                    value = view.getRotationX();
                     break;
                 }
                 case "rotationY": {
-                    attrValue = view.getRotationY();
+                    type = ValueType.TYPE_FLOAT;
+                    value = view.getRotationY();
                     break;
                 }
                 case "scaleX": {
-                    attrValue = view.getScaleX();
+                    type = ValueType.TYPE_FLOAT;
+                    value = view.getScaleX();
                     break;
                 }
                 case "scaleY": {
-                    attrValue = view.getScaleX();
+                    type = ValueType.TYPE_FLOAT;
+                    value = view.getScaleX();
                     break;
                 }
                 case "fitsSystemWindows": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = view.getFitsSystemWindows();
+                        type = ValueType.TYPE_BOOLEAN;
+                        value = view.getFitsSystemWindows();
                     } else {
-                        attrValue = false;
+                        type = ValueType.TYPE_BOOLEAN;
+                        value = false;
                     }
                     break;
                 }
                 case "focusable": {
-                    attrValue = view.isFocusable();
+                    type = ValueType.TYPE_BOOLEAN;
+                    value = view.isFocusable();
                     break;
                 }
                 case "focusableInTouchMode": {
-                    attrValue = view.isFocusableInTouchMode();
+                    type = ValueType.TYPE_BOOLEAN;
+                    value = view.isFocusableInTouchMode();
                     break;
                 }
                 case "clickable": {
-                    attrValue = view.isClickable();
+                    type = ValueType.TYPE_BOOLEAN;
+                    value = view.isClickable();
                     break;
                 }
                 case "longClickable": {
-                    attrValue = view.isLongClickable();
+                    type = ValueType.TYPE_BOOLEAN;
+                    value = view.isLongClickable();
                     break;
                 }
                 case "contextClickable": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        attrValue = view.isContextClickable();
+                        type = ValueType.TYPE_BOOLEAN;
+                        value = view.isContextClickable();
                     }
                     break;
                 }
                 case "saveEnabled": {
-                    attrValue = view.isSaveEnabled();
+                    type = ValueType.TYPE_BOOLEAN;
+                    value = view.isSaveEnabled();
                     break;
                 }
                 case "duplicateParentState": {
-                    attrValue = view.isDuplicateParentStateEnabled();
+                    type = ValueType.TYPE_BOOLEAN;
+                    value = view.isDuplicateParentStateEnabled();
                     break;
                 }
                 case "visibility": {
-                    attrValue = view.getVisibility();
+                    type = ValueType.TYPE_INT;
+                    value = view.getVisibility();
                     break;
                 }
                 case "layoutDirection": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        attrValue = view.getLayoutDirection();
+                        type = ValueType.TYPE_INT;
+                        value = view.getLayoutDirection();
                     }
                     break;
                 }
                 case "drawingCacheQuality": {
-                    attrValue = view.getDrawingCacheQuality();
+                    type = ValueType.TYPE_INT;
+                    value = view.getDrawingCacheQuality();
                     break;
                 }
                 case "contentDescription": {
-                    attrValue = view.getContentDescription();
+                    type = ValueType.TYPE_CHARSEQUENCE;
+                    value = view.getContentDescription();
                     break;
                 }
                 case "accessibilityTraversalBefore": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                        attrValue = view.getAccessibilityTraversalBefore();
+                        type = ValueType.TYPE_INT;
+                        value = view.getAccessibilityTraversalBefore();
                     }
                     break;
                 }
                 case "accessibilityTraversalAfter": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                        attrValue = view.getAccessibilityTraversalAfter();
+                        type = ValueType.TYPE_INT;
+                        value = view.getAccessibilityTraversalAfter();
                     }
                     break;
                 }
                 case "labelFor": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        attrValue = view.getLabelFor();
+                        type = ValueType.TYPE_INT;
+                        value = view.getLabelFor();
                     }
                     break;
                 }
                 case "soundEffectsEnabled": {
-                    attrValue = view.isSoundEffectsEnabled();
+                    type = ValueType.TYPE_BOOLEAN;
+                    value = view.isSoundEffectsEnabled();
                     break;
                 }
                 case "hapticFeedbackEnabled": {
-                    attrValue = view.isHapticFeedbackEnabled();
+                    type = ValueType.TYPE_BOOLEAN;
+                    value = view.isHapticFeedbackEnabled();
                     break;
                 }
                 case "scrollbars": {
@@ -391,28 +435,33 @@ public class NativeAttrParser implements XmlAttrParser {
                     if (verticalScrollBarEnabled) {
                         scrollbars |= SCROLLBARS_VERTICAL;
                     }
-                    attrValue = scrollbars;
+                    type = ValueType.TYPE_INT;
+                    value = scrollbars;
                     break;
                 }
                 case "fadeScrollbars": {
-                    attrValue = view.isScrollbarFadingEnabled();
+                    type = ValueType.TYPE_BOOLEAN;
+                    value = view.isScrollbarFadingEnabled();
                     break;
                 }
                 case "scrollbarFadeDuration": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = view.getScrollBarFadeDuration();
+                        type = ValueType.TYPE_INT;
+                        value = view.getScrollBarFadeDuration();
                     }
                     break;
                 }
                 case "scrollbarDefaultDelayBeforeFade": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = view.getScrollBarDefaultDelayBeforeFade();
+                        type = ValueType.TYPE_INT;
+                        value = view.getScrollBarDefaultDelayBeforeFade();
                     }
                     break;
                 }
                 case "scrollbarSize": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = view.getScrollBarSize();
+                        type = ValueType.TYPE_INT;
+                        value = view.getScrollBarSize();
                     }
                     break;
                 }
@@ -457,158 +506,187 @@ public class NativeAttrParser implements XmlAttrParser {
                     if (verticalFadingEdgeEnabled) {
                         requiresFadingEdge |= FADING_EDGE_VERTICAL;
                     }
-                    attrValue = requiresFadingEdge;
+                    type = ValueType.TYPE_INT;
+                    value = requiresFadingEdge;
                     break;
                 }
                 case "scrollbarStyle": {
-                    attrValue = view.getScrollBarStyle();
+                    type = ValueType.TYPE_INT;
+                    value = view.getScrollBarStyle();
                     break;
                 }
                 case "isScrollContainer": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = view.isScrollContainer();
+                        type = ValueType.TYPE_BOOLEAN;
+                        value = view.isScrollContainer();
                     }
                     break;
                 }
                 case "keepScreenOn": {
-                    attrValue = view.getKeepScreenOn();
+                    type = ValueType.TYPE_INT;
+                    value = view.getKeepScreenOn();
                     break;
                 }
                 case "filterTouchesWhenObscured": {
-                    attrValue = view.getFilterTouchesWhenObscured();
+                    type = ValueType.TYPE_INT;
+                    value = view.getFilterTouchesWhenObscured();
                     break;
                 }
                 case "nextFocusLeft": {
-                    attrValue = view.getNextFocusLeftId();
+                    type = ValueType.TYPE_INT;
+                    value = view.getNextFocusLeftId();
                     break;
                 }
                 case "nextFocusRight": {
-                    attrValue = view.getNextFocusRightId();
+                    type = ValueType.TYPE_INT;
+                    value = view.getNextFocusRightId();
                     break;
                 }
                 case "nextFocusUp": {
-                    attrValue = view.getNextFocusUpId();
+                    type = ValueType.TYPE_INT;
+                    value = view.getNextFocusUpId();
                     break;
                 }
                 case "nextFocusDown": {
-                    attrValue = view.getNextFocusDownId();
+                    type = ValueType.TYPE_INT;
+                    value = view.getNextFocusDownId();
                     break;
                 }
                 case "nextFocusForward": {
-                    attrValue = view.getNextFocusForwardId();
+                    type = ValueType.TYPE_INT;
+                    value = view.getNextFocusForwardId();
                     break;
                 }
                 case "nextClusterForward": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        attrValue = view.getNextClusterForwardId();
+                        type = ValueType.TYPE_INT;
+                        value = view.getNextClusterForwardId();
                     }
                     break;
                 }
                 case "minWidth": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = view.getMinimumWidth();
+                        type = ValueType.TYPE_INT;
+                        value = view.getMinimumWidth();
                     }
                     break;
                 }
                 case "minHeight": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = view.getMinimumHeight();
+                        type = ValueType.TYPE_INT;
+                        value = view.getMinimumHeight();
                     }
                     break;
                 }
                 case "overScrollMode": {
-                    attrValue = view.getOverScrollMode();
+                    type = ValueType.TYPE_INT;
+                    value = view.getOverScrollMode();
                     break;
                 }
                 case "verticalScrollbarPosition": {
-                    attrValue = view.getVerticalScrollbarPosition();
+                    type = ValueType.TYPE_INT;
+                    value = view.getVerticalScrollbarPosition();
                     break;
                 }
                 case "layerType": {
-                    attrValue = view.getLayerType();
+                    type = ValueType.TYPE_INT;
+                    value = view.getLayerType();
                     break;
                 }
                 case "textDirection": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        attrValue = view.getTextDirection();
+                        value = view.getTextDirection();
                     }
                     break;
                 }
                 case "textAlignment": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        attrValue = view.getTextAlignment();
+                        type = ValueType.TYPE_INT;
+                        value = view.getTextAlignment();
                     }
                     break;
                 }
                 case "importantForAccessibility": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = view.getImportantForAccessibility();
+                        type = ValueType.TYPE_INT;
+                        value = view.getImportantForAccessibility();
                     }
                     break;
                 }
                 case "accessibilityLiveRegion": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        attrValue = view.getAccessibilityLiveRegion();
+                        type = ValueType.TYPE_INT;
+                        value = view.getAccessibilityLiveRegion();
                     }
                     break;
                 }
                 case "transitionName": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        attrValue = view.getTransitionName();
+                        type = ValueType.TYPE_STRING;
+                        value = view.getTransitionName();
                     }
                     break;
                 }
                 case "nestedScrollingEnabled": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        attrValue = view.isNestedScrollingEnabled();
+                        type = ValueType.TYPE_BOOLEAN;
+                        value = view.isNestedScrollingEnabled();
                     }
                     break;
                 }
                 case "stateListAnimator": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        attrValue = view.getStateListAnimator();
+                        type = ValueType.TYPE_OBJECT;
+                        value = view.getStateListAnimator();
                     }
                     break;
                 }
                 case "backgroundTint": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        attrValue = view.getBackgroundTintList();
+                        type = ValueType.TYPE_COLOR_STATE_LIST;
+                        value = view.getBackgroundTintList();
                     }
                     break;
                 }
                 case "backgroundTintMode": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        attrValue = view.getBackgroundTintMode();
+                        type = ValueType.TYPE_OBJECT;
+                        value = view.getBackgroundTintMode();
                     }
                     break;
                 }
                 case "outlineProvider": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        attrValue = view.getOutlineProvider();
+                        type = ValueType.TYPE_OBJECT;
+                        value = view.getOutlineProvider();
                     }
                     break;
                 }
                 case "foreground": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        attrValue = view.getForeground();
+                        type = ValueType.TYPE_DRAWABLE;
+                        value = view.getForeground();
                     }
                     break;
                 }
                 case "foregroundGravity": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        attrValue = view.getForegroundGravity();
+                        type = ValueType.TYPE_INT;
+                        value = view.getForegroundGravity();
                     }
                     break;
                 }
                 case "foregroundTintMode": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        attrValue = view.getForegroundTintMode();
+                        type = ValueType.TYPE_OBJECT;
+                        value = view.getForegroundTintMode();
                     }
                     break;
                 }
                 case "foregroundTint": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        attrValue = view.getForegroundTintList();
+                        type = ValueType.TYPE_COLOR_STATE_LIST;
+                        value = view.getForegroundTintList();
                     }
                     break;
                 }
@@ -618,13 +696,15 @@ public class NativeAttrParser implements XmlAttrParser {
                 }
                 case "scrollIndicators": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        attrValue = view.getScrollIndicators();
+                        type = ValueType.TYPE_INT;
+                        value = view.getScrollIndicators();
                     }
                     break;
                 }
                 case "pointerIcon": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        attrValue = view.getPointerIcon();
+                        type = ValueType.TYPE_OBJECT;
+                        value = view.getPointerIcon();
                     }
                     break;
                 }
@@ -634,43 +714,50 @@ public class NativeAttrParser implements XmlAttrParser {
                 }
                 case "tooltipText": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        attrValue = view.getTooltipText();
+                        type = ValueType.TYPE_CHARSEQUENCE;
+                        value = view.getTooltipText();
                     }
                     break;
                 }
                 case "keyboardNavigationCluster": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        attrValue = view.isKeyboardNavigationCluster();
+                        type = ValueType.TYPE_BOOLEAN;
+                        value = view.isKeyboardNavigationCluster();
                     }
                     break;
                 }
                 case "focusedByDefault": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        attrValue = view.isFocusedByDefault();
+                        type = ValueType.TYPE_BOOLEAN;
+                        value = view.isFocusedByDefault();
                     }
                     break;
                 }
                 case "autofillHints": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        attrValue = view.getAutofillHints();
+                        type = ValueType.TYPE_OBJECT;
+                        value = view.getAutofillHints();
                     }
                     break;
                 }
                 case "importantForAutofill": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        attrValue = view.isImportantForAutofill();
+                        value = view.isImportantForAutofill();
                     }
                     break;
                 }
                 case "defaultFocusHighlightEnabled": {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                        attrValue = view.getDefaultFocusHighlightEnabled();
+                        value = view.getDefaultFocusHighlightEnabled();
                     }
                     break;
                 }
                 default: {
                     break;
                 }
+            }
+            if (value != null) {
+                attrValue = new AttrValue(type, value);
             }
             return attrValue;
         }
@@ -751,13 +838,15 @@ public class NativeAttrParser implements XmlAttrParser {
         }
 
         @Override
-        public Object parse(View view, AttributeSet set, String attrName) {
+        public AttrValue parse(View view, AttributeSet set, String attrName) {
             Context context = view.getContext();
             if (context == null && !(view instanceof TextView)) {
                 return null;
             }
             TextView textView = (TextView) view;
-            Object attrValue = null;
+            AttrValue attrValue = null;
+            int type = ValueType.TYPE_NULL;
+            Object value = null;
             switch (attrName) {
                 case "editable": {
                     //TODO 暂不实现
@@ -796,27 +885,33 @@ public class NativeAttrParser implements XmlAttrParser {
                     break;
                 }
                 case "autoLink": {
-                    attrValue = textView.getAutoLinkMask();
+                    type = ValueType.TYPE_INT;
+                    value = textView.getAutoLinkMask();
                     break;
                 }
                 case "linksClickable": {
-                    attrValue = textView.getLinksClickable();
+                    type = ValueType.TYPE_BOOLEAN;
+                    value = textView.getLinksClickable();
                     break;
                 }
                 case "drawableLeft": {
-                    attrValue = textView.getCompoundDrawables()[0];
+                    type = ValueType.TYPE_DRAWABLE;
+                    value = textView.getCompoundDrawables()[0];
                     break;
                 }
                 case "drawableTop": {
-                    attrValue = textView.getCompoundDrawables()[1];
+                    type = ValueType.TYPE_DRAWABLE;
+                    value = textView.getCompoundDrawables()[1];
                     break;
                 }
                 case "drawableRight": {
-                    attrValue = textView.getCompoundDrawables()[2];
+                    type = ValueType.TYPE_DRAWABLE;
+                    value = textView.getCompoundDrawables()[2];
                     break;
                 }
                 case "drawableBottom": {
-                    attrValue = textView.getCompoundDrawables()[3];
+                    type = ValueType.TYPE_DRAWABLE;
+                    value = textView.getCompoundDrawables()[3];
                     break;
                 }
                 case "drawableStart": {
@@ -829,62 +924,70 @@ public class NativeAttrParser implements XmlAttrParser {
                 }
                 case "drawableTint": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        attrValue = textView.getCompoundDrawableTintList();
+                        type = ValueType.TYPE_COLOR_STATE_LIST;
+                        value = textView.getCompoundDrawableTintList();
                     }
                     break;
                 }
                 case "drawableTintMode": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        attrValue = textView.getCompoundDrawableTintMode();
+                        type = ValueType.TYPE_OBJECT;
+                        value = textView.getCompoundDrawableTintMode();
                     }
                     break;
                 }
                 case "maxLines": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = textView.getMaxLines();
+                        type = ValueType.TYPE_INT;
+                        value = textView.getMaxLines();
                     }
                     break;
                 }
                 case "minLines": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = textView.getMinLines();
+                        type = ValueType.TYPE_INT;
+                        value = textView.getMinLines();
                     }
                     break;
                 }
                 case "maxHeight": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = textView.getMaxHeight();
+                        type = ValueType.TYPE_INT;
+                        value = textView.getMaxHeight();
                     } else {
                         try {
-                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mMaximum");
+                            type = ValueType.TYPE_INT;
+                            value = (int) ReflectUtil.getFieldValue(textView, "mMaximum");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            value = Integer.MAX_VALUE;
                         }
                     }
                     break;
                 }
                 case "minHeight": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = textView.getMinHeight();
+                        type = ValueType.TYPE_INT;
+                        value = textView.getMinHeight();
                     } else {
                         try {
-                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mMinimum");
+                            type = ValueType.TYPE_INT;
+                            value = (int) ReflectUtil.getFieldValue(textView, "mMinimum");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            value = 0;
                         }
                     }
                     break;
                 }
                 case "lines": {
-                    int maxLines = Integer.MAX_VALUE;
-                    int minLines = 0;
+                    int maxLines;
+                    int minLines;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         maxLines = textView.getMaxLines();
                     } else {
                         try {
                             maxLines = (int) ReflectUtil.getFieldValue(textView, "mMaximum");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            maxLines = Integer.MAX_VALUE;
                         }
                     }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -893,24 +996,25 @@ public class NativeAttrParser implements XmlAttrParser {
                         try {
                             minLines = (int) ReflectUtil.getFieldValue(textView, "mMinimum");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            minLines = 0;
                         }
                     }
                     if (maxLines != -1 && maxLines == minLines) {
-                        attrValue = maxLines;
+                        type = ValueType.TYPE_INT;
+                        value = maxLines;
                     }
                     break;
                 }
                 case "height": {
-                    int maxHeight = Integer.MAX_VALUE;
-                    int minHeight = 0;
+                    int maxHeight;
+                    int minHeight;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         maxHeight = textView.getMaxHeight();
                     } else {
                         try {
                             maxHeight = (int) ReflectUtil.getFieldValue(textView, "mMaximum");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            maxHeight = Integer.MAX_VALUE;
                         }
                     }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -919,72 +1023,81 @@ public class NativeAttrParser implements XmlAttrParser {
                         try {
                             minHeight = (int) ReflectUtil.getFieldValue(textView, "mMinimum");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            minHeight = 0;
                         }
                     }
                     if (maxHeight != -1 && maxHeight == minHeight) {
-                        attrValue = maxHeight;
+                        type = ValueType.TYPE_INT;
+                        value = maxHeight;
                     }
                     break;
                 }
                 case "maxEms": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = textView.getMaxEms();
+                        type = ValueType.TYPE_INT;
+                        value = textView.getMaxEms();
                     } else {
                         try {
-                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mMaxWidth");
+                            type = ValueType.TYPE_INT;
+                            value = (int) ReflectUtil.getFieldValue(textView, "mMaxWidth");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            value = Integer.MAX_VALUE;
                         }
                     }
                     break;
                 }
                 case "minEms": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = textView.getMinEms();
+                        type = ValueType.TYPE_INT;
+                        value = textView.getMinEms();
                     } else {
                         try {
-                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mMinWidth");
+                            type = ValueType.TYPE_INT;
+                            value = (int) ReflectUtil.getFieldValue(textView, "mMinWidth");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            value = 0;
                         }
                     }
                     break;
                 }
                 case "maxWidth": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = textView.getMaxWidth();
+                        type = ValueType.TYPE_INT;
+                        value = textView.getMaxWidth();
                     } else {
                         try {
-                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mMaxWidth");
+                            type = ValueType.TYPE_INT;
+                            value = (int) ReflectUtil.getFieldValue(textView, "mMaxWidth");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            value = Integer.MAX_VALUE;
                         }
                     }
                     break;
                 }
                 case "minWidth": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = textView.getMinWidth();
+                        type = ValueType.TYPE_INT;
+                        value = textView.getMinWidth();
                     } else {
                         try {
-                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mMinWidth");
+                            type = ValueType.TYPE_INT;
+                            value = (int) ReflectUtil.getFieldValue(textView, "mMinWidth");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            value = 0;
                         }
                     }
                     break;
                 }
                 case "ems": {
-                    int maxEms = Integer.MAX_VALUE;
-                    int minEms = 0;
+                    int maxEms;
+                    int minEms;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         maxEms = textView.getMaxEms();
                     } else {
                         try {
                             maxEms = (int) ReflectUtil.getFieldValue(textView, "mMaxWidth");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            maxEms = Integer.MAX_VALUE;
                         }
                     }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -993,24 +1106,25 @@ public class NativeAttrParser implements XmlAttrParser {
                         try {
                             minEms = (int) ReflectUtil.getFieldValue(textView, "mMinWidth");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            minEms = 0;
                         }
                     }
                     if (maxEms != -1 && maxEms == minEms) {
-                        attrValue = maxEms;
+                        type = ValueType.TYPE_INT;
+                        value = maxEms;
                     }
                     break;
                 }
                 case "width": {
-                    int maxWidth = Integer.MAX_VALUE;
-                    int minWidth = 0;
+                    int maxWidth;
+                    int minWidth;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         maxWidth = textView.getMaxWidth();
                     } else {
                         try {
                             maxWidth = (int) ReflectUtil.getFieldValue(textView, "mMaxWidth");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            maxWidth = Integer.MAX_VALUE;
                         }
                     }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -1019,179 +1133,205 @@ public class NativeAttrParser implements XmlAttrParser {
                         try {
                             minWidth = (int) ReflectUtil.getFieldValue(textView, "mMinWidth");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            minWidth = 0;
                         }
                     }
                     if (maxWidth != -1 && maxWidth == minWidth) {
-                        attrValue = maxWidth;
+                        type = ValueType.TYPE_INT;
+                        value = maxWidth;
                     }
                     break;
                 }
                 case "gravity": {
-                    attrValue = textView.getGravity();
+                    type = ValueType.TYPE_INT;
+                    value = textView.getGravity();
                     break;
                 }
                 case "hint": {
-                    attrValue = textView.getHint();
+                    type = ValueType.TYPE_CHARSEQUENCE;
+                    value = textView.getHint();
                     break;
                 }
                 case "text": {
-                    attrValue = textView.getText();
+                    type = ValueType.TYPE_CHARSEQUENCE;
+                    value = textView.getText();
                     break;
                 }
                 case "scrollHorizontally": {
                     try {
-                        attrValue = (boolean) ReflectUtil.getFieldValue(textView, "mHorizontallyScrolling");
+                        type = ValueType.TYPE_BOOLEAN;
+                        value = (boolean) ReflectUtil.getFieldValue(textView, "mHorizontallyScrolling");
                     } catch (Exception e) {
-                        attrValue = false;
+                        value = false;
                     }
                     break;
                 }
                 case "singleLine": {
                     try {
-                        attrValue = (boolean) ReflectUtil.getFieldValue(textView, "mSingleLine");
+                        type = ValueType.TYPE_BOOLEAN;
+                        value = (boolean) ReflectUtil.getFieldValue(textView, "mSingleLine");
                     } catch (Exception e) {
-                        attrValue = false;
+                        value = false;
                     }
                     break;
                 }
                 case "ellipsize": {
-                    attrValue = textView.getEllipsize();
+                    type = ValueType.TYPE_OBJECT;
+                    value = textView.getEllipsize();
                     break;
                 }
                 case "marqueeRepeatLimit": {
+                    type = ValueType.TYPE_INT;
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = textView.getMarqueeRepeatLimit();
+                        value = textView.getMarqueeRepeatLimit();
                     } else {
                         try {
-                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mMarqueeRepeatLimit");
+                            value = (int) ReflectUtil.getFieldValue(textView, "mMarqueeRepeatLimit");
                         } catch (Exception e) {
-                            attrValue = 3;
+                            value = 3;
                         }
                     }
                     break;
                 }
                 case "includeFontPadding": {
+                    type = ValueType.TYPE_BOOLEAN;
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = textView.getIncludeFontPadding();
+                        value = textView.getIncludeFontPadding();
                     } else {
                         try {
-                            attrValue = (boolean) ReflectUtil.getFieldValue(textView, "mIncludePad");
+                            value = (boolean) ReflectUtil.getFieldValue(textView, "mIncludePad");
                         } catch (Exception e) {
-                            attrValue = true;
+                            value = true;
                         }
                     }
                     break;
                 }
                 case "cursorVisible": {
+                    type = ValueType.TYPE_BOOLEAN;
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = textView.isCursorVisible();
+                        value = textView.isCursorVisible();
                     } else {
                         try {
                             Object editor = ReflectUtil.getFieldValue(textView, "mEditor");
                             if (editor != null) {
-                                attrValue = (boolean) ReflectUtil.getFieldValue(editor, "mCursorVisible");
+                                value = (boolean) ReflectUtil.getFieldValue(editor, "mCursorVisible");
+                            } else {
+                                value = true;
                             }
                         } catch (Exception e) {
-                            attrValue = true;
+                            value = true;
                         }
                     }
                     break;
                 }
                 case "maxLength": {
-                    attrValue = textView.getFilters();
+                    type = ValueType.TYPE_OBJECT;
+                    value = textView.getFilters();
                     break;
                 }
                 case "textScaleX": {
-                    attrValue = textView.getTextScaleX();
+                    type = ValueType.TYPE_FLOAT;
+                    value = textView.getTextScaleX();
                     break;
                 }
                 case "freezesText": {
-                    attrValue = textView.getFreezesText();
+                    type = ValueType.TYPE_BOOLEAN;
+                    value = textView.getFreezesText();
                     break;
                 }
                 case "shadowColor": {
+                    type = ValueType.TYPE_COLOR_INT;
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = textView.getShadowColor();
+                        value = textView.getShadowColor();
                     } else {
                         try {
-                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mShadowColor");
+                            value = (int) ReflectUtil.getFieldValue(textView, "mShadowColor");
                         } catch (Exception e) {
-                            attrValue = 0;
+                            value = 0;
                         }
                     }
                     break;
                 }
                 case "shadowDx": {
+                    type = ValueType.TYPE_FLOAT;
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = textView.getShadowDx();
+                        value = textView.getShadowDx();
                     } else {
                         try {
-                            attrValue = (float) ReflectUtil.getFieldValue(textView, "mShadowDx");
+                            value = (float) ReflectUtil.getFieldValue(textView, "mShadowDx");
                         } catch (Exception e) {
-                            attrValue = 0.0f;
+                            value = 0.0f;
                         }
                     }
                     break;
                 }
                 case "shadowDy": {
+                    type = ValueType.TYPE_FLOAT;
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = textView.getShadowDy();
+                        value = textView.getShadowDy();
                     } else {
                         try {
-                            attrValue = (float) ReflectUtil.getFieldValue(textView, "mShadowDy");
+                            value = (float) ReflectUtil.getFieldValue(textView, "mShadowDy");
                         } catch (Exception e) {
-                            attrValue = 0.0f;
+                            value = 0.0f;
                         }
                     }
                     break;
                 }
                 case "shadowRadius": {
+                    type = ValueType.TYPE_FLOAT;
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = textView.getShadowRadius();
+                        value = textView.getShadowRadius();
                     } else {
                         try {
-                            attrValue = (float) ReflectUtil.getFieldValue(textView, "mShadowRadius");
+                            value = (float) ReflectUtil.getFieldValue(textView, "mShadowRadius");
                         } catch (Exception e) {
-                            attrValue = 0.0f;
+                            value = 0.0f;
                         }
                     }
                     break;
                 }
                 case "enabled": {
-                    attrValue = textView.isEnabled();
+                    type = ValueType.TYPE_BOOLEAN;
+                    value = textView.isEnabled();
                     break;
                 }
                 case "textColorHighlight": {
+                    type = ValueType.TYPE_COLOR_INT;
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                        attrValue = textView.getHighlightColor();
+                        value = textView.getHighlightColor();
                     } else {
                         try {
-                            attrValue = (int) ReflectUtil.getFieldValue(textView, "mHighlightColor");
+                            value = (int) ReflectUtil.getFieldValue(textView, "mHighlightColor");
                         } catch (Exception e) {
-                            attrValue = 0x6633B5E5;
+                            value = 0x6633B5E5;
                         }
                     }
                     break;
                 }
                 case "textColor": {
-                    attrValue = textView.getTextColors();
+                    type = ValueType.TYPE_COLOR_STATE_LIST;
+                    value = textView.getTextColors();
                     break;
                 }
                 case "textColorHint": {
-                    attrValue = textView.getHintTextColors();
+                    type = ValueType.TYPE_COLOR_STATE_LIST;
+                    value = textView.getHintTextColors();
                     break;
                 }
                 case "textColorLink": {
-                    attrValue = textView.getLinkTextColors();
+                    type = ValueType.TYPE_COLOR_STATE_LIST;
+                    value = textView.getLinkTextColors();
                     break;
                 }
                 case "textSize": {
-                    attrValue = textView.getTextSize();
+                    type = ValueType.TYPE_FLOAT;
+                    value = textView.getTextSize();
                     break;
                 }
                 case "typeface": {
-                    attrValue = textView.getTypeface();
+                    type = ValueType.TYPE_OBJECT;
+                    value = textView.getTypeface();
                     break;
                 }
                 case "textStyle": {

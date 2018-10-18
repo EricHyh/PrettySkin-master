@@ -55,7 +55,7 @@ public class SkinView {
             return;
         }
         String attrName = viewAttr.getAttrName();
-        Object attrValue = skinAttr.getAttrValue();
+        AttrValue attrValue = skinAttr.getAttrValue();
         List<ISkinHandler> skinHandlers = PrettySkin.getInstance().getSkinHandlers();
         for (ISkinHandler skinHandler : skinHandlers) {
             if (skinHandler.isSupportAttrName(view, attrName)) {
@@ -77,7 +77,7 @@ public class SkinView {
         Collection<ViewAttr> viewAttrs = viewAttrMap.values();
         for (ViewAttr viewAttr : viewAttrs) {
             String attrName = viewAttr.getAttrName();
-            Object defaultAttrValue = viewAttr.getDefaultAttrValue();
+            AttrValue defaultAttrValue = viewAttr.getDefaultAttrValue();
             for (ISkinHandler skinHandler : skinHandlers) {
                 if (skinHandler.isSupportAttrName(view, attrName)) {
                     skinHandler.replace(view, attrName, defaultAttrValue);

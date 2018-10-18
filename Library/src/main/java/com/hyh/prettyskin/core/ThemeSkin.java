@@ -75,7 +75,7 @@ public class ThemeSkin implements ISkin {
                     }
                 }
                 if (attrValue != null) {
-                    SkinAttr skinAttr = new SkinAttr(attrValueKey, valueType, attrValue);
+                    SkinAttr skinAttr = new SkinAttr(attrValueKey, valueType, new AttrValue(valueType, attrValue));
                     mSkinAttrMap.put(attrValueKey, skinAttr);
                 }
             }
@@ -100,7 +100,7 @@ public class ThemeSkin implements ISkin {
     }
 
     @Override
-    public Object getAttrValue(String attrValueKey) {
+    public AttrValue getAttrValue(String attrValueKey) {
         if (mSkinAttrMap != null) {
             SkinAttr skinAttr = mSkinAttrMap.get(attrValueKey);
             if (skinAttr != null) {
