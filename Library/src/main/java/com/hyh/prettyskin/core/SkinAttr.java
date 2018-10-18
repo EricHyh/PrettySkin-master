@@ -8,12 +8,6 @@ package com.hyh.prettyskin.core;
 
 public class SkinAttr {
 
-    public static final int TYPE_NULL = 0;
-    public static final int TYPE_REFERENCE = 1;
-    public static final int TYPE_COLOR = 2;
-    public static final int TYPE_COLOR_STATE_LIST = 3;
-    public static final int TYPE_DRAWABLE = 4;
-
     private String attrValueKey;
 
     private int valueType;

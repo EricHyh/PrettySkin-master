@@ -56,21 +56,21 @@ public class ThemeSkin implements ISkin {
             for (Map.Entry<Integer, String> entry : entrySet) {
                 Integer attrIndex = entry.getKey();
                 String attrValueKey = entry.getValue().substring(mStyleableName.length() + 1);
-                int valueType = SkinAttr.TYPE_NULL;
+                int valueType = ValueType.TYPE_NULL;
                 Object attrValue = null;
                 String string = typedArray.getString(attrIndex);
                 if (!TextUtils.isEmpty(string)) {
                     if (string.startsWith("#")) {
                         int color = typedArray.getColor(attrIndex, 0);
-                        valueType = SkinAttr.TYPE_COLOR;
+                        valueType = ValueType.TYPE_COLOR_INT;
                         attrValue = color;
                     } else if (string.startsWith("res/color")) {
                         ColorStateList colorStateList = typedArray.getColorStateList(attrIndex);
-                        valueType = SkinAttr.TYPE_COLOR_STATE_LIST;
+                        valueType = ValueType.TYPE_COLOR_STATE_LIST;
                         attrValue = colorStateList;
                     } else if (string.startsWith("res/mipmap") || string.startsWith("res/drawable")) {
                         Drawable drawable = typedArray.getDrawable(attrIndex);
-                        valueType = SkinAttr.TYPE_DRAWABLE;
+                        valueType = ValueType.TYPE_DRAWABLE;
                         attrValue = drawable;
                     }
                 }

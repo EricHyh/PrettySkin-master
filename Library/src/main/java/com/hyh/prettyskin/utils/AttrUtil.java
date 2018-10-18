@@ -29,36 +29,40 @@ public class AttrUtil {
                             if (attributeResourceValue != 0) {
                                 String resourceTypeName = context.getResources().getResourceTypeName(attributeResourceValue);
                                 if ("color".equalsIgnoreCase(resourceTypeName)) {
-                                    attrValue = context.getResources().getDrawable(attributeResourceValue);
+                                    attrValue = attributeResourceValue;
                                 } else if ("mipmap".equalsIgnoreCase(resourceTypeName) || "drawable".equalsIgnoreCase(resourceTypeName)) {
-                                    attrValue = context.getResources().getDrawable(attributeResourceValue);
+                                    attrValue = attributeResourceValue;
                                 }
                             }
                         } else {
-                            boolean isParseToNumber = true;
-                            if (attributeValue.startsWith("0b") || attributeValue.startsWith("0B")) {
+                            if (NumberUtil.isIntegerNumber(attributeValue)) {
                                 try {
-                                    String numberStr = attributeValue.substring(2);
-
+                                    int attributeIntValue = set.getAttributeIntValue(index, Integer.MIN_VALUE);
+                                    if (attributeIntValue == Integer.MIN_VALUE) {
+                                        attributeIntValue = set.getAttributeIntValue(index, Integer.MAX_VALUE);
+                                        if (attributeIntValue != Integer.MAX_VALUE) {
+                                            attrValue = attributeIntValue;
+                                        }
+                                    } else {
+                                        attrValue = attributeIntValue;
+                                    }
                                 } catch (Exception e) {
-                                    isParseToNumber = false;
+                                    e.printStackTrace();
                                 }
-                            } else if (attributeValue.startsWith("0x") || attributeValue.startsWith("0X")) {
+                            } else if (NumberUtil.isFloatNumber(attributeValue)) {
                                 try {
-                                    String numberStr = attributeValue.substring(2);
-                                    int number = Integer.parseInt(numberStr, 16);
-                                } catch (NumberFormatException e) {
-                                    isParseToNumber = false;
+                                    float attributeFloatValue = set.getAttributeFloatValue(index, Float.MIN_VALUE);
+                                    if (attributeFloatValue == Float.MIN_VALUE) {
+                                        attributeFloatValue = set.getAttributeFloatValue(index, Float.MAX_VALUE);
+                                        if (attributeFloatValue != Float.MAX_VALUE) {
+                                            attrValue = attributeFloatValue;
+                                        }
+                                    } else {
+                                        attrValue = attributeFloatValue;
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                            } else if (attributeValue.startsWith("0")) {
-                                try {
-                                    String numberStr = attributeValue.substring(1);
-                                    int number = Integer.parseInt(numberStr, 8);
-                                } catch (NumberFormatException e) {
-                                    isParseToNumber = false;
-                                }
-                            } else {
-                                isParseToNumber = false;
                             }
                         }
                     }
