@@ -68,9 +68,8 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
                     viewAttrMap.put(attrValueKey, new ViewAttr(attrName, attrValueKey, defaultAttrValue));
                     ISkin currentSkin = PrettySkin.getInstance().getCurrentSkin();
                     if (currentSkin != null) {
-                        int valueType = currentSkin.getValueType(attrValueKey);
                         AttrValue currentAttrValue = currentSkin.getAttrValue(attrValueKey);
-                        skinView.notifySkinChanged(new SkinAttr(attrValueKey, valueType, currentAttrValue));
+                        skinView.notifySkinChanged(new SkinAttr(attrValueKey, currentAttrValue));
                     }
                 }
             }

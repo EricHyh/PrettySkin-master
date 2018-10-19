@@ -10,22 +10,15 @@ public class SkinAttr {
 
     private String attrValueKey;
 
-    private int valueType;
-
     private AttrValue attrValue;
 
-    public SkinAttr(String attrValueKey, int valueType, AttrValue attrValue) {
+    public SkinAttr(String attrValueKey, AttrValue attrValue) {
         this.attrValueKey = attrValueKey;
-        this.valueType = valueType;
         this.attrValue = attrValue;
     }
 
     public String getAttrValueKey() {
         return attrValueKey;
-    }
-
-    public int getValueType() {
-        return valueType;
     }
 
     public AttrValue getAttrValue() {

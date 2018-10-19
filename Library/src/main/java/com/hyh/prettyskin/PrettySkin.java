@@ -222,7 +222,6 @@ public class PrettySkin {
 
     private void replaceSkinAttr(SkinAttr skinAttr) {
         String attrValueKey = skinAttr.getAttrValueKey();
-        int valueType = skinAttr.getValueType();
         Object attrValue = skinAttr.getAttrValue();
         Iterator<SkinView> iterator = mSkinAttrItems.iterator();
         while (iterator.hasNext()) {

@@ -1,5 +1,7 @@
 package com.hyh.prettyskin.core;
 
+import android.content.res.Resources;
+
 /**
  * @author Administrator
  * @description
@@ -8,13 +10,20 @@ package com.hyh.prettyskin.core;
 
 public class AttrValue {
 
+    private Resources resources;
+
     private int type;
 
     private Object value;
 
-    public AttrValue(int type, Object value) {
+    public AttrValue(Resources resources, int type, Object value) {
+        this.resources = resources;
         this.type = type;
         this.value = value;
+    }
+
+    public Resources getResources() {
+        return resources;
     }
 
     public int getType() {

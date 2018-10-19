@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeSkin(View view) {
-        ThemeSkin themeSkin = new ThemeSkin(this, R.style.PrettySkin_1, R.styleable.class.getName(), "PrettySkin");
+        //R.styleable.PrettySkin
+        ThemeSkin themeSkin = new ThemeSkin(this, R.style.PrettySkin_1, R.styleable.class, "PrettySkin");
         PrettySkin.getInstance().replaceSkinSync(themeSkin);
     }
 

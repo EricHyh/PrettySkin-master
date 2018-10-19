@@ -8,12 +8,18 @@ import android.util.AttributeSet;
 import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ValueType;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Administrator
  * @description
  * @data 2018/10/17
  */
 
+@SuppressWarnings("all")
 public class AttrUtil {
 
     public static AttrValue getAttrValueFromAttributeSet(Context context, AttributeSet set, String attrName) {
@@ -97,4 +103,57 @@ public class AttrUtil {
         }
         return attrValue;
     }
+
+    public static int[] getNativeAttrs(String viewName) {
+        //com.android.internal.R.styleable.
+        int[] attrs = null;
+        try {
+            Class<?> aClass = Class.forName("com.android.internal.R$styleable");
+            Field field = aClass.getDeclaredField(viewName);
+            attrs = (int[]) field.get(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return attrs;
+    }
+
+    public static Map<Integer, String> getStyleableFieldMap(String styleableClassPath, String styleableName) {
+        try {
+            return getStyleableFieldMap(Class.forName(styleableClassPath), styleableName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new HashMap<>();
+    }
+
+
+    public static int[] getAttrs(Class styleableClass, String styleableName) {
+        if (styleableClass == null || TextUtils.isEmpty(styleableName)) {
+            return null;
+        }
+        try {
+            Field field = styleableClass.getDeclaredField(styleableName);
+            field.setAccessible(true);
+            return (int[]) field.get(null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static Map<Integer, String> getStyleableFieldMap(Class styleableClass, String styleableName) {
+        Map<Integer, String> fieldNameMap = new HashMap<>();
+        try {
+            Field[] fields = styleableClass.getFields();
+            for (Field field : fields) {
+                if (Modifier.isStatic(field.getModifiers()) && field.getName().startsWith(styleableName + "_")) {
+                    Object o = field.get(null);
+                    fieldNameMap.put((Integer) o, field.getName());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fieldNameMap;
+    }
+
 }

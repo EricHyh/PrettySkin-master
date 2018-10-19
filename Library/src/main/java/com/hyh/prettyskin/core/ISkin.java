@@ -12,8 +12,6 @@ public interface ISkin {
 
     List<SkinAttr> getSkinAttrs();
 
-    int getValueType(String attrValueKey);
-
     AttrValue getAttrValue(String attrValueKey);
 
     boolean equals(ISkin skin);

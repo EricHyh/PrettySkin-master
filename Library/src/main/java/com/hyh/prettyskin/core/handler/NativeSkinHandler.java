@@ -1,6 +1,7 @@
 package com.hyh.prettyskin.core.handler;
 
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.view.View;
 
 import com.hyh.prettyskin.core.AttrValue;
@@ -18,6 +19,11 @@ public class NativeSkinHandler implements ISkinHandler {
         return TextUtils.equals("background", attrName)
                 || TextUtils.equals("textColor", attrName)
                 || TextUtils.equals("src", attrName);
+    }
+
+    @Override
+    public AttrValue parseAttrValue(View view, AttributeSet set, String attrName) {
+        return null;
     }
 
     @Override
