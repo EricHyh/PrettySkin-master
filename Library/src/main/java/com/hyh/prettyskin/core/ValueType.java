@@ -37,6 +37,8 @@ public class ValueType {
 
     public static final int TYPE_DRAWABLE_ID = 12;
 
-    public static final int TYPE_OBJECT = 13;
+    public static final int TYPE_ANIM_ID = 13;
+
+    public static final int TYPE_OBJECT = 14;
 
 }

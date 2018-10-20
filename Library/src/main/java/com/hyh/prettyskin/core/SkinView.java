@@ -7,7 +7,6 @@ import com.hyh.prettyskin.core.handler.ISkinHandler;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -56,12 +55,10 @@ public class SkinView {
         }
         String attrName = viewAttr.getAttrName();
         AttrValue attrValue = skinAttr.getAttrValue();
-        List<ISkinHandler> skinHandlers = PrettySkin.getInstance().getSkinHandlers();
-        for (ISkinHandler skinHandler : skinHandlers) {
-            if (skinHandler.isSupportAttrName(view, attrName)) {
-                skinHandler.replace(view, attrName, skinAttr.getAttrValue());
-                viewAttr.setCurrentAttrValue(attrValue);
-            }
+        ISkinHandler skinHandler = PrettySkin.getInstance().getSkinHandler(view);
+        if (skinHandler != null && skinHandler.isSupportAttrName(view, attrName)) {
+            skinHandler.replace(view, attrName, skinAttr.getAttrValue());
+            viewAttr.setCurrentAttrValue(attrValue);
         }
     }
 
@@ -73,12 +70,12 @@ public class SkinView {
         if (view == null) {
             return;
         }
-        List<ISkinHandler> skinHandlers = PrettySkin.getInstance().getSkinHandlers();
-        Collection<ViewAttr> viewAttrs = viewAttrMap.values();
-        for (ViewAttr viewAttr : viewAttrs) {
-            String attrName = viewAttr.getAttrName();
-            AttrValue defaultAttrValue = viewAttr.getDefaultAttrValue();
-            for (ISkinHandler skinHandler : skinHandlers) {
+        ISkinHandler skinHandler = PrettySkin.getInstance().getSkinHandler(view);
+        if (skinHandler != null) {
+            Collection<ViewAttr> viewAttrs = viewAttrMap.values();
+            for (ViewAttr viewAttr : viewAttrs) {
+                String attrName = viewAttr.getAttrName();
+                AttrValue defaultAttrValue = viewAttr.getDefaultAttrValue();
                 if (skinHandler.isSupportAttrName(view, attrName)) {
                     skinHandler.replace(view, attrName, defaultAttrValue);
                     viewAttr.setCurrentAttrValue(defaultAttrValue);

@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">PrettySkin-master</string>
+
+    <string name="str1">str1</string>
+    <string name="str2">str2</string>
+    <string name="str3">str3</string>
+    <string name="str4">str4</string>
+
+    <string-array name="custom_string_array">
+        <item>@string/str1</item>
+        <item>@string/str2</item>
+        <item>@string/str3</item>
+        <item>@string/str4</item>
+    </string-array>
+
+
+    <integer name="int1">1</integer>
+    <integer name="int2">2</integer>
+    <integer name="int3">3</integer>
+    <integer name="int4">4</integer>
+
+    <integer-array name="custom_int_array">
+        <item>@integer/int1</item>
+        <item>@integer/int2</item>
+        <item>@integer/int3</item>
+        <item>@integer/int4</item>
+    </integer-array>
+
 </resources>

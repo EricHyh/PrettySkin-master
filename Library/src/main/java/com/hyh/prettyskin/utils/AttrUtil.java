@@ -156,4 +156,17 @@ public class AttrUtil {
         return fieldNameMap;
     }
 
+    public static int getStyleableIndex(Class styleableClass, String styleableName, String attrName) {
+        try {
+            String filedName = styleableName + "_" + attrName;
+            Field field = styleableClass.getDeclaredField(filedName);
+            field.setAccessible(true);
+            if (Modifier.isStatic(field.getModifiers()) && field.getType() == int.class) {
+                return (int) field.get(null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }

@@ -1,5 +1,7 @@
 <resources>
 
+
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -7,6 +9,16 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="attr_reference5">@drawable/ic_launcher_foreground</item>
+    </style>
+
+    <style name="TransparentTheme" parent="Base.Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item> <!-- 无标题 -->
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 屏幕背景不变暗 -->
+        <item name="android:backgroundDimEnabled">false</item>
     </style>
 
 
@@ -34,6 +46,10 @@
         <item name="sc_bg">#1155AA</item>
         <item name="sc_btn_bg">@color/sc_btn_background_color</item>
         <item name="sc_btn_text_color">@color/sc_btn_text_color</item>
+    </style>
+
+    <style name="custom_style">
+
     </style>
 
 

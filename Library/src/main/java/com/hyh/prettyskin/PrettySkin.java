@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import com.hyh.prettyskin.android.ActivityLifecycleAdapter;
 import com.hyh.prettyskin.android.SkinInflateFactory;
@@ -14,14 +15,14 @@ import com.hyh.prettyskin.core.SkinAttr;
 import com.hyh.prettyskin.core.SkinReplaceListener;
 import com.hyh.prettyskin.core.SkinView;
 import com.hyh.prettyskin.core.handler.ISkinHandler;
-import com.hyh.prettyskin.core.handler.NativeSkinHandler;
-import com.hyh.prettyskin.core.parser.NativeAttrParser;
-import com.hyh.prettyskin.core.parser.XmlAttrParser;
+import com.hyh.prettyskin.core.handler.ntv.ViewSkinHandler;
 import com.hyh.prettyskin.utils.ReflectUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Administrator
@@ -54,14 +55,11 @@ public class PrettySkin {
 
     private List<SkinView> mSkinAttrItems = new ArrayList<>();
 
-    private List<XmlAttrParser> mXmlAttrParsers = new ArrayList<>();
+    private Map<Class<? extends View>, ISkinHandler> mSkinHandlerMap = new HashMap<>();
 
-    private List<ISkinHandler> mSkinHandlers = new ArrayList<>();
 
     {
-        mSkinHandlers.add(new NativeSkinHandler());
-
-        mXmlAttrParsers.add(new NativeAttrParser());
+        mSkinHandlerMap.put(View.class, new ViewSkinHandler());
     }
 
     private ISkin mCurrentSkin;
@@ -89,17 +87,28 @@ public class PrettySkin {
         }
     }
 
+    public synchronized void addSkinHandler(Class<? extends View> viewClass, ISkinHandler skinHandler) {
+        mSkinHandlerMap.put(viewClass, skinHandler);
+    }
+
+
     public synchronized ISkin getCurrentSkin() {
         return mCurrentSkin;
     }
 
-
-    public synchronized List<XmlAttrParser> getXmlAttrParsers() {
-        return mXmlAttrParsers;
+    public ISkinHandler getSkinHandler(View view) {
+        return getSkinHandler(view.getClass());
     }
 
-    public synchronized List<ISkinHandler> getSkinHandlers() {
-        return mSkinHandlers;
+    public ISkinHandler getSkinHandler(Class viewClass) {
+        if (viewClass == null || viewClass.isAssignableFrom(View.class)) {
+            return null;
+        }
+        ISkinHandler skinHandler = mSkinHandlerMap.get(viewClass);
+        if (skinHandler == null) {
+            return getSkinHandler(viewClass.getSuperclass());
+        }
+        return skinHandler;
     }
 
     public synchronized void setContextSkinReplaceable(Context context) {
@@ -151,21 +160,6 @@ public class PrettySkin {
             return;
         }
         mSkinAttrItems.remove(skinView);
-    }
-
-
-    public synchronized void addXmlAttrParser(XmlAttrParser parser) {
-        if (parser == null) {
-            return;
-        }
-        mXmlAttrParsers.add(parser);
-    }
-
-    public synchronized void addSkinHandler(ISkinHandler skinHandler) {
-        if (skinHandler == null) {
-            return;
-        }
-        mSkinHandlers.add(skinHandler);
     }
 
     public synchronized void recoverDefaultSkin() {

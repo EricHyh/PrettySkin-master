@@ -3,6 +3,8 @@ package com.hyh.prettyskin.demo.base;
 import android.app.Application;
 
 import com.hyh.prettyskin.PrettySkin;
+import com.hyh.prettyskin.demo.widget.CustomView;
+import com.hyh.prettyskin.demo.widget.CustomViewSkinHandler;
 
 /**
  * @author Administrator
@@ -16,5 +18,6 @@ public class AppContext extends Application {
     public void onCreate() {
         super.onCreate();
         PrettySkin.getInstance().init(this);
+        PrettySkin.getInstance().addSkinHandler(CustomView.class, new CustomViewSkinHandler());
     }
 }

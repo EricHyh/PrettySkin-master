@@ -15,5 +15,18 @@
         <attr name="attr_integer" format="integer"/>
         <attr name="attr_fraction" format="fraction"/>
 
+        <attr name="attr_enum">
+            <enum name="enum1" value="1"/>
+            <enum name="enum2" value="2"/>
+        </attr>
+
+        <attr name="attr_flag">
+            <flag name="flag1" value="1"/>
+            <flag name="flag2" value="2"/>
+        </attr>
+
+        <attr name="attr_color_reference" format="color|reference"/>
+        <attr name="attr_string_reference" format="string|reference"/>
+
     </declare-styleable>
 </resources>

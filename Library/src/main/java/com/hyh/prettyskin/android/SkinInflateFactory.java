@@ -12,11 +12,10 @@ import com.hyh.prettyskin.core.ISkin;
 import com.hyh.prettyskin.core.SkinAttr;
 import com.hyh.prettyskin.core.SkinView;
 import com.hyh.prettyskin.core.ViewAttr;
-import com.hyh.prettyskin.core.parser.XmlAttrParser;
+import com.hyh.prettyskin.core.handler.ISkinHandler;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author Administrator
@@ -98,13 +97,11 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
     }
 
     private AttrValue getDefaultAttrValue(View view, AttributeSet attrs, String attrName) {
-        List<XmlAttrParser> xmlAttrParsers = PrettySkin.getInstance().getXmlAttrParsers();
-        for (XmlAttrParser xmlAttrParser : xmlAttrParsers) {
-            if (xmlAttrParser.isSupportAttrName(view, attrName)) {
-                AttrValue attrValue = xmlAttrParser.parse(view, attrs, attrName);
-                if (attrValue != null) {
-                    return attrValue;
-                }
+        ISkinHandler skinHandler = PrettySkin.getInstance().getSkinHandler(view);
+        if (skinHandler != null && skinHandler.isSupportAttrName(view, attrName)) {
+            AttrValue attrValue = skinHandler.parseAttrValue(view, attrs, attrName);
+            if (attrValue != null) {
+                return attrValue;
             }
         }
         return null;
