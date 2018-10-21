@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.hyh.prettyskin.android.ActivityLifecycleAdapter;
 import com.hyh.prettyskin.android.SkinInflateFactory;
@@ -15,6 +17,8 @@ import com.hyh.prettyskin.core.SkinAttr;
 import com.hyh.prettyskin.core.SkinReplaceListener;
 import com.hyh.prettyskin.core.SkinView;
 import com.hyh.prettyskin.core.handler.ISkinHandler;
+import com.hyh.prettyskin.core.handler.ntv.ButtonSkinHandler;
+import com.hyh.prettyskin.core.handler.ntv.TextViewSkinHandler;
 import com.hyh.prettyskin.core.handler.ntv.ViewSkinHandler;
 import com.hyh.prettyskin.utils.ReflectUtil;
 
@@ -60,6 +64,8 @@ public class PrettySkin {
 
     {
         mSkinHandlerMap.put(View.class, new ViewSkinHandler());
+        mSkinHandlerMap.put(TextView.class, new TextViewSkinHandler());
+        mSkinHandlerMap.put(Button.class, new ButtonSkinHandler());
     }
 
     private ISkin mCurrentSkin;

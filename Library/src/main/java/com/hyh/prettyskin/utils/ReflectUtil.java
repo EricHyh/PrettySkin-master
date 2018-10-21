@@ -31,14 +31,17 @@ public class ReflectUtil {
     }
 
 
-    public static Object getFieldValue(Object obj, String fieldName) throws IllegalAccessException {
+    public static Object getFieldValue(Object obj, String fieldName){
         Field field = getField(obj.getClass(), fieldName);
         if (field != null) {
             field.setAccessible(true);
-            return field.get(obj);
-        } else {
-            return null;
+            try {
+                return field.get(obj);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return null;
     }
 
     public static boolean setFieldValue(Object obj, String fieldName, Object fieldValue) {
@@ -53,6 +56,18 @@ public class ReflectUtil {
             }
         }
         return false;
+    }
+
+    public static <T> T getStaticFieldValue(String classPath, String fieldName) {
+        try {
+            Class<?> aClass = Class.forName(classPath);
+            Field field = aClass.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return (T) field.get(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static Object getStaticFieldValue(Class clz, String fieldName) {

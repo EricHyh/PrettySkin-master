@@ -50,6 +50,9 @@ public class ThemeSkin implements ISkin {
         }
         int[] attrs = (int[]) ReflectUtil.getStaticFieldValue(styleableClass, styleableName);
         TypedArray typedArray = mContext.obtainStyledAttributes(attrs);
+
+
+
         Resources resources = mContext.getResources();
 
         Map<Integer, String> filedNameMap = AttrUtil.getStyleableFieldMap(styleableClass, styleableName);
