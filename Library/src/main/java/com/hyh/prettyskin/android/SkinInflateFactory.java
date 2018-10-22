@@ -61,8 +61,8 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
                 PrettySkin.getInstance().addSkinAttrItem(skinView);
                 for (String attr : attrArr) {
                     String[] attrInfo = attr.split("=");
-                    String attrName = attrInfo[0];
-                    String attrValueKey = attrInfo[1];
+                    String attrName = attrInfo[0].trim();
+                    String attrValueKey = attrInfo[1].trim();
                     AttrValue defaultAttrValue = getDefaultAttrValue(view, attrs, attrName);
                     viewAttrMap.put(attrValueKey, new ViewAttr(attrName, attrValueKey, defaultAttrValue));
                     ISkin currentSkin = PrettySkin.getInstance().getCurrentSkin();

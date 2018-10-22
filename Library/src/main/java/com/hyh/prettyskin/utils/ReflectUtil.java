@@ -1,6 +1,7 @@
 package com.hyh.prettyskin.utils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * @author Administrator
@@ -31,7 +32,7 @@ public class ReflectUtil {
     }
 
 
-    public static Object getFieldValue(Object obj, String fieldName){
+    public static Object getFieldValue(Object obj, String fieldName) {
         Field field = getField(obj.getClass(), fieldName);
         if (field != null) {
             field.setAccessible(true);
@@ -87,6 +88,21 @@ public class ReflectUtil {
     public static Class getClassByPath(String styleableClassPath) {
         try {
             return Class.forName(styleableClassPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Object invokeStaticMethod(Class clz, String methodName, Class<?>[] parameterTypes, Object... params) {
+        try {
+            Method method;
+            if (parameterTypes == null) {
+                method = clz.getDeclaredMethod(methodName);
+            } else {
+                method = clz.getDeclaredMethod(methodName, parameterTypes);
+            }
+            return method.invoke(null, params);
         } catch (Exception e) {
             e.printStackTrace();
         }

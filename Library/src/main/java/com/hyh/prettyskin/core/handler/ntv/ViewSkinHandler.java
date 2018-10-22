@@ -1,21 +1,31 @@
 package com.hyh.prettyskin.core.handler.ntv;
 
+import android.animation.AnimatorInflater;
+import android.animation.StateListAnimator;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.PointerIcon;
 import android.view.View;
+import android.view.ViewOutlineProvider;
 
 import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ValueType;
 import com.hyh.prettyskin.core.handler.ISkinHandler;
 import com.hyh.prettyskin.utils.AttrUtil;
 import com.hyh.prettyskin.utils.ReflectUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Administrator
@@ -29,6 +39,103 @@ public class ViewSkinHandler implements ISkinHandler {
     private int defStyleAttr;
 
     private int defStyleRes;
+
+    private List<String> mSupportAttrNames = new ArrayList<>();
+
+    {
+        mSupportAttrNames.add("background");
+        //mSupportAttrNames.add("padding");
+        mSupportAttrNames.add("paddingLeft");
+        mSupportAttrNames.add("paddingTop");
+        mSupportAttrNames.add("paddingRight");
+        mSupportAttrNames.add("paddingBottom");
+        //mSupportAttrNames.add("paddingStart");
+        //mSupportAttrNames.add("paddingEnd");
+        //mSupportAttrNames.add("paddingHorizontal");
+        //mSupportAttrNames.add("paddingVertical");
+        mSupportAttrNames.add("scrollX");
+        mSupportAttrNames.add("scrollY");
+        mSupportAttrNames.add("alpha");
+        mSupportAttrNames.add("transformPivotX");
+        mSupportAttrNames.add("transformPivotY");
+        mSupportAttrNames.add("translationX");
+        mSupportAttrNames.add("translationY");
+        mSupportAttrNames.add("translationZ");
+        mSupportAttrNames.add("elevation");
+        mSupportAttrNames.add("rotation");
+        mSupportAttrNames.add("rotationX");
+        mSupportAttrNames.add("rotationY");
+        mSupportAttrNames.add("scaleX");
+        mSupportAttrNames.add("scaleY");
+        mSupportAttrNames.add("fitsSystemWindows");
+        mSupportAttrNames.add("focusable");
+        mSupportAttrNames.add("focusableInTouchMode");
+        mSupportAttrNames.add("clickable");
+        mSupportAttrNames.add("longClickable");
+        mSupportAttrNames.add("contextClickable");
+        mSupportAttrNames.add("saveEnabled");
+        mSupportAttrNames.add("duplicateParentState");
+        mSupportAttrNames.add("visibility");
+        mSupportAttrNames.add("layoutDirection");
+        mSupportAttrNames.add("drawingCacheQuality");
+        mSupportAttrNames.add("contentDescription");
+        mSupportAttrNames.add("accessibilityTraversalBefore");
+        mSupportAttrNames.add("accessibilityTraversalAfter");
+        mSupportAttrNames.add("labelFor");
+        mSupportAttrNames.add("soundEffectsEnabled");
+        mSupportAttrNames.add("hapticFeedbackEnabled");
+        mSupportAttrNames.add("scrollbars");
+        mSupportAttrNames.add("fadeScrollbars");
+        mSupportAttrNames.add("scrollbarFadeDuration");
+        mSupportAttrNames.add("scrollbarDefaultDelayBeforeFade");
+        mSupportAttrNames.add("scrollbarSize");
+        //mSupportAttrNames.add("scrollbarTrackHorizontal");
+        //mSupportAttrNames.add("scrollbarThumbHorizontal");
+        //mSupportAttrNames.add("scrollbarAlwaysDrawHorizontalTrack");
+        //mSupportAttrNames.add("scrollbarTrackVertical");
+        //mSupportAttrNames.add("scrollbarThumbVertical");
+        //mSupportAttrNames.add("scrollbarAlwaysDrawVerticalTrack");
+        //mSupportAttrNames.add("fadingEdge");
+        mSupportAttrNames.add("requiresFadingEdge");
+        mSupportAttrNames.add("scrollbarStyle");
+        mSupportAttrNames.add("isScrollContainer");
+        mSupportAttrNames.add("keepScreenOn");
+        mSupportAttrNames.add("filterTouchesWhenObscured");
+        mSupportAttrNames.add("nextFocusLeft");
+        mSupportAttrNames.add("nextFocusRight");
+        mSupportAttrNames.add("nextFocusUp");
+        mSupportAttrNames.add("nextFocusDown");
+        mSupportAttrNames.add("nextFocusForward");
+        mSupportAttrNames.add("nextClusterForward");
+        mSupportAttrNames.add("minWidth");
+        mSupportAttrNames.add("minHeight");
+        mSupportAttrNames.add("overScrollMode");
+        mSupportAttrNames.add("verticalScrollbarPosition");
+        mSupportAttrNames.add("layerType");
+        mSupportAttrNames.add("textDirection");
+        mSupportAttrNames.add("textAlignment");
+        mSupportAttrNames.add("importantForAccessibility");
+        mSupportAttrNames.add("accessibilityLiveRegion");
+        mSupportAttrNames.add("transitionName");
+        mSupportAttrNames.add("nestedScrollingEnabled");
+        mSupportAttrNames.add("stateListAnimator");
+        mSupportAttrNames.add("backgroundTint");
+        mSupportAttrNames.add("backgroundTintMode");
+        mSupportAttrNames.add("outlineProvider");
+        mSupportAttrNames.add("foreground");
+        mSupportAttrNames.add("foregroundGravity");
+        mSupportAttrNames.add("foregroundTintMode");
+        //mSupportAttrNames.add("foregroundInsidePadding");
+        mSupportAttrNames.add("scrollIndicators");
+        mSupportAttrNames.add("pointerIcon");
+        //mSupportAttrNames.add("forceHasOverlappingRendering");
+        mSupportAttrNames.add("tooltipText");
+        mSupportAttrNames.add("keyboardNavigationCluster");
+        mSupportAttrNames.add("focusedByDefault");
+        mSupportAttrNames.add("autofillHints");
+        mSupportAttrNames.add("importantForAutofill");
+        mSupportAttrNames.add("defaultFocusHighlightEnabled");
+    }
 
     public ViewSkinHandler() {
     }
@@ -44,16 +151,14 @@ public class ViewSkinHandler implements ISkinHandler {
 
     @Override
     public boolean isSupportAttrName(View view, String attrName) {
-        return true;
+        return mSupportAttrNames.contains(attrName);
     }
 
     @Override
     public AttrValue parseAttrValue(View view, AttributeSet set, String attrName) {
-        AttrValue attrValue = null;
         Class styleableClass = getStyleableClass();
         String styleableName = getStyleableName();
-        attrValue = parseAttrValue(view, set, attrName, styleableClass, styleableName);
-        return attrValue;
+        return parseAttrValue(view, set, attrName, styleableClass, styleableName);
     }
 
     protected AttrValue parseAttrValue(View view, AttributeSet set, String attrName, Class styleableClass, String styleableName) {
@@ -114,21 +219,21 @@ public class ViewSkinHandler implements ISkinHandler {
                                 if (string.matches("^res/color.*/.+\\.xml$")) {
                                     try {
                                         value = typedArray.getResourceId(index, 0);
-                                        type = ValueType.TYPE_COLOR_ID;
+                                        type = ValueType.TYPE_REFERENCE;
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
                                 } else if (string.matches("^res/[(drawable)|(mipmap)].*/.+$")) {
                                     try {
-                                        type = ValueType.TYPE_DRAWABLE_ID;
                                         value = typedArray.getResourceId(index, 0);
+                                        type = ValueType.TYPE_REFERENCE;
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
                                 } else if (string.matches("^res/anim.*/.+\\.xml$")) {
                                     try {
-                                        type = ValueType.TYPE_ANIM_ID;
                                         value = typedArray.getResourceId(index, 0);
+                                        type = ValueType.TYPE_REFERENCE;
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -155,7 +260,7 @@ public class ViewSkinHandler implements ISkinHandler {
             typedArray.recycle();
         }
         if (value != null) {
-            attrValue = new AttrValue(context.getResources(), type, value);
+            attrValue = new AttrValue(context, type, value);
         }
         return attrValue;
     }
@@ -193,8 +298,15 @@ public class ViewSkinHandler implements ISkinHandler {
 
     @Override
     public void replace(View view, String attrName, AttrValue attrValue) {
-        Resources resources = attrValue.getResources();
+        Context context = attrValue.getThemeContext();
         int type = attrValue.getType();
+        if (context == null && type == ValueType.TYPE_REFERENCE) {
+            return;
+        }
+        Resources resources = null;
+        if (context != null) {
+            resources = context.getResources();
+        }
         Object value = attrValue.getValue();
         switch (attrName) {
             case "background": {
@@ -205,19 +317,6 @@ public class ViewSkinHandler implements ISkinHandler {
                             color = (int) value;
                         }
                         view.setBackgroundColor(color);
-                        break;
-                    }
-                    case ValueType.TYPE_COLOR_ID: {
-                        int colorId = 0;
-                        if (value != null) {
-                            colorId = (int) value;
-                        }
-                        Drawable background = resources.getDrawable(colorId);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            view.setBackground(background);
-                        } else {
-                            view.setBackgroundDrawable(background);
-                        }
                         break;
                     }
                     case ValueType.TYPE_DRAWABLE: {
@@ -232,13 +331,10 @@ public class ViewSkinHandler implements ISkinHandler {
                         }
                         break;
                     }
-                    case ValueType.TYPE_DRAWABLE_ID: {
+                    case ValueType.TYPE_REFERENCE: {
                         int drawableId = 0;
-                        if (value != null) {
-                            drawableId = (int) value;
-                        }
                         Drawable background = null;
-                        if (drawableId != 0) {
+                        if (value != null) {
                             background = resources.getDrawable(drawableId);
                         }
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -246,7 +342,6 @@ public class ViewSkinHandler implements ISkinHandler {
                         } else {
                             view.setBackgroundDrawable(background);
                         }
-                        break;
                     }
                 }
                 break;
@@ -428,7 +523,7 @@ public class ViewSkinHandler implements ISkinHandler {
                 if (value != null) {
                     scaleY = (float) value;
                 }
-                view.setScaleX(scaleY);
+                view.setScaleY(scaleY);
                 break;
             }
             case "fitsSystemWindows": {
@@ -680,176 +775,322 @@ public class ViewSkinHandler implements ISkinHandler {
                 break;
             }
             case "isScrollContainer": {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-
+                boolean isScrollContainer = false;
+                if (value != null) {
+                    isScrollContainer = (boolean) value;
                 }
+                view.setScrollContainer(isScrollContainer);
                 break;
             }
             case "keepScreenOn": {
-                type = ValueType.TYPE_INT;
-                value = view.getKeepScreenOn();
+                boolean keepScreenOn = false;
+                if (value != null) {
+                    keepScreenOn = (boolean) value;
+                }
+                view.setKeepScreenOn(keepScreenOn);
                 break;
             }
             case "filterTouchesWhenObscured": {
-                type = ValueType.TYPE_INT;
-                value = view.getFilterTouchesWhenObscured();
+                boolean enabled = false;
+                if (value != null) {
+                    enabled = (boolean) value;
+                }
+                view.setFilterTouchesWhenObscured(enabled);
                 break;
             }
             case "nextFocusLeft": {
-                type = ValueType.TYPE_INT;
-                value = view.getNextFocusLeftId();
+                int nextFocusLeftId = View.NO_ID;
+                if (value != null) {
+                    nextFocusLeftId = (int) value;
+                }
+                view.setNextFocusLeftId(nextFocusLeftId);
                 break;
             }
             case "nextFocusRight": {
-                type = ValueType.TYPE_INT;
-                value = view.getNextFocusRightId();
+                int nextFocusRightId = View.NO_ID;
+                if (value != null) {
+                    nextFocusRightId = (int) value;
+                }
+                view.setNextFocusRightId(nextFocusRightId);
                 break;
             }
             case "nextFocusUp": {
-                type = ValueType.TYPE_INT;
-                value = view.getNextFocusUpId();
+                int nextFocusUpId = View.NO_ID;
+                if (value != null) {
+                    nextFocusUpId = (int) value;
+                }
+                view.setNextFocusUpId(nextFocusUpId);
                 break;
             }
             case "nextFocusDown": {
-                type = ValueType.TYPE_INT;
-                value = view.getNextFocusDownId();
+                int nextFocusDownId = View.NO_ID;
+                if (value != null) {
+                    nextFocusDownId = (int) value;
+                }
+                view.setNextFocusDownId(nextFocusDownId);
                 break;
             }
             case "nextFocusForward": {
-                type = ValueType.TYPE_INT;
-                value = view.getNextFocusForwardId();
+                int nextFocusForwardId = View.NO_ID;
+                if (value != null) {
+                    nextFocusForwardId = (int) value;
+                }
+                view.setNextFocusForwardId(nextFocusForwardId);
                 break;
             }
             case "nextClusterForward": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    type = ValueType.TYPE_INT;
-                    value = view.getNextClusterForwardId();
+                    int nextClusterForwardId = View.NO_ID;
+                    if (value != null) {
+                        nextClusterForwardId = (int) value;
+                    }
+                    view.setNextClusterForwardId(nextClusterForwardId);
                 }
                 break;
             }
             case "minWidth": {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    type = ValueType.TYPE_INT;
-                    value = view.getMinimumWidth();
+                int minWidth = 0;
+                if (value != null) {
+                    minWidth = (int) value;
                 }
+                view.setMinimumWidth(minWidth);
                 break;
             }
             case "minHeight": {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    type = ValueType.TYPE_INT;
-                    value = view.getMinimumHeight();
+                int minHeight = 0;
+                if (value != null) {
+                    minHeight = (int) value;
                 }
+                view.setMinimumHeight(minHeight);
                 break;
             }
             case "overScrollMode": {
-                type = ValueType.TYPE_INT;
-                value = view.getOverScrollMode();
+                int overScrollMode = View.OVER_SCROLL_IF_CONTENT_SCROLLS;
+                if (value != null) {
+                    overScrollMode = (int) value;
+                }
+                view.setOverScrollMode(overScrollMode);
                 break;
             }
             case "verticalScrollbarPosition": {
-                type = ValueType.TYPE_INT;
-                value = view.getVerticalScrollbarPosition();
+                int position = View.SCROLLBAR_POSITION_DEFAULT;
+                if (value != null) {
+                    position = (int) value;
+                }
+                view.setVerticalScrollbarPosition(position);
                 break;
             }
             case "layerType": {
-                type = ValueType.TYPE_INT;
-                value = view.getLayerType();
+                int layerType = View.LAYER_TYPE_NONE;
+                if (value != null) {
+                    layerType = (int) value;
+                }
+                view.setLayerType(layerType, null);
                 break;
             }
             case "textDirection": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    value = view.getTextDirection();
+                    int textDirection = View.TEXT_DIRECTION_INHERIT;
+                    if (value != null) {
+                        textDirection = (int) value;
+                    }
+                    view.setTextDirection(textDirection);
                 }
+
                 break;
             }
             case "textAlignment": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    type = ValueType.TYPE_INT;
-                    value = view.getTextAlignment();
+                    int textAlignment = View.TEXT_ALIGNMENT_INHERIT;
+                    if (value != null) {
+                        textAlignment = (int) value;
+                    }
+                    view.setTextAlignment(textAlignment);
                 }
                 break;
             }
             case "importantForAccessibility": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    type = ValueType.TYPE_INT;
-                    value = view.getImportantForAccessibility();
+                    int mode = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO;
+                    if (value != null) {
+                        mode = (int) value;
+                    }
+                    view.setImportantForAccessibility(mode);
                 }
                 break;
             }
             case "accessibilityLiveRegion": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    type = ValueType.TYPE_INT;
-                    value = view.getAccessibilityLiveRegion();
+                    int mode = View.ACCESSIBILITY_LIVE_REGION_NONE;
+                    if (value != null) {
+                        mode = (int) value;
+                    }
+                    view.setAccessibilityLiveRegion(mode);
                 }
                 break;
             }
             case "transitionName": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    type = ValueType.TYPE_STRING;
-                    value = view.getTransitionName();
+                    String transitionName = null;
+                    if (value != null) {
+                        transitionName = (String) value;
+                    }
+                    view.setTransitionName(transitionName);
                 }
                 break;
             }
             case "nestedScrollingEnabled": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    type = ValueType.TYPE_BOOLEAN;
-                    value = view.isNestedScrollingEnabled();
+                    boolean nestedScrollingEnabled = false;
+                    if (value != null) {
+                        nestedScrollingEnabled = (boolean) value;
+                    }
+                    view.setNestedScrollingEnabled(nestedScrollingEnabled);
                 }
                 break;
             }
             case "stateListAnimator": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    type = ValueType.TYPE_OBJECT;
-                    value = view.getStateListAnimator();
+                    if (type == ValueType.TYPE_REFERENCE) {
+                        StateListAnimator stateListAnimator = null;
+                        int stateListAnimatorId;
+                        if (value != null) {
+                            stateListAnimatorId = (int) value;
+                            stateListAnimator = AnimatorInflater.loadStateListAnimator(context, stateListAnimatorId);
+                        }
+                        view.setStateListAnimator(stateListAnimator);
+                    }
                 }
                 break;
             }
             case "backgroundTint": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    type = ValueType.TYPE_COLOR_STATE_LIST;
-                    value = view.getBackgroundTintList();
+                    ColorStateList tint = null;
+                    if (value != null) {
+                        switch (type) {
+                            case ValueType.TYPE_COLOR_INT: {
+                                tint = ColorStateList.valueOf((int) value);
+                                break;
+                            }
+                            case ValueType.TYPE_COLOR_STATE_LIST: {
+                                tint = (ColorStateList) value;
+                                break;
+                            }
+                            case ValueType.TYPE_REFERENCE: {
+                                tint = resources.getColorStateList((int) value);
+                                break;
+                            }
+                        }
+                    }
+                    view.setBackgroundTintList(tint);
                 }
                 break;
             }
             case "backgroundTintMode": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    type = ValueType.TYPE_OBJECT;
-                    value = view.getBackgroundTintMode();
+                    PorterDuff.Mode tintMode = null;
+                    if (value != null) {
+                        int backgroundTintModeIndex = (int) value;
+                        tintMode = (PorterDuff.Mode) ReflectUtil.invokeStaticMethod(Drawable.class,
+                                "parseTintMode",
+                                new Class[]{int.class, PorterDuff.Mode.class},
+                                backgroundTintModeIndex, null);
+                    }
+                    view.setBackgroundTintMode(tintMode);
                 }
                 break;
             }
             case "outlineProvider": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    type = ValueType.TYPE_OBJECT;
-                    value = view.getOutlineProvider();
+                    ViewOutlineProvider provider = ViewOutlineProvider.BACKGROUND;
+                    if (value != null) {
+                        int providerInt = (int) value;
+                        switch (providerInt) {
+                            case 0: {
+                                provider = ViewOutlineProvider.BACKGROUND;
+                                break;
+                            }
+                            case 1: {
+                                provider = null;
+                                break;
+                            }
+                            case 2: {
+                                provider = ViewOutlineProvider.BOUNDS;
+                                break;
+                            }
+                            case 3: {
+                                provider = ViewOutlineProvider.PADDED_BOUNDS;
+                                break;
+                            }
+                        }
+                    }
+                    view.setOutlineProvider(provider);
                 }
                 break;
             }
             case "foreground": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    type = ValueType.TYPE_DRAWABLE;
-                    value = view.getForeground();
+                    Drawable foreground = null;
+                    if (value != null) {
+                        switch (type) {
+                            case ValueType.TYPE_DRAWABLE: {
+                                foreground = (Drawable) value;
+                                break;
+                            }
+                            case ValueType.TYPE_REFERENCE: {
+                                foreground = resources.getDrawable((int) value);
+                                break;
+                            }
+                        }
+                    }
+                    view.setForeground(foreground);
                 }
                 break;
             }
             case "foregroundGravity": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    type = ValueType.TYPE_INT;
-                    value = view.getForegroundGravity();
+                    int gravity = Gravity.NO_GRAVITY;
+                    if (value != null) {
+                        gravity = (int) value;
+                    }
+                    view.setForegroundGravity(gravity);
                 }
                 break;
             }
             case "foregroundTintMode": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    type = ValueType.TYPE_OBJECT;
-                    value = view.getForegroundTintMode();
+                    PorterDuff.Mode tintMode = null;
+                    if (value != null) {
+                        int foregroundTintModeIndex = (int) value;
+                        tintMode = (PorterDuff.Mode) ReflectUtil.invokeStaticMethod(Drawable.class,
+                                "parseTintMode",
+                                new Class[]{int.class, PorterDuff.Mode.class},
+                                foregroundTintModeIndex, null);
+                    }
+                    view.setForegroundTintMode(tintMode);
                 }
                 break;
             }
             case "foregroundTint": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    type = ValueType.TYPE_COLOR_STATE_LIST;
-                    value = view.getForegroundTintList();
+                    ColorStateList tint = null;
+                    if (value != null) {
+                        switch (type) {
+                            case ValueType.TYPE_COLOR_INT: {
+                                tint = ColorStateList.valueOf((int) value);
+                                break;
+                            }
+                            case ValueType.TYPE_COLOR_STATE_LIST: {
+                                tint = (ColorStateList) value;
+                                break;
+                            }
+                            case ValueType.TYPE_REFERENCE: {
+                                tint = resources.getColorStateList((int) value);
+                                break;
+                            }
+                        }
+                    }
+                    view.setForegroundTintList(tint);
                 }
                 break;
             }
@@ -859,15 +1100,35 @@ public class ViewSkinHandler implements ISkinHandler {
             }
             case "scrollIndicators": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    type = ValueType.TYPE_INT;
-                    value = view.getScrollIndicators();
+                    int indicators = 0;
+                    if (value != null) {
+                        indicators = (int) value;
+                    }
+                    view.setScrollIndicators(indicators);
                 }
                 break;
             }
             case "pointerIcon": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    type = ValueType.TYPE_OBJECT;
-                    value = view.getPointerIcon();
+                    PointerIcon pointerIcon = null;
+                    if (value != null) {
+                        switch (type) {
+                            case ValueType.TYPE_INT: {
+                                if (context == null) {
+                                    return;
+                                }
+                                int pointerType = (int) value;
+                                pointerIcon = PointerIcon.getSystemIcon(context, pointerType);
+                                break;
+                            }
+                            case ValueType.TYPE_REFERENCE: {
+                                int pointerIconId = (int) value;
+                                pointerIcon = PointerIcon.load(resources, pointerIconId);
+                                break;
+                            }
+                        }
+                    }
+                    view.setPointerIcon(pointerIcon);
                 }
                 break;
             }
@@ -877,41 +1138,79 @@ public class ViewSkinHandler implements ISkinHandler {
             }
             case "tooltipText": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    type = ValueType.TYPE_CHARSEQUENCE;
-                    value = view.getTooltipText();
+                    CharSequence tooltipText = null;
+                    if (value != null) {
+                        tooltipText = (CharSequence) value;
+                    }
+                    view.setTooltipText(tooltipText);
                 }
                 break;
             }
             case "keyboardNavigationCluster": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    type = ValueType.TYPE_BOOLEAN;
-                    value = view.isKeyboardNavigationCluster();
+                    boolean isCluster = true;
+                    if (value != null) {
+                        isCluster = (boolean) value;
+                    }
+                    view.setKeyboardNavigationCluster(isCluster);
                 }
                 break;
             }
             case "focusedByDefault": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    type = ValueType.TYPE_BOOLEAN;
-                    value = view.isFocusedByDefault();
+                    boolean isFocusedByDefault = true;
+                    if (value != null) {
+                        isFocusedByDefault = (boolean) value;
+                    }
+                    view.setFocusedByDefault(isFocusedByDefault);
                 }
                 break;
             }
             case "autofillHints": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    type = ValueType.TYPE_OBJECT;
-                    value = view.getAutofillHints();
+                    String[] autofillHints = null;
+                    if (value != null) {
+                        String autofillHintsStr = null;
+                        switch (type) {
+                            case ValueType.TYPE_STRING: {
+                                autofillHintsStr = (String) value;
+                                break;
+                            }
+                            case ValueType.TYPE_REFERENCE: {
+                                autofillHintsStr = resources.getString((int) value);
+                                break;
+                            }
+                        }
+                        if (!TextUtils.isEmpty(autofillHintsStr)) {
+                            String[] split = autofillHintsStr.split(",");
+                            autofillHints = new String[split.length];
+                            int numHints = split.length;
+                            for (int rawHintNum = 0; rawHintNum < numHints; rawHintNum++) {
+                                autofillHints[rawHintNum] = split[rawHintNum].trim();
+                            }
+                        }
+                    }
+                    view.setAutofillHints(autofillHints);
                 }
                 break;
             }
             case "importantForAutofill": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    value = view.isImportantForAutofill();
+                    int mode = View.IMPORTANT_FOR_AUTOFILL_AUTO;
+                    if (value != null) {
+                        mode = (int) value;
+                    }
+                    view.setImportantForAutofill(mode);
                 }
                 break;
             }
             case "defaultFocusHighlightEnabled": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    value = view.getDefaultFocusHighlightEnabled();
+                    boolean defaultFocusHighlightEnabled = true;
+                    if (value != null) {
+                        defaultFocusHighlightEnabled = (boolean) value;
+                    }
+                    view.setDefaultFocusHighlightEnabled(defaultFocusHighlightEnabled);
                 }
                 break;
             }

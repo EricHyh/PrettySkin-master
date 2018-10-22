@@ -3,7 +3,6 @@ package com.hyh.prettyskin.core;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
@@ -50,13 +49,7 @@ public class ThemeSkin implements ISkin {
         }
         int[] attrs = (int[]) ReflectUtil.getStaticFieldValue(styleableClass, styleableName);
         TypedArray typedArray = mContext.obtainStyledAttributes(attrs);
-
-
-
-        Resources resources = mContext.getResources();
-
         Map<Integer, String> filedNameMap = AttrUtil.getStyleableFieldMap(styleableClass, styleableName);
-
         if (filedNameMap != null && !filedNameMap.isEmpty()) {
             mSkinAttrMap = new HashMap<>(filedNameMap.size());
             Set<Map.Entry<Integer, String>> entrySet = filedNameMap.entrySet();
@@ -82,7 +75,7 @@ public class ThemeSkin implements ISkin {
                     }
                 }
                 if (attrValue != null) {
-                    SkinAttr skinAttr = new SkinAttr(attrValueKey, new AttrValue(resources, valueType, attrValue));
+                    SkinAttr skinAttr = new SkinAttr(attrValueKey, new AttrValue(mContext, valueType, attrValue));
                     mSkinAttrMap.put(attrValueKey, skinAttr);
                 }
             }

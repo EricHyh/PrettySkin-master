@@ -43,7 +43,21 @@ public class TextViewSkinHandler extends ViewSkinHandler {
 
     @Override
     public void replace(View view, String attrName, AttrValue attrValue) {
-        super.replace(view, attrName, attrValue);
+        if (super.isSupportAttrName(view, attrName)) {
+            super.replace(view, attrName, attrValue);
+        } else {
+            int type = attrValue.getType();
+            Object value = attrValue.getValue();
+            switch (attrName) {
+                case "textAppearance": {
+                    //TODO 暂不实现
+                    break;
+                }
+                case "editable": {
+                    break;
+                }
+            }
+        }
     }
 
     private Class getStyleableClass() {

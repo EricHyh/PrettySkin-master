@@ -41,10 +41,10 @@ public class AttrUtil {
                             if (attributeResourceValue != 0) {
                                 String resourceTypeName = context.getResources().getResourceTypeName(attributeResourceValue);
                                 if ("color".equalsIgnoreCase(resourceTypeName)) {
-                                    type = ValueType.TYPE_COLOR_ID;
+                                    type = ValueType.TYPE_REFERENCE;
                                     value = attributeResourceValue;
                                 } else if ("mipmap".equalsIgnoreCase(resourceTypeName) || "drawable".equalsIgnoreCase(resourceTypeName)) {
-                                    type = ValueType.TYPE_DRAWABLE_ID;
+                                    type = ValueType.TYPE_REFERENCE;
                                     value = attributeResourceValue;
                                 }
                             }
