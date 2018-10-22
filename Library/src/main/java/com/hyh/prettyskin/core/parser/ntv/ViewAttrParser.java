@@ -319,7 +319,7 @@ public class ViewAttrParser implements XmlAttrParser {
                 break;
             }
             case "contentDescription": {
-                type = ValueType.TYPE_CHARSEQUENCE;
+                type = ValueType.TYPE_STRING;
                 value = view.getContentDescription();
                 break;
             }
@@ -646,7 +646,7 @@ public class ViewAttrParser implements XmlAttrParser {
             }
             case "tooltipText": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    type = ValueType.TYPE_CHARSEQUENCE;
+                    type = ValueType.TYPE_STRING;
                     value = view.getTooltipText();
                 }
                 break;

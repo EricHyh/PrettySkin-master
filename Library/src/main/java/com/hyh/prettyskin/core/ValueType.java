@@ -23,7 +23,7 @@ public class ValueType {
 
     public static final int TYPE_BOOLEAN = 5;
 
-    public static final int TYPE_CHARSEQUENCE = 6;
+    //public static final int TYPE_CHARSEQUENCE = 6;
 
     public static final int TYPE_STRING = 7;
 

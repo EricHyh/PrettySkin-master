@@ -405,12 +405,12 @@ public class TextViewAttrParser implements XmlAttrParser {
                 break;
             }
             case "hint": {
-                type = ValueType.TYPE_CHARSEQUENCE;
+                type = ValueType.TYPE_STRING;
                 value = textView.getHint();
                 break;
             }
             case "text": {
-                type = ValueType.TYPE_CHARSEQUENCE;
+                type = ValueType.TYPE_STRING;
                 value = textView.getText();
                 break;
             }

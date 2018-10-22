@@ -108,4 +108,14 @@ public class ReflectUtil {
         }
         return null;
     }
+
+    public static Object invokeStaticMethod(Object object, String methodName, Class<?>[] parameterTypes, Object... params) {
+        Object result = null;
+        try {
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

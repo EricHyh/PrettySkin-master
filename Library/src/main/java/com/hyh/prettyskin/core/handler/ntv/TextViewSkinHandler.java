@@ -6,7 +6,9 @@ import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -245,27 +247,206 @@ public class TextViewSkinHandler extends ViewSkinHandler {
                     break;
                 }
                 case "lines": {
-                    int lines = Integer.MAX_VALUE;
-                    if (value != null) {
-                        lines = (int) value;
-                    }
-                    textView.setLines(lines);
+                    //TODO 暂未实现
                     break;
                 }
                 case "height": {
-                    int height = Integer.MAX_VALUE;
-                    if (value != null) {
-                        height = (int) value;
-                    }
-                    textView.setHeight(height);
+                    //TODO 暂未实现
                     break;
                 }
                 case "minLines": {
-                    int minLines = Integer.MAX_VALUE;
+                    int minLines = 0;
                     if (value != null) {
                         minLines = (int) value;
                     }
                     textView.setMinLines(minLines);
+                    break;
+                }
+                case "minHeight": {
+                    int minHeight = 0;
+                    if (value != null) {
+                        minHeight = (int) value;
+                    }
+                    textView.setMinHeight(minHeight);
+                    break;
+                }
+                case "maxEms": {
+                    int maxEms = Integer.MAX_VALUE;
+                    if (value != null) {
+                        maxEms = (int) value;
+                    }
+                    textView.setMaxEms(maxEms);
+                    break;
+                }
+                case "maxWidth": {
+                    int maxWidth = Integer.MAX_VALUE;
+                    if (value != null) {
+                        maxWidth = (int) value;
+                    }
+                    textView.setMaxWidth(maxWidth);
+                    break;
+                }
+                case "ems": {
+                    //TODO 暂未实现
+                    break;
+                }
+                case "width": {
+                    //TODO 暂未实现
+                    break;
+                }
+                case "minEms": {
+                    int minEms = 0;
+                    if (value != null) {
+                        minEms = (int) value;
+                    }
+                    textView.setMinEms(minEms);
+                    break;
+                }
+                case "minWidth": {
+                    int minWidth = 0;
+                    if (value != null) {
+                        minWidth = (int) value;
+                    }
+                    textView.setMinWidth(minWidth);
+                    break;
+                }
+                case "gravity": {
+                    int gravity = Gravity.NO_GRAVITY;
+                    if (value != null) {
+                        gravity = (int) value;
+                    }
+                    textView.setGravity(gravity);
+                    break;
+                }
+                case "hint": {
+                    CharSequence hint = null;
+                    if (value != null) {
+                        switch (type) {
+                            case ValueType.TYPE_STRING: {
+                                hint = (CharSequence) value;
+                                break;
+                            }
+                            case ValueType.TYPE_REFERENCE: {
+                                hint = resources.getString((int) value);
+                                break;
+                            }
+                        }
+                    }
+                    textView.setHint(hint);
+                    break;
+                }
+                case "text": {
+                    CharSequence text = null;
+                    if (value != null) {
+                        switch (type) {
+                            case ValueType.TYPE_STRING: {
+                                text = (CharSequence) value;
+                                break;
+                            }
+                            case ValueType.TYPE_REFERENCE: {
+                                text = resources.getText((int) value);
+                                break;
+                            }
+                        }
+                    }
+                    textView.setText(text);
+                    break;
+                }
+                case "scrollHorizontally": {
+                    boolean whether = false;
+                    if (value != null) {
+                        whether = (boolean) value;
+                    }
+                    textView.setHorizontallyScrolling(whether);
+                    break;
+                }
+                case "singleLine": {
+                    boolean singleLine = false;
+                    if (value != null) {
+                        singleLine = (boolean) value;
+                    }
+                    textView.setSingleLine(singleLine);
+                    break;
+                }
+                case "ellipsize": {
+                    int ellipsize = -1;
+                    TextUtils.TruncateAt where = null;
+                    if (value != null) {
+                        ellipsize = (int) value;
+                    }
+                    /*ReflectUtil.invokeMethod();
+                    if (textView.isSingleLine() && textView.getKeyListener() == null && ellipsize < 0) {
+                        ellipsize = 3; // END
+                    }*/
+                    switch (ellipsize) {
+                        case 1:
+                            where = TextUtils.TruncateAt.START;
+                            break;
+                        case 2:
+                            where = TextUtils.TruncateAt.MIDDLE;
+                            break;
+                        case 3:
+                            where = TextUtils.TruncateAt.END;
+                            break;
+                        case 4:
+                            where = TextUtils.TruncateAt.MARQUEE;
+                            break;
+                    }
+                    textView.setEllipsize(where);
+                    break;
+                }
+                case "marqueeRepeatLimit": {
+                    break;
+                }
+                case "includeFontPadding": {
+                    break;
+                }
+                case "cursorVisible": {
+                    break;
+                }
+                case "maxLength": {
+                    break;
+                }
+                case "textScaleX": {
+                    break;
+                }
+                case "freezesText": {
+                    break;
+                }
+                case "shadowColor": {
+                    break;
+                }
+                case "shadowDx": {
+                    break;
+                }
+                case "shadowDy": {
+                    break;
+                }
+                case "shadowRadius": {
+                    break;
+                }
+                case "enabled": {
+                    break;
+                }
+                case "textColorHighlight": {
+                    break;
+                }
+                case "textColor": {
+                    break;
+                }
+                case "textColorHint": {
+                    break;
+                }
+                case "textColorLink": {
+                    break;
+                }
+                case "textSize": {
+                    break;
+                }
+                case "typeface": {
+                    break;
+                }
+                case "textStyle": {
                     break;
                 }
             }
