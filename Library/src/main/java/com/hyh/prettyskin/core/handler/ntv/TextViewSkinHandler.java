@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -16,6 +19,9 @@ import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ValueType;
 import com.hyh.prettyskin.utils.ReflectUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Administrator
  * @description
@@ -23,6 +29,69 @@ import com.hyh.prettyskin.utils.ReflectUtil;
  */
 
 public class TextViewSkinHandler extends ViewSkinHandler {
+
+    private List<String> mSupportAttrNames = new ArrayList<>();
+
+    {
+        /*mSupportAttrNames.add("textAppearance");
+        mSupportAttrNames.add("editable");
+        mSupportAttrNames.add("inputMethod");
+        mSupportAttrNames.add("numeric");
+        mSupportAttrNames.add("digits");
+        mSupportAttrNames.add("phoneNumber");
+        mSupportAttrNames.add("autoText");
+        mSupportAttrNames.add("capitalize");
+        mSupportAttrNames.add("bufferType");
+        mSupportAttrNames.add("selectAllOnFocus");*/
+        mSupportAttrNames.add("autoLink");
+        mSupportAttrNames.add("linksClickable");
+        mSupportAttrNames.add("drawableLeft");
+        mSupportAttrNames.add("drawableTop");
+        mSupportAttrNames.add("drawableRight");
+        mSupportAttrNames.add("drawableBottom");
+        //mSupportAttrNames.add("drawableStart");
+        //mSupportAttrNames.add("drawableEnd");
+        mSupportAttrNames.add("drawableTint");
+        mSupportAttrNames.add("drawableTintMode");
+        mSupportAttrNames.add("drawablePadding");
+        mSupportAttrNames.add("maxLines");
+        mSupportAttrNames.add("maxHeight");
+        //mSupportAttrNames.add("lines");
+        //mSupportAttrNames.add("height");
+        mSupportAttrNames.add("minLines");
+        mSupportAttrNames.add("minHeight");
+        mSupportAttrNames.add("maxEms");
+        mSupportAttrNames.add("maxWidth");
+        mSupportAttrNames.add("ems");
+        mSupportAttrNames.add("width");
+        mSupportAttrNames.add("minEms");
+        mSupportAttrNames.add("minWidth");
+        mSupportAttrNames.add("gravity");
+        mSupportAttrNames.add("hint");
+        mSupportAttrNames.add("text");
+        mSupportAttrNames.add("scrollHorizontally");
+        mSupportAttrNames.add("singleLine");
+        mSupportAttrNames.add("ellipsize");
+        mSupportAttrNames.add("marqueeRepeatLimit");
+        mSupportAttrNames.add("includeFontPadding");
+        mSupportAttrNames.add("cursorVisible");
+        mSupportAttrNames.add("maxLength");
+        mSupportAttrNames.add("textScaleX");
+        mSupportAttrNames.add("freezesText");
+        mSupportAttrNames.add("shadowColor");
+        mSupportAttrNames.add("shadowDx");
+        mSupportAttrNames.add("shadowDy");
+        mSupportAttrNames.add("shadowRadius");
+        mSupportAttrNames.add("enabled");
+        mSupportAttrNames.add("textColorHighlight");
+        mSupportAttrNames.add("textColor");
+        mSupportAttrNames.add("textColorHint");
+        mSupportAttrNames.add("textColorLink");
+        mSupportAttrNames.add("textSize");
+        mSupportAttrNames.add("typeface");
+        mSupportAttrNames.add("textStyle");
+    }
+
 
     public TextViewSkinHandler() {
         super();
@@ -38,7 +107,8 @@ public class TextViewSkinHandler extends ViewSkinHandler {
 
     @Override
     public boolean isSupportAttrName(View view, String attrName) {
-        return super.isSupportAttrName(view, attrName);
+        return view instanceof TextView && mSupportAttrNames.contains(attrName)
+                || super.isSupportAttrName(view, attrName);
     }
 
     @Override
@@ -131,10 +201,17 @@ public class TextViewSkinHandler extends ViewSkinHandler {
                     Drawable drawableTop = compoundDrawables[1];
                     Drawable drawableRight = compoundDrawables[2];
                     Drawable drawableBottom = compoundDrawables[3];
-
-
                     if (value != null) {
-                        drawableLeft = (Drawable) value;
+                        switch (type) {
+                            case ValueType.TYPE_DRAWABLE: {
+                                drawableLeft = (Drawable) value;
+                                break;
+                            }
+                            case ValueType.TYPE_REFERENCE: {
+                                drawableLeft = resources.getDrawable((int) value);
+                                break;
+                            }
+                        }
                     }
                     textView.setCompoundDrawables(drawableLeft, drawableTop, drawableRight, drawableBottom);
                     break;
@@ -145,10 +222,17 @@ public class TextViewSkinHandler extends ViewSkinHandler {
                     Drawable drawableTop = null;
                     Drawable drawableRight = compoundDrawables[2];
                     Drawable drawableBottom = compoundDrawables[3];
-
-
                     if (value != null) {
-                        drawableTop = (Drawable) value;
+                        switch (type) {
+                            case ValueType.TYPE_DRAWABLE: {
+                                drawableTop = (Drawable) value;
+                                break;
+                            }
+                            case ValueType.TYPE_REFERENCE: {
+                                drawableTop = resources.getDrawable((int) value);
+                                break;
+                            }
+                        }
                     }
                     textView.setCompoundDrawables(drawableLeft, drawableTop, drawableRight, drawableBottom);
                     break;
@@ -160,7 +244,16 @@ public class TextViewSkinHandler extends ViewSkinHandler {
                     Drawable drawableRight = null;
                     Drawable drawableBottom = compoundDrawables[3];
                     if (value != null) {
-                        drawableRight = (Drawable) value;
+                        switch (type) {
+                            case ValueType.TYPE_DRAWABLE: {
+                                drawableRight = (Drawable) value;
+                                break;
+                            }
+                            case ValueType.TYPE_REFERENCE: {
+                                drawableRight = resources.getDrawable((int) value);
+                                break;
+                            }
+                        }
                     }
                     textView.setCompoundDrawables(drawableLeft, drawableTop, drawableRight, drawableBottom);
                     break;
@@ -172,7 +265,16 @@ public class TextViewSkinHandler extends ViewSkinHandler {
                     Drawable drawableRight = compoundDrawables[2];
                     Drawable drawableBottom = null;
                     if (value != null) {
-                        drawableBottom = (Drawable) value;
+                        switch (type) {
+                            case ValueType.TYPE_DRAWABLE: {
+                                drawableBottom = (Drawable) value;
+                                break;
+                            }
+                            case ValueType.TYPE_REFERENCE: {
+                                drawableBottom = resources.getDrawable((int) value);
+                                break;
+                            }
+                        }
                     }
                     textView.setCompoundDrawables(drawableLeft, drawableTop, drawableRight, drawableBottom);
                     break;
@@ -374,10 +476,14 @@ public class TextViewSkinHandler extends ViewSkinHandler {
                     if (value != null) {
                         ellipsize = (int) value;
                     }
-                    /*ReflectUtil.invokeMethod();
-                    if (textView.isSingleLine() && textView.getKeyListener() == null && ellipsize < 0) {
+                    boolean isSingleLine = false;
+                    Object isSingleLineObj = ReflectUtil.invokeMethod(textView, "isSingleLine", null);
+                    if (isSingleLineObj != null && isSingleLineObj instanceof Boolean) {
+                        isSingleLine = (boolean) isSingleLineObj;
+                    }
+                    if (isSingleLine && textView.getKeyListener() == null && ellipsize < 0) {
                         ellipsize = 3; // END
-                    }*/
+                    }
                     switch (ellipsize) {
                         case 1:
                             where = TextUtils.TruncateAt.START;
@@ -396,57 +502,333 @@ public class TextViewSkinHandler extends ViewSkinHandler {
                     break;
                 }
                 case "marqueeRepeatLimit": {
+                    int marqueeLimit = 3;
+                    if (value != null) {
+                        marqueeLimit = (int) value;
+                    }
+                    textView.setMarqueeRepeatLimit(marqueeLimit);
                     break;
                 }
                 case "includeFontPadding": {
+                    boolean includepad = true;
+                    if (value != null) {
+                        includepad = (boolean) value;
+                    }
+                    textView.setIncludeFontPadding(includepad);
                     break;
                 }
                 case "cursorVisible": {
+                    boolean visible = true;
+                    if (value != null) {
+                        visible = (boolean) value;
+                    }
+                    textView.setCursorVisible(visible);
                     break;
                 }
                 case "maxLength": {
+                    int maxlength = -1;
+                    if (value != null) {
+                        maxlength = (int) value;
+                    }
+                    if (maxlength >= 0) {
+                        textView.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxlength)});
+                    } else {
+                        textView.setFilters(new InputFilter[0]);
+                    }
                     break;
                 }
                 case "textScaleX": {
+                    float size = 1.0f;
+                    if (value != null) {
+                        size = (float) value;
+                    }
+                    textView.setTextScaleX(size);
                     break;
                 }
                 case "freezesText": {
+                    boolean freezesText = false;
+                    if (value != null) {
+                        freezesText = (boolean) value;
+                    }
+                    textView.setFreezesText(freezesText);
                     break;
                 }
                 case "shadowColor": {
+                    float radius = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        radius = textView.getShadowRadius();
+                    } else {
+                        Object shadowRadius = ReflectUtil.getFieldValue(textView, "mShadowRadius");
+                        if (shadowRadius != null && shadowRadius instanceof Float) {
+                            radius = (float) shadowRadius;
+                        }
+                    }
+                    float dx = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        dx = textView.getShadowDx();
+                    } else {
+                        Object shadowDx = ReflectUtil.getFieldValue(textView, "mShadowDx");
+                        if (shadowDx != null && shadowDx instanceof Float) {
+                            dx = (float) shadowDx;
+                        }
+                    }
+                    float dy = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        dy = textView.getShadowDy();
+                    } else {
+                        Object shadowDy = ReflectUtil.getFieldValue(textView, "mShadowDy");
+                        if (shadowDy != null && shadowDy instanceof Float) {
+                            dy = (float) shadowDy;
+                        }
+                    }
+                    int color = 0;
+                    if (value != null) {
+                        switch (type) {
+                            case ValueType.TYPE_COLOR_INT: {
+                                color = (int) value;
+                                break;
+                            }
+                            case ValueType.TYPE_REFERENCE: {
+                                color = resources.getColor((Integer) value);
+                                break;
+                            }
+                        }
+                    }
+                    textView.setShadowLayer(radius, dx, dy, color);
                     break;
                 }
                 case "shadowDx": {
+                    float radius = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        radius = textView.getShadowRadius();
+                    } else {
+                        Object shadowRadius = ReflectUtil.getFieldValue(textView, "mShadowRadius");
+                        if (shadowRadius != null && shadowRadius instanceof Float) {
+                            radius = (float) shadowRadius;
+                        }
+                    }
+                    float dx = 0;
+                    if (value != null) {
+                        dx = (float) value;
+                    }
+                    float dy = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        dy = textView.getShadowDy();
+                    } else {
+                        Object shadowDy = ReflectUtil.getFieldValue(textView, "mShadowDy");
+                        if (shadowDy != null && shadowDy instanceof Float) {
+                            dy = (float) shadowDy;
+                        }
+                    }
+                    int color = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        color = textView.getShadowColor();
+                    } else {
+                        Object shadowColor = ReflectUtil.getFieldValue(textView, "mShadowColor");
+                        if (shadowColor != null && shadowColor instanceof Integer) {
+                            color = (int) shadowColor;
+                        }
+                    }
+                    textView.setShadowLayer(radius, dx, dy, color);
                     break;
                 }
                 case "shadowDy": {
+                    float radius = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        radius = textView.getShadowRadius();
+                    } else {
+                        Object shadowRadius = ReflectUtil.getFieldValue(textView, "mShadowRadius");
+                        if (shadowRadius != null && shadowRadius instanceof Float) {
+                            radius = (float) shadowRadius;
+                        }
+                    }
+                    float dx = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        dx = textView.getShadowDx();
+                    } else {
+                        Object shadowDx = ReflectUtil.getFieldValue(textView, "mShadowDx");
+                        if (shadowDx != null && shadowDx instanceof Float) {
+                            dx = (float) shadowDx;
+                        }
+                    }
+                    float dy = 0;
+                    if (value != null) {
+                        dy = (float) value;
+                    }
+                    int color = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        color = textView.getShadowColor();
+                    } else {
+                        Object shadowColor = ReflectUtil.getFieldValue(textView, "mShadowColor");
+                        if (shadowColor != null && shadowColor instanceof Integer) {
+                            color = (int) shadowColor;
+                        }
+                    }
+                    textView.setShadowLayer(radius, dx, dy, color);
                     break;
                 }
                 case "shadowRadius": {
+                    float radius = 0;
+                    if (value != null) {
+                        radius = (float) value;
+                    }
+                    float dx = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        dx = textView.getShadowDx();
+                    } else {
+                        Object shadowDx = ReflectUtil.getFieldValue(textView, "mShadowDx");
+                        if (shadowDx != null && shadowDx instanceof Float) {
+                            dx = (float) shadowDx;
+                        }
+                    }
+                    float dy = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        dy = textView.getShadowDy();
+                    } else {
+                        Object shadowDy = ReflectUtil.getFieldValue(textView, "mShadowDy");
+                        if (shadowDy != null && shadowDy instanceof Float) {
+                            dy = (float) shadowDy;
+                        }
+                    }
+                    int color = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        color = textView.getShadowColor();
+                    } else {
+                        Object shadowColor = ReflectUtil.getFieldValue(textView, "mShadowColor");
+                        if (shadowColor != null && shadowColor instanceof Integer) {
+                            color = (int) shadowColor;
+                        }
+                    }
+                    textView.setShadowLayer(radius, dx, dy, color);
                     break;
                 }
                 case "enabled": {
+                    boolean enabled = textView.isEnabled();
+                    if (value != null) {
+                        enabled = (boolean) value;
+                    }
+                    textView.setEnabled(enabled);
                     break;
                 }
                 case "textColorHighlight": {
+                    int highlightColor = 0x6633B5E5;
+                    if (value != null) {
+                        switch (type) {
+                            case ValueType.TYPE_COLOR_INT: {
+                                highlightColor = (int) value;
+                                break;
+                            }
+                            case ValueType.TYPE_REFERENCE: {
+                                highlightColor = resources.getColor((Integer) value);
+                                break;
+                            }
+                        }
+                    }
+                    textView.setHighlightColor(highlightColor);
                     break;
                 }
                 case "textColor": {
+                    ColorStateList color = null;
+                    if (value != null) {
+                        switch (type) {
+                            case ValueType.TYPE_COLOR_INT: {
+                                color = ColorStateList.valueOf((int) value);
+                                break;
+                            }
+                            case ValueType.TYPE_COLOR_STATE_LIST: {
+                                color = (ColorStateList) value;
+                                break;
+                            }
+                            case ValueType.TYPE_REFERENCE: {
+                                color = resources.getColorStateList((int) value);
+                                break;
+                            }
+                        }
+                    }
+                    if (color == null) {
+                        color = ColorStateList.valueOf(0xFF000000);
+                    }
+                    textView.setTextColor(color);
                     break;
                 }
                 case "textColorHint": {
+                    ColorStateList color = null;
+                    if (value != null) {
+                        switch (type) {
+                            case ValueType.TYPE_COLOR_INT: {
+                                color = ColorStateList.valueOf((int) value);
+                                break;
+                            }
+                            case ValueType.TYPE_COLOR_STATE_LIST: {
+                                color = (ColorStateList) value;
+                                break;
+                            }
+                            case ValueType.TYPE_REFERENCE: {
+                                color = resources.getColorStateList((int) value);
+                                break;
+                            }
+                        }
+                    }
+                    textView.setHintTextColor(color);
                     break;
                 }
                 case "textColorLink": {
+                    ColorStateList color = null;
+                    if (value != null) {
+                        switch (type) {
+                            case ValueType.TYPE_COLOR_INT: {
+                                color = ColorStateList.valueOf((int) value);
+                                break;
+                            }
+                            case ValueType.TYPE_COLOR_STATE_LIST: {
+                                color = (ColorStateList) value;
+                                break;
+                            }
+                            case ValueType.TYPE_REFERENCE: {
+                                color = resources.getColorStateList((int) value);
+                                break;
+                            }
+                        }
+                    }
+                    textView.setLinkTextColor(color);
                     break;
                 }
                 case "textSize": {
+                    float size = textView.getTextSize();
+                    if (value != null) {
+                        size = (float) value;
+                    }
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
                     break;
                 }
                 case "typeface": {
+                    int typefaceIndex = -1;
+                    if (value != null) {
+                        typefaceIndex = (int) value;
+                    }
+                    Typeface tf = textView.getTypeface();
+                    switch (typefaceIndex) {
+                        case 1:
+                            tf = Typeface.SANS_SERIF;
+                            break;
+
+                        case 2:
+                            tf = Typeface.SERIF;
+                            break;
+
+                        case 3:
+                            tf = Typeface.MONOSPACE;
+                            break;
+                    }
+                    textView.setTypeface(tf);
                     break;
                 }
                 case "textStyle": {
+                    int textStyle = -1;
+                    if (value != null) {
+                        textStyle = (int) value;
+                    }
+                    textView.setTypeface(textView.getTypeface(), textStyle);
                     break;
                 }
             }

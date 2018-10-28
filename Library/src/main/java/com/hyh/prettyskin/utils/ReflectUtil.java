@@ -94,14 +94,25 @@ public class ReflectUtil {
         return null;
     }
 
+    public static Method getMethod(Class clz, String methodName, Class<?>[] parameterTypes) {
+        if (clz == null) {
+            return null;
+        }
+        try {
+            Method method = clz.getDeclaredMethod(methodName, parameterTypes);
+            if (method != null) {
+                return method;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return getMethod(clz.getSuperclass(), methodName, parameterTypes);
+    }
+
+
     public static Object invokeStaticMethod(Class clz, String methodName, Class<?>[] parameterTypes, Object... params) {
         try {
-            Method method;
-            if (parameterTypes == null) {
-                method = clz.getDeclaredMethod(methodName);
-            } else {
-                method = clz.getDeclaredMethod(methodName, parameterTypes);
-            }
+            Method method = clz.getDeclaredMethod(methodName, parameterTypes);
             return method.invoke(null, params);
         } catch (Exception e) {
             e.printStackTrace();
@@ -109,10 +120,14 @@ public class ReflectUtil {
         return null;
     }
 
-    public static Object invokeStaticMethod(Object object, String methodName, Class<?>[] parameterTypes, Object... params) {
+    public static Object invokeMethod(Object object, String methodName, Class<?>[] parameterTypes, Object... params) {
         Object result = null;
         try {
-
+            Method method = getMethod(object.getClass(), methodName, parameterTypes);
+            if (method != null) {
+                method.setAccessible(true);
+                return method.invoke(object, params);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
