@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ValueType;
 import com.hyh.prettyskin.utils.ReflectUtil;
+import com.hyh.prettyskin.utils.ViewAttrUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +34,16 @@ public class TextViewSkinHandler extends ViewSkinHandler {
     private List<String> mSupportAttrNames = new ArrayList<>();
 
     {
-        /*mSupportAttrNames.add("textAppearance");
-        mSupportAttrNames.add("editable");
-        mSupportAttrNames.add("inputMethod");
-        mSupportAttrNames.add("numeric");
-        mSupportAttrNames.add("digits");
-        mSupportAttrNames.add("phoneNumber");
-        mSupportAttrNames.add("autoText");
-        mSupportAttrNames.add("capitalize");
-        mSupportAttrNames.add("bufferType");
-        mSupportAttrNames.add("selectAllOnFocus");*/
+        mSupportAttrNames.add("textAppearance");
+        //mSupportAttrNames.add("editable");
+        //mSupportAttrNames.add("inputMethod");
+        //mSupportAttrNames.add("numeric");
+        //mSupportAttrNames.add("digits");
+        //mSupportAttrNames.add("phoneNumber");
+        //mSupportAttrNames.add("autoText");
+        //mSupportAttrNames.add("capitalize");
+        //mSupportAttrNames.add("bufferType");
+        //mSupportAttrNames.add("selectAllOnFocus");
         mSupportAttrNames.add("autoLink");
         mSupportAttrNames.add("linksClickable");
         mSupportAttrNames.add("drawableLeft");
@@ -113,13 +114,13 @@ public class TextViewSkinHandler extends ViewSkinHandler {
 
     @Override
     public AttrValue parseAttrValue(View view, AttributeSet set, String attrName) {
-        Class styleableClass = getStyleableClass();
-        String styleableName = getStyleableName();
-        AttrValue attrValue = parseAttrValue(view, set, attrName, styleableClass, styleableName);
-        if (attrValue != null) {
-            return attrValue;
+        if (super.isSupportAttrName(view, attrName)) {
+            return super.parseAttrValue(view, set, attrName);
+        } else {
+            Class styleableClass = getStyleableClass();
+            String styleableName = getStyleableName();
+            return parseAttrValue(view, set, attrName, styleableClass, styleableName);
         }
-        return super.parseAttrValue(view, set, attrName);
     }
 
     @Override
@@ -140,7 +141,13 @@ public class TextViewSkinHandler extends ViewSkinHandler {
             Object value = attrValue.getValue();
             switch (attrName) {
                 case "textAppearance": {
-                    //TODO 暂不实现
+                    int textAppearance = -1;
+                    if (value != null) {
+                        textAppearance = (int) value;
+                    }
+                    if (textAppearance != -1) {
+                        textView.setTextAppearance(context, textAppearance);
+                    }
                     break;
                 }
                 case "editable": {
@@ -197,43 +204,19 @@ public class TextViewSkinHandler extends ViewSkinHandler {
                 }
                 case "drawableLeft": {
                     Drawable[] compoundDrawables = textView.getCompoundDrawables();
-                    Drawable drawableLeft = null;
+                    Drawable drawableLeft = ViewAttrUtil.getDrawable(resources, type, value);
                     Drawable drawableTop = compoundDrawables[1];
                     Drawable drawableRight = compoundDrawables[2];
                     Drawable drawableBottom = compoundDrawables[3];
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_DRAWABLE: {
-                                drawableLeft = (Drawable) value;
-                                break;
-                            }
-                            case ValueType.TYPE_REFERENCE: {
-                                drawableLeft = resources.getDrawable((int) value);
-                                break;
-                            }
-                        }
-                    }
                     textView.setCompoundDrawables(drawableLeft, drawableTop, drawableRight, drawableBottom);
                     break;
                 }
                 case "drawableTop": {
                     Drawable[] compoundDrawables = textView.getCompoundDrawables();
                     Drawable drawableLeft = compoundDrawables[0];
-                    Drawable drawableTop = null;
+                    Drawable drawableTop = ViewAttrUtil.getDrawable(resources, type, value);
                     Drawable drawableRight = compoundDrawables[2];
                     Drawable drawableBottom = compoundDrawables[3];
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_DRAWABLE: {
-                                drawableTop = (Drawable) value;
-                                break;
-                            }
-                            case ValueType.TYPE_REFERENCE: {
-                                drawableTop = resources.getDrawable((int) value);
-                                break;
-                            }
-                        }
-                    }
                     textView.setCompoundDrawables(drawableLeft, drawableTop, drawableRight, drawableBottom);
                     break;
                 }
@@ -241,20 +224,8 @@ public class TextViewSkinHandler extends ViewSkinHandler {
                     Drawable[] compoundDrawables = textView.getCompoundDrawables();
                     Drawable drawableLeft = compoundDrawables[0];
                     Drawable drawableTop = compoundDrawables[1];
-                    Drawable drawableRight = null;
+                    Drawable drawableRight = ViewAttrUtil.getDrawable(resources, type, value);
                     Drawable drawableBottom = compoundDrawables[3];
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_DRAWABLE: {
-                                drawableRight = (Drawable) value;
-                                break;
-                            }
-                            case ValueType.TYPE_REFERENCE: {
-                                drawableRight = resources.getDrawable((int) value);
-                                break;
-                            }
-                        }
-                    }
                     textView.setCompoundDrawables(drawableLeft, drawableTop, drawableRight, drawableBottom);
                     break;
                 }
@@ -263,19 +234,7 @@ public class TextViewSkinHandler extends ViewSkinHandler {
                     Drawable drawableLeft = compoundDrawables[0];
                     Drawable drawableTop = compoundDrawables[1];
                     Drawable drawableRight = compoundDrawables[2];
-                    Drawable drawableBottom = null;
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_DRAWABLE: {
-                                drawableBottom = (Drawable) value;
-                                break;
-                            }
-                            case ValueType.TYPE_REFERENCE: {
-                                drawableBottom = resources.getDrawable((int) value);
-                                break;
-                            }
-                        }
-                    }
+                    Drawable drawableBottom = ViewAttrUtil.getDrawable(resources, type, value);
                     textView.setCompoundDrawables(drawableLeft, drawableTop, drawableRight, drawableBottom);
                     break;
                 }
@@ -289,38 +248,15 @@ public class TextViewSkinHandler extends ViewSkinHandler {
                 }
                 case "drawableTint": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        ColorStateList tint = null;
-                        if (value != null) {
-                            switch (type) {
-                                case ValueType.TYPE_COLOR_INT: {
-                                    tint = ColorStateList.valueOf((Integer) value);
-                                    break;
-                                }
-                                case ValueType.TYPE_COLOR_STATE_LIST: {
-                                    tint = (ColorStateList) value;
-                                    break;
-                                }
-                                case ValueType.TYPE_REFERENCE: {
-                                    tint = resources.getColorStateList((Integer) value);
-                                    break;
-                                }
-                            }
-                        }
+                        ColorStateList tint = ViewAttrUtil.getColorStateList(resources, type, value);
                         textView.setCompoundDrawableTintList(tint);
                     }
                     break;
                 }
                 case "drawableTintMode": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        PorterDuff.Mode tintMode = null;
-                        if (value != null) {
-                            int backgroundTintModeIndex = (int) value;
-                            tintMode = (PorterDuff.Mode) ReflectUtil.invokeStaticMethod(Drawable.class,
-                                    "parseTintMode",
-                                    new Class[]{int.class, PorterDuff.Mode.class},
-                                    backgroundTintModeIndex, null);
-                            textView.setForegroundTintMode(tintMode);
-                        }
+                        PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                        textView.setForegroundTintMode(tintMode);
                     }
                     break;
                 }
@@ -421,36 +357,12 @@ public class TextViewSkinHandler extends ViewSkinHandler {
                     break;
                 }
                 case "hint": {
-                    CharSequence hint = null;
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_STRING: {
-                                hint = (CharSequence) value;
-                                break;
-                            }
-                            case ValueType.TYPE_REFERENCE: {
-                                hint = resources.getString((int) value);
-                                break;
-                            }
-                        }
-                    }
+                    CharSequence hint = ViewAttrUtil.getCharSequence(resources, type, value);
                     textView.setHint(hint);
                     break;
                 }
                 case "text": {
-                    CharSequence text = null;
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_STRING: {
-                                text = (CharSequence) value;
-                                break;
-                            }
-                            case ValueType.TYPE_REFERENCE: {
-                                text = resources.getText((int) value);
-                                break;
-                            }
-                        }
-                    }
+                    CharSequence text = ViewAttrUtil.getCharSequence(resources, type, value);
                     textView.setText(text);
                     break;
                 }
@@ -474,29 +386,30 @@ public class TextViewSkinHandler extends ViewSkinHandler {
                     int ellipsize = -1;
                     TextUtils.TruncateAt where = null;
                     if (value != null) {
-                        ellipsize = (int) value;
+                        switch (type) {
+                            case ValueType.TYPE_INT: {
+                                ellipsize = (int) value;
+                                break;
+                            }
+                            case ValueType.TYPE_OBJECT: {
+                                if (value instanceof TextUtils.TruncateAt) {
+                                    where = (TextUtils.TruncateAt) value;
+                                }
+                                break;
+                            }
+                        }
+
                     }
-                    boolean isSingleLine = false;
-                    Object isSingleLineObj = ReflectUtil.invokeMethod(textView, "isSingleLine", null);
-                    if (isSingleLineObj != null && isSingleLineObj instanceof Boolean) {
-                        isSingleLine = (boolean) isSingleLineObj;
-                    }
-                    if (isSingleLine && textView.getKeyListener() == null && ellipsize < 0) {
-                        ellipsize = 3; // END
-                    }
-                    switch (ellipsize) {
-                        case 1:
-                            where = TextUtils.TruncateAt.START;
-                            break;
-                        case 2:
-                            where = TextUtils.TruncateAt.MIDDLE;
-                            break;
-                        case 3:
-                            where = TextUtils.TruncateAt.END;
-                            break;
-                        case 4:
-                            where = TextUtils.TruncateAt.MARQUEE;
-                            break;
+                    if (where == null) {
+                        boolean isSingleLine = false;
+                        Object isSingleLineObj = ReflectUtil.invokeMethod(textView, "isSingleLine", null);
+                        if (isSingleLineObj != null && isSingleLineObj instanceof Boolean) {
+                            isSingleLine = (boolean) isSingleLineObj;
+                        }
+                        if (isSingleLine && textView.getKeyListener() == null && ellipsize < 0) {
+                            ellipsize = 3; // END
+                        }
+                        where = ViewAttrUtil.getTextEllipsize(ellipsize);
                     }
                     textView.setEllipsize(where);
                     break;
@@ -581,19 +494,7 @@ public class TextViewSkinHandler extends ViewSkinHandler {
                             dy = (float) shadowDy;
                         }
                     }
-                    int color = 0;
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_COLOR_INT: {
-                                color = (int) value;
-                                break;
-                            }
-                            case ValueType.TYPE_REFERENCE: {
-                                color = resources.getColor((Integer) value);
-                                break;
-                            }
-                        }
-                    }
+                    int color = ViewAttrUtil.getColor(resources, type, value);
                     textView.setShadowLayer(radius, dx, dy, color);
                     break;
                 }
@@ -711,85 +612,24 @@ public class TextViewSkinHandler extends ViewSkinHandler {
                     break;
                 }
                 case "textColorHighlight": {
-                    int highlightColor = 0x6633B5E5;
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_COLOR_INT: {
-                                highlightColor = (int) value;
-                                break;
-                            }
-                            case ValueType.TYPE_REFERENCE: {
-                                highlightColor = resources.getColor((Integer) value);
-                                break;
-                            }
-                        }
-                    }
+                    int highlightColor = ViewAttrUtil.getColor(resources, type, value, 0x6633B5E5);
                     textView.setHighlightColor(highlightColor);
                     break;
                 }
                 case "textColor": {
-                    ColorStateList color = null;
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_COLOR_INT: {
-                                color = ColorStateList.valueOf((int) value);
-                                break;
-                            }
-                            case ValueType.TYPE_COLOR_STATE_LIST: {
-                                color = (ColorStateList) value;
-                                break;
-                            }
-                            case ValueType.TYPE_REFERENCE: {
-                                color = resources.getColorStateList((int) value);
-                                break;
-                            }
-                        }
-                    }
-                    if (color == null) {
-                        color = ColorStateList.valueOf(0xFF000000);
-                    }
+                    ColorStateList color = ViewAttrUtil.getColorStateList(resources, type, value, 0xFF000000);
                     textView.setTextColor(color);
                     break;
                 }
                 case "textColorHint": {
-                    ColorStateList color = null;
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_COLOR_INT: {
-                                color = ColorStateList.valueOf((int) value);
-                                break;
-                            }
-                            case ValueType.TYPE_COLOR_STATE_LIST: {
-                                color = (ColorStateList) value;
-                                break;
-                            }
-                            case ValueType.TYPE_REFERENCE: {
-                                color = resources.getColorStateList((int) value);
-                                break;
-                            }
-                        }
-                    }
+                    ColorStateList color = ViewAttrUtil.getColorStateList(resources, type, value);
+                    ;
                     textView.setHintTextColor(color);
                     break;
                 }
                 case "textColorLink": {
-                    ColorStateList color = null;
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_COLOR_INT: {
-                                color = ColorStateList.valueOf((int) value);
-                                break;
-                            }
-                            case ValueType.TYPE_COLOR_STATE_LIST: {
-                                color = (ColorStateList) value;
-                                break;
-                            }
-                            case ValueType.TYPE_REFERENCE: {
-                                color = resources.getColorStateList((int) value);
-                                break;
-                            }
-                        }
-                    }
+                    ColorStateList color = ViewAttrUtil.getColorStateList(resources, type, value);
+                    ;
                     textView.setLinkTextColor(color);
                     break;
                 }
@@ -803,31 +643,28 @@ public class TextViewSkinHandler extends ViewSkinHandler {
                 }
                 case "typeface": {
                     int typefaceIndex = -1;
+                    Typeface tf = null;
                     if (value != null) {
-                        typefaceIndex = (int) value;
+                        switch (type) {
+                            case ValueType.TYPE_INT: {
+                                typefaceIndex = (int) value;
+                                break;
+                            }
+                            case ValueType.TYPE_OBJECT: {
+                                if (value instanceof Typeface) {
+                                    tf = (Typeface) value;
+                                }
+                            }
+                        }
                     }
-                    Typeface tf = textView.getTypeface();
-                    switch (typefaceIndex) {
-                        case 1:
-                            tf = Typeface.SANS_SERIF;
-                            break;
-
-                        case 2:
-                            tf = Typeface.SERIF;
-                            break;
-
-                        case 3:
-                            tf = Typeface.MONOSPACE;
-                            break;
+                    if (typefaceIndex != -1) {
+                        tf = ViewAttrUtil.getTextTypeface(typefaceIndex);
                     }
                     textView.setTypeface(tf);
                     break;
                 }
                 case "textStyle": {
-                    int textStyle = -1;
-                    if (value != null) {
-                        textStyle = (int) value;
-                    }
+                    int textStyle = ViewAttrUtil.getInt(resources, type, value, -1);
                     textView.setTypeface(textView.getTypeface(), textStyle);
                     break;
                 }
@@ -838,7 +675,7 @@ public class TextViewSkinHandler extends ViewSkinHandler {
     private Class getStyleableClass() {
         try {
             return Class.forName("com.android.internal.R$styleable");
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
             return null;
         }
     }

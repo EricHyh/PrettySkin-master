@@ -23,6 +23,7 @@ import com.hyh.prettyskin.core.ValueType;
 import com.hyh.prettyskin.core.handler.ISkinHandler;
 import com.hyh.prettyskin.utils.AttrUtil;
 import com.hyh.prettyskin.utils.ReflectUtil;
+import com.hyh.prettyskin.utils.ViewAttrUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,6 +160,19 @@ public class ViewSkinHandler implements ISkinHandler {
         Class styleableClass = getStyleableClass();
         String styleableName = getStyleableName();
         return parseAttrValue(view, set, attrName, styleableClass, styleableName);
+    }
+
+
+    private Class getStyleableClass() {
+        try {
+            return Class.forName("com.android.internal.R$styleable");
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
+
+    private String getStyleableName() {
+        return "View";
     }
 
     protected AttrValue parseAttrValue(View view, AttributeSet set, String attrName, Class styleableClass, String styleableName) {
@@ -351,35 +365,26 @@ public class ViewSkinHandler implements ISkinHandler {
                 break;
             }
             case "paddingLeft": {
-                int paddingLeft = 0;
+                int paddingLeft = ViewAttrUtil.getInt(resources, type, value);
                 int paddingTop = view.getPaddingTop();
                 int paddingRight = view.getPaddingRight();
                 int paddingBottom = view.getPaddingBottom();
-                if (value != null) {
-                    paddingLeft = (int) value;
-                }
                 view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
                 break;
             }
             case "paddingTop": {
                 int paddingLeft = view.getPaddingLeft();
-                int paddingTop = 0;
+                int paddingTop = ViewAttrUtil.getInt(resources, type, value);
                 int paddingRight = view.getPaddingRight();
                 int paddingBottom = view.getPaddingBottom();
-                if (value != null) {
-                    paddingTop = (int) value;
-                }
                 view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
                 break;
             }
             case "paddingRight": {
                 int paddingLeft = view.getPaddingLeft();
                 int paddingTop = view.getPaddingTop();
-                int paddingRight = 0;
+                int paddingRight = ViewAttrUtil.getInt(resources, type, value);
                 int paddingBottom = view.getPaddingBottom();
-                if (value != null) {
-                    paddingRight = (int) value;
-                }
                 view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
                 break;
             }
@@ -387,10 +392,7 @@ public class ViewSkinHandler implements ISkinHandler {
                 int paddingLeft = view.getPaddingLeft();
                 int paddingTop = view.getPaddingTop();
                 int paddingRight = view.getPaddingRight();
-                int paddingBottom = 0;
-                if (value != null) {
-                    paddingBottom = (int) value;
-                }
+                int paddingBottom = ViewAttrUtil.getInt(resources, type, value);
                 view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
                 break;
             }
@@ -411,23 +413,17 @@ public class ViewSkinHandler implements ISkinHandler {
                 break;
             }
             case "scrollX": {
-                int scrollX = 0;
-                if (value != null) {
-                    scrollX = (int) value;
-                }
+                int scrollX = ViewAttrUtil.getInt(resources, type, value);
                 view.setScrollX(scrollX);
                 break;
             }
             case "scrollY": {
-                int scrollY = 0;
-                if (value != null) {
-                    scrollY = (int) value;
-                }
+                int scrollY = ViewAttrUtil.getInt(resources, type, value);
                 view.setScrollY(scrollY);
                 break;
             }
             case "alpha": {
-                float alpha = 1.0f;
+                float alpha = ViewAttrUtil.getFloat(resources, type, value, 1.0f);
                 if (value != null) {
                     alpha = (float) value;
                 }
@@ -435,94 +431,61 @@ public class ViewSkinHandler implements ISkinHandler {
                 break;
             }
             case "transformPivotX": {
-                float pivotX = 0.0f;
-                if (value != null) {
-                    pivotX = (float) value;
-                }
+                float pivotX = ViewAttrUtil.getFloat(resources, type, value);
                 view.setPivotX(pivotX);
                 break;
             }
             case "transformPivotY": {
-                float pivotY = 0.0f;
-                if (value != null) {
-                    pivotY = (float) value;
-                }
+                float pivotY = ViewAttrUtil.getFloat(resources, type, value);
                 view.setPivotY(pivotY);
                 break;
             }
             case "translationX": {
-                float translationX = 0.0f;
-                if (value != null) {
-                    translationX = (float) value;
-                }
+                float translationX = ViewAttrUtil.getFloat(resources, type, value);
                 view.setTranslationX(translationX);
                 break;
             }
             case "translationY": {
-                float translationY = 0.0f;
-                if (value != null) {
-                    translationY = (float) value;
-                }
+                float translationY = ViewAttrUtil.getFloat(resources, type, value);
                 view.setTranslationY(translationY);
                 break;
             }
             case "translationZ": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    float translationZ = 0.0f;
-                    if (value != null) {
-                        translationZ = (float) value;
-                    }
+                    float translationZ = ViewAttrUtil.getFloat(resources, type, value);
                     view.setTranslationZ(translationZ);
                 }
                 break;
             }
             case "elevation": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    float elevation = 0.0f;
-                    if (value != null) {
-                        elevation = (float) value;
-                    }
+                    float elevation = ViewAttrUtil.getFloat(resources, type, value);
                     view.setElevation(elevation);
                 }
                 break;
             }
             case "rotation": {
-                float rotation = 0.0f;
-                if (value != null) {
-                    rotation = (float) value;
-                }
+                float rotation = ViewAttrUtil.getFloat(resources, type, value);
                 view.setRotation(rotation);
                 break;
             }
             case "rotationX": {
-                float rotationX = 0.0f;
-                if (value != null) {
-                    rotationX = (float) value;
-                }
+                float rotationX = ViewAttrUtil.getFloat(resources, type, value);
                 view.setRotationX(rotationX);
                 break;
             }
             case "rotationY": {
-                float rotationY = 0.0f;
-                if (value != null) {
-                    rotationY = (float) value;
-                }
+                float rotationY = ViewAttrUtil.getFloat(resources, type, value);
                 view.setRotationY(rotationY);
                 break;
             }
             case "scaleX": {
-                float scaleX = 0.0f;
-                if (value != null) {
-                    scaleX = (float) value;
-                }
+                float scaleX = ViewAttrUtil.getFloat(resources, type, value);
                 view.setScaleX(scaleX);
                 break;
             }
             case "scaleY": {
-                float scaleY = 0.0f;
-                if (value != null) {
-                    scaleY = (float) value;
-                }
+                float scaleY = ViewAttrUtil.getFloat(resources, type, value);
                 view.setScaleY(scaleY);
                 break;
             }
@@ -648,27 +611,18 @@ public class ViewSkinHandler implements ISkinHandler {
             }
             case "labelFor": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    int labelForId = View.NO_ID;
-                    if (value != null) {
-                        labelForId = (int) value;
-                    }
+                    int labelForId = ViewAttrUtil.getInt(resources, type, value, View.NO_ID);
                     view.setLabelFor(labelForId);
                 }
                 break;
             }
             case "soundEffectsEnabled": {
-                boolean soundEffectsEnabled = false;
-                if (value != null) {
-                    soundEffectsEnabled = (boolean) value;
-                }
+                boolean soundEffectsEnabled = ViewAttrUtil.getBoolean(resources, type, value);
                 view.setSoundEffectsEnabled(soundEffectsEnabled);
                 break;
             }
             case "hapticFeedbackEnabled": {
-                boolean hapticFeedbackEnabled = false;
-                if (value != null) {
-                    hapticFeedbackEnabled = (boolean) value;
-                }
+                boolean hapticFeedbackEnabled = ViewAttrUtil.getBoolean(resources, type, value);
                 view.setHapticFeedbackEnabled(hapticFeedbackEnabled);
                 break;
             }
@@ -676,10 +630,7 @@ public class ViewSkinHandler implements ISkinHandler {
                 final int SCROLLBARS_NONE = 0x00000000;
                 final int SCROLLBARS_HORIZONTAL = 0x00000100;
                 final int SCROLLBARS_VERTICAL = 0x00000200;
-                int scrollbars = SCROLLBARS_NONE;
-                if (value != null) {
-                    scrollbars = (int) value;
-                }
+                int scrollbars = ViewAttrUtil.getInt(resources, type, value, SCROLLBARS_NONE);
                 boolean horizontalScrollBarEnabled = (scrollbars & SCROLLBARS_HORIZONTAL) == SCROLLBARS_HORIZONTAL;
                 boolean verticalScrollBarEnabled = (scrollbars & SCROLLBARS_VERTICAL) == SCROLLBARS_VERTICAL;
                 view.setHorizontalScrollBarEnabled(horizontalScrollBarEnabled);
@@ -687,39 +638,27 @@ public class ViewSkinHandler implements ISkinHandler {
                 break;
             }
             case "fadeScrollbars": {
-                boolean fadeScrollbars = false;
-                if (value != null) {
-                    fadeScrollbars = (boolean) value;
-                }
+                boolean fadeScrollbars = ViewAttrUtil.getBoolean(resources, type, value);
                 view.setScrollbarFadingEnabled(fadeScrollbars);
                 break;
             }
             case "scrollbarFadeDuration": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    int scrollBarFadeDuration = 0;
-                    if (value != null) {
-                        scrollBarFadeDuration = (int) value;
-                    }
+                    int scrollBarFadeDuration = ViewAttrUtil.getInt(resources, type, value);
                     view.setScrollBarFadeDuration(scrollBarFadeDuration);
                 }
                 break;
             }
             case "scrollbarDefaultDelayBeforeFade": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    int scrollBarDefaultDelayBeforeFade = 0;
-                    if (value != null) {
-                        scrollBarDefaultDelayBeforeFade = (int) value;
-                    }
+                    int scrollBarDefaultDelayBeforeFade = ViewAttrUtil.getInt(resources, type, value);
                     view.setScrollBarDefaultDelayBeforeFade(scrollBarDefaultDelayBeforeFade);
                 }
                 break;
             }
             case "scrollbarSize": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    int scrollbarSize = 0;
-                    if (value != null) {
-                        scrollbarSize = (int) value;
-                    }
+                    int scrollbarSize = ViewAttrUtil.getInt(resources, type, value);
                     view.setScrollBarSize(scrollbarSize);
                 }
                 break;
@@ -756,10 +695,7 @@ public class ViewSkinHandler implements ISkinHandler {
                 final int FADING_EDGE_NONE = 0x00000000;
                 final int FADING_EDGE_HORIZONTAL = 0x00001000;
                 final int FADING_EDGE_VERTICAL = 0x00002000;
-                int requiresFadingEdge = FADING_EDGE_NONE;
-                if (value != null) {
-                    requiresFadingEdge = (int) value;
-                }
+                int requiresFadingEdge = ViewAttrUtil.getInt(resources, type, value, FADING_EDGE_NONE);
                 boolean horizontalFadingEdgeEnabled = (requiresFadingEdge & FADING_EDGE_HORIZONTAL) == FADING_EDGE_HORIZONTAL;
                 boolean verticalFadingEdgeEnabled = (requiresFadingEdge & FADING_EDGE_VERTICAL) == FADING_EDGE_VERTICAL;
                 view.setHorizontalFadingEdgeEnabled(horizontalFadingEdgeEnabled);
@@ -767,133 +703,85 @@ public class ViewSkinHandler implements ISkinHandler {
                 break;
             }
             case "scrollbarStyle": {
-                int scrollbarStyle = View.SCROLLBARS_INSIDE_OVERLAY;
-                if (value != null) {
-                    scrollbarStyle = (int) value;
-                }
+                int scrollbarStyle = ViewAttrUtil.getInt(resources, type, value, View.SCROLLBARS_INSIDE_OVERLAY);
                 view.setScrollBarStyle(scrollbarStyle);
                 break;
             }
             case "isScrollContainer": {
-                boolean isScrollContainer = false;
-                if (value != null) {
-                    isScrollContainer = (boolean) value;
-                }
+                boolean isScrollContainer = ViewAttrUtil.getBoolean(resources, type, value);
                 view.setScrollContainer(isScrollContainer);
                 break;
             }
             case "keepScreenOn": {
-                boolean keepScreenOn = false;
-                if (value != null) {
-                    keepScreenOn = (boolean) value;
-                }
+                boolean keepScreenOn = ViewAttrUtil.getBoolean(resources, type, value);
                 view.setKeepScreenOn(keepScreenOn);
                 break;
             }
             case "filterTouchesWhenObscured": {
-                boolean enabled = false;
-                if (value != null) {
-                    enabled = (boolean) value;
-                }
+                boolean enabled = ViewAttrUtil.getBoolean(resources, type, value);
                 view.setFilterTouchesWhenObscured(enabled);
                 break;
             }
             case "nextFocusLeft": {
-                int nextFocusLeftId = View.NO_ID;
-                if (value != null) {
-                    nextFocusLeftId = (int) value;
-                }
+                int nextFocusLeftId = ViewAttrUtil.getInt(resources, type, value, View.NO_ID);
                 view.setNextFocusLeftId(nextFocusLeftId);
                 break;
             }
             case "nextFocusRight": {
-                int nextFocusRightId = View.NO_ID;
-                if (value != null) {
-                    nextFocusRightId = (int) value;
-                }
+                int nextFocusRightId = ViewAttrUtil.getInt(resources, type, value, View.NO_ID);
                 view.setNextFocusRightId(nextFocusRightId);
                 break;
             }
             case "nextFocusUp": {
-                int nextFocusUpId = View.NO_ID;
-                if (value != null) {
-                    nextFocusUpId = (int) value;
-                }
+                int nextFocusUpId = ViewAttrUtil.getInt(resources, type, value, View.NO_ID);
                 view.setNextFocusUpId(nextFocusUpId);
                 break;
             }
             case "nextFocusDown": {
-                int nextFocusDownId = View.NO_ID;
-                if (value != null) {
-                    nextFocusDownId = (int) value;
-                }
+                int nextFocusDownId = ViewAttrUtil.getInt(resources, type, value, View.NO_ID);
                 view.setNextFocusDownId(nextFocusDownId);
                 break;
             }
             case "nextFocusForward": {
-                int nextFocusForwardId = View.NO_ID;
-                if (value != null) {
-                    nextFocusForwardId = (int) value;
-                }
+                int nextFocusForwardId = ViewAttrUtil.getInt(resources, type, value, View.NO_ID);
                 view.setNextFocusForwardId(nextFocusForwardId);
                 break;
             }
             case "nextClusterForward": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    int nextClusterForwardId = View.NO_ID;
-                    if (value != null) {
-                        nextClusterForwardId = (int) value;
-                    }
+                    int nextClusterForwardId = ViewAttrUtil.getInt(resources, type, value, View.NO_ID);
                     view.setNextClusterForwardId(nextClusterForwardId);
                 }
                 break;
             }
             case "minWidth": {
-                int minWidth = 0;
-                if (value != null) {
-                    minWidth = (int) value;
-                }
+                int minWidth = ViewAttrUtil.getInt(resources, type, value);
                 view.setMinimumWidth(minWidth);
                 break;
             }
             case "minHeight": {
-                int minHeight = 0;
-                if (value != null) {
-                    minHeight = (int) value;
-                }
+                int minHeight = ViewAttrUtil.getInt(resources, type, value);
                 view.setMinimumHeight(minHeight);
                 break;
             }
             case "overScrollMode": {
-                int overScrollMode = View.OVER_SCROLL_IF_CONTENT_SCROLLS;
-                if (value != null) {
-                    overScrollMode = (int) value;
-                }
+                int overScrollMode = ViewAttrUtil.getInt(resources, type, value, View.OVER_SCROLL_IF_CONTENT_SCROLLS);
                 view.setOverScrollMode(overScrollMode);
                 break;
             }
             case "verticalScrollbarPosition": {
-                int position = View.SCROLLBAR_POSITION_DEFAULT;
-                if (value != null) {
-                    position = (int) value;
-                }
+                int position = ViewAttrUtil.getInt(resources, type, value, View.SCROLLBAR_POSITION_DEFAULT);
                 view.setVerticalScrollbarPosition(position);
                 break;
             }
             case "layerType": {
-                int layerType = View.LAYER_TYPE_NONE;
-                if (value != null) {
-                    layerType = (int) value;
-                }
+                int layerType = ViewAttrUtil.getInt(resources, type, value, View.LAYER_TYPE_NONE);
                 view.setLayerType(layerType, null);
                 break;
             }
             case "textDirection": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    int textDirection = View.TEXT_DIRECTION_INHERIT;
-                    if (value != null) {
-                        textDirection = (int) value;
-                    }
+                    int textDirection = ViewAttrUtil.getInt(resources, type, value, View.TEXT_DIRECTION_INHERIT);
                     view.setTextDirection(textDirection);
                 }
 
@@ -901,50 +789,35 @@ public class ViewSkinHandler implements ISkinHandler {
             }
             case "textAlignment": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    int textAlignment = View.TEXT_ALIGNMENT_INHERIT;
-                    if (value != null) {
-                        textAlignment = (int) value;
-                    }
+                    int textAlignment = ViewAttrUtil.getInt(resources, type, value, View.TEXT_ALIGNMENT_INHERIT);
                     view.setTextAlignment(textAlignment);
                 }
                 break;
             }
             case "importantForAccessibility": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    int mode = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO;
-                    if (value != null) {
-                        mode = (int) value;
-                    }
+                    int mode = ViewAttrUtil.getInt(resources, type, value, View.IMPORTANT_FOR_ACCESSIBILITY_AUTO);
                     view.setImportantForAccessibility(mode);
                 }
                 break;
             }
             case "accessibilityLiveRegion": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    int mode = View.ACCESSIBILITY_LIVE_REGION_NONE;
-                    if (value != null) {
-                        mode = (int) value;
-                    }
+                    int mode = ViewAttrUtil.getInt(resources, type, value, View.ACCESSIBILITY_LIVE_REGION_NONE);
                     view.setAccessibilityLiveRegion(mode);
                 }
                 break;
             }
             case "transitionName": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    String transitionName = null;
-                    if (value != null) {
-                        transitionName = (String) value;
-                    }
+                    String transitionName = ViewAttrUtil.getString(resources, type, value);
                     view.setTransitionName(transitionName);
                 }
                 break;
             }
             case "nestedScrollingEnabled": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    boolean nestedScrollingEnabled = false;
-                    if (value != null) {
-                        nestedScrollingEnabled = (boolean) value;
-                    }
+                    boolean nestedScrollingEnabled = ViewAttrUtil.getBoolean(resources, type, value);
                     view.setNestedScrollingEnabled(nestedScrollingEnabled);
                 }
                 break;
@@ -965,37 +838,14 @@ public class ViewSkinHandler implements ISkinHandler {
             }
             case "backgroundTint": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    ColorStateList tint = null;
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_COLOR_INT: {
-                                tint = ColorStateList.valueOf((int) value);
-                                break;
-                            }
-                            case ValueType.TYPE_COLOR_STATE_LIST: {
-                                tint = (ColorStateList) value;
-                                break;
-                            }
-                            case ValueType.TYPE_REFERENCE: {
-                                tint = resources.getColorStateList((int) value);
-                                break;
-                            }
-                        }
-                    }
+                    ColorStateList tint = ViewAttrUtil.getColorStateList(resources, type, value);
                     view.setBackgroundTintList(tint);
                 }
                 break;
             }
             case "backgroundTintMode": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    PorterDuff.Mode tintMode = null;
-                    if (value != null) {
-                        int backgroundTintModeIndex = (int) value;
-                        tintMode = (PorterDuff.Mode) ReflectUtil.invokeStaticMethod(Drawable.class,
-                                "parseTintMode",
-                                new Class[]{int.class, PorterDuff.Mode.class},
-                                backgroundTintModeIndex, null);
-                    }
+                    PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
                     view.setBackgroundTintMode(tintMode);
                 }
                 break;
@@ -1030,66 +880,28 @@ public class ViewSkinHandler implements ISkinHandler {
             }
             case "foreground": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    Drawable foreground = null;
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_DRAWABLE: {
-                                foreground = (Drawable) value;
-                                break;
-                            }
-                            case ValueType.TYPE_REFERENCE: {
-                                foreground = resources.getDrawable((int) value);
-                                break;
-                            }
-                        }
-                    }
+                    Drawable foreground = ViewAttrUtil.getDrawable(resources, type, value);
                     view.setForeground(foreground);
                 }
                 break;
             }
             case "foregroundGravity": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    int gravity = Gravity.NO_GRAVITY;
-                    if (value != null) {
-                        gravity = (int) value;
-                    }
+                    int gravity = ViewAttrUtil.getInt(resources, type, value, Gravity.NO_GRAVITY);
                     view.setForegroundGravity(gravity);
                 }
                 break;
             }
             case "foregroundTintMode": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    PorterDuff.Mode tintMode = null;
-                    if (value != null) {
-                        int foregroundTintModeIndex = (int) value;
-                        tintMode = (PorterDuff.Mode) ReflectUtil.invokeStaticMethod(Drawable.class,
-                                "parseTintMode",
-                                new Class[]{int.class, PorterDuff.Mode.class},
-                                foregroundTintModeIndex, null);
-                    }
+                    PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
                     view.setForegroundTintMode(tintMode);
                 }
                 break;
             }
             case "foregroundTint": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    ColorStateList tint = null;
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_COLOR_INT: {
-                                tint = ColorStateList.valueOf((int) value);
-                                break;
-                            }
-                            case ValueType.TYPE_COLOR_STATE_LIST: {
-                                tint = (ColorStateList) value;
-                                break;
-                            }
-                            case ValueType.TYPE_REFERENCE: {
-                                tint = resources.getColorStateList((int) value);
-                                break;
-                            }
-                        }
-                    }
+                    ColorStateList tint = ViewAttrUtil.getColorStateList(resources, type, value);
                     view.setForegroundTintList(tint);
                 }
                 break;
@@ -1100,10 +912,7 @@ public class ViewSkinHandler implements ISkinHandler {
             }
             case "scrollIndicators": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    int indicators = 0;
-                    if (value != null) {
-                        indicators = (int) value;
-                    }
+                    int indicators = ViewAttrUtil.getInt(resources, type, value);
                     view.setScrollIndicators(indicators);
                 }
                 break;
@@ -1138,27 +947,21 @@ public class ViewSkinHandler implements ISkinHandler {
             }
             case "tooltipText": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    CharSequence tooltipText = null;
-                    if (value != null) {
-                        tooltipText = (CharSequence) value;
-                    }
+                    CharSequence tooltipText = ViewAttrUtil.getCharSequence(resources, type, value);
                     view.setTooltipText(tooltipText);
                 }
                 break;
             }
             case "keyboardNavigationCluster": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    boolean isCluster = true;
-                    if (value != null) {
-                        isCluster = (boolean) value;
-                    }
+                    boolean isCluster = ViewAttrUtil.getBoolean(resources, type, value, true);
                     view.setKeyboardNavigationCluster(isCluster);
                 }
                 break;
             }
             case "focusedByDefault": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    boolean isFocusedByDefault = true;
+                    boolean isFocusedByDefault = ViewAttrUtil.getBoolean(resources, type, value, true);
                     if (value != null) {
                         isFocusedByDefault = (boolean) value;
                     }
@@ -1196,20 +999,14 @@ public class ViewSkinHandler implements ISkinHandler {
             }
             case "importantForAutofill": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    int mode = View.IMPORTANT_FOR_AUTOFILL_AUTO;
-                    if (value != null) {
-                        mode = (int) value;
-                    }
+                    int mode = ViewAttrUtil.getInt(resources, type, value, View.IMPORTANT_FOR_AUTOFILL_AUTO);
                     view.setImportantForAutofill(mode);
                 }
                 break;
             }
             case "defaultFocusHighlightEnabled": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    boolean defaultFocusHighlightEnabled = true;
-                    if (value != null) {
-                        defaultFocusHighlightEnabled = (boolean) value;
-                    }
+                    boolean defaultFocusHighlightEnabled = ViewAttrUtil.getBoolean(resources, type, value, true);
                     view.setDefaultFocusHighlightEnabled(defaultFocusHighlightEnabled);
                 }
                 break;
@@ -1219,17 +1016,4 @@ public class ViewSkinHandler implements ISkinHandler {
             }
         }
     }
-
-    private Class getStyleableClass() {
-        try {
-            return Class.forName("com.android.internal.R$styleable");
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-    }
-
-    private String getStyleableName() {
-        return "View";
-    }
-
 }

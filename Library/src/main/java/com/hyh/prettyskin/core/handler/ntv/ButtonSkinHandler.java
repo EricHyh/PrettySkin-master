@@ -4,7 +4,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.hyh.prettyskin.core.AttrValue;
-import com.hyh.prettyskin.utils.ReflectUtil;
+import com.hyh.prettyskin.utils.ViewAttrUtil;
 
 /**
  * Created by Eric_He on 2018/10/21.
@@ -13,7 +13,7 @@ import com.hyh.prettyskin.utils.ReflectUtil;
 public class ButtonSkinHandler extends TextViewSkinHandler {
 
     public ButtonSkinHandler() {
-        this((int) ReflectUtil.getStaticFieldValue("com.android.internal.R$attr", "buttonStyle"));//com.android.internal.R.attr.buttonStyle
+        this(ViewAttrUtil.getDefStyleAttr("buttonStyle"));//com.android.internal.R.attr.buttonStyle
     }
 
     public ButtonSkinHandler(int defStyleAttr) {

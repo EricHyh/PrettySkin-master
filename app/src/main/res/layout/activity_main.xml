@@ -97,5 +97,10 @@
         |attr_reference4=2|attr_reference5=2|attr_string=2
         |attr_enum=2|attr_flag=2|attr_color_reference=2|attr_string_reference=2"/>
 
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
 
 </LinearLayout>
