@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.demo.widget.CustomView;
-import com.hyh.prettyskin.demo.widget.CustomViewSkinHandler;
+import com.hyh.prettyskin.demo.widget.CustomViewSH;
 
 /**
  * @author Administrator
@@ -18,6 +18,6 @@ public class AppContext extends Application {
     public void onCreate() {
         super.onCreate();
         PrettySkin.getInstance().init(this);
-        PrettySkin.getInstance().addSkinHandler(CustomView.class, new CustomViewSkinHandler());
+        PrettySkin.getInstance().addSkinHandler(CustomView.class, new CustomViewSH());
     }
 }

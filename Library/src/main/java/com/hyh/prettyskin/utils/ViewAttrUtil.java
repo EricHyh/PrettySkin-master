@@ -60,11 +60,9 @@ public class ViewAttrUtil {
             case 1:
                 tf = Typeface.SANS_SERIF;
                 break;
-
             case 2:
                 tf = Typeface.SERIF;
                 break;
-
             case 3:
                 tf = Typeface.MONOSPACE;
                 break;
@@ -80,6 +78,17 @@ public class ViewAttrUtil {
         }
         return style;
     }
+
+    public static int getDefStyleAttr_V7(String styleName) {
+        int style = 0;
+        Object styleObj = ReflectUtil.getStaticFieldValue("android.support.v7.appcompat.R$attr", styleName);
+        if (styleObj != null && styleObj instanceof Integer) {
+            style = (int) styleObj;
+        }
+        return style;
+    }
+
+
 
     public static boolean needsTileify(Drawable progressDrawable) {
         if (progressDrawable != null) {

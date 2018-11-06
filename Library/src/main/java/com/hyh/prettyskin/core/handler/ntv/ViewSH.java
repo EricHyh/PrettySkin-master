@@ -35,7 +35,7 @@ import java.util.List;
  */
 
 
-public class ViewSkinHandler implements ISkinHandler {
+public class ViewSH implements ISkinHandler {
 
     private int defStyleAttr;
 
@@ -138,14 +138,14 @@ public class ViewSkinHandler implements ISkinHandler {
         mSupportAttrNames.add("defaultFocusHighlightEnabled");
     }
 
-    public ViewSkinHandler() {
+    public ViewSH() {
     }
 
-    public ViewSkinHandler(int defStyleAttr) {
+    public ViewSH(int defStyleAttr) {
         this.defStyleAttr = defStyleAttr;
     }
 
-    public ViewSkinHandler(int defStyleAttr, int defStyleRes) {
+    public ViewSH(int defStyleAttr, int defStyleRes) {
         this.defStyleAttr = defStyleAttr;
         this.defStyleRes = defStyleRes;
     }

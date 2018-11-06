@@ -21,7 +21,7 @@ import java.util.List;
  * Created by Eric_He on 2018/11/4.
  */
 
-public class AbsSeekBarSkinHandler extends ProgressBarSkinHandler {
+public class AbsSeekBarSH extends ProgressBarSH {
 
     private List<String> mSupportAttrNames = new ArrayList<>();
 
@@ -38,15 +38,15 @@ public class AbsSeekBarSkinHandler extends ProgressBarSkinHandler {
     }
 
 
-    public AbsSeekBarSkinHandler() {
+    public AbsSeekBarSH() {
         super();
     }
 
-    public AbsSeekBarSkinHandler(int defStyleAttr) {
+    public AbsSeekBarSH(int defStyleAttr) {
         super(defStyleAttr);
     }
 
-    public AbsSeekBarSkinHandler(int defStyleAttr, int defStyleRes) {
+    public AbsSeekBarSH(int defStyleAttr, int defStyleRes) {
         super(defStyleAttr, defStyleRes);
     }
 

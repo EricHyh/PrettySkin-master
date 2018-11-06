@@ -17,9 +17,9 @@ import com.hyh.prettyskin.core.SkinAttr;
 import com.hyh.prettyskin.core.SkinReplaceListener;
 import com.hyh.prettyskin.core.SkinView;
 import com.hyh.prettyskin.core.handler.ISkinHandler;
-import com.hyh.prettyskin.core.handler.ntv.ButtonSkinHandler;
-import com.hyh.prettyskin.core.handler.ntv.TextViewSkinHandler;
-import com.hyh.prettyskin.core.handler.ntv.ViewSkinHandler;
+import com.hyh.prettyskin.core.handler.ntv.ButtonSH;
+import com.hyh.prettyskin.core.handler.ntv.TextViewSH;
+import com.hyh.prettyskin.core.handler.ntv.ViewSH;
 import com.hyh.prettyskin.utils.ReflectUtil;
 
 import java.util.ArrayList;
@@ -63,9 +63,9 @@ public class PrettySkin {
 
 
     {
-        mSkinHandlerMap.put(View.class, new ViewSkinHandler());
-        mSkinHandlerMap.put(TextView.class, new TextViewSkinHandler());
-        mSkinHandlerMap.put(Button.class, new ButtonSkinHandler());
+        mSkinHandlerMap.put(View.class, new ViewSH());
+        mSkinHandlerMap.put(TextView.class, new TextViewSH());
+        mSkinHandlerMap.put(Button.class, new ButtonSH());
     }
 
     private ISkin mCurrentSkin;

@@ -24,7 +24,7 @@ import java.util.List;
  * Created by Eric_He on 2018/11/4.
  */
 
-public class ProgressBarSkinHandler extends ViewSkinHandler {
+public class ProgressBarSH extends ViewSH {
 
     private List<String> mSupportAttrNames = new ArrayList<>();
 
@@ -55,15 +55,15 @@ public class ProgressBarSkinHandler extends ViewSkinHandler {
         mSupportAttrNames.add("indeterminateTint");
     }
 
-    public ProgressBarSkinHandler() {
+    public ProgressBarSH() {
         this(ViewAttrUtil.getDefStyleAttr("progressBarStyle"));//com.android.internal.R.attr.progressBarStyle
     }
 
-    public ProgressBarSkinHandler(int defStyleAttr) {
+    public ProgressBarSH(int defStyleAttr) {
         super(defStyleAttr);
     }
 
-    public ProgressBarSkinHandler(int defStyleAttr, int defStyleRes) {
+    public ProgressBarSH(int defStyleAttr, int defStyleRes) {
         super(defStyleAttr, defStyleRes);
     }
 

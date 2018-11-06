@@ -22,7 +22,7 @@ import java.util.List;
  * Created by Eric_He on 2018/10/28.
  */
 
-public class ImageViewSkinHandler extends ViewSkinHandler {
+public class ImageViewSH extends ViewSH {
 
 
     private List<String> mSupportAttrNames = new ArrayList<>();
@@ -41,15 +41,15 @@ public class ImageViewSkinHandler extends ViewSkinHandler {
         mSupportAttrNames.add("cropToPadding");
     }
 
-    public ImageViewSkinHandler() {
+    public ImageViewSH() {
         super();
     }
 
-    public ImageViewSkinHandler(int defStyleAttr) {
+    public ImageViewSH(int defStyleAttr) {
         super(defStyleAttr);
     }
 
-    public ImageViewSkinHandler(int defStyleAttr, int defStyleRes) {
+    public ImageViewSH(int defStyleAttr, int defStyleRes) {
         super(defStyleAttr, defStyleRes);
     }
 

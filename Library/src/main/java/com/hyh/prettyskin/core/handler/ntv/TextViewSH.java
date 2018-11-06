@@ -29,7 +29,7 @@ import java.util.List;
  * @data 2018/10/20
  */
 
-public class TextViewSkinHandler extends ViewSkinHandler {
+public class TextViewSH extends ViewSH {
 
     private List<String> mSupportAttrNames = new ArrayList<>();
 
@@ -94,15 +94,15 @@ public class TextViewSkinHandler extends ViewSkinHandler {
     }
 
 
-    public TextViewSkinHandler() {
+    public TextViewSH() {
         super();
     }
 
-    public TextViewSkinHandler(int defStyleAttr) {
+    public TextViewSH(int defStyleAttr) {
         super(defStyleAttr);
     }
 
-    public TextViewSkinHandler(int defStyleAttr, int defStyleRes) {
+    public TextViewSH(int defStyleAttr, int defStyleRes) {
         super(defStyleAttr, defStyleRes);
     }
 
@@ -121,6 +121,18 @@ public class TextViewSkinHandler extends ViewSkinHandler {
             String styleableName = getStyleableName();
             return parseAttrValue(view, set, attrName, styleableClass, styleableName);
         }
+    }
+
+    private Class getStyleableClass() {
+        try {
+            return Class.forName("com.android.internal.R$styleable");
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private String getStyleableName() {
+        return "TextView";
     }
 
     @Override
@@ -670,17 +682,5 @@ public class TextViewSkinHandler extends ViewSkinHandler {
                 }
             }
         }
-    }
-
-    private Class getStyleableClass() {
-        try {
-            return Class.forName("com.android.internal.R$styleable");
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    private String getStyleableName() {
-        return "TextView";
     }
 }

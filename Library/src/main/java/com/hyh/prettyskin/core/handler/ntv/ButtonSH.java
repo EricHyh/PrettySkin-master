@@ -10,17 +10,17 @@ import com.hyh.prettyskin.utils.ViewAttrUtil;
  * Created by Eric_He on 2018/10/21.
  */
 
-public class ButtonSkinHandler extends TextViewSkinHandler {
+public class ButtonSH extends TextViewSH {
 
-    public ButtonSkinHandler() {
+    public ButtonSH() {
         this(ViewAttrUtil.getDefStyleAttr("buttonStyle"));//com.android.internal.R.attr.buttonStyle
     }
 
-    public ButtonSkinHandler(int defStyleAttr) {
+    public ButtonSH(int defStyleAttr) {
         super(defStyleAttr);
     }
 
-    public ButtonSkinHandler(int defStyleAttr, int defStyleRes) {
+    public ButtonSH(int defStyleAttr, int defStyleRes) {
         super(defStyleAttr, defStyleRes);
     }
 

@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.hyh.prettyskin.R;
 import com.hyh.prettyskin.core.AttrValue;
-import com.hyh.prettyskin.core.handler.ntv.ViewSkinHandler;
+import com.hyh.prettyskin.core.handler.ntv.ViewSH;
 
 /**
  * @author Administrator
@@ -13,17 +13,17 @@ import com.hyh.prettyskin.core.handler.ntv.ViewSkinHandler;
  * @data 2018/10/20
  */
 
-public class CustomViewSkinHandler extends ViewSkinHandler {
+public class CustomViewSH extends ViewSH {
 
-    public CustomViewSkinHandler() {
+    public CustomViewSH() {
         super();
     }
 
-    public CustomViewSkinHandler(int defStyleAttr) {
+    public CustomViewSH(int defStyleAttr) {
         super(defStyleAttr);
     }
 
-    public CustomViewSkinHandler(int defStyleAttr, int defStyleRes) {
+    public CustomViewSH(int defStyleAttr, int defStyleRes) {
         super(defStyleAttr, defStyleRes);
     }
 
