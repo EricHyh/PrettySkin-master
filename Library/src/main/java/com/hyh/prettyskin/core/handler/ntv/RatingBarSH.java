@@ -23,6 +23,13 @@ public class RatingBarSH extends AbsSeekBarSH {
 
     private List<String> mSupportAttrNames = new ArrayList<>();
 
+    {
+        mSupportAttrNames.add("numStars");
+        mSupportAttrNames.add("isIndicator");
+        mSupportAttrNames.add("rating");
+        mSupportAttrNames.add("stepSize");
+    }
+
     public RatingBarSH() {
         super();
     }

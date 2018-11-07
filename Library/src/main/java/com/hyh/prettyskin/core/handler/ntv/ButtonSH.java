@@ -1,9 +1,5 @@
 package com.hyh.prettyskin.core.handler.ntv;
 
-import android.util.AttributeSet;
-import android.view.View;
-
-import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.utils.ViewAttrUtil;
 
 /**
@@ -24,8 +20,4 @@ public class ButtonSH extends TextViewSH {
         super(defStyleAttr, defStyleRes);
     }
 
-    @Override
-    public AttrValue parseAttrValue(View view, AttributeSet set, String attrName) {
-        return super.parseAttrValue(view, set, attrName);
-    }
 }

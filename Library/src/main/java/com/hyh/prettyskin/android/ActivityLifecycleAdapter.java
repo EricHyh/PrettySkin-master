@@ -11,6 +11,7 @@ import android.os.Bundle;
  */
 
 public class ActivityLifecycleAdapter implements Application.ActivityLifecycleCallbacks {
+
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
 

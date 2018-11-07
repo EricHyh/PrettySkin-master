@@ -1,11 +1,14 @@
 package com.hyh.prettyskin.utils;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -87,7 +90,6 @@ public class ViewAttrUtil {
         }
         return style;
     }
-
 
 
     public static boolean needsTileify(Drawable progressDrawable) {
@@ -315,4 +317,22 @@ public class ViewAttrUtil {
         return result.toString();
     }
 
+    public static LayoutAnimationController getLayoutAnimation(Context context, int type, Object value) {
+        LayoutAnimationController layoutAnimationController = null;
+        if (value != null) {
+            switch (type) {
+                case ValueType.TYPE_REFERENCE: {
+                    layoutAnimationController = AnimationUtils.loadLayoutAnimation(context, (int) value);
+                    break;
+                }
+                case ValueType.TYPE_OBJECT: {
+                    if (value instanceof LayoutAnimationController) {
+                        layoutAnimationController = (LayoutAnimationController) value;
+                    }
+                    break;
+                }
+            }
+        }
+        return layoutAnimationController;
+    }
 }
