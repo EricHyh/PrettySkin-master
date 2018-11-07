@@ -1,7 +1,9 @@
 package com.hyh.prettyskin.core.handler.ntv;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -11,6 +13,7 @@ import android.widget.Switch;
 
 import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ValueType;
+import com.hyh.prettyskin.utils.ReflectUtil;
 import com.hyh.prettyskin.utils.ViewAttrUtil;
 
 import java.util.ArrayList;
@@ -110,34 +113,93 @@ public class SwitchSH extends CompoundButtonSH {
                 }
                 case "showText": {
                     boolean showText = ViewAttrUtil.getBoolean(resources, type, value);
-                    //switchView.setShowText(showText);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        switchView.setShowText(showText);
+                    } else {
+                        Object mShowText = ReflectUtil.getFieldValue(switchView, "mShowText");
+                        if (mShowText != null && mShowText instanceof Boolean && mShowText != showText) {
+                            ReflectUtil.setFieldValue(switchView, "mShowText", showText);
+                            switchView.requestLayout();
+                        }
+                    }
                     break;
                 }
                 case "thumbTextPadding": {
+                    int thumbTextPadding = ViewAttrUtil.getInt(resources, type, value);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        switchView.setThumbTextPadding(thumbTextPadding);
+                    } else {
+                        ReflectUtil.setFieldValue(switchView, "mThumbTextPadding", thumbTextPadding);
+                        switchView.requestLayout();
+                    }
                     break;
                 }
                 case "switchMinWidth": {
+                    int switchMinWidth = ViewAttrUtil.getInt(resources, type, value);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        switchView.setSwitchMinWidth(switchMinWidth);
+                    } else {
+                        ReflectUtil.setFieldValue(switchView, "mSwitchMinWidth", switchMinWidth);
+                        switchView.requestLayout();
+                    }
                     break;
                 }
                 case "switchPadding": {
+                    int switchPadding = ViewAttrUtil.getInt(resources, type, value);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        switchView.setSwitchPadding(switchPadding);
+                    } else {
+                        ReflectUtil.setFieldValue(switchView, "mSwitchPadding", switchPadding);
+                        switchView.requestLayout();
+                    }
                     break;
                 }
                 case "splitTrack": {
+                    boolean splitTrack = ViewAttrUtil.getBoolean(resources, type, value);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        switchView.setSplitTrack(splitTrack);
+                    } else {
+                        ReflectUtil.setFieldValue(switchView, "mSplitTrack", splitTrack);
+                        switchView.invalidate();
+                    }
                     break;
                 }
                 case "thumbTint": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        ColorStateList thumbTint = ViewAttrUtil.getColorStateList(resources, type, value);
+                        switchView.setThumbTintList(thumbTint);
+                    }
                     break;
                 }
                 case "thumbTintMode": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                        switchView.setThumbTintMode(tintMode);
+                    }
                     break;
                 }
                 case "trackTint": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        ColorStateList trackTint = ViewAttrUtil.getColorStateList(resources, type, value);
+                        switchView.setTrackTintList(trackTint);
+                    }
                     break;
                 }
                 case "trackTintMode": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                        switchView.setTrackTintMode(tintMode);
+                    }
                     break;
                 }
                 case "switchTextAppearance": {
+                    int switchTextAppearance = -1;
+                    if (value != null) {
+                        switchTextAppearance = (int) value;
+                    }
+                    if (switchTextAppearance != -1) {
+                        switchView.setSwitchTextAppearance(context, switchTextAppearance);
+                    }
                     break;
                 }
             }

@@ -39,5 +39,6 @@ public class CustomView extends View {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public CustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        bringToFront();
     }
 }
