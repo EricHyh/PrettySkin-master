@@ -167,6 +167,16 @@ public class AttrUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        try {
+            String filedName = styleableName + "_android_" + attrName;
+            Field field = styleableClass.getDeclaredField(filedName);
+            field.setAccessible(true);
+            if (Modifier.isStatic(field.getModifiers()) && field.getType() == int.class) {
+                return (int) field.get(null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return -1;
     }
 }

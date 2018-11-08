@@ -84,7 +84,8 @@ public class SwitchCompatSH extends CompoundButtonSH {
             SwitchCompat switchCompat = (SwitchCompat) view;
             Object value = attrValue.getValue();
             switch (attrName) {
-                case "buttonTintMode": {
+                case "thumb": {
+                    break;
                 }
             }
         }
