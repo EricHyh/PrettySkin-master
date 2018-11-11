@@ -1,17 +1,21 @@
 package com.hyh.prettyskin.demo.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.R;
 import com.hyh.prettyskin.core.ThemeSkin;
 import com.hyh.prettyskin.utils.NumberUtil;
+
+import java.lang.reflect.Field;
 
 /**
  * @author Administrator
@@ -19,15 +23,42 @@ import com.hyh.prettyskin.utils.NumberUtil;
  * @data 2018/9/30
  */
 
-public class MainActivity extends AppCompatActivity {
+//状态栏：https://juejin.im/entry/591ec14a570c3500698e848e
+public class MainActivity extends Activity {
 
     private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.activity_main, null);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: ");
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
+                    | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        }
+    }
+
+    /**
+     * 通过反射的方式获取状态栏高度
+     *
+     * @return
+     */
+    private int getStatusBarHeight() {
+        try {
+            Class<?> c = Class.forName("com.android.internal.R$dimen");
+            Object obj = c.newInstance();
+            Field field = c.getField("status_bar_height");
+            int x = Integer.parseInt(field.get(obj).toString());
+            return getResources().getDimensionPixelSize(x);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     @Override

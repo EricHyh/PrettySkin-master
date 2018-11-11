@@ -75,6 +75,16 @@ public class ViewAttrUtil {
 
     public static int getDefStyleAttr(String styleName) {
         int style = 0;
+        Object styleObj = ReflectUtil.getStaticFieldValue("android.R$attr", styleName);
+        if (styleObj != null && styleObj instanceof Integer) {
+            style = (int) styleObj;
+        }
+        return style;
+    }
+
+
+    public static int getDefStyleAttr_internal(String styleName) {
+        int style = 0;
         Object styleObj = ReflectUtil.getStaticFieldValue("com.android.internal.R$attr", styleName);
         if (styleObj != null && styleObj instanceof Integer) {
             style = (int) styleObj;
@@ -91,6 +101,14 @@ public class ViewAttrUtil {
         return style;
     }
 
+    public static int getDefStyleAttr_X(String styleName) {
+        int style = 0;
+        Object styleObj = ReflectUtil.getStaticFieldValue("androidx.appcompat.R$attr", styleName);
+        if (styleObj != null && styleObj instanceof Integer) {
+            style = (int) styleObj;
+        }
+        return style;
+    }
 
     public static boolean needsTileify(Drawable progressDrawable) {
         if (progressDrawable != null) {

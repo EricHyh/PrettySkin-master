@@ -1,14 +1,11 @@
 apply plugin: 'com.android.application'
+apply from: rootProject.getRootDir().getAbsolutePath() + File.separator + 'common.gradle'
 
 android {
-    compileSdkVersion 26
     defaultConfig {
-        applicationId "com.hyh.prettyskin"
-        minSdkVersion 14
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        applicationId "com.hyh.prettyskin.demo"
+        versionCode 100
+        versionName "1.0.0"
     }
     buildTypes {
         release {
@@ -20,9 +17,6 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation rootProject.ext.appcompat
     implementation project(':Library')
 }

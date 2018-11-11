@@ -9,7 +9,7 @@ import com.hyh.prettyskin.utils.ViewAttrUtil;
 public class RadioButtonSH extends CompoundButtonSH {
 
     public RadioButtonSH() {
-        this(ViewAttrUtil.getDefStyleAttr("radioButtonStyle"));//com.android.internal.R.attr.radioButtonStyle
+        this(ViewAttrUtil.getDefStyleAttr_internal("radioButtonStyle"));//com.android.internal.R.attr.radioButtonStyle
     }
 
     public RadioButtonSH(int defStyleAttr) {

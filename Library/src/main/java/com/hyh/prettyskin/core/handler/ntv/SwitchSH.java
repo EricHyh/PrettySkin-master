@@ -30,7 +30,7 @@ public class SwitchSH extends CompoundButtonSH {
     private List<String> mSupportAttrNames = new ArrayList<>();
 
     public SwitchSH() {
-        this(ViewAttrUtil.getDefStyleAttr("switchStyle"));//com.android.internal.R.attr.switchStyle
+        this(ViewAttrUtil.getDefStyleAttr_internal("switchStyle"));//com.android.internal.R.attr.switchStyle
     }
 
     public SwitchSH(int defStyleAttr) {
@@ -117,7 +117,7 @@ public class SwitchSH extends CompoundButtonSH {
                         switchView.setShowText(showText);
                     } else {
                         Object mShowText = ReflectUtil.getFieldValue(switchView, "mShowText");
-                        if (mShowText != null && mShowText instanceof Boolean && mShowText != showText) {
+                        if (mShowText != null && mShowText instanceof Boolean && (Boolean) mShowText != showText) {
                             ReflectUtil.setFieldValue(switchView, "mShowText", showText);
                             switchView.requestLayout();
                         }

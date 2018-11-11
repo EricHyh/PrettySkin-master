@@ -36,7 +36,7 @@ public class CheckedTextViewSH extends TextViewSH {
     }
 
     public CheckedTextViewSH() {
-        this(ViewAttrUtil.getDefStyleAttr("checkedTextViewStyle"));//R.attr.checkedTextViewStyle
+        this(ViewAttrUtil.getDefStyleAttr_internal("checkedTextViewStyle"));//R.attr.checkedTextViewStyle
     }
 
     public CheckedTextViewSH(int defStyleAttr) {

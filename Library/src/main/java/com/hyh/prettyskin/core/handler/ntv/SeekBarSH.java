@@ -11,7 +11,7 @@ import com.hyh.prettyskin.utils.ViewAttrUtil;
 public class SeekBarSH extends AbsSeekBarSH {
 
     public SeekBarSH() {
-        this(ViewAttrUtil.getDefStyleAttr("seekBarStyle"));//com.android.internal.R.attr.seekBarStyle
+        this(ViewAttrUtil.getDefStyleAttr_internal("seekBarStyle"));//com.android.internal.R.attr.seekBarStyle
     }
 
     public SeekBarSH(int defStyleAttr) {
