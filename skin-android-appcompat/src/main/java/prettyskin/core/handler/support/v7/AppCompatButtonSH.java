@@ -1,7 +1,6 @@
 package prettyskin.core.handler.support.v7;
 
 import com.hyh.prettyskin.core.handler.ntv.ButtonSH;
-import com.hyh.prettyskin.utils.ViewAttrUtil;
 
 /**
  * @author Administrator
@@ -12,11 +11,11 @@ import com.hyh.prettyskin.utils.ViewAttrUtil;
 public class AppCompatButtonSH extends ButtonSH {
 
     public AppCompatButtonSH() {
-        this(ViewAttrUtil.getDefStyleAttr_V7("buttonStyle"));//R.attr.buttonStyle
+        this(android.support.v7.appcompat.R.attr.buttonStyle);
     }
 
     public AppCompatButtonSH(int defStyleAttr) {
-        super(defStyleAttr);
+        this(defStyleAttr,0);
     }
 
     public AppCompatButtonSH(int defStyleAttr, int defStyleRes) {

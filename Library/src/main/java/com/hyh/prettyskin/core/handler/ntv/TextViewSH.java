@@ -520,10 +520,7 @@ public class TextViewSH extends ViewSH {
                             radius = (float) shadowRadius;
                         }
                     }
-                    float dx = 0;
-                    if (value != null) {
-                        dx = (float) value;
-                    }
+                    float dx = ViewAttrUtil.getFloat(resources, type, value);
                     float dy = 0;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         dy = textView.getShadowDy();
@@ -564,10 +561,7 @@ public class TextViewSH extends ViewSH {
                             dx = (float) shadowDx;
                         }
                     }
-                    float dy = 0;
-                    if (value != null) {
-                        dy = (float) value;
-                    }
+                    float dy = ViewAttrUtil.getFloat(resources, type, value);
                     int color = 0;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         color = textView.getShadowColor();
@@ -581,10 +575,7 @@ public class TextViewSH extends ViewSH {
                     break;
                 }
                 case "shadowRadius": {
-                    float radius = 0;
-                    if (value != null) {
-                        radius = (float) value;
-                    }
+                    float radius = ViewAttrUtil.getFloat(resources, type, value);
                     float dx = 0;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         dx = textView.getShadowDx();

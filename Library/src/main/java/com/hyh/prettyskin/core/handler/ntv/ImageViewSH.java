@@ -183,7 +183,6 @@ public class ImageViewSH extends ViewSH {
                                 break;
                             }
                         }
-
                     }
                     if (index >= 0) {
                         scaleType = ViewAttrUtil.getImageScaleType(index);

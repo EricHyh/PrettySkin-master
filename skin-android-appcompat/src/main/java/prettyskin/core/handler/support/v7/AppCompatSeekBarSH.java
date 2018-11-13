@@ -1,7 +1,6 @@
 package prettyskin.core.handler.support.v7;
 
 import com.hyh.prettyskin.core.handler.ntv.SeekBarSH;
-import com.hyh.prettyskin.utils.ViewAttrUtil;
 
 /**
  * @author Administrator
@@ -12,7 +11,7 @@ import com.hyh.prettyskin.utils.ViewAttrUtil;
 public class AppCompatSeekBarSH extends SeekBarSH {
 
     public AppCompatSeekBarSH() {
-        super(ViewAttrUtil.getDefStyleAttr_V7("seekBarStyle"));//android.support.v7.appcompat.R.attr.ratingBarStyle
+        super(android.support.v7.appcompat.R.attr.seekBarStyle);
     }
 
     public AppCompatSeekBarSH(int defStyleAttr) {

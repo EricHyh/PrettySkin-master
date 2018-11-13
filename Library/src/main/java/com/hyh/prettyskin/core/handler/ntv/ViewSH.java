@@ -357,6 +357,7 @@ public class ViewSH implements ISkinHandler {
                         } else {
                             view.setBackgroundDrawable(background);
                         }
+                        break;
                     }
                 }
                 break;
@@ -785,7 +786,6 @@ public class ViewSH implements ISkinHandler {
                     int textDirection = ViewAttrUtil.getInt(resources, type, value, View.TEXT_DIRECTION_INHERIT);
                     view.setTextDirection(textDirection);
                 }
-
                 break;
             }
             case "textAlignment": {

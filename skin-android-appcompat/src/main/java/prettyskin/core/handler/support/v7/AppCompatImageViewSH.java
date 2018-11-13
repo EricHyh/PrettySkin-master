@@ -1,6 +1,8 @@
 package prettyskin.core.handler.support.v7;
 
-import android.support.v7.widget.AppCompatImageView;
+import android.annotation.SuppressLint;
+import android.support.v7.widget.AppCompatBackgroundSH;
+import android.support.v7.widget.AppCompatImageSH;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -12,31 +14,43 @@ import com.hyh.prettyskin.core.handler.ntv.ImageViewSH;
  * @description
  * @data 2018/11/12
  */
-
+@SuppressLint("RestrictedApi")
 public class AppCompatImageViewSH extends ImageViewSH {
 
+    private final AppCompatBackgroundSH mBackgroundSH;
+
+    private final AppCompatImageSH mImageSH;
+
     public AppCompatImageViewSH() {
+        this(0);
     }
 
     public AppCompatImageViewSH(int defStyleAttr) {
-        super(defStyleAttr);
+        this(defStyleAttr, 0);
     }
 
     public AppCompatImageViewSH(int defStyleAttr, int defStyleRes) {
         super(defStyleAttr, defStyleRes);
+        mBackgroundSH = new AppCompatBackgroundSH(defStyleAttr);
+        mImageSH = new AppCompatImageSH(defStyleAttr);
     }
 
 
     @Override
     public boolean isSupportAttrName(View view, String attrName) {
-        return super.isSupportAttrName(view, attrName);
+        return mBackgroundSH.isSupportAttrName(view, attrName)
+                || mImageSH.isSupportAttrName(view, attrName)
+                || super.isSupportAttrName(view, attrName);
     }
 
     @Override
     public AttrValue parseAttrValue(View view, AttributeSet set, String attrName) {
         AttrValue attrValue = super.parseAttrValue(view, set, attrName);
-        if (view instanceof AppCompatImageView) {
-            
+        if (mBackgroundSH.isSupportAttrName(view, attrName)) {
+            attrValue = mBackgroundSH.parseAttrValue(view, set, attrName);
+        }
+        if (mImageSH.isSupportAttrName(view, attrName)) {
+            attrValue = mImageSH.parseAttrValue(view, set, attrName);
         }
         return attrValue;
     }
@@ -44,5 +58,11 @@ public class AppCompatImageViewSH extends ImageViewSH {
     @Override
     public void replace(View view, String attrName, AttrValue attrValue) {
         super.replace(view, attrName, attrValue);
+        if (mBackgroundSH.isSupportAttrName(view, attrName)) {
+            mBackgroundSH.replace(view, attrName, attrValue);
+        }
+        if (mImageSH.isSupportAttrName(view, attrName)) {
+            mImageSH.replace(view, attrName, attrValue);
+        }
     }
 }

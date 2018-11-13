@@ -1,7 +1,6 @@
 package prettyskin.core.handler.support.v7;
 
 import com.hyh.prettyskin.core.handler.ntv.CheckBoxSH;
-import com.hyh.prettyskin.utils.ViewAttrUtil;
 
 /**
  * Created by Eric_He on 2018/11/8.
@@ -10,7 +9,7 @@ import com.hyh.prettyskin.utils.ViewAttrUtil;
 public class AppCompatCheckBoxSH extends CheckBoxSH {
 
     public AppCompatCheckBoxSH() {
-        this(ViewAttrUtil.getDefStyleAttr_V7("checkboxStyle"));//R.attr.checkboxStyle
+        this(android.support.v7.appcompat.R.attr.checkboxStyle);
     }
 
     public AppCompatCheckBoxSH(int defStyleAttr) {

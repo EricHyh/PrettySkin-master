@@ -12,12 +12,19 @@
     skin:skin_attrs="background=ma_bg"
     tools:ignore="MissingPrefix">
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="10dp"
         android:text="顶部"/>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/icon1"
+        app:tint="@color/colorAccent"/>
 
     <View
         android:layout_width="match_parent"
@@ -80,7 +87,7 @@
         android:src="@mipmap/ic_launcher"
         skin:skin_attrs="background=ma_iv_bg|src=ma_iv_src"/>
 
-    <com.hyh.prettyskin.demo.widget.CustomView
+    <!--<com.hyh.prettyskin.demo.widget.CustomView
         android:layout_width="50dp"
         android:layout_height="20dp"
         app:attr_boolean="false"
@@ -102,7 +109,7 @@
         skin:skin_attrs="attr_boolean=2|attr_color1=2|attr_color2=2|attr_dimension=2
         |attr_float=2|attr_fraction=2|attr_integer=2|attr_reference1=2|attr_reference2=2
         |attr_reference4=2|attr_reference5=2|attr_string=2
-        |attr_enum=2|attr_flag=2|attr_color_reference=2|attr_string_reference=2"/>
+        |attr_enum=2|attr_flag=2|attr_color_reference=2|attr_string_reference=2"/>-->
 
 
     <RelativeLayout

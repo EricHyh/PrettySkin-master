@@ -43,7 +43,7 @@ public class SwitchCompatSH extends CompoundButtonSH {
     }
 
     public SwitchCompatSH() {
-        this(ViewAttrUtil.getDefStyleAttr_V7("switchStyle"));
+        this(android.support.v7.appcompat.R.attr.switchStyle);
     }
 
     public SwitchCompatSH(int defStyleAttr) {
