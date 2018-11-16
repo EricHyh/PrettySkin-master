@@ -14,8 +14,7 @@ import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.R;
 import com.hyh.prettyskin.core.ThemeSkin;
 import com.hyh.prettyskin.utils.NumberUtil;
-
-import java.lang.reflect.Field;
+import com.hyh.prettyskin.utils.reflect.Reflect;
 
 /**
  * @author Administrator
@@ -49,16 +48,10 @@ public class MainActivity extends Activity {
      * @return
      */
     private int getStatusBarHeight() {
-        try {
-            Class<?> c = Class.forName("com.android.internal.R$dimen");
-            Object obj = c.newInstance();
-            Field field = c.getField("status_bar_height");
-            int x = Integer.parseInt(field.get(obj).toString());
-            return getResources().getDimensionPixelSize(x);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
+        return (int) Reflect.from("com.android.internal.R$dimen")
+                .filed("status_bar_height")
+                .defaultValue(0)
+                .get(null);
     }
 
     @Override

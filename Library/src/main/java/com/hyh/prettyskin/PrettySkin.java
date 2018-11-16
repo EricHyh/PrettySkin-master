@@ -95,6 +95,10 @@ public class PrettySkin {
 
     public synchronized void addSkinHandler(Class<? extends View> viewClass, ISkinHandler skinHandler) {
         mSkinHandlerMap.put(viewClass, skinHandler);
+
+
+
+
     }
 
 
