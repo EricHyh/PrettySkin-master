@@ -1,14 +1,14 @@
-package com.hyh.prettyskin.utils.reflect.test;
+package com.hyh.prettyskin.demo.utils.reflect.test;
 
 import android.app.Application;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.ArrayMap;
 
-import com.hyh.prettyskin.utils.reflect.FieldName;
-import com.hyh.prettyskin.utils.reflect.MethodName;
-import com.hyh.prettyskin.utils.reflect.TargetTypePath;
-import com.hyh.prettyskin.utils.reflect.Static;
+import com.hyh.prettyskin.demo.utils.reflect.FieldName;
+import com.hyh.prettyskin.demo.utils.reflect.MethodName;
+import com.hyh.prettyskin.demo.utils.reflect.Static;
+import com.hyh.prettyskin.demo.utils.reflect.TargetTypePath;
 
 /**
  * @author Administrator

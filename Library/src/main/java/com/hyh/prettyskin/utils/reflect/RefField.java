@@ -47,11 +47,11 @@ public class RefField {
 
     public Object get(Object receiver) {
         if (this.cls == null) {
-            return filedNotFound();
+            return filedNotFoundOnGetField();
         }
         Field field = Reflect.getDeclaredField(cls, fieldName);
         if (field == null) {
-            return filedNotFound();
+            return filedNotFoundOnGetField();
         }
 
         Object result = null;
@@ -98,7 +98,33 @@ public class RefField {
         }
     }
 
-    private Object filedNotFound() {
+
+    public void set(Object receiver, Object value) {
+        if (this.cls == null) {
+            filedNotFoundOnSetField();
+            return;
+        }
+        Field field = Reflect.getDeclaredField(cls, fieldName);
+        if (field == null) {
+            filedNotFoundOnSetField();
+            return;
+        }
+
+        Throwable throwable = null;
+
+        try {
+            field.set(receiver, value);
+        } catch (Throwable e) {
+            throwable = Reflect.getRealThrowable(e);
+        }
+
+        if (throwable != null && printException) {
+            throwable.printStackTrace();
+        }
+    }
+
+
+    private Object filedNotFoundOnGetField() {
         ReflectException reflectException = new ReflectException("filed[" + fieldName + "] not found in Class[" + cls + "]");
         if (throwable != null) {
             reflectException.setStackTrace(throwable.getStackTrace());
@@ -112,6 +138,20 @@ public class RefField {
             reflectResult.setThrowable(reflectException);
         }
         return defaultValue;
+    }
+
+
+    private void filedNotFoundOnSetField() {
+        ReflectException reflectException = new ReflectException("filed[" + fieldName + "] not found in Class[" + cls + "]");
+        if (throwable != null) {
+            reflectException.setStackTrace(throwable.getStackTrace());
+        }
+        if (printException) {
+            reflectException.printStackTrace();
+        }
+        if (reflectResult != null) {
+            reflectResult.setThrowable(reflectException);
+        }
     }
 
 

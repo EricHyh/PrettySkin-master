@@ -256,7 +256,4 @@ public class Reflect {
         return new RefClass(classLoader, className);
     }
 
-    public static <T extends TargetApi> T orm(Object target, Class<T> targetApi) {
-        return null;
-    }
 }

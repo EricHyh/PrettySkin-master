@@ -1,4 +1,4 @@
-package com.hyh.prettyskin.utils.reflect;
+package com.hyh.prettyskin.demo.utils.reflect;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -14,5 +14,8 @@ import java.lang.annotation.Target;
 @Documented
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Static {
+public @interface FieldName {
+
+    String value();
+
 }

@@ -1,7 +1,9 @@
-package com.hyh.prettyskin.utils.reflect.test;
+package com.hyh.prettyskin.demo.utils.reflect.test;
 
 import android.app.Activity;
 
+import com.hyh.prettyskin.demo.utils.reflect.FieldName;
+import com.hyh.prettyskin.demo.utils.reflect.TargetTypePath;
 import com.hyh.prettyskin.utils.reflect.FieldName;
 import com.hyh.prettyskin.utils.reflect.TargetTypePath;
 

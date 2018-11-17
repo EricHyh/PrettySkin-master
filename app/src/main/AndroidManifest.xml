@@ -26,6 +26,10 @@
             android:name=".demo.activity.SecondActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".demo.activity.ReflectTestActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 
