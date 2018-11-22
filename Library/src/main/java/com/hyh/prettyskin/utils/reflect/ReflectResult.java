@@ -6,27 +6,27 @@ package com.hyh.prettyskin.utils.reflect;
  * @data 2018/11/15
  */
 
-public class ReflectResult {
+public class ReflectResult<E> {
 
-    private Object result;
+    private E result;
 
     private boolean isSuccess;
 
     private Throwable throwable;
 
-    public void setResult(Object result) {
+    void setResult(E result) {
         this.result = result;
     }
 
-    public void setSuccess(boolean success) {
+    void setSuccess(boolean success) {
         isSuccess = success;
     }
 
-    public void setThrowable(Throwable throwable) {
+    void setThrowable(Throwable throwable) {
         this.throwable = throwable;
     }
 
-    public Object getResult() {
+    public E getResult() {
         return result;
     }
 

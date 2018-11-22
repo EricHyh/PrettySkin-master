@@ -1,6 +1,7 @@
 package com.hyh.prettyskin.utils.reflect;
 
 import java.lang.reflect.Constructor;
+import java.util.Locale;
 
 /**
  * @author Administrator
@@ -8,46 +9,131 @@ import java.lang.reflect.Constructor;
  * @data 2018/11/16
  */
 
-public class RefConstructor extends RefExecutable<RefConstructor, Constructor> {
+public class RefConstructor<E> extends RefExecutable<E, RefConstructor<E>> {
+
+    private Class<E> cls;
+
+    RefConstructor(Class cls, Throwable throwable) {
+        super(throwable);
+        this.cls = cls;
+    }
+
+    public E newInstance() {
+        if (cls == null) {
+            this.throwable = new ReflectException("Constructor: " + getConstructorSignature() + " not found, because Class is null", this.throwable);
+            E defaultValue = getDefaultValue(null);
+            saveFailure(defaultValue);
+            tryToPrintException();
+            return defaultValue;
+        }
+        Constructor<E> constructor = null;
+        try {
+            constructor = Reflect.getDeclaredConstructor(cls, getParameterTypes());
+        } catch (Throwable e) {
+            this.throwable = Reflect.getRealThrowable(e);
+        }
+        if (constructor == null) {
+            this.throwable = new ReflectException("Constructor: " + getConstructorSignature() + " not found in Class[" + cls + "]", this.throwable);
+            E defaultValue = getDefaultValue(cls);
+            saveFailure(defaultValue);
+            tryToPrintException();
+            return defaultValue;
+        }
+
+        E result = null;
+        boolean newInstanceSuccess = false;
+
+        try {
+            result = constructor.newInstance(getParameters());
+            newInstanceSuccess = true;
+        } catch (Throwable e) {
+            e = Reflect.getRealThrowable(e);
+            this.throwable = new ReflectException("Constructor: " + getConstructorSignature() + " found in Class[" + cls + "], but newInstance failed", e);
+        }
+        if (newInstanceSuccess) {
+            saveSuccess(result);
+            return result;
+        } else {
+            E e = getDefaultValue(cls);
+            saveFailure(e);
+            tryToPrintException();
+            return e;
+        }
+    }
 
 
-    public RefConstructor(Class cls, Throwable throwable) {
-        super(cls, throwable);
+    public E newInstanceWithException() throws ReflectException {
+        ReflectException exception = null;
+        if (cls == null) {
+            exception = new ReflectException("Constructor: " + getConstructorSignature() + " not found, because Class is null", this.throwable);
+            this.throwable = exception;
+            E defaultValue = getDefaultValue(null);
+            saveFailure(defaultValue);
+            tryToPrintException();
+            throw exception;
+        }
+        Constructor<E> constructor = null;
+        try {
+            constructor = Reflect.getDeclaredConstructorWithException(cls, getParameterTypes());
+        } catch (Throwable e) {
+            this.throwable = Reflect.getRealThrowable(e);
+        }
+        if (constructor == null) {
+            exception = new ReflectException("Constructor: " + getConstructorSignature() + " not found in Class[" + cls + "]", this.throwable);
+            this.throwable = exception;
+            E defaultValue = getDefaultValue(cls);
+            saveFailure(defaultValue);
+            tryToPrintException();
+            throw exception;
+        }
+
+        E result = null;
+        boolean newInstanceSuccess = false;
+
+        try {
+            result = constructor.newInstance(getParameters());
+            newInstanceSuccess = true;
+        } catch (Throwable e) {
+            e = Reflect.getRealThrowable(e);
+            exception = new ReflectException("Constructor: " + getConstructorSignature() + " found in Class[" + cls + "], but newInstance failed", e);
+            this.throwable = exception;
+        }
+        if (newInstanceSuccess) {
+            saveSuccess(result);
+            return result;
+        } else {
+            E e = getDefaultValue(cls);
+            saveFailure(e);
+            tryToPrintException();
+            throw exception;
+        }
     }
 
     @Override
-    protected Constructor getExecutable(Class cls, Class[] parameterTypes) {
-        return Reflect.getDeclaredConstructor(cls, parameterTypes);
+    Class<E> getEnsureType() {
+        return cls;
     }
 
     @Override
-    protected Object execute(Constructor constructor, Object receiver, Object[] parameters) throws Throwable {
-        return constructor.newInstance(parameters);
+    String getResultTypeErrorMessage(Class resultType) {
+        return null;
     }
 
-    @Override
-    protected String getExecuteNotFoundMessage(Class cls) {
-        StringBuilder parameterTypesStr = new StringBuilder();
+    private String getConstructorSignature() {
+        String parameterStr = "";
         Class[] parameterTypes = getParameterTypes();
-        if (parameterTypes != null && parameterTypes.length >= 0) {
-            int length = parameterTypes.length;
+        int length = parameterTypes.length;
+        if (length > 0) {
+            StringBuilder sb = new StringBuilder();
             for (int index = 0; index < length; index++) {
                 if (index < length - 1) {
-                    parameterTypesStr.append(parameterTypes[index].getName()).append(", ");
+                    sb.append(parameterTypes[index].getSimpleName()).append(", ");
                 } else {
-                    parameterTypesStr.append(parameterTypes[index].getName());
+                    sb.append(parameterTypes[index].getSimpleName());
                 }
             }
+            parameterStr = sb.toString();
         }
-        return "constructor: init(" + parameterTypesStr + ") not found in Class[" + cls + "]";
-    }
-
-
-    public Object newInstance() {
-        return execute(null);
-    }
-
-    public Object newInstanceWithException() throws Throwable {
-        return executeWithException(null);
+        return String.format(Locale.getDefault(), "init(%s)", parameterStr);
     }
 }

@@ -12,11 +12,14 @@ public class RefClass {
 
     private Throwable throwable;
 
-    public RefClass(Class cls) {
+    RefClass(Class cls) {
         this.cls = cls;
+        if (this.cls == null) {
+            this.throwable = new NullPointerException("Class not be null");
+        }
     }
 
-    public RefClass(String className) {
+    RefClass(String className) {
         try {
             this.cls = Reflect.classForNameWithException(className);
         } catch (Throwable e) {
@@ -24,7 +27,7 @@ public class RefClass {
         }
     }
 
-    public RefClass(ClassLoader classLoader, String className) {
+    RefClass(ClassLoader classLoader, String className) {
         try {
             this.cls = Reflect.classForNameWithException(classLoader, className);
         } catch (Throwable e) {
@@ -32,15 +35,23 @@ public class RefClass {
         }
     }
 
-    public RefField filed(String filedName) {
-        return new RefField(cls, filedName, throwable);
+    public <T> RefField<T> filed(String filedName) {
+        return new RefField<>(cls, filedName, null, throwable);
     }
 
-    public RefMethod method(String methodName) {
-        return new RefMethod(cls, methodName, throwable);
+    public <T> RefField<T> filed(String filedName, Class<T> fieldType) {
+        return new RefField<>(cls, filedName, fieldType, throwable);
     }
 
-    public RefConstructor constructor() {
-        return new RefConstructor(cls, throwable);
+    public <T> RefMethod<T> method(String methodName) {
+        return new RefMethod<>(cls, methodName, null, throwable);
+    }
+
+    public <T> RefMethod<T> method(String methodName, Class<T> returnType) {
+        return new RefMethod<>(cls, methodName, returnType, throwable);
+    }
+
+    public <T> RefConstructor<T> constructor() {
+        return new RefConstructor<>(cls, throwable);
     }
 }

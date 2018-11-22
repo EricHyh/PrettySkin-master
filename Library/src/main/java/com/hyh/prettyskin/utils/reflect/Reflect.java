@@ -2,7 +2,9 @@ package com.hyh.prettyskin.utils.reflect;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +13,38 @@ import java.util.Map;
  * @description
  * @data 2018/11/15
  */
+
+//                            _ooOoo_
+//                           o8888888o
+//                           88" . "88
+//                           (| -_- |)
+//                            O\ = /O
+//                        ____/`---'\____
+//                      .   ' \\| |// `.
+//                       / \\||| : |||// \
+//                     / _||||| -:- |||||- \
+//                       | | \\\ - /// | |
+//                     | \_| ''\---/'' | |
+//                      \ .-\__ `-` ___/-. /
+//                   ___`. .' /--.--\ `. . __
+//                ."" '< `.___\_<|>_/___.' >'"".
+//               | | : `- \`.;`\ _ /`;.`/ - ` : | |
+//                 \ \ `-. \_ __\ /__ _/ .-` / /
+//         ======`-.____`-.___\_____/___.-`____.-'======
+//                            `=---='
+//
+//         .............................................
+//               佛祖镇楼                  BUG辟易
+//         佛曰:
+//                  写字楼里写字间，写字间里程序员；
+//                  程序人员写程序，又拿程序换酒钱。
+//                  酒醒只在网上坐，酒醉还来网下眠；
+//                  酒醉酒醒日复日，网上网下年复年。
+//                  但愿老死电脑间，不愿鞠躬老板前；
+//                  奔驰宝马贵者趣，公交自行程序员。
+//                  别人笑我忒疯癫，我笑自己命太贱；
+//                  不见满街漂亮妹，哪个归得程序员？
+
 
 public class Reflect {
 
@@ -26,16 +60,43 @@ public class Reflect {
     private static final Map<Class, Object> ELEMENTARY_DEFAULT_VALUE = new HashMap<>(8);
 
     static {
-        ELEMENTARY_DEFAULT_VALUE.put(byte.class, 0);
-        ELEMENTARY_DEFAULT_VALUE.put(short.class, 0);
+        ELEMENTARY_DEFAULT_VALUE.put(byte.class, Byte.valueOf("0"));
+        ELEMENTARY_DEFAULT_VALUE.put(short.class, Short.valueOf("0"));
         ELEMENTARY_DEFAULT_VALUE.put(int.class, 0);
         ELEMENTARY_DEFAULT_VALUE.put(long.class, 0L);
         ELEMENTARY_DEFAULT_VALUE.put(float.class, 0.0f);
         ELEMENTARY_DEFAULT_VALUE.put(double.class, 0.0d);
         ELEMENTARY_DEFAULT_VALUE.put(boolean.class, false);
-        ELEMENTARY_DEFAULT_VALUE.put(char.class, 0);
+        ELEMENTARY_DEFAULT_VALUE.put(char.class, '\u0000');
     }
 
+
+    public static boolean isAssignableFrom(Class<?> child, Class<?> parent) {
+        if (child == parent) {
+            return true;
+        }
+        if (!parent.isPrimitive()) {
+            return parent.isAssignableFrom(child);
+        }
+        if (parent == byte.class) {
+            return child == Byte.class;
+        } else if (parent == short.class) {
+            return child == Short.class;
+        } else if (parent == int.class) {
+            return child == Integer.class;
+        } else if (parent == long.class) {
+            return child == Long.class;
+        } else if (parent == float.class) {
+            return child == Float.class;
+        } else if (parent == double.class) {
+            return child == Double.class;
+        } else if (parent == boolean.class) {
+            return child == Boolean.class;
+        } else if (parent == char.class) {
+            return child == Character.class;
+        }
+        return false;
+    }
 
     public static Throwable getRealThrowable(Throwable throwable) {
         return getRealThrowable(throwable, 0);
@@ -45,19 +106,23 @@ public class Reflect {
         if (throwable == null || num >= 10) {
             return throwable;
         }
-        Throwable cause = throwable.getCause();
-        if (cause == null) {
-            return throwable;
+        if (throwable instanceof InvocationTargetException || throwable instanceof UndeclaredThrowableException) {
+            Throwable cause = throwable.getCause();
+            if (cause == null) {
+                return throwable;
+            } else {
+                return getRealThrowable(cause, ++num);
+            }
         } else {
-            return getRealThrowable(throwable, ++num);
+            return throwable;
         }
     }
 
 
-    public static <T> T getDefaultValue(Class<T> valueType) {
-        return (T) ELEMENTARY_DEFAULT_VALUE.get(valueType);
+    @SuppressWarnings("unchecked")
+    public static <E> E getDefaultValue(Class<E> valueType) {
+        return (E) ELEMENTARY_DEFAULT_VALUE.get(valueType);
     }
-
 
     public static Class classForName(String className) {
         String key = generateClassMapKey(Reflect.class.getClassLoader(), className);
@@ -146,6 +211,37 @@ public class Reflect {
         }
     }
 
+    public static Field getDeclaredFieldWithException(Class cls, String fieldName) throws Throwable {
+        return getDeclaredFieldWithException(null, cls, fieldName);
+    }
+
+    private static Field getDeclaredFieldWithException(Throwable throwable, Class cls, String fieldName) throws Throwable {
+        String key = generateFieldMapKey(cls);
+        Field field = FIELD_MAP.get(key);
+        if (field != null) {
+            return field;
+        }
+        try {
+            field = cls.getDeclaredField(fieldName);
+            field.setAccessible(true);
+        } catch (Exception e) {
+            if (throwable == null) {
+                throwable = e;
+            }
+        }
+        if (field == null) {
+            Class<?> superclass = cls.getSuperclass();
+            if (superclass != null) {
+                return getDeclaredFieldWithException(throwable, superclass, fieldName);
+            } else {
+                throw throwable;
+            }
+        } else {
+            FIELD_MAP.put(key, field);
+            return field;
+        }
+    }
+
 
     public static Method getDeclaredMethod(Class cls, String methodName, Class... parameterTypes) {
         String key = generateMethodMapKey(cls, methodName, parameterTypes);
@@ -172,7 +268,39 @@ public class Reflect {
         }
     }
 
-    public static Constructor getDeclaredConstructor(Class cls, Class[] parameterTypes) {
+    public static Method getDeclaredMethodWithException(Class cls, String methodName, Class... parameterTypes) throws Throwable {
+        return getDeclaredMethodWithException(null, cls, methodName, parameterTypes);
+    }
+
+    private static Method getDeclaredMethodWithException(Throwable throwable, Class cls, String methodName, Class... parameterTypes) throws Throwable {
+        String key = generateMethodMapKey(cls, methodName, parameterTypes);
+        Method method = METHOD_MAP.get(key);
+        if (method != null) {
+            return method;
+        }
+        try {
+            method = cls.getDeclaredMethod(methodName, parameterTypes);
+            method.setAccessible(true);
+        } catch (Exception e) {
+            if (throwable == null) {
+                throwable = e;
+            }
+        }
+        if (method == null) {
+            Class<?> superclass = cls.getSuperclass();
+            if (superclass != null) {
+                return getDeclaredMethodWithException(throwable, superclass, methodName, parameterTypes);
+            } else {
+                throw throwable;
+            }
+        } else {
+            METHOD_MAP.put(key, method);
+            return method;
+        }
+    }
+
+
+    public static <T> Constructor<T> getDeclaredConstructor(Class<T> cls, Class[] parameterTypes) {
         String key = generateConstructorMapKey(cls, parameterTypes);
         Constructor constructor = CONSTRUCTOR_MAP.get(key);
         if (constructor != null) {
@@ -187,6 +315,18 @@ public class Reflect {
         if (constructor != null) {
             CONSTRUCTOR_MAP.put(key, constructor);
         }
+        return constructor;
+    }
+
+    public static <T> Constructor<T> getDeclaredConstructorWithException(Class<T> cls, Class[] parameterTypes) throws Throwable {
+        String key = generateConstructorMapKey(cls, parameterTypes);
+        Constructor constructor = CONSTRUCTOR_MAP.get(key);
+        if (constructor != null) {
+            return constructor;
+        }
+        constructor = cls.getDeclaredConstructor(parameterTypes);
+        constructor.setAccessible(true);
+        CONSTRUCTOR_MAP.put(key, constructor);
         return constructor;
     }
 
@@ -244,8 +384,8 @@ public class Reflect {
     }
 
 
-    public static RefClass from(Class<?> cls) {
-        return new RefClass(cls);
+    public static <E> RefClassWG<E> from(Class<E> cls) {
+        return new RefClassWG<>(cls);
     }
 
     public static RefClass from(String className) {
@@ -255,5 +395,4 @@ public class Reflect {
     public static RefClass from(ClassLoader classLoader, String className) {
         return new RefClass(classLoader, className);
     }
-
 }

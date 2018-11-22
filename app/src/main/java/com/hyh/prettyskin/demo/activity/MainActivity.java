@@ -48,9 +48,8 @@ public class MainActivity extends Activity {
      * @return
      */
     private int getStatusBarHeight() {
-        return (int) Reflect.from("com.android.internal.R$dimen")
-                .filed("status_bar_height")
-                .defaultValue(0)
+        return Reflect.from("com.android.internal.R$dimen")
+                .filed("status_bar_height", int.class)
                 .get(null);
     }
 

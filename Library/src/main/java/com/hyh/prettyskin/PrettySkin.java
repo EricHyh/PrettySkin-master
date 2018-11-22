@@ -97,8 +97,6 @@ public class PrettySkin {
         mSkinHandlerMap.put(viewClass, skinHandler);
 
 
-
-
     }
 
 

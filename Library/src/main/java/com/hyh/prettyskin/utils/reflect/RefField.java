@@ -8,206 +8,211 @@ import java.lang.reflect.Field;
  * @data 2018/11/15
  */
 
-public class RefField {
+public class RefField<E> extends RefAccessible<E, RefField<E>> {
 
     private Class cls;
 
     private String fieldName;
 
-    private Throwable throwable;
+    private Class<E> fieldType;
 
-    private Object defaultValue;
-
-    private ReflectResult reflectResult;
-
-    private boolean printException;
-
-    public RefField(Class cls, String fieldName, Throwable throwable) {
+    RefField(Class cls, String fieldName, Class<E> fieldType, Throwable throwable) {
+        super(throwable);
         this.cls = cls;
         this.fieldName = fieldName;
+        this.fieldType = fieldType;
         this.throwable = throwable;
     }
 
-    public RefField defaultValue(Object defaultValue) {
-        this.defaultValue = defaultValue;
-        return this;
-    }
-
-
-    public RefField printException() {
-        this.printException = true;
-        return this;
-    }
-
-    public RefField saveResult(ReflectResult result) {
-        this.reflectResult = result;
-        return this;
-    }
-
-
-    public Object get(Object receiver) {
+    public E get(Object receiver) {
         if (this.cls == null) {
-            return filedNotFoundOnGetField();
+            this.throwable = new ReflectException("Field[" + fieldName + "] not found, because Class is null", this.throwable);
+            E defaultValue = getDefaultValue(null);
+            saveFailure(defaultValue);
+            tryToPrintException();
+            return defaultValue;
         }
-        Field field = Reflect.getDeclaredField(cls, fieldName);
+
+        Field field = null;
+        try {
+            field = Reflect.getDeclaredFieldWithException(cls, fieldName);
+        } catch (Throwable e) {
+            this.throwable = Reflect.getRealThrowable(e);
+        }
+
         if (field == null) {
-            return filedNotFoundOnGetField();
+            this.throwable = new ReflectException("Field[" + fieldName + "] not found in Class[" + cls + "]", this.throwable);
+            E defaultValue = getDefaultValue(null);
+            saveFailure(defaultValue);
+            tryToPrintException();
+            return defaultValue;
         }
 
         Object result = null;
-        Throwable throwable = null;
         boolean getSuccess = false;
 
         try {
             result = field.get(receiver);
             getSuccess = true;
         } catch (Throwable e) {
-            throwable = Reflect.getRealThrowable(e);
+            e = Reflect.getRealThrowable(e);
+            this.throwable = new ReflectException("Field[" + fieldName + "] found in Class[" + cls + "], but get value failed", e);
         }
         if (getSuccess) {
-            return getSuccess(result);
+            E e = ensureResult(result, field.getType());
+            if (e == result) {
+                saveSuccess(e);
+            } else {
+                saveFailure(e);
+                tryToPrintException();
+            }
+            return e;
         } else {
-            return getFailure(field, throwable);
+            E e = getDefaultValue(field.getType());
+            saveFailure(e);
+            tryToPrintException();
+            return e;
         }
     }
 
 
-    public Object getWithException(Object receiver) throws Throwable {
+    public Object getWithException(Object receiver) throws ReflectException {
+        ReflectException exception = null;
         if (this.cls == null) {
-            throw filedNotFoundException();
+            exception = new ReflectException("Field[" + fieldName + "] not found, because Class is null", this.throwable);
+            this.throwable = exception;
+            E defaultValue = getDefaultValue(null);
+            saveFailure(defaultValue);
+            tryToPrintException();
+            throw exception;
         }
-        Field field = Reflect.getDeclaredField(cls, fieldName);
+
+        Field field = null;
+        try {
+            field = Reflect.getDeclaredFieldWithException(cls, fieldName);
+        } catch (Throwable e) {
+            this.throwable = Reflect.getRealThrowable(e);
+        }
+
         if (field == null) {
-            throw filedNotFoundException();
+            exception = new ReflectException("Field[" + fieldName + "] not found in Class[" + cls + "]", this.throwable);
+            this.throwable = exception;
+            E defaultValue = getDefaultValue(null);
+            saveFailure(defaultValue);
+            tryToPrintException();
+            throw exception;
         }
 
         Object result = null;
-        Throwable throwable = null;
         boolean getSuccess = false;
 
         try {
             result = field.get(receiver);
             getSuccess = true;
         } catch (Throwable e) {
-            throwable = Reflect.getRealThrowable(e);
+            e = Reflect.getRealThrowable(e);
+            exception = new ReflectException("Field[" + fieldName + "] found in Class[" + cls + "], but get value failed", e);
+            this.throwable = exception;
         }
         if (getSuccess) {
-            return getSuccess(result);
+            E e = ensureResult(result, field.getType());
+            if (e == result) {
+                saveSuccess(e);
+                return e;
+            } else {
+                saveFailure(e);
+                tryToPrintException();
+                throw (ReflectException) this.throwable;
+            }
         } else {
-            throw getFailureException(field, throwable);
+            E e = getDefaultValue(field.getType());
+            saveFailure(e);
+            tryToPrintException();
+            throw exception;
         }
     }
 
 
     public void set(Object receiver, Object value) {
         if (this.cls == null) {
-            filedNotFoundOnSetField();
+            this.throwable = new ReflectException("Field[" + fieldName + "] not found, because Class is null", this.throwable);
+            E defaultValue = getDefaultValue(null);
+            saveFailure(defaultValue);
+            tryToPrintException();
             return;
         }
         Field field = Reflect.getDeclaredField(cls, fieldName);
         if (field == null) {
-            filedNotFoundOnSetField();
+            this.throwable = new ReflectException("Field[" + fieldName + "] not found in Class[" + cls + "]", this.throwable);
+            E defaultValue = getDefaultValue(null);
+            saveFailure(defaultValue);
+            tryToPrintException();
             return;
         }
-
-        Throwable throwable = null;
-
+        boolean setSuccess = false;
         try {
             field.set(receiver, value);
+            setSuccess = true;
+            saveSuccess(null);
         } catch (Throwable e) {
-            throwable = Reflect.getRealThrowable(e);
+            e = Reflect.getRealThrowable(e);
+            this.throwable = new ReflectException("Field[" + fieldName + "] found in Class[" + cls + "], but get value failed", e);
         }
 
-        if (throwable != null && printException) {
-            throwable.printStackTrace();
+        if (!setSuccess) {
+            saveFailure(null);
+            tryToPrintException();
         }
     }
 
 
-    private Object filedNotFoundOnGetField() {
-        ReflectException reflectException = new ReflectException("filed[" + fieldName + "] not found in Class[" + cls + "]");
-        if (throwable != null) {
-            reflectException.setStackTrace(throwable.getStackTrace());
+    public void setWithException(Object receiver, Object value) throws ReflectException {
+        ReflectException exception = null;
+        if (this.cls == null) {
+            exception = new ReflectException("Field[" + fieldName + "] not found, because Class is null", this.throwable);
+            this.throwable = exception;
+            E defaultValue = getDefaultValue(null);
+            saveFailure(defaultValue);
+            tryToPrintException();
+            return;
         }
-        if (printException) {
-            reflectException.printStackTrace();
+        Field field = Reflect.getDeclaredField(cls, fieldName);
+        if (field == null) {
+            exception = new ReflectException("Field[" + fieldName + "] not found in Class[" + cls + "]", this.throwable);
+            this.throwable = exception;
+            E defaultValue = getDefaultValue(null);
+            saveFailure(defaultValue);
+            tryToPrintException();
+            return;
         }
-        Object defaultValue = getDefaultValue(null);
-        if (reflectResult != null) {
-            reflectResult.setResult(defaultValue);
-            reflectResult.setThrowable(reflectException);
+        boolean setSuccess = false;
+        try {
+            field.set(receiver, value);
+            setSuccess = true;
+            saveSuccess(null);
+        } catch (Throwable e) {
+            e = Reflect.getRealThrowable(e);
+            exception = new ReflectException("Field[" + fieldName + "] found in Class[" + cls + "], but get value failed", e);
+            this.throwable = exception;
         }
-        return defaultValue;
+
+        if (!setSuccess) {
+            saveFailure(null);
+            tryToPrintException();
+            throw exception;
+        }
     }
 
-
-    private void filedNotFoundOnSetField() {
-        ReflectException reflectException = new ReflectException("filed[" + fieldName + "] not found in Class[" + cls + "]");
-        if (throwable != null) {
-            reflectException.setStackTrace(throwable.getStackTrace());
-        }
-        if (printException) {
-            reflectException.printStackTrace();
-        }
-        if (reflectResult != null) {
-            reflectResult.setThrowable(reflectException);
-        }
+    @Override
+    Class<E> getEnsureType() {
+        return fieldType;
     }
 
-
-    private Throwable filedNotFoundException() {
-        ReflectException reflectException = new ReflectException("filed[" + fieldName + "] not found in Class[" + cls + "]");
-        if (throwable != null) {
-            reflectException.setStackTrace(throwable.getStackTrace());
-        }
-        if (printException) {
-            reflectException.printStackTrace();
-        }
-        Object defaultValue = getDefaultValue(null);
-        if (reflectResult != null) {
-            reflectResult.setResult(defaultValue);
-            reflectResult.setThrowable(reflectException);
-        }
-        return reflectException;
-    }
-
-    private Object getSuccess(Object result) {
-        if (reflectResult != null) {
-            reflectResult.setResult(result);
-            reflectResult.setSuccess(true);
-        }
-        return result;
-    }
-
-    private Object getFailure(Field field, Throwable throwable) {
-        if (printException) {
-            throwable.printStackTrace();
-        }
-        Object result = getDefaultValue(field);
-        if (reflectResult != null) {
-            reflectResult.setThrowable(throwable);
-            reflectResult.setResult(result);
-        }
-        return result;
-    }
-
-    private Throwable getFailureException(Field field, Throwable throwable) {
-        if (printException) {
-            throwable.printStackTrace();
-        }
-        Object result = getDefaultValue(field);
-        if (reflectResult != null) {
-            reflectResult.setThrowable(throwable);
-            reflectResult.setResult(result);
-        }
-        return throwable;
-    }
-
-
-    private Object getDefaultValue(Field field) {
-        if (defaultValue == null && field != null) {
-            defaultValue = Reflect.getDefaultValue(field.getType());
-        }
-        return defaultValue;
+    @Override
+    String getResultTypeErrorMessage(Class resultType) {
+        return "Filed[" + fieldName + "] found in Class[" + cls + "]" +
+                ", and get value success" +
+                ", but value type[" + resultType + "] is not extends from specified fieldType[" + fieldType + "]" +
+                ", please specify a right fieldType";
     }
 }

@@ -6,9 +6,13 @@ package com.hyh.prettyskin.utils.reflect;
  * @data 2018/11/16
  */
 
-public class ReflectException extends RuntimeException {
+class ReflectException extends RuntimeException {
 
-    public ReflectException(String message) {
+    ReflectException(String message) {
         super(message);
+    }
+
+    ReflectException(String message, Throwable cause) {
+        super(message, cause);
     }
 }
