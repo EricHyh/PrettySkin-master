@@ -1,5 +1,6 @@
 package prettyskin.core.handler.support.v7;
 
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -24,7 +25,7 @@ public class AppCompatTextViewSH extends TextViewSH {
 
     public AppCompatTextViewSH(int defStyleAttr, int defStyleRes) {
         super(defStyleAttr, defStyleRes);
-        //AppCompatTextView
+        Class<AppCompatTextView> appCompatTextViewClass = AppCompatTextView.class;
     }
 
     @Override

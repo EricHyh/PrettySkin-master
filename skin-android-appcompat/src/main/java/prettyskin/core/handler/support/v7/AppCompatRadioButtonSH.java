@@ -6,17 +6,17 @@ import com.hyh.prettyskin.core.handler.ntv.RadioButtonSH;
  * Created by Eric_He on 2018/11/8.
  */
 
-public class AppCompatRadioButton extends RadioButtonSH {
+public class AppCompatRadioButtonSH extends RadioButtonSH {
 
-    public AppCompatRadioButton() {
+    public AppCompatRadioButtonSH() {
         this(android.support.v7.appcompat.R.attr.radioButtonStyle);
     }
 
-    public AppCompatRadioButton(int defStyleAttr) {
+    public AppCompatRadioButtonSH(int defStyleAttr) {
         super(defStyleAttr);
     }
 
-    public AppCompatRadioButton(int defStyleAttr, int defStyleRes) {
+    public AppCompatRadioButtonSH(int defStyleAttr, int defStyleRes) {
         super(defStyleAttr, defStyleRes);
     }
 }
