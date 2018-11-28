@@ -1,14 +1,9 @@
 package com.hyh.prettyskin.demo.widget;
 
-import android.util.AttributeSet;
 import android.view.View;
 
-import com.hyh.prettyskin.R;
 import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.handler.ntv.ViewSH;
-
-import java.util.Collection;
-import java.util.Map;
 
 /**
  * @author Administrator
@@ -35,16 +30,6 @@ public class CustomViewSH extends ViewSH {
         return super.isSupportAttrName(view, attrName);
     }
 
-    @Override
-    public Map<String, AttrValue> parseAttrValue(View view, AttributeSet set, Collection<String> attrNames) {
-
-        Class styleableClass = R.styleable.class;
-        String styleableName = "CustomView";
-        AttrValue attrValue = parseAttrValue(view, set, attrName, styleableClass, styleableName);
-
-
-        return super.parse(view, set, attrNames);
-    }
 
     @Override
     public void replace(View view, String attrName, AttrValue attrValue) {

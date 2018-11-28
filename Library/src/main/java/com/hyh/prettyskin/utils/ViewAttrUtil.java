@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.hyh.prettyskin.core.ValueType;
+import com.hyh.prettyskin.utils.reflect.Reflect;
 
 /**
  * Created by Eric_He on 2018/11/4.
@@ -74,51 +75,28 @@ public class ViewAttrUtil {
     }
 
     public static int getDefStyleAttr(String styleName) {
-        int style = 0;
-        Object styleObj = ReflectUtil.getStaticFieldValue("android.R$attr", styleName);
-        if (styleObj != null && styleObj instanceof Integer) {
-            style = (int) styleObj;
-        }
-        return style;
+        return Reflect.from("android.R$attr").filed(styleName, int.class).get(null);
     }
 
 
     public static int getDefStyleAttr_internal(String styleName) {
-        int style = 0;
-        Object styleObj = ReflectUtil.getStaticFieldValue("com.android.internal.R$attr", styleName);
-        if (styleObj != null && styleObj instanceof Integer) {
-            style = (int) styleObj;
-        }
-        return style;
+        return Reflect.from("com.android.internal.R$attr").filed(styleName, int.class).get(null);
     }
 
     public static int getDefStyleAttr_V7(String styleName) {
-        int style = 0;
-        Object styleObj = ReflectUtil.getStaticFieldValue("android.support.v7.appcompat.R$attr", styleName);
-        if (styleObj != null && styleObj instanceof Integer) {
-            style = (int) styleObj;
-        }
-        return style;
+        return Reflect.from("android.support.v7.appcompat.R$attr").filed(styleName, int.class).get(null);
     }
 
     public static int getDefStyleAttr_X(String styleName) {
-        int style = 0;
-        Object styleObj = ReflectUtil.getStaticFieldValue("androidx.appcompat.R$attr", styleName);
-        if (styleObj != null && styleObj instanceof Integer) {
-            style = (int) styleObj;
-        }
-        return style;
+        return Reflect.from("androidx.appcompat.R$attr").filed(styleName, int.class).get(null);
     }
 
     public static boolean needsTileify(Drawable progressDrawable) {
         if (progressDrawable != null) {
-            Object needsTileify = ReflectUtil.invokeStaticMethod(ProgressBar.class,
-                    "needsTileify",
-                    new Class[]{Drawable.class},
-                    progressDrawable);
-            if (needsTileify != null && needsTileify instanceof Boolean) {
-                return (boolean) needsTileify;
-            }
+            return Reflect.from(ProgressBar.class)
+                    .method("needsTileify", boolean.class)
+                    .param(Drawable.class, progressDrawable)
+                    .invoke(null);
         }
         return false;
     }
@@ -146,10 +124,11 @@ public class ViewAttrUtil {
 
 
     public static PorterDuff.Mode getTintMode(int index) {
-        return (PorterDuff.Mode) ReflectUtil.invokeStaticMethod(Drawable.class,
-                "parseTintMode",
-                new Class[]{int.class, PorterDuff.Mode.class},
-                index, null);
+        return Reflect.from(Drawable.class)
+                .method("parseTintMode", PorterDuff.Mode.class)
+                .param(int.class, index)
+                .param(PorterDuff.Mode.class, null)
+                .invoke(null);
     }
 
     public static Drawable getDrawable(Resources resources, int type, Object value) {

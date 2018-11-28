@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ValueType;
-import com.hyh.prettyskin.utils.ReflectUtil;
+import com.hyh.prettyskin.utils.reflect.Reflect;
 
 /**
  * @author Administrator
@@ -124,17 +124,19 @@ public class AttrValueHelper {
                  * index *= AssetManager.STYLE_NUM_ENTRIES;
                  * return mData[index + AssetManager.STYLE_TYPE];
                  */
-                int STYLE_NUM_ENTRIES = 6;
-                Object STYLE_NUM_ENTRIES_OBJ = ReflectUtil.getStaticFieldValue(AssetManager.class, "STYLE_NUM_ENTRIES");
-                if (STYLE_NUM_ENTRIES_OBJ != null && STYLE_NUM_ENTRIES_OBJ instanceof Integer) {
-                    STYLE_NUM_ENTRIES = (int) STYLE_NUM_ENTRIES_OBJ;
-                }
-                int STYLE_TYPE = 0;
-                Object STYLE_TYPE_OBJ = ReflectUtil.getStaticFieldValue(AssetManager.class, "STYLE_NUM_ENTRIES");
-                if (STYLE_TYPE_OBJ != null && STYLE_TYPE_OBJ instanceof Integer) {
-                    STYLE_TYPE = (int) STYLE_TYPE_OBJ;
-                }
-                int[] mData = (int[]) ReflectUtil.getFieldValue(typedArray, "mData");
+                int STYLE_NUM_ENTRIES = Reflect.from(AssetManager.class)
+                        .filed("STYLE_NUM_ENTRIES", int.class)
+                        .defaultValue(6)
+                        .get(null);
+
+                int STYLE_TYPE = Reflect.from(AssetManager.class)
+                        .filed("STYLE_TYPE", int.class)
+                        .get(null);
+
+                int[] mData = Reflect.from(TypedArray.class)
+                        .filed("mData", int[].class)
+                        .get(typedArray);
+
                 index *= STYLE_NUM_ENTRIES;
                 index += STYLE_TYPE;
                 if (mData != null && mData.length > index) {
