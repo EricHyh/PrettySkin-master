@@ -57,6 +57,9 @@ public class PrettySkin {
 
     private Context mContext;
 
+
+    private Map<String, List<SkinView>> mSkinAttrItemMap = new HashMap<>();
+
     private List<SkinView> mSkinAttrItems = new ArrayList<>();
 
     private Map<Class<? extends View>, ISkinHandler> mSkinHandlerMap = new HashMap<>();
@@ -161,6 +164,7 @@ public class PrettySkin {
             return;
         }
         mSkinAttrItems.add(skinView);
+        skinView.notifySkinChanged(mCurrentSkin);
     }
 
     public synchronized void removeSkinAttrItem(SkinView skinView) {
@@ -225,7 +229,9 @@ public class PrettySkin {
     private void replaceSkinAttr(SkinAttr skinAttr) {
         String attrValueKey = skinAttr.getAttrValueKey();
         Object attrValue = skinAttr.getAttrValue();
+
         Iterator<SkinView> iterator = mSkinAttrItems.iterator();
+
         while (iterator.hasNext()) {
             SkinView skinView = iterator.next();
             if (skinView == null || skinView.isRecycled()) {

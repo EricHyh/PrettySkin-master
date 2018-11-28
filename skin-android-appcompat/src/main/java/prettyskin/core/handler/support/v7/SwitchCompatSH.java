@@ -3,6 +3,7 @@ package prettyskin.core.handler.support.v7;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.SwitchCompat;
@@ -11,8 +12,11 @@ import android.view.View;
 
 import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ValueType;
+import com.hyh.prettyskin.core.handler.AttrValueHelper;
 import com.hyh.prettyskin.core.handler.ntv.CompoundButtonSH;
+import com.hyh.prettyskin.utils.AttrUtil;
 import com.hyh.prettyskin.utils.ViewAttrUtil;
+import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +27,21 @@ import java.util.List;
 
 public class SwitchCompatSH extends CompoundButtonSH {
 
+    private final Class mStyleableClass;
+
+    private final String mStyleableName;
+
+    private final int[] mAttrs;
+
+    {
+        mStyleableClass = Reflect.classForName("android.support.v7.appcompat.R$styleable");
+        mStyleableName = "SwitchCompat";
+        mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
+    }
+
     private List<String> mSupportAttrNames = new ArrayList<>();
+
+    private TypedArray mTypedArray;
 
     {
         mSupportAttrNames.add("thumb");
@@ -61,26 +79,29 @@ public class SwitchCompatSH extends CompoundButtonSH {
     }
 
     @Override
-    public AttrValue parseAttrValue(View view, AttributeSet set, String attrName) {
+    public void prepareParse(View view, AttributeSet set) {
+        super.prepareParse(view, set);
+        Context context = view.getContext();
+        mTypedArray = context.obtainStyledAttributes(set, mAttrs, mDefStyleAttr, mDefStyleRes);
+    }
+
+    @Override
+    public AttrValue parse(View view, AttributeSet set, String attrName) {
         if (super.isSupportAttrName(view, attrName)) {
-            return super.parseAttrValue(view, set, attrName);
+            return super.parse(view, set, attrName);
         } else {
-            Class styleableClass = getStyleableClass();
-            String styleableName = getStyleableName();
-            return parseAttrValue(view, set, attrName, styleableClass, styleableName);
+            int styleableIndex = AttrUtil.getStyleableIndex(mStyleableClass, mStyleableName, attrName);
+            return AttrValueHelper.getAttrValue(view, mTypedArray, styleableIndex);
         }
     }
 
-    private Class getStyleableClass() {
-        try {
-            return Class.forName("android.support.v7.appcompat.R$styleable");
-        } catch (Exception e) {
-            return null;
+    @Override
+    public void finishParse() {
+        super.finishParse();
+        if (mTypedArray != null) {
+            mTypedArray.recycle();
+            mTypedArray = null;
         }
-    }
-
-    private String getStyleableName() {
-        return "SwitchCompat";
     }
 
     @Override

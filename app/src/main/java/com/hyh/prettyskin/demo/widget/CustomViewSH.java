@@ -7,6 +7,9 @@ import com.hyh.prettyskin.R;
 import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.handler.ntv.ViewSH;
 
+import java.util.Collection;
+import java.util.Map;
+
 /**
  * @author Administrator
  * @description
@@ -33,14 +36,14 @@ public class CustomViewSH extends ViewSH {
     }
 
     @Override
-    public AttrValue parseAttrValue(View view, AttributeSet set, String attrName) {
+    public Map<String, AttrValue> parseAttrValue(View view, AttributeSet set, Collection<String> attrNames) {
 
         Class styleableClass = R.styleable.class;
         String styleableName = "CustomView";
         AttrValue attrValue = parseAttrValue(view, set, attrName, styleableClass, styleableName);
 
 
-        return super.parseAttrValue(view, set, attrName);
+        return super.parse(view, set, attrNames);
     }
 
     @Override

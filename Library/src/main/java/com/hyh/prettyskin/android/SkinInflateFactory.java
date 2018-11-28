@@ -8,14 +8,14 @@ import android.view.View;
 
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.core.AttrValue;
-import com.hyh.prettyskin.core.ISkin;
-import com.hyh.prettyskin.core.SkinAttr;
 import com.hyh.prettyskin.core.SkinView;
-import com.hyh.prettyskin.core.ViewAttr;
 import com.hyh.prettyskin.core.handler.ISkinHandler;
 
 import java.lang.reflect.Constructor;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Administrator
@@ -55,27 +55,47 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
                 view = createView(name, context, attrs);
             }
             if (view != null) {
-                String[] attrArr = skinAttrs.split("\\|");
-                HashMap<String, ViewAttr> viewAttrMap = new HashMap<>(attrArr.length);
-                SkinView skinView = new SkinView(view, viewAttrMap);
+                //attrValueKey --> attrName
+                Map<String, String> attrNameMap = getAttrMap(skinAttrs);
+                //attrName --> AttrValue
+                Map<String, AttrValue> defaultAttrValueMap = getDefaultAttrValueMap(view, attrs, attrNameMap.values());
+                SkinView skinView = new SkinView(view, attrNameMap, defaultAttrValueMap);
                 PrettySkin.getInstance().addSkinAttrItem(skinView);
-                for (String attr : attrArr) {
-                    String[] attrInfo = attr.split("=");
-                    String attrName = attrInfo[0].trim();
-                    String attrValueKey = attrInfo[1].trim();
-                    AttrValue defaultAttrValue = getDefaultAttrValue(view, attrs, attrName);
-                    viewAttrMap.put(attrValueKey, new ViewAttr(attrName, attrValueKey, defaultAttrValue));
-                    ISkin currentSkin = PrettySkin.getInstance().getCurrentSkin();
-                    if (currentSkin != null) {
-                        AttrValue currentAttrValue = currentSkin.getAttrValue(attrValueKey);
-                        skinView.notifySkinChanged(new SkinAttr(attrValueKey, currentAttrValue));
-                    }
-                }
             }
         }
         return view;
     }
 
+
+    //background=ma_btn_bg|textColor=ma_btn_text_color
+    private Map<String, String> getAttrMap(String skinAttrs) {
+        if (!skinAttrs.matches("(.+=.+\\|)*(.+=.+)")) {
+            throw new RuntimeException();
+        }
+        String[] attrArr = skinAttrs.split("\\|");
+        Map<String, String> attrMap = new HashMap<>(attrArr.length);
+        for (String attr : attrArr) {
+            String[] attrInfo = attr.split("=");
+            String attrName = attrInfo[0].trim();
+            String attrValueKey = attrInfo[1].trim();
+            attrMap.put(attrValueKey, attrName);
+        }
+        return attrMap;
+    }
+
+    private Map<String, AttrValue> getDefaultAttrValueMap(View view, AttributeSet attrs, Collection<String> attrNames) {
+        ISkinHandler skinHandler = PrettySkin.getInstance().getSkinHandler(view);
+        if (skinHandler == null) {
+            return Collections.emptyMap();
+        }
+        Map<String, AttrValue> attrValueMap = new HashMap<>(attrNames.size());
+        skinHandler.prepareParse(view, attrs);
+        for (String attrName : attrNames) {
+            attrValueMap.put(attrName, skinHandler.parse(view, attrs, attrName));
+        }
+        skinHandler.finishParse();
+        return attrValueMap;
+    }
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
@@ -92,17 +112,6 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
             return (View) constructor.newInstance(context, attrs);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        return null;
-    }
-
-    private AttrValue getDefaultAttrValue(View view, AttributeSet attrs, String attrName) {
-        ISkinHandler skinHandler = PrettySkin.getInstance().getSkinHandler(view);
-        if (skinHandler != null && skinHandler.isSupportAttrName(view, attrName)) {
-            AttrValue attrValue = skinHandler.parseAttrValue(view, attrs, attrName);
-            if (attrValue != null) {
-                return attrValue;
-            }
         }
         return null;
     }

@@ -34,8 +34,8 @@ public class AppCompatTextViewSH extends TextViewSH {
     }
 
     @Override
-    public AttrValue parseAttrValue(View view, AttributeSet set, String attrName) {
-        return super.parseAttrValue(view, set, attrName);
+    public AttrValue parse(View view, AttributeSet set, String attrName) {
+        return super.parse(view, set, attrName);
     }
 
     @Override

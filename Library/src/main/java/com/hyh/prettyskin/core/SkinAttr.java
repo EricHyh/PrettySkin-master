@@ -5,7 +5,6 @@ package com.hyh.prettyskin.core;
  * @description
  * @data 2018/10/10
  */
-
 public class SkinAttr {
 
     private String attrValueKey;

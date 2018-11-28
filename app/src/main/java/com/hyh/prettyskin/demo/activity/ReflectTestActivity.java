@@ -121,6 +121,9 @@ public class ReflectTestActivity extends Activity {
                 .printException()
                 .invoke(null);
         Log.d(TAG, "testReflect: add = " + add);
+
+
+
     }
 
 

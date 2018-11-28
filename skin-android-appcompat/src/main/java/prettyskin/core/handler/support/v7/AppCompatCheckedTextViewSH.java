@@ -51,7 +51,7 @@ public class AppCompatCheckedTextViewSH extends CheckedTextViewSH {
     }
 
     @Override
-    public AttrValue parseAttrValue(View view, AttributeSet set, String attrName) {
+    public AttrValue parse(View view, AttributeSet set, String attrName) {
         if (view instanceof AppCompatCheckedTextView) {
             AppCompatCheckedTextView checkedTextView = (AppCompatCheckedTextView) view;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
@@ -64,7 +64,7 @@ public class AppCompatCheckedTextViewSH extends CheckedTextViewSH {
         }
 
         if (super.isSupportAttrName(view, attrName)) {
-            return super.parseAttrValue(view, set, attrName);
+            return super.parse(view, set, attrName);
         } else {
             TypedArray a = view.getContext().obtainStyledAttributes(set,
                     TINT_ATTRS, sDefStyleAttr, 0);

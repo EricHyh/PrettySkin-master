@@ -42,7 +42,7 @@ public class AppCompatImageSH implements ISkinHandler {
     }
 
     @Override
-    public AttrValue parseAttrValue(View view, AttributeSet set, String attrName) {
+    public AttrValue parse(View view, AttributeSet set, String attrName) {
         AttrValue attrValue = null;
         switch (attrName) {
             case "srcCompat": {

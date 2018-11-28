@@ -12,7 +12,6 @@ import android.view.WindowManager;
 
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.R;
-import com.hyh.prettyskin.core.ThemeSkin;
 import com.hyh.prettyskin.utils.NumberUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
@@ -60,8 +59,8 @@ public class MainActivity extends Activity {
 
     public void changeSkin(View view) {
         //R.styleable.PrettySkin
-        ThemeSkin themeSkin = new ThemeSkin(this, R.style.PrettySkin_1, R.styleable.class, "PrettySkin");
-        PrettySkin.getInstance().replaceSkinSync(themeSkin);
+        //ThemeSkin themeSkin = new ThemeSkin(this, R.style.PrettySkin_1, R.styleable.class, "PrettySkin");
+        //PrettySkin.getInstance().replaceSkinSync(themeSkin);
     }
 
     public void recoverSkin(View view) {

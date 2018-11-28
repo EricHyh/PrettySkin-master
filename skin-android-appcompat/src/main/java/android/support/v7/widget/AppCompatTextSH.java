@@ -24,7 +24,7 @@ public class AppCompatTextSH implements ISkinHandler {
     }
 
     @Override
-    public AttrValue parseAttrValue(View view, AttributeSet set, String attrName) {
+    public AttrValue parse(View view, AttributeSet set, String attrName) {
         TextView textView = (TextView) view;
         ColorStateList textColors = textView.getTextColors();
         ColorStateList hintTextColors = textView.getHintTextColors();

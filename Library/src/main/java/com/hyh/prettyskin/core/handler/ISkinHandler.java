@@ -15,7 +15,11 @@ public interface ISkinHandler {
 
     boolean isSupportAttrName(View view, String attrName);
 
-    AttrValue parseAttrValue(View view, AttributeSet set, String attrName);
+    void prepareParse(View view, AttributeSet set);
+
+    AttrValue parse(View view, AttributeSet set, String attrName);
+
+    void finishParse();
 
     void replace(View view, String attrName, AttrValue attrValue);
 

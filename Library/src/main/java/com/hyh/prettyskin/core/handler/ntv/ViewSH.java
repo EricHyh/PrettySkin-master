@@ -3,7 +3,6 @@ package com.hyh.prettyskin.core.handler.ntv;
 import android.animation.AnimatorInflater;
 import android.animation.StateListAnimator;
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -12,7 +11,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.PointerIcon;
 import android.view.View;
@@ -20,10 +18,11 @@ import android.view.ViewOutlineProvider;
 
 import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ValueType;
+import com.hyh.prettyskin.core.handler.AttrValueHelper;
 import com.hyh.prettyskin.core.handler.ISkinHandler;
 import com.hyh.prettyskin.utils.AttrUtil;
-import com.hyh.prettyskin.utils.ReflectUtil;
 import com.hyh.prettyskin.utils.ViewAttrUtil;
+import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +36,26 @@ import java.util.List;
 
 public class ViewSH implements ISkinHandler {
 
-    private int defStyleAttr;
-
-    private int defStyleRes;
-
     private List<String> mSupportAttrNames = new ArrayList<>();
+
+    private TypedArray mTypedArray;
+
+    private final Class mStyleableClass;
+
+    private final String mStyleableName;
+
+    private final int[] mAttrs;
+
+    {
+        mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
+        mStyleableName = "View";
+        mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
+    }
+
+    protected int mDefStyleAttr;
+
+    protected int mDefStyleRes;
+
 
     {
         mSupportAttrNames.add("background");
@@ -142,12 +156,12 @@ public class ViewSH implements ISkinHandler {
     }
 
     public ViewSH(int defStyleAttr) {
-        this.defStyleAttr = defStyleAttr;
+        this.mDefStyleAttr = defStyleAttr;
     }
 
     public ViewSH(int defStyleAttr, int defStyleRes) {
-        this.defStyleAttr = defStyleAttr;
-        this.defStyleRes = defStyleRes;
+        this.mDefStyleAttr = defStyleAttr;
+        this.mDefStyleRes = defStyleRes;
     }
 
     @Override
@@ -156,27 +170,27 @@ public class ViewSH implements ISkinHandler {
     }
 
     @Override
-    public AttrValue parseAttrValue(View view, AttributeSet set, String attrName) {
-        Class styleableClass = getStyleableClass();
-        String styleableName = getStyleableName();
-        return parseAttrValue(view, set, attrName, styleableClass, styleableName);
+    public void prepareParse(View view, AttributeSet set) {
+        Context context = view.getContext();
+        mTypedArray = context.obtainStyledAttributes(set, mAttrs, mDefStyleAttr, mDefStyleRes);
     }
 
+    @Override
+    public AttrValue parse(View view, AttributeSet set, String attrName) {
+        int styleableIndex = AttrUtil.getStyleableIndex(mStyleableClass, mStyleableName, attrName);
+        return AttrValueHelper.getAttrValue(view, mTypedArray, styleableIndex);
+    }
 
-    private Class getStyleableClass() {
-        try {
-            return Class.forName("com.android.internal.R$styleable");
-        } catch (ClassNotFoundException e) {
-            return null;
+    @Override
+    public void finishParse() {
+        if (mTypedArray != null) {
+            mTypedArray.recycle();
+            mTypedArray = null;
         }
     }
 
-    private String getStyleableName() {
-        return "View";
-    }
 
-
-    protected AttrValue parseAttrValue(View view, AttributeSet set, String attrName, Class styleableClass, String styleableName) {
+    /*protected AttrValue parseAttrValue(View view, AttributeSet set, String attrName, Class styleableClass, String styleableName) {
         AttrValue attrValue = null;
         int type = ValueType.TYPE_NULL;
         Object value = null;
@@ -184,8 +198,8 @@ public class ViewSH implements ISkinHandler {
         int[] attrs = AttrUtil.getAttrs(styleableClass, styleableName);
         if (attrs != null) {
             int styleableIndex = AttrUtil.getStyleableIndex(styleableClass, styleableName, attrName);
-            final int defStyleAttr = this.defStyleAttr;
-            final int defStyleRes = this.defStyleRes;
+            final int defStyleAttr = this.mDefStyleAttr;
+            final int defStyleRes = this.mDefStyleRes;
             TypedArray typedArray = context.obtainStyledAttributes(set, attrs, defStyleAttr, defStyleRes);
             int indexType = getTypedValue(typedArray, styleableIndex);
             if (indexType == TypedValue.TYPE_NULL) {
@@ -230,21 +244,21 @@ public class ViewSH implements ISkinHandler {
                 case TypedValue.TYPE_STRING: {
                     String string = typedArray.getString(styleableIndex);//res/drawable-anydpi-v21/ic_launcher_background.xml
                     if (!TextUtils.isEmpty(string)) {
-                        if (string.matches("^res/color.*/.+\\.xml$")) {
+                        if (string.matches("^res/color.*//*.+\\.xml$")) {
                             try {
                                 value = typedArray.getResourceId(styleableIndex, 0);
                                 type = ValueType.TYPE_REFERENCE;
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                        } else if (string.matches("^res/[(drawable)|(mipmap)].*/.+$")) {
+                        } else if (string.matches("^res/[(drawable)|(mipmap)].*//*.+$")) {
                             try {
                                 value = typedArray.getResourceId(styleableIndex, 0);
                                 type = ValueType.TYPE_REFERENCE;
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                        } else if (string.matches("^res/anim.*/.+\\.xml$")) {
+                        } else if (string.matches("^res/anim.*//*.+\\.xml$")) {
                             try {
                                 value = typedArray.getResourceId(styleableIndex, 0);
                                 type = ValueType.TYPE_REFERENCE;
@@ -282,11 +296,12 @@ public class ViewSH implements ISkinHandler {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                 type = typedArray.getType(index);
             } else {
-                /**
-                 *
-                 * index *= AssetManager.STYLE_NUM_ENTRIES;
-                 * return mData[index + AssetManager.STYLE_TYPE];
-                 */
+                */
+
+    /**
+     * index *= AssetManager.STYLE_NUM_ENTRIES;
+     * return mData[index + AssetManager.STYLE_TYPE];
+     *//*
                 int STYLE_NUM_ENTRIES = 6;
                 Object STYLE_NUM_ENTRIES_OBJ = ReflectUtil.getStaticFieldValue(AssetManager.class, "STYLE_NUM_ENTRIES");
                 if (STYLE_NUM_ENTRIES_OBJ != null && STYLE_NUM_ENTRIES_OBJ instanceof Integer) {
@@ -308,9 +323,7 @@ public class ViewSH implements ISkinHandler {
             e.printStackTrace();
         }
         return type;
-    }
-
-
+    }*/
     @Override
     public void replace(View view, String attrName, AttrValue attrValue) {
         Context context = attrValue.getThemeContext();
@@ -1017,4 +1030,13 @@ public class ViewSH implements ISkinHandler {
             }
         }
     }
+
+
+    protected static class V {
+        static void initInternalStyleable(ViewSH sh) {
+            sh.mDefStyleAttr = 0;
+        }
+    }
+
+
 }

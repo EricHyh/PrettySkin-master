@@ -42,7 +42,12 @@ public class AppCompatBackgroundSH implements ISkinHandler {
     }
 
     @Override
-    public AttrValue parseAttrValue(View view, AttributeSet set, String attrName) {
+    public void prepareParse(View view, AttributeSet set) {
+
+    }
+
+    @Override
+    public AttrValue parse(View view, AttributeSet set, String attrName) {
         AttrValue attrValue = null;
         TintTypedArray a = TintTypedArray.obtainStyledAttributes(view.getContext(), set,
                 R.styleable.ViewBackgroundHelper, mDefStyleAttr, 0);
@@ -93,6 +98,11 @@ public class AppCompatBackgroundSH implements ISkinHandler {
         }
         a.recycle();
         return attrValue;
+    }
+
+    @Override
+    public void finishParse() {
+
     }
 
     @Override

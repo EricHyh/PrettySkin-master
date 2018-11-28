@@ -43,13 +43,13 @@ public class AppCompatImageButtonSH extends ImageButtonSH {
     }
 
     @Override
-    public AttrValue parseAttrValue(View view, AttributeSet set, String attrName) {
-        AttrValue attrValue = super.parseAttrValue(view, set, attrName);
+    public AttrValue parse(View view, AttributeSet set, String attrName) {
+        AttrValue attrValue = super.parse(view, set, attrName);
         if (mBackgroundSH.isSupportAttrName(view, attrName)) {
-            attrValue = mBackgroundSH.parseAttrValue(view, set, attrName);
+            attrValue = mBackgroundSH.parse(view, set, attrName);
         }
         if (mImageSH.isSupportAttrName(view, attrName)) {
-            attrValue = mImageSH.parseAttrValue(view, set, attrName);
+            attrValue = mImageSH.parse(view, set, attrName);
         }
         return attrValue;
     }

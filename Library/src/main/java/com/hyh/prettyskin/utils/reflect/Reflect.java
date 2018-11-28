@@ -187,7 +187,7 @@ public class Reflect {
 
 
     public static Field getDeclaredField(Class cls, String fieldName) {
-        String key = generateFieldMapKey(cls);
+        String key = generateFieldMapKey(cls, fieldName);
         Field field = FIELD_MAP.get(key);
         if (field != null) {
             return field;
@@ -216,7 +216,7 @@ public class Reflect {
     }
 
     private static Field getDeclaredFieldWithException(Throwable throwable, Class cls, String fieldName) throws Throwable {
-        String key = generateFieldMapKey(cls);
+        String key = generateFieldMapKey(cls, fieldName);
         Field field = FIELD_MAP.get(key);
         if (field != null) {
             return field;
@@ -339,8 +339,8 @@ public class Reflect {
         return key;
     }
 
-    private static String generateFieldMapKey(Class cls) {
-        return String.valueOf(System.identityHashCode(cls));
+    private static String generateFieldMapKey(Class cls, String fieldName) {
+        return String.valueOf(System.identityHashCode(cls)) + "-" + fieldName;
     }
 
     private static String generateMethodMapKey(Class cls, String methodName, Class[] parameterTypes) {
