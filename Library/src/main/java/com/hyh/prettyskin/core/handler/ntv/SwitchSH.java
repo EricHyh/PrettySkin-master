@@ -16,7 +16,6 @@ import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ValueType;
 import com.hyh.prettyskin.core.handler.AttrValueHelper;
 import com.hyh.prettyskin.utils.AttrUtil;
-import com.hyh.prettyskin.utils.ReflectUtil;
 import com.hyh.prettyskin.utils.ViewAttrUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
@@ -155,9 +154,14 @@ public class SwitchSH extends CompoundButtonSH {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         switchView.setShowText(showText);
                     } else {
-                        Object mShowText = ReflectUtil.getFieldValue(switchView, "mShowText");
-                        if (mShowText != null && mShowText instanceof Boolean && (Boolean) mShowText != showText) {
-                            ReflectUtil.setFieldValue(switchView, "mShowText", showText);
+
+                        Boolean isShowText = Reflect.from(Switch.class)
+                                .filed("mShowText", boolean.class)
+                                .get(switchView);
+                        if (isShowText != showText) {
+                            Reflect.from(Switch.class)
+                                    .filed("mShowText", boolean.class)
+                                    .set(switchView, showText);
                             switchView.requestLayout();
                         }
                     }
@@ -168,7 +172,9 @@ public class SwitchSH extends CompoundButtonSH {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         switchView.setThumbTextPadding(thumbTextPadding);
                     } else {
-                        ReflectUtil.setFieldValue(switchView, "mThumbTextPadding", thumbTextPadding);
+                        Reflect.from(Switch.class)
+                                .filed("mThumbTextPadding", int.class)
+                                .set(switchView, thumbTextPadding);
                         switchView.requestLayout();
                     }
                     break;
@@ -178,7 +184,9 @@ public class SwitchSH extends CompoundButtonSH {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         switchView.setSwitchMinWidth(switchMinWidth);
                     } else {
-                        ReflectUtil.setFieldValue(switchView, "mSwitchMinWidth", switchMinWidth);
+                        Reflect.from(Switch.class)
+                                .filed("mSwitchMinWidth", int.class)
+                                .set(switchView, switchMinWidth);
                         switchView.requestLayout();
                     }
                     break;
@@ -188,7 +196,9 @@ public class SwitchSH extends CompoundButtonSH {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         switchView.setSwitchPadding(switchPadding);
                     } else {
-                        ReflectUtil.setFieldValue(switchView, "mSwitchPadding", switchPadding);
+                        Reflect.from(Switch.class)
+                                .filed("mSwitchPadding", int.class)
+                                .set(switchView, switchPadding);
                         switchView.requestLayout();
                     }
                     break;
@@ -198,7 +208,9 @@ public class SwitchSH extends CompoundButtonSH {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         switchView.setSplitTrack(splitTrack);
                     } else {
-                        ReflectUtil.setFieldValue(switchView, "mSplitTrack", splitTrack);
+                        Reflect.from(Switch.class)
+                                .filed("mSplitTrack", boolean.class)
+                                .set(switchView, splitTrack);
                         switchView.invalidate();
                     }
                     break;

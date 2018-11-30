@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 
 import com.hyh.prettyskin.utils.AttrUtil;
-import com.hyh.prettyskin.utils.ReflectUtil;
+import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +47,7 @@ public class ThemeSkin implements ISkin {
         if (styleableClass == null || TextUtils.isEmpty(styleableName)) {
             return null;
         }
-        int[] attrs = (int[]) ReflectUtil.getStaticFieldValue(styleableClass, styleableName);
+        int[] attrs = Reflect.from(styleableClass).filed(styleableName, int[].class).get(null);
         TypedArray typedArray = mContext.obtainStyledAttributes(attrs);
         Map<Integer, String> filedNameMap = AttrUtil.getStyleableFieldMap(styleableClass, styleableName);
         if (filedNameMap != null && !filedNameMap.isEmpty()) {

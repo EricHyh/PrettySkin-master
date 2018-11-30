@@ -14,7 +14,6 @@ import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ValueType;
 import com.hyh.prettyskin.core.handler.AttrValueHelper;
 import com.hyh.prettyskin.utils.AttrUtil;
-import com.hyh.prettyskin.utils.ReflectUtil;
 import com.hyh.prettyskin.utils.ViewAttrUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
@@ -116,20 +115,26 @@ public class MediaRouteButtonSH extends ViewSH {
                 case "externalRouteEnabledDrawable": {
                     Drawable drawable = ViewAttrUtil.getDrawable(resources, type, value);
                     //setRemoteIndicatorDrawable(Drawable d)
-                    ReflectUtil.invokeMethod(mediaRouteButton,
-                            "setRemoteIndicatorDrawable",
-                            new Class[]{Drawable.class},
-                            drawable);
+                    Reflect.from(mediaRouteButton.getClass())
+                            .method("setRemoteIndicatorDrawable")
+                            .param(Drawable.class, drawable)
+                            .invoke(mediaRouteButton);
                     break;
                 }
                 case "minWidth": {
                     int minWidth = ViewAttrUtil.getInt(resources, type, value);
-                    ReflectUtil.setFieldValue(mediaRouteButton, "mMinWidth", minWidth);
+                    Reflect.from(mediaRouteButton.getClass())
+                            .filed("mMinWidth", int.class)
+                            .set(mediaRouteButton, minWidth);
+                    mediaRouteButton.requestLayout();
                     break;
                 }
                 case "minHeight": {
                     int minHeight = ViewAttrUtil.getInt(resources, type, value);
-                    ReflectUtil.setFieldValue(mediaRouteButton, "mMinHeight", minHeight);
+                    Reflect.from(mediaRouteButton.getClass())
+                            .filed("mMinHeight", int.class)
+                            .set(mediaRouteButton, minHeight);
+                    mediaRouteButton.requestLayout();
                     break;
                 }
                 case "mediaRouteTypes": {

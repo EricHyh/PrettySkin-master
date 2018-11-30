@@ -17,7 +17,6 @@ import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ValueType;
 import com.hyh.prettyskin.core.handler.AttrValueHelper;
 import com.hyh.prettyskin.utils.AttrUtil;
-import com.hyh.prettyskin.utils.ReflectUtil;
 import com.hyh.prettyskin.utils.ViewAttrUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
@@ -155,7 +154,10 @@ public class ProgressBarSH extends ViewSH {
                         if (value != null) {
                             minWidth = (int) value;
                         }
-                        ReflectUtil.setFieldValue(progressBar, "mMinWidth", minWidth);
+                        Reflect.from(ProgressBar.class)
+                                .filed("mMinWidth", int.class)
+                                .set(progressBar, minWidth);
+                        progressBar.requestLayout();
                         break;
                     }
                     case "maxWidth": {
@@ -163,7 +165,10 @@ public class ProgressBarSH extends ViewSH {
                         if (value != null) {
                             maxWidth = (int) value;
                         }
-                        ReflectUtil.setFieldValue(progressBar, "mMaxWidth", maxWidth);
+                        Reflect.from(ProgressBar.class)
+                                .filed("mMaxWidth", int.class)
+                                .set(progressBar, maxWidth);
+                        progressBar.requestLayout();
                         break;
                     }
                     case "minHeight": {
@@ -171,7 +176,10 @@ public class ProgressBarSH extends ViewSH {
                         if (value != null) {
                             minHeight = (int) value;
                         }
-                        ReflectUtil.setFieldValue(progressBar, "mMinHeight", minHeight);
+                        Reflect.from(ProgressBar.class)
+                                .filed("mMinHeight", int.class)
+                                .set(progressBar, minHeight);
+                        progressBar.requestLayout();
                         break;
                     }
                     case "maxHeight": {
@@ -179,7 +187,10 @@ public class ProgressBarSH extends ViewSH {
                         if (value != null) {
                             maxHeight = (int) value;
                         }
-                        ReflectUtil.setFieldValue(progressBar, "mMaxHeight", maxHeight);
+                        Reflect.from(ProgressBar.class)
+                                .filed("mMaxHeight", int.class)
+                                .set(progressBar, maxHeight);
+                        progressBar.requestLayout();
                         break;
                     }
                     case "indeterminateBehavior": {
@@ -248,7 +259,10 @@ public class ProgressBarSH extends ViewSH {
                         if (value != null) {
                             indeterminateOnly = (boolean) value;
                         }
-                        ReflectUtil.setFieldValue(progressBar, "mOnlyIndeterminate", indeterminateOnly);
+
+                        Reflect.from(ProgressBar.class)
+                                .filed("mOnlyIndeterminate", boolean.class)
+                                .set(progressBar, indeterminateOnly);
                         progressBar.setIndeterminate(progressBar.isIndeterminate());
                         break;
                     }
@@ -265,7 +279,9 @@ public class ProgressBarSH extends ViewSH {
                         if (value != null) {
                             mirrorForRtl = (boolean) value;
                         }
-                        ReflectUtil.setFieldValue(progressBar, "mMirrorForRtl", mirrorForRtl);
+                        Reflect.from(ProgressBar.class)
+                                .filed("mMirrorForRtl", boolean.class)
+                                .set(progressBar, mirrorForRtl);
                         break;
                     }
                     case "progressTintMode": {
