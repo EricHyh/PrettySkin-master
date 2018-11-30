@@ -1,7 +1,5 @@
 package com.hyh.prettyskin.core;
 
-import java.util.List;
-
 /**
  * @author Administrator
  * @description
@@ -10,7 +8,7 @@ import java.util.List;
 
 public interface ISkin {
 
-    List<SkinAttr> getSkinAttrs();
+    boolean loadSkinAttrs();
 
     AttrValue getAttrValue(String attrValueKey);
 
