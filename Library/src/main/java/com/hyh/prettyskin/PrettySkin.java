@@ -98,6 +98,8 @@ public class PrettySkin {
 
     public synchronized void addSkinHandler(Class<? extends View> viewClass, ISkinHandler skinHandler) {
         mSkinHandlerMap.put(viewClass, skinHandler);
+
+
     }
 
 
@@ -155,7 +157,7 @@ public class PrettySkin {
             } else {
                 SkinInflateFactory skinInflateFactory = new SkinInflateFactory(factory2);
                 Reflect.from(LayoutInflater.class)
-                        .filed("mFactory2", LayoutInflater.Factory2.class)
+                        .filed("mFactory2", LayoutInflater.Factory.class)
                         .set(layoutInflater, skinInflateFactory);
             }
         }

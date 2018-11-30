@@ -20,7 +20,6 @@ import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ValueType;
 import com.hyh.prettyskin.core.handler.AttrValueHelper;
 import com.hyh.prettyskin.utils.AttrUtil;
-import com.hyh.prettyskin.utils.ReflectUtil;
 import com.hyh.prettyskin.utils.ViewAttrUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
@@ -434,11 +433,9 @@ public class TextViewSH extends ViewSH {
 
                     }
                     if (where == null) {
-                        boolean isSingleLine = false;
-                        Object isSingleLineObj = ReflectUtil.invokeMethod(textView, "isSingleLine", null);
-                        if (isSingleLineObj != null && isSingleLineObj instanceof Boolean) {
-                            isSingleLine = (boolean) isSingleLineObj;
-                        }
+                        boolean isSingleLine = Reflect.from(TextView.class)
+                                .method("isSingleLine", boolean.class)
+                                .invoke(textView);
                         if (isSingleLine && textView.getKeyListener() == null && ellipsize < 0) {
                             ellipsize = 3; // END
                         }
@@ -504,28 +501,25 @@ public class TextViewSH extends ViewSH {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         radius = textView.getShadowRadius();
                     } else {
-                        Object shadowRadius = ReflectUtil.getFieldValue(textView, "mShadowRadius");
-                        if (shadowRadius != null && shadowRadius instanceof Float) {
-                            radius = (float) shadowRadius;
-                        }
+                        radius = Reflect.from(TextView.class)
+                                .filed("mShadowRadius", float.class)
+                                .get(textView);
                     }
                     float dx = 0;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         dx = textView.getShadowDx();
                     } else {
-                        Object shadowDx = ReflectUtil.getFieldValue(textView, "mShadowDx");
-                        if (shadowDx != null && shadowDx instanceof Float) {
-                            dx = (float) shadowDx;
-                        }
+                        dx = Reflect.from(TextView.class)
+                                .filed("mShadowDx", float.class)
+                                .get(textView);
                     }
                     float dy = 0;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         dy = textView.getShadowDy();
                     } else {
-                        Object shadowDy = ReflectUtil.getFieldValue(textView, "mShadowDy");
-                        if (shadowDy != null && shadowDy instanceof Float) {
-                            dy = (float) shadowDy;
-                        }
+                        dy = Reflect.from(TextView.class)
+                                .filed("mShadowDy", float.class)
+                                .get(textView);
                     }
                     int color = ViewAttrUtil.getColor(resources, type, value);
                     textView.setShadowLayer(radius, dx, dy, color);
@@ -536,29 +530,26 @@ public class TextViewSH extends ViewSH {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         radius = textView.getShadowRadius();
                     } else {
-                        Object shadowRadius = ReflectUtil.getFieldValue(textView, "mShadowRadius");
-                        if (shadowRadius != null && shadowRadius instanceof Float) {
-                            radius = (float) shadowRadius;
-                        }
+                        radius = Reflect.from(TextView.class)
+                                .filed("mShadowRadius", float.class)
+                                .get(textView);
                     }
                     float dx = ViewAttrUtil.getFloat(resources, type, value);
                     float dy = 0;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         dy = textView.getShadowDy();
                     } else {
-                        Object shadowDy = ReflectUtil.getFieldValue(textView, "mShadowDy");
-                        if (shadowDy != null && shadowDy instanceof Float) {
-                            dy = (float) shadowDy;
-                        }
+                        dy = Reflect.from(TextView.class)
+                                .filed("mShadowDy", float.class)
+                                .get(textView);
                     }
                     int color = 0;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         color = textView.getShadowColor();
                     } else {
-                        Object shadowColor = ReflectUtil.getFieldValue(textView, "mShadowColor");
-                        if (shadowColor != null && shadowColor instanceof Integer) {
-                            color = (int) shadowColor;
-                        }
+                        color = Reflect.from(TextView.class)
+                                .filed("mShadowColor", int.class)
+                                .get(textView);
                     }
                     textView.setShadowLayer(radius, dx, dy, color);
                     break;
@@ -568,29 +559,26 @@ public class TextViewSH extends ViewSH {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         radius = textView.getShadowRadius();
                     } else {
-                        Object shadowRadius = ReflectUtil.getFieldValue(textView, "mShadowRadius");
-                        if (shadowRadius != null && shadowRadius instanceof Float) {
-                            radius = (float) shadowRadius;
-                        }
+                        radius = Reflect.from(TextView.class)
+                                .filed("mShadowRadius", float.class)
+                                .get(textView);
                     }
                     float dx = 0;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         dx = textView.getShadowDx();
                     } else {
-                        Object shadowDx = ReflectUtil.getFieldValue(textView, "mShadowDx");
-                        if (shadowDx != null && shadowDx instanceof Float) {
-                            dx = (float) shadowDx;
-                        }
+                        dx = Reflect.from(TextView.class)
+                                .filed("mShadowDx", float.class)
+                                .get(textView);
                     }
                     float dy = ViewAttrUtil.getFloat(resources, type, value);
                     int color = 0;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         color = textView.getShadowColor();
                     } else {
-                        Object shadowColor = ReflectUtil.getFieldValue(textView, "mShadowColor");
-                        if (shadowColor != null && shadowColor instanceof Integer) {
-                            color = (int) shadowColor;
-                        }
+                        color = Reflect.from(TextView.class)
+                                .filed("mShadowColor", int.class)
+                                .get(textView);
                     }
                     textView.setShadowLayer(radius, dx, dy, color);
                     break;
@@ -601,28 +589,25 @@ public class TextViewSH extends ViewSH {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         dx = textView.getShadowDx();
                     } else {
-                        Object shadowDx = ReflectUtil.getFieldValue(textView, "mShadowDx");
-                        if (shadowDx != null && shadowDx instanceof Float) {
-                            dx = (float) shadowDx;
-                        }
+                        dx = Reflect.from(TextView.class)
+                                .filed("mShadowDx", float.class)
+                                .get(textView);
                     }
                     float dy = 0;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         dy = textView.getShadowDy();
                     } else {
-                        Object shadowDy = ReflectUtil.getFieldValue(textView, "mShadowDy");
-                        if (shadowDy != null && shadowDy instanceof Float) {
-                            dy = (float) shadowDy;
-                        }
+                        dy = Reflect.from(TextView.class)
+                                .filed("mShadowDy", float.class)
+                                .get(textView);
                     }
                     int color = 0;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         color = textView.getShadowColor();
                     } else {
-                        Object shadowColor = ReflectUtil.getFieldValue(textView, "mShadowColor");
-                        if (shadowColor != null && shadowColor instanceof Integer) {
-                            color = (int) shadowColor;
-                        }
+                        color = Reflect.from(TextView.class)
+                                .filed("mShadowColor", int.class)
+                                .get(textView);
                     }
                     textView.setShadowLayer(radius, dx, dy, color);
                     break;

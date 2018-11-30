@@ -76,7 +76,7 @@ public class RefField<E> extends RefAccessible<E, RefField<E>> {
     }
 
 
-    public Object getWithException(Object receiver) throws ReflectException {
+    public E getWithException(Object receiver) throws ReflectException {
         ReflectException exception = null;
         if (this.cls == null) {
             exception = new ReflectException("Field[" + fieldName + "] not found, because Class is null", this.throwable);
