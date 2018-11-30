@@ -39,6 +39,9 @@ public class MainActivity extends Activity {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
                     | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         }
+
+
+
     }
 
     /**

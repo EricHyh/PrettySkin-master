@@ -133,7 +133,7 @@ public class RefField<E> extends RefAccessible<E, RefField<E>> {
     }
 
 
-    public void set(Object receiver, Object value) {
+    public void set(Object receiver, E value) {
         if (this.cls == null) {
             this.throwable = new ReflectException("Field[" + fieldName + "] not found, because Class is null", this.throwable);
             E defaultValue = getDefaultValue(null);
@@ -166,7 +166,7 @@ public class RefField<E> extends RefAccessible<E, RefField<E>> {
     }
 
 
-    public void setWithException(Object receiver, Object value) throws ReflectException {
+    public void setWithException(Object receiver, E value) throws ReflectException {
         ReflectException exception = null;
         if (this.cls == null) {
             exception = new ReflectException("Field[" + fieldName + "] not found, because Class is null", this.throwable);

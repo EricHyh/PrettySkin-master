@@ -24,7 +24,7 @@ import com.hyh.prettyskin.utils.ViewAttrUtil;
  * @description
  * @data 2018/11/13
  */
-@SuppressLint("RestrictedApi")
+@SuppressLint({"RestrictedApi", "PrivateResource"})
 public class AppCompatBackgroundSH implements ISkinHandler {
 
     private int mDefStyleAttr;

@@ -24,6 +24,7 @@
 
         <activity
             android:name=".demo.activity.SecondActivity"
+            android:theme="@style/TestTheme"
             android:screenOrientation="portrait"/>
 
         <activity

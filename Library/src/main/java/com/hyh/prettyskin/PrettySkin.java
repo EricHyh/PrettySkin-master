@@ -20,7 +20,7 @@ import com.hyh.prettyskin.core.handler.ISkinHandler;
 import com.hyh.prettyskin.core.handler.ntv.ButtonSH;
 import com.hyh.prettyskin.core.handler.ntv.TextViewSH;
 import com.hyh.prettyskin.core.handler.ntv.ViewSH;
-import com.hyh.prettyskin.utils.ReflectUtil;
+import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -98,8 +98,6 @@ public class PrettySkin {
 
     public synchronized void addSkinHandler(Class<? extends View> viewClass, ISkinHandler skinHandler) {
         mSkinHandlerMap.put(viewClass, skinHandler);
-
-
     }
 
 
@@ -151,10 +149,14 @@ public class PrettySkin {
             LayoutInflater.Factory2 factory2 = layoutInflater.getFactory2();
             if (factory2 == null) {
                 SkinInflateFactory skinInflateFactory = new SkinInflateFactory(factory);
-                ReflectUtil.setFieldValue(layoutInflater, "mFactory", skinInflateFactory);
+                Reflect.from(LayoutInflater.class)
+                        .filed("mFactory", LayoutInflater.Factory.class)
+                        .set(layoutInflater, skinInflateFactory);
             } else {
                 SkinInflateFactory skinInflateFactory = new SkinInflateFactory(factory2);
-                ReflectUtil.setFieldValue(layoutInflater, "mFactory2", skinInflateFactory);
+                Reflect.from(LayoutInflater.class)
+                        .filed("mFactory2", LayoutInflater.Factory2.class)
+                        .set(layoutInflater, skinInflateFactory);
             }
         }
     }

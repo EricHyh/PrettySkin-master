@@ -1,7 +1,11 @@
 package com.hyh.prettyskin.demo.activity;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -9,6 +13,10 @@ import android.view.View;
 
 import com.hyh.prettyskin.R;
 import com.hyh.prettyskin.utils.reflect.Reflect;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 /**
  * @author Administrator
@@ -24,6 +32,59 @@ public class ReflectTestActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reflect_test);
+
+        try {
+            ActivityInfo activityInfo = getApplicationContext()
+                    .getPackageManager()
+                    .getActivityInfo(new ComponentName(getPackageName(), SecondActivity.class.getName()), 0);
+            int theme = activityInfo.theme;
+
+            int[] themes = Reflect.from("com.android.internal.R$styleable")
+                    .filed("Theme", int[].class)
+                    .get(null);
+
+            TypedArray typedArray = getApplicationContext().obtainStyledAttributes(theme, themes);
+
+            Integer windowBackgroundIndex = Reflect
+                    .from("com.android.internal.R$styleable")
+                    .filed("Theme_windowBackground", int.class)
+                    .get(null);
+            Drawable drawable = typedArray.getDrawable(windowBackgroundIndex);
+
+
+            //getPackageManager()
+
+            Class<?> aClass = Class.forName("android.content.pm.ParceledListSlice");
+            Method getList = aClass.getDeclaredMethod("getList");
+
+            boolean aPublic = Modifier.isPublic(getList.getModifiers());
+            boolean synthetic = getList.isSynthetic();
+
+            Field slotField = Method.class.getDeclaredField("slot");
+            slotField.setAccessible(true);
+
+            int modifiers = getList.getModifiers();
+            Field synthetic1 = Modifier.class.getDeclaredField("SYNTHETIC");
+            synthetic1.setAccessible(true);
+            modifiers |= (int) synthetic1.get(null);
+            int i = (int) synthetic1.get(null);
+            slotField.set(getList, 2);
+
+            //modifiers = getList.getModifiers();
+
+            synthetic = getList.isSynthetic();
+
+            aPublic = Modifier.isPublic(getList.getModifiers());
+
+            // Modifier.isSynthetic();
+
+            //Field accessFlags = Method.class.getDeclaredField("accessFlags");
+
+            Log.d(TAG, "onCreate: ");
+            typedArray.recycle();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 
     public void testReflect(View view) {

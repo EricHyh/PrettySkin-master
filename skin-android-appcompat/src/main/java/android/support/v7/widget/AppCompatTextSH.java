@@ -30,11 +30,6 @@ public class AppCompatTextSH implements ISkinHandler {
         ColorStateList hintTextColors = textView.getHintTextColors();
         ColorStateList linkTextColors = textView.getLinkTextColors();
         Typeface typeface = textView.getTypeface();
-
-
-
-
-
         return null;
     }
 

@@ -7,4 +7,6 @@ package com.hyh.prettyskin.demo.utils;
  */
 
 public class A {
+
+    private void test(){}
 }
