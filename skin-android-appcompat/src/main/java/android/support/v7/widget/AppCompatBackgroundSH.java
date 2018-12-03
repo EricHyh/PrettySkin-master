@@ -28,6 +28,7 @@ import com.hyh.prettyskin.utils.ViewAttrUtil;
 public class AppCompatBackgroundSH implements ISkinHandler {
 
     private int mDefStyleAttr;
+    private TintTypedArray mTypedArray;
 
     public AppCompatBackgroundSH(int defStyleAttr) {
         mDefStyleAttr = defStyleAttr;
@@ -37,20 +38,19 @@ public class AppCompatBackgroundSH implements ISkinHandler {
     public boolean isSupportAttrName(View view, String attrName) {
         return view instanceof TintableBackgroundView &&
                 (TextUtils.equals(attrName, "background")
-                        || TextUtils.equals(attrName, "backgroundTint")
-                        || TextUtils.equals(attrName, "backgroundTintMode"));
+                        || TextUtils.equals(attrName, "app:backgroundTint")
+                        || TextUtils.equals(attrName, "app:backgroundTintMode"));
     }
 
     @Override
     public void prepareParse(View view, AttributeSet set) {
-
+        mTypedArray = TintTypedArray.obtainStyledAttributes(view.getContext(), set,
+                R.styleable.ViewBackgroundHelper, mDefStyleAttr, 0);
     }
 
     @Override
     public AttrValue parse(View view, AttributeSet set, String attrName) {
         AttrValue attrValue = null;
-        TintTypedArray a = TintTypedArray.obtainStyledAttributes(view.getContext(), set,
-                R.styleable.ViewBackgroundHelper, mDefStyleAttr, 0);
         switch (attrName) {
             case "background": {
                 Drawable background = view.getBackground();
@@ -59,14 +59,14 @@ public class AppCompatBackgroundSH implements ISkinHandler {
                 }
                 break;
             }
-            case "backgroundTint": {
+            case "app:backgroundTint": {
                 ColorStateList backgroundTint = null;
                 if (view instanceof TintableBackgroundView) {
                     TintableBackgroundView tintableBackgroundView = (TintableBackgroundView) view;
                     backgroundTint = tintableBackgroundView.getSupportBackgroundTintList();
                 } else {
                     try {
-                        backgroundTint = a.getColorStateList(R.styleable.ViewBackgroundHelper_backgroundTint);
+                        backgroundTint = mTypedArray.getColorStateList(R.styleable.ViewBackgroundHelper_backgroundTint);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -76,7 +76,7 @@ public class AppCompatBackgroundSH implements ISkinHandler {
                 }
                 break;
             }
-            case "backgroundTintMode": {
+            case "app:backgroundTintMode": {
                 PorterDuff.Mode backgroundTintMode = null;
                 if (view instanceof TintableBackgroundView) {
                     TintableBackgroundView tintableBackgroundView = (TintableBackgroundView) view;
@@ -84,7 +84,7 @@ public class AppCompatBackgroundSH implements ISkinHandler {
                 } else {
                     try {
                         backgroundTintMode = DrawableUtils.parseTintMode(
-                                a.getInt(R.styleable.ViewBackgroundHelper_backgroundTintMode, -1),
+                                mTypedArray.getInt(R.styleable.ViewBackgroundHelper_backgroundTintMode, -1),
                                 null);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -96,13 +96,15 @@ public class AppCompatBackgroundSH implements ISkinHandler {
                 break;
             }
         }
-        a.recycle();
         return attrValue;
     }
 
     @Override
     public void finishParse() {
-
+        if (mTypedArray != null) {
+            mTypedArray.recycle();
+            mTypedArray = null;
+        }
     }
 
     @Override
@@ -156,7 +158,7 @@ public class AppCompatBackgroundSH implements ISkinHandler {
                 }
                 break;
             }
-            case "backgroundTint": {
+            case "app:backgroundTint": {
                 if (view instanceof TintableBackgroundView) {
                     ColorStateList backgroundTint = ViewAttrUtil.getColorStateList(resources, type, value);
                     TintableBackgroundView tintableBackgroundView = (TintableBackgroundView) view;
@@ -164,7 +166,7 @@ public class AppCompatBackgroundSH implements ISkinHandler {
                 }
                 break;
             }
-            case "backgroundTintMode": {
+            case "app:backgroundTintMode": {
                 if (view instanceof TintableBackgroundView) {
                     PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
                     TintableBackgroundView tintableBackgroundView = (TintableBackgroundView) view;

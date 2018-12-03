@@ -119,6 +119,9 @@ public class AttrValueHelper {
     }
 
     private static int getTypedValue(TypedArray typedArray, int index) {
+        if (index < 0) {
+            return TypedValue.TYPE_NULL;
+        }
         int type = TypedValue.TYPE_NULL;
         try {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -171,6 +174,9 @@ public class AttrValueHelper {
     }
 
     public static int getStyleableIndex(Class styleableClass, String styleableName, String attrName) {
+        if (styleableClass == null || TextUtils.isEmpty(styleableName) || TextUtils.isEmpty(attrName)) {
+            return -1;
+        }
         try {
             String filedName = styleableName + "_" + attrName;
             Field field = styleableClass.getDeclaredField(filedName);

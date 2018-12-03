@@ -37,8 +37,12 @@ public class AppCompatImageSH implements ISkinHandler {
         return view instanceof ImageView
                 && view instanceof TintableImageSourceView
                 && (TextUtils.equals(attrName, "srcCompat")
-                || TextUtils.equals(attrName, "tint")
-                || TextUtils.equals(attrName, "tintMode"));
+                || TextUtils.equals(attrName, "app:tint")
+                || TextUtils.equals(attrName, "app:tintMode"));
+    }
+
+    @Override
+    public void prepareParse(View view, AttributeSet set) {
     }
 
     @Override
@@ -55,7 +59,7 @@ public class AppCompatImageSH implements ISkinHandler {
                 }
                 break;
             }
-            case "tint": {
+            case "app:tint": {
                 if (view instanceof TintableImageSourceView) {
                     TintableImageSourceView tintableImageSourceView = (TintableImageSourceView) view;
                     ColorStateList supportImageTintList = tintableImageSourceView.getSupportImageTintList();
@@ -65,7 +69,7 @@ public class AppCompatImageSH implements ISkinHandler {
                 }
                 break;
             }
-            case "tintMode": {
+            case "app:tintMode": {
                 if (view instanceof TintableImageSourceView) {
                     TintableImageSourceView tintableImageSourceView = (TintableImageSourceView) view;
                     PorterDuff.Mode supportBackgroundTintMode = tintableImageSourceView.getSupportImageTintMode();
@@ -77,6 +81,10 @@ public class AppCompatImageSH implements ISkinHandler {
             }
         }
         return attrValue;
+    }
+
+    @Override
+    public void finishParse() {
     }
 
     @Override
@@ -123,7 +131,7 @@ public class AppCompatImageSH implements ISkinHandler {
                 }
                 break;
             }
-            case "tint": {
+            case "app:tint": {
                 if (view instanceof TintableImageSourceView) {
                     TintableImageSourceView tintableImageSourceView = (TintableImageSourceView) view;
                     ColorStateList tint = ViewAttrUtil.getColorStateList(resources, type, value);
@@ -131,7 +139,7 @@ public class AppCompatImageSH implements ISkinHandler {
                 }
                 break;
             }
-            case "tintMode": {
+            case "app:tintMode": {
                 if (view instanceof TintableImageSourceView) {
                     TintableImageSourceView tintableImageSourceView = (TintableImageSourceView) view;
                     PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
