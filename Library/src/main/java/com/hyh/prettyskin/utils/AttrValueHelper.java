@@ -185,7 +185,7 @@ public class AttrValueHelper {
                 return (int) field.get(null);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //
         }
         try {
             String filedName = styleableName + "_android_" + attrName;
@@ -195,7 +195,7 @@ public class AttrValueHelper {
                 return (int) field.get(null);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //
         }
         return -1;
     }

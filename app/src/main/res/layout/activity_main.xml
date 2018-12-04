@@ -38,6 +38,12 @@
         android:drawableLeft="@color/colorPrimary"
         app:autoSizeMaxTextSize="12dp"/>
 
+    <android.support.v7.widget.AppCompatCheckBox
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+
+        android:buttonTint="@color/red"/>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="30dp"

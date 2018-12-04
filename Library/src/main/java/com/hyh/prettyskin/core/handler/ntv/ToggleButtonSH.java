@@ -1,14 +1,11 @@
 package com.hyh.prettyskin.core.handler.ntv;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.PorterDuff;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.CompoundButton;
+import android.widget.ToggleButton;
 
 import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ValueType;
@@ -20,12 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Administrator
- * @description
- * @data 2018/11/7
+ * Created by Eric_He on 2018/12/4.
  */
 
-public class CompoundButtonSH extends ButtonSH {
+public class ToggleButtonSH extends CompoundButtonSH {
+
 
     private final Class mStyleableClass;
 
@@ -35,7 +31,7 @@ public class CompoundButtonSH extends ButtonSH {
 
     {
         mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
-        mStyleableName = "CompoundButton";
+        mStyleableName = "ToggleButton";
         mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
     }
 
@@ -44,25 +40,27 @@ public class CompoundButtonSH extends ButtonSH {
     private TypedArray mTypedArray;
 
     {
-        mSupportAttrNames.add("buttonTintMode");
-        mSupportAttrNames.add("buttonTint");
-        mSupportAttrNames.add("checked");
+        mSupportAttrNames.add("textOn");
+        mSupportAttrNames.add("textOff");
+        mSupportAttrNames.add("disabledAlpha");
     }
 
-    public CompoundButtonSH() {
+    public ToggleButtonSH() {
+        //com.android.internal.R.attr.buttonStyleToggle
+        this(ViewAttrUtil.getDefStyleAttr_internal("buttonStyleToggle"));
     }
 
-    public CompoundButtonSH(int defStyleAttr) {
+    public ToggleButtonSH(int defStyleAttr) {
         super(defStyleAttr);
     }
 
-    public CompoundButtonSH(int defStyleAttr, int defStyleRes) {
+    public ToggleButtonSH(int defStyleAttr, int defStyleRes) {
         super(defStyleAttr, defStyleRes);
     }
 
     @Override
     public boolean isSupportAttrName(View view, String attrName) {
-        return view instanceof CompoundButton && mSupportAttrNames.contains(attrName)
+        return view instanceof ToggleButton && mSupportAttrNames.contains(attrName)
                 || super.isSupportAttrName(view, attrName);
     }
 
@@ -106,26 +104,24 @@ public class CompoundButtonSH extends ButtonSH {
             if (context != null) {
                 resources = context.getResources();
             }
-            CompoundButton compoundButton = (CompoundButton) view;
+            ToggleButton toggleButton = (ToggleButton) view;
             Object value = attrValue.getValue();
             switch (attrName) {
-                case "buttonTintMode": {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
-                        compoundButton.setButtonTintMode(tintMode);
-                    }
+                case "textOn": {
+                    CharSequence textOn = ViewAttrUtil.getCharSequence(resources, type, value);
+                    toggleButton.setTextOn(textOn);
                     break;
                 }
-                case "buttonTint": {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        ColorStateList buttonTint = ViewAttrUtil.getColorStateList(resources, type, value);
-                        compoundButton.setButtonTintList(buttonTint);
-                    }
+                case "textOff": {
+                    CharSequence textOf = ViewAttrUtil.getCharSequence(resources, type, value);
+                    toggleButton.setTextOff(textOf);
                     break;
                 }
-                case "checked": {
-                    boolean checked = ViewAttrUtil.getBoolean(resources, type, value);
-                    compoundButton.setChecked(checked);
+                case "disabledAlpha": {
+                    float disabledAlpha = ViewAttrUtil.getFloat(resources, type, value, 0.5f);
+                    Reflect.from(ToggleButton.class)
+                            .filed("mDisabledAlpha", float.class)
+                            .set(toggleButton, disabledAlpha);
                     break;
                 }
             }
