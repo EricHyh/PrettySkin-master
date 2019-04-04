@@ -10,6 +10,7 @@ import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.SkinView;
 import com.hyh.prettyskin.core.handler.ISkinHandler;
+import com.hyh.prettyskin.utils.Logger;
 
 import java.lang.reflect.Constructor;
 import java.util.Collection;
@@ -57,10 +58,12 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
             if (view != null) {
                 //attrValueKey --> attrName
                 Map<String, String> attrNameMap = getAttrMap(skinAttrs);
-                //attrName --> AttrValue
-                Map<String, AttrValue> defaultAttrValueMap = getDefaultAttrValueMap(view, attrs, attrNameMap.values());
-                SkinView skinView = new SkinView(view, attrNameMap, defaultAttrValueMap);
-                PrettySkin.getInstance().addSkinAttrItem(skinView);
+                if (attrNameMap != null && !attrNameMap.isEmpty()) {
+                    //attrName --> AttrValue
+                    Map<String, AttrValue> defaultAttrValueMap = getDefaultAttrValueMap(view, attrs, attrNameMap.values());
+                    SkinView skinView = new SkinView(view, attrNameMap, defaultAttrValueMap);
+                    PrettySkin.getInstance().addSkinAttrItem(skinView);
+                }
             }
         }
         return view;
@@ -70,7 +73,8 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
     //background=ma_btn_bg|textColor=ma_btn_text_color
     private Map<String, String> getAttrMap(String skinAttrs) {
         if (!skinAttrs.matches("(.+=.+\\|)*(.+=.+)")) {
-            throw new RuntimeException();
+            Logger.e("parse skin attrs error: [" + skinAttrs + "] is not matched [attrName=attrValueKey|attrName=attrValueKey]");
+            return null;
         }
         String[] attrArr = skinAttrs.split("\\|");
         Map<String, String> attrMap = new HashMap<>(attrArr.length);

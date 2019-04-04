@@ -2,8 +2,6 @@ package com.hyh.prettyskin.core;
 
 import android.content.Context;
 
-import java.lang.ref.WeakReference;
-
 /**
  * @author Administrator
  * @description
@@ -12,20 +10,20 @@ import java.lang.ref.WeakReference;
 
 public class AttrValue {
 
-    private WeakReference<Context> themeContextRef;
+    private Context themeContext;
 
     private int type;
 
     private Object value;
 
     public AttrValue(Context themeContext, int type, Object value) {
-        this.themeContextRef = new WeakReference<>(themeContext);
+        this.themeContext = themeContext;
         this.type = type;
         this.value = value;
     }
 
     public Context getThemeContext() {
-        return themeContextRef != null ? themeContextRef.get() : null;
+        return themeContext;
     }
 
     public int getType() {

@@ -1030,13 +1030,4 @@ public class ViewSH implements ISkinHandler {
             }
         }
     }
-
-
-    protected static class V {
-        static void initInternalStyleable(ViewSH sh) {
-            sh.mDefStyleAttr = 0;
-        }
-    }
-
-
 }

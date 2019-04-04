@@ -24,6 +24,11 @@ public class AppCompatTextSH implements ISkinHandler {
     }
 
     @Override
+    public void prepareParse(View view, AttributeSet set) {
+
+    }
+
+    @Override
     public AttrValue parse(View view, AttributeSet set, String attrName) {
         TextView textView = (TextView) view;
         ColorStateList textColors = textView.getTextColors();
@@ -36,6 +41,11 @@ public class AppCompatTextSH implements ISkinHandler {
 
 
         return null;
+    }
+
+    @Override
+    public void finishParse() {
+
     }
 
     @Override

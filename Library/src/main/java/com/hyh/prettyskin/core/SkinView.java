@@ -1,12 +1,12 @@
 package com.hyh.prettyskin.core;
 
-import android.text.TextUtils;
 import android.view.View;
 
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.core.handler.ISkinHandler;
+import com.hyh.prettyskin.utils.ViewReferenceUtil;
 
-import java.lang.ref.WeakReference;
+import java.lang.ref.Reference;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,30 +18,33 @@ import java.util.Set;
 
 public class SkinView {
 
-    private WeakReference<View> viewReference;
+    private final Reference<View> viewReference;
 
     //attrValueKey --> attrName
-    private Map<String, String> attrNameMap;
+    private final Map<String, String> attrNameMap;
 
     //attrName --> AttrValue
-    private Map<String, AttrValue> defaultAttrValueMap;
+    private final Map<String, AttrValue> defaultAttrValueMap;
 
     public SkinView(View view, Map<String, String> attrNameMap, Map<String, AttrValue> defaultAttrValueMap) {
-        this.viewReference = new WeakReference<>(view);
+        this.viewReference = ViewReferenceUtil.createViewReference(this, view);
         this.attrNameMap = attrNameMap;
         this.defaultAttrValueMap = defaultAttrValueMap;
     }
 
+    public View getView() {
+        return viewReference == null ? null : viewReference.get();
+    }
+
     public boolean isRecycled() {
-        return viewReference.get() == null;
+        return viewReference == null || viewReference.get() == null;
     }
 
     public boolean hasAttrValueKey(String attrValueKey) {
         return attrNameMap != null && !attrNameMap.isEmpty() && attrNameMap.containsKey(attrValueKey);
     }
 
-
-    public void notifySkinChanged(ISkin skin) {
+    public void changeSkin(ISkin skin) {
         if (skin == null || attrNameMap == null || attrNameMap.isEmpty()) {
             return;
         }
@@ -59,7 +62,7 @@ public class SkinView {
         }
     }
 
-    public void notifySkinChanged(SkinAttr skinAttr) {
+    /*public void changeSkin(SkinAttr skinAttr) {
         if (attrNameMap == null || attrNameMap.isEmpty()) {
             return;
         }
@@ -76,9 +79,9 @@ public class SkinView {
                 skinHandler.replace(view, attrName, attrValue);
             }
         }
-    }
+    }*/
 
-    public void notifySkinRecovered() {
+    public void recoverSkin() {
         if (defaultAttrValueMap == null || defaultAttrValueMap.isEmpty()) {
             return;
         }

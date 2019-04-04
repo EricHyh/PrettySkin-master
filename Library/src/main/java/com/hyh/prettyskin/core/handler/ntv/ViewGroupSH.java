@@ -78,7 +78,6 @@ public class ViewGroupSH extends ViewSH {
                 || super.isSupportAttrName(view, attrName);
     }
 
-
     @Override
     public void prepareParse(View view, AttributeSet set) {
         super.prepareParse(view, set);

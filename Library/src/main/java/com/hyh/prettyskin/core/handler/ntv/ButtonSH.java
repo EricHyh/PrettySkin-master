@@ -9,7 +9,7 @@ import com.hyh.prettyskin.utils.ViewAttrUtil;
 public class ButtonSH extends TextViewSH {
 
     public ButtonSH() {
-        this(ViewAttrUtil.getDefStyleAttr_internal("buttonStyle"));//com.android.internal.R.attr.buttonStyle
+        this(ViewAttrUtil.getInternalStyleAttr("buttonStyle"));//com.android.internal.R.attr.buttonStyle
     }
 
     public ButtonSH(int defStyleAttr) {

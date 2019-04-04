@@ -10,9 +10,10 @@ import java.util.List;
 
 public interface ISkin {
 
+    boolean loadSkinAttrs();
+
     List<SkinAttr> getSkinAttrs();
 
     AttrValue getAttrValue(String attrValueKey);
 
-    boolean equals(ISkin skin);
 }

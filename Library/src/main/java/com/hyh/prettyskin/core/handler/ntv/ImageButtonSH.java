@@ -11,7 +11,7 @@ import com.hyh.prettyskin.utils.ViewAttrUtil;
 public class ImageButtonSH extends ImageViewSH {
 
     public ImageButtonSH() {
-        this(ViewAttrUtil.getDefStyleAttr_internal("imageButtonStyle"));//com.android.internal.R.attr.imageButtonStyle
+        this(ViewAttrUtil.getInternalStyleAttr("imageButtonStyle"));//com.android.internal.R.attr.imageButtonStyle
     }
 
     public ImageButtonSH(int defStyleAttr) {

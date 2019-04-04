@@ -73,7 +73,7 @@ public class ProgressBarSH extends ViewSH {
     }
 
     public ProgressBarSH() {
-        this(ViewAttrUtil.getDefStyleAttr_internal("progressBarStyle"));//com.android.internal.R.attr.progressBarStyle
+        this(ViewAttrUtil.getInternalStyleAttr("progressBarStyle"));//com.android.internal.R.attr.progressBarStyle
     }
 
     public ProgressBarSH(int defStyleAttr) {

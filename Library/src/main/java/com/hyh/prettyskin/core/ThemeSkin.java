@@ -1,6 +1,5 @@
 package com.hyh.prettyskin.core;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -20,10 +19,11 @@ import java.util.Set;
 /**
  * Created by Eric_He on 2018/10/14.
  */
-@SuppressLint("UseSparseArrays")
 public class ThemeSkin implements ISkin {
 
     private Context mContext;
+
+    private int themeResId;
 
     private Class mStyleableClass;
 
@@ -32,20 +32,18 @@ public class ThemeSkin implements ISkin {
     private Map<String, SkinAttr> mSkinAttrMap;
 
     public ThemeSkin(Context context, int themeResId, Class styleableClass, String styleableName) {
-        mContext = new ContextThemeWrapper(context.getApplicationContext(), themeResId);
-        mStyleableClass = styleableClass;
-        mStyleableName = styleableName;
+        this.mContext = new ContextThemeWrapper(context.getApplicationContext(), themeResId);
+        this.themeResId = themeResId;
+        this.mStyleableClass = styleableClass;
+        this.mStyleableName = styleableName;
     }
 
     @Override
-    public List<SkinAttr> getSkinAttrs() {
-        if (mSkinAttrMap != null) {
-            return new ArrayList<>(mSkinAttrMap.values());
-        }
+    public boolean loadSkinAttrs() {
         final Class styleableClass = mStyleableClass;
         final String styleableName = mStyleableName;
         if (styleableClass == null || TextUtils.isEmpty(styleableName)) {
-            return null;
+            return false;
         }
         int[] attrs = Reflect.from(styleableClass).filed(styleableName, int[].class).get(null);
         TypedArray typedArray = mContext.obtainStyledAttributes(attrs);
@@ -81,6 +79,11 @@ public class ThemeSkin implements ISkin {
             }
         }
         typedArray.recycle();
+        return mSkinAttrMap != null && !mSkinAttrMap.isEmpty();
+    }
+
+    @Override
+    public List<SkinAttr> getSkinAttrs() {
         if (mSkinAttrMap != null) {
             return new ArrayList<>(mSkinAttrMap.values());
         } else {
@@ -99,8 +102,16 @@ public class ThemeSkin implements ISkin {
         return null;
     }
 
+
     @Override
-    public boolean equals(ISkin skin) {
-        return super.equals(skin);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ThemeSkin themeSkin = (ThemeSkin) o;
+
+        if (themeResId != themeSkin.themeResId) return false;
+        if (mStyleableClass != null ? !mStyleableClass.equals(themeSkin.mStyleableClass) : themeSkin.mStyleableClass != null) return false;
+        return mStyleableName != null ? mStyleableName.equals(themeSkin.mStyleableName) : themeSkin.mStyleableName == null;
     }
 }

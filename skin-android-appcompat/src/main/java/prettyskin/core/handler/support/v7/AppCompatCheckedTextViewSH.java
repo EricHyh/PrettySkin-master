@@ -20,7 +20,7 @@ import java.util.List;
 
 public class AppCompatCheckedTextViewSH extends CheckedTextViewSH {
 
-    private static final int sDefStyleAttr = ViewAttrUtil.getDefStyleAttr("checkedTextViewStyle");
+    private static final int sDefStyleAttr = ViewAttrUtil.getAndroidStyleAttr("checkedTextViewStyle");
 
     private static final int[] TINT_ATTRS = {
             android.R.attr.checkMark
@@ -73,7 +73,6 @@ public class AppCompatCheckedTextViewSH extends CheckedTextViewSH {
             return new AttrValue(view.getContext(), ValueType.TYPE_DRAWABLE, drawable);
         }
     }
-
 
     @Override
     public void replace(View view, String attrName, AttrValue attrValue) {

@@ -10,9 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.hyh.prettyskin.android.ActivityLifecycleAdapter;
 import com.hyh.prettyskin.android.SkinInflateFactory;
 import com.hyh.prettyskin.core.ISkin;
+import com.hyh.prettyskin.core.PriorityHandler;
 import com.hyh.prettyskin.core.SkinAttr;
 import com.hyh.prettyskin.core.SkinReplaceListener;
 import com.hyh.prettyskin.core.SkinView;
@@ -22,24 +22,25 @@ import com.hyh.prettyskin.core.handler.ntv.TextViewSH;
 import com.hyh.prettyskin.core.handler.ntv.ViewSH;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Administrator
  * @description
  * @data 2018/9/30
  */
-@SuppressWarnings("all")
+//@SuppressWarnings("all")
 public class PrettySkin {
 
     public static final int REPLACE_CODE_OK = 1;
     public static final int REPLACE_CODE_NULL_SKIN = 2;
-    public static final int REPLACE_CODE_ALREADY_EXISTED = 3;
-
+    public static final int REPLACE_CODE_ERROR_SKIN = 3;
+    public static final int REPLACE_CODE_REPETITIVE_SKIN = 4;
 
     private static PrettySkin sPrettySkin;
 
@@ -57,13 +58,11 @@ public class PrettySkin {
 
     private Context mContext;
 
+    private final Map<String, List<SkinView>> mSkinAttrItemMap = new HashMap<>();
 
-    private Map<String, List<SkinView>> mSkinAttrItemMap = new HashMap<>();
+    private final List<SkinView> mSkinAttrItems = new CopyOnWriteArrayList<>();
 
-    private List<SkinView> mSkinAttrItems = new ArrayList<>();
-
-    private Map<Class<? extends View>, ISkinHandler> mSkinHandlerMap = new HashMap<>();
-
+    private final Map<Class<? extends View>, ISkinHandler> mSkinHandlerMap = new ConcurrentHashMap<>();
 
     {
         mSkinHandlerMap.put(View.class, new ViewSH());
@@ -87,19 +86,12 @@ public class PrettySkin {
             if (application != context) {
                 installViewFactory(application);
             }
-            application.registerActivityLifecycleCallbacks(new ActivityLifecycleAdapter() {
-                @Override
-                public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                    installViewFactory(activity);
-                }
-            });
+            application.registerActivityLifecycleCallbacks(new PrettySkinActivityLifecycle());
         }
     }
 
     public synchronized void addSkinHandler(Class<? extends View> viewClass, ISkinHandler skinHandler) {
         mSkinHandlerMap.put(viewClass, skinHandler);
-
-
     }
 
 
@@ -122,7 +114,7 @@ public class PrettySkin {
         return skinHandler;
     }
 
-    public synchronized void setContextSkinReplaceable(Context context) {
+    public synchronized void setContextSkinable(Context context) {
         installViewFactory(context);
     }
 
@@ -168,7 +160,9 @@ public class PrettySkin {
             return;
         }
         mSkinAttrItems.add(skinView);
-        skinView.notifySkinChanged(mCurrentSkin);
+        if (mCurrentSkin != null) {
+            skinView.changeSkin(mCurrentSkin);
+        }
     }
 
     public synchronized void removeSkinAttrItem(SkinView skinView) {
@@ -179,18 +173,18 @@ public class PrettySkin {
     }
 
     public synchronized void recoverDefaultSkin() {
-        if (!mSkinAttrItems.isEmpty()) {
+        mCurrentSkin = null;
+        if (mSkinAttrItems.isEmpty()) {
             Iterator<SkinView> iterator = mSkinAttrItems.iterator();
             while (iterator.hasNext()) {
                 SkinView skinView = iterator.next();
                 if (skinView == null || skinView.isRecycled()) {
                     iterator.remove();
-                } else {
-                    skinView.notifySkinRecovered();
+                    continue;
                 }
+                skinView.recoverSkin();
             }
         }
-        mCurrentSkin = null;
     }
 
     public synchronized void replaceSkinAsync(ISkin skin, SkinReplaceListener listener) {
@@ -202,7 +196,7 @@ public class PrettySkin {
         }
         if (mCurrentSkin != null && mCurrentSkin.equals(skin)) {
             if (listener != null) {
-                listener.onFailure(REPLACE_CODE_ALREADY_EXISTED);
+                listener.onFailure(REPLACE_CODE_REPETITIVE_SKIN);
             }
             return;
         }
@@ -210,43 +204,36 @@ public class PrettySkin {
         replaceTask.execute();
     }
 
-
     public synchronized int replaceSkinSync(ISkin skin) {
         if (skin == null) {
             return REPLACE_CODE_NULL_SKIN;
         }
         if (mCurrentSkin != null && mCurrentSkin.equals(skin)) {
-            return REPLACE_CODE_ALREADY_EXISTED;
+            return REPLACE_CODE_REPETITIVE_SKIN;
         }
-        List<SkinAttr> skinAttrs = skin.getSkinAttrs();
-        if (skinAttrs != null && !skinAttrs.isEmpty()) {
-            for (SkinAttr skinAttr : skinAttrs) {
-                replaceSkinAttr(skinAttr);
-            }
-            mCurrentSkin = skin;
-            return REPLACE_CODE_OK;
-        } else {
-            return REPLACE_CODE_NULL_SKIN;
+        if (!skin.loadSkinAttrs()) {
+            return REPLACE_CODE_ERROR_SKIN;
         }
+        mCurrentSkin = skin;
+        updateSkin(skin);
+        return REPLACE_CODE_OK;
     }
 
-    private void replaceSkinAttr(SkinAttr skinAttr) {
-        String attrValueKey = skinAttr.getAttrValueKey();
-        Object attrValue = skinAttr.getAttrValue();
-
-        Iterator<SkinView> iterator = mSkinAttrItems.iterator();
-
-        while (iterator.hasNext()) {
-            SkinView skinView = iterator.next();
-            if (skinView == null || skinView.isRecycled()) {
-                iterator.remove();
-            } else if (skinView.hasAttrValueKey(attrValueKey)) {
-                skinView.notifySkinChanged(skinAttr);
+    private synchronized void updateSkin(ISkin skin) {
+        if (mSkinAttrItems.isEmpty()) {
+            Iterator<SkinView> iterator = mSkinAttrItems.iterator();
+            while (iterator.hasNext()) {
+                SkinView skinView = iterator.next();
+                if (skinView == null || skinView.isRecycled()) {
+                    iterator.remove();
+                    continue;
+                }
+                skinView.changeSkin(skin);
             }
         }
     }
 
-    private static class ReplaceTask extends AsyncTask<Void, SkinAttr, Integer> {
+    private static class ReplaceTask extends AsyncTask<Void, SkinAttr, Boolean> {
 
         private ISkin mSkin;
 
@@ -258,48 +245,65 @@ public class PrettySkin {
         }
 
         @Override
-        protected Integer doInBackground(Void... voids) {
-            List<SkinAttr> skinAttrs = mSkin.getSkinAttrs();
-            if (skinAttrs != null && !skinAttrs.isEmpty()) {
-                for (SkinAttr skinAttr : skinAttrs) {
-                    publishProgress(skinAttr);
-                }
-                return REPLACE_CODE_OK;
-            } else {
-                return REPLACE_CODE_NULL_SKIN;
-            }
+        protected Boolean doInBackground(Void... voids) {
+            return mSkin.loadSkinAttrs();
         }
 
         @Override
-        protected void onProgressUpdate(SkinAttr... skinAttrs) {
-            super.onProgressUpdate(skinAttrs);
-            if (skinAttrs == null || skinAttrs.length <= 0) {
-                return;
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            if (result) {
+                PrettySkin.getInstance().mCurrentSkin = mSkin;
+                PrettySkin.getInstance().updateSkin(mSkin);
             }
-            SkinAttr skinAttr = skinAttrs[0];
-            if (skinAttr == null) {
-                return;
-            }
-            PrettySkin.getInstance().replaceSkinAttr(skinAttr);
-        }
-
-        @Override
-        protected void onPostExecute(Integer integer) {
-            super.onPostExecute(integer);
             if (mListener != null) {
-                if (integer == null) {
-                    mListener.onFailure(REPLACE_CODE_NULL_SKIN);
+                if (result) {
+                    mListener.onSuccess();
                 } else {
-                    if (integer == REPLACE_CODE_OK) {
-                        mListener.onSuccess();
-                        PrettySkin.getInstance().mCurrentSkin = mSkin;
-                    } else {
-                        mListener.onFailure(integer);
-                    }
+                    mListener.onFailure(REPLACE_CODE_ERROR_SKIN);
                 }
             }
             mSkin = null;
             mListener = null;
+        }
+    }
+
+
+    private static class PrettySkinActivityLifecycle implements Application.ActivityLifecycleCallbacks {
+
+        @Override
+        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+            PrettySkin.getInstance().installViewFactory(activity);
+        }
+
+        @Override
+        public void onActivityStarted(Activity activity) {
+            PriorityHandler.getInstance().setTopActivityHashCode(System.identityHashCode(activity));
+        }
+
+        @Override
+        public void onActivityResumed(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityPaused(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityStopped(Activity activity) {
+            PriorityHandler.getInstance().removeTopActivityHashCode(System.identityHashCode(activity));
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+        }
+
+        @Override
+        public void onActivityDestroyed(Activity activity) {
+
         }
     }
 }

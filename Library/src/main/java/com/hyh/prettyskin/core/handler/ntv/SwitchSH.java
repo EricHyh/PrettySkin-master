@@ -64,7 +64,7 @@ public class SwitchSH extends CompoundButtonSH {
     }
 
     public SwitchSH() {
-        this(ViewAttrUtil.getDefStyleAttr_internal("switchStyle"));//com.android.internal.R.attr.switchStyle
+        this(ViewAttrUtil.getInternalStyleAttr("switchStyle"));//com.android.internal.R.attr.switchStyle
     }
 
     public SwitchSH(int defStyleAttr) {

@@ -42,6 +42,11 @@ public class AppCompatImageSH implements ISkinHandler {
     }
 
     @Override
+    public void prepareParse(View view, AttributeSet set) {
+
+    }
+
+    @Override
     public AttrValue parse(View view, AttributeSet set, String attrName) {
         AttrValue attrValue = null;
         switch (attrName) {
@@ -77,6 +82,11 @@ public class AppCompatImageSH implements ISkinHandler {
             }
         }
         return attrValue;
+    }
+
+    @Override
+    public void finishParse() {
+
     }
 
     @Override

@@ -74,20 +74,20 @@ public class ViewAttrUtil {
         return tf;
     }
 
-    public static int getDefStyleAttr(String styleName) {
+    public static int getAndroidStyleAttr(String styleName) {
         return Reflect.from("android.R$attr").filed(styleName, int.class).get(null);
     }
 
 
-    public static int getDefStyleAttr_internal(String styleName) {
+    public static int getInternalStyleAttr(String styleName) {
         return Reflect.from("com.android.internal.R$attr").filed(styleName, int.class).get(null);
     }
 
-    public static int getDefStyleAttr_V7(String styleName) {
+    public static int getSupportV7StyleAttr(String styleName) {
         return Reflect.from("android.support.v7.appcompat.R$attr").filed(styleName, int.class).get(null);
     }
 
-    public static int getDefStyleAttr_X(String styleName) {
+    public static int getAndroidXStyleAttr(String styleName) {
         return Reflect.from("androidx.appcompat.R$attr").filed(styleName, int.class).get(null);
     }
 

@@ -120,7 +120,6 @@ public class AttrValueHelper {
                 type = typedArray.getType(index);
             } else {
                 /**
-                 *
                  * index *= AssetManager.STYLE_NUM_ENTRIES;
                  * return mData[index + AssetManager.STYLE_TYPE];
                  */

@@ -52,7 +52,7 @@ public class MediaRouteButtonSH extends ViewSH {
     }
 
     public MediaRouteButtonSH() {
-        this(ViewAttrUtil.getDefStyleAttr_internal("mediaRouteButtonStyle"));//com.android.internal.R.attr.mediaRouteButtonStyle
+        this(ViewAttrUtil.getInternalStyleAttr("mediaRouteButtonStyle"));//com.android.internal.R.attr.mediaRouteButtonStyle
     }
 
     public MediaRouteButtonSH(int defStyleAttr) {
