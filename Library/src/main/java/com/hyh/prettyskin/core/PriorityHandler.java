@@ -1,11 +1,8 @@
 package com.hyh.prettyskin.core;
 
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
 
 /**
  * @author Administrator
@@ -26,15 +23,7 @@ public class PriorityHandler {
     }
 
     public void postSkinChanged(SkinView skinView, Runnable runnable) {
-        View view = skinView.getView();
-        if (view == null) return;
-        Context context = view.getContext();
-        if (context == null) return;
-        if (context instanceof Activity) {
-            //handler.postAtFrontOfQueue();
-        } else {
-            //handler.postAtFrontOfQueue();
-        }
+
     }
 
     public void setTopActivityHashCode(int hashCode) {

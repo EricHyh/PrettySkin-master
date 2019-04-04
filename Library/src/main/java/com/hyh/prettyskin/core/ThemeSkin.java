@@ -2,19 +2,14 @@ package com.hyh.prettyskin.core;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 
-import com.hyh.prettyskin.core.handler.AttrValueHelper;
-import com.hyh.prettyskin.utils.AttrUtil;
+import com.hyh.prettyskin.utils.AttrValueHelper;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 

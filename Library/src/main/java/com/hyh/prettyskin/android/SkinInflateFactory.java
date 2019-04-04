@@ -58,10 +58,12 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
             if (view != null) {
                 //attrName --> attrValueKey
                 Map<String, String> attrNameMap = getAttrMap(skinAttrs);
-                //attrName --> AttrValue
-                Map<String, AttrValue> defaultAttrValueMap = getDefaultAttrValueMap(view, attrs, attrNameMap.keySet());
-                SkinView skinView = new SkinView(view, attrNameMap, defaultAttrValueMap);
-                PrettySkin.getInstance().addSkinAttrItem(skinView);
+                if (attrNameMap != null && !attrNameMap.isEmpty()) {
+                    //attrName --> AttrValue
+                    Map<String, AttrValue> defaultAttrValueMap = getDefaultAttrValueMap(view, attrs, attrNameMap.keySet());
+                    SkinView skinView = new SkinView(view, attrNameMap, defaultAttrValueMap);
+                    PrettySkin.getInstance().addSkinAttrItem(skinView);
+                }
             }
         }
         return view;

@@ -55,9 +55,11 @@ public class SkinView {
         for (Map.Entry<String, String> entry : entrySet) {
             String attrName = entry.getKey();
             String attrValueKey = entry.getValue();
-            AttrValue attrValue = skin.getAttrValue(attrValueKey);
             if (skinHandler.isSupportAttrName(view, attrName)) {
-                skinHandler.replace(view, attrName, attrValue);
+                AttrValue attrValue = skin.getAttrValue(attrValueKey);
+                if (attrValue != null ) {
+                    skinHandler.replace(view, attrName, attrValue);
+                }
             }
         }
     }
@@ -89,7 +91,7 @@ public class SkinView {
         }
     }*/
 
-    public void notifySkinRecovered() {
+    public void recoverSkin() {
         if (defaultAttrValueMap == null || defaultAttrValueMap.isEmpty()) {
             return;
         }
