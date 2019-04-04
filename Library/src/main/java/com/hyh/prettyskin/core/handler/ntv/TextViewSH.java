@@ -18,8 +18,7 @@ import android.widget.TextView;
 
 import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ValueType;
-import com.hyh.prettyskin.core.handler.AttrValueHelper;
-import com.hyh.prettyskin.utils.AttrUtil;
+import com.hyh.prettyskin.utils.AttrValueHelper;
 import com.hyh.prettyskin.utils.ViewAttrUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
@@ -141,7 +140,7 @@ public class TextViewSH extends ViewSH {
         if (super.isSupportAttrName(view, attrName)) {
             return super.parse(view, set, attrName);
         } else {
-            int styleableIndex = AttrUtil.getStyleableIndex(mStyleableClass, mStyleableName, attrName);
+            int styleableIndex = AttrValueHelper.getStyleableIndex(mStyleableClass, mStyleableName, attrName);
             return AttrValueHelper.getAttrValue(view, mTypedArray, styleableIndex);
         }
     }

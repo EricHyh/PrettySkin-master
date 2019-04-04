@@ -3,12 +3,9 @@ package com.hyh.prettyskin.core.handler.ntv;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.QuickContactBadge;
+import android.widget.ToggleButton;
 
 import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ValueType;
@@ -16,13 +13,14 @@ import com.hyh.prettyskin.utils.AttrValueHelper;
 import com.hyh.prettyskin.utils.ViewAttrUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * @author Administrator
- * @description
- * @data 2018/11/6
+ * Created by Eric_He on 2018/12/4.
  */
 
-public class QuickContactBadgeSH extends ImageViewSH {
+public class ToggleButtonSH extends CompoundButtonSH {
 
 
     private final Class mStyleableClass;
@@ -33,28 +31,37 @@ public class QuickContactBadgeSH extends ImageViewSH {
 
     {
         mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
-        mStyleableName = "Theme";
+        mStyleableName = "ToggleButton";
         mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
     }
 
+    private List<String> mSupportAttrNames = new ArrayList<>();
+
     private TypedArray mTypedArray;
 
-
-    public QuickContactBadgeSH() {
+    {
+        mSupportAttrNames.add("textOn");
+        mSupportAttrNames.add("textOff");
+        mSupportAttrNames.add("disabledAlpha");
     }
 
-    public QuickContactBadgeSH(int defStyleAttr) {
+    public ToggleButtonSH() {
+        //com.android.internal.R.attr.buttonStyleToggle
+        this(ViewAttrUtil.getDefStyleAttr_internal("buttonStyleToggle"));
+    }
+
+    public ToggleButtonSH(int defStyleAttr) {
         super(defStyleAttr);
     }
 
-    public QuickContactBadgeSH(int defStyleAttr, int defStyleRes) {
+    public ToggleButtonSH(int defStyleAttr, int defStyleRes) {
         super(defStyleAttr, defStyleRes);
     }
 
     @Override
     public boolean isSupportAttrName(View view, String attrName) {
-        return view instanceof QuickContactBadge && TextUtils.equals(attrName, "quickContactBadgeOverlay") ||
-                super.isSupportAttrName(view, attrName);
+        return view instanceof ToggleButton && mSupportAttrNames.contains(attrName)
+                || super.isSupportAttrName(view, attrName);
     }
 
     @Override
@@ -87,8 +94,7 @@ public class QuickContactBadgeSH extends ImageViewSH {
     public void replace(View view, String attrName, AttrValue attrValue) {
         if (super.isSupportAttrName(view, attrName)) {
             super.replace(view, attrName, attrValue);
-        } else if (view instanceof QuickContactBadge) {
-            QuickContactBadge quickContactBadge = (QuickContactBadge) view;
+        } else {
             Context context = attrValue.getThemeContext();
             int type = attrValue.getType();
             if (context == null && type == ValueType.TYPE_REFERENCE) {
@@ -98,13 +104,24 @@ public class QuickContactBadgeSH extends ImageViewSH {
             if (context != null) {
                 resources = context.getResources();
             }
+            ToggleButton toggleButton = (ToggleButton) view;
             Object value = attrValue.getValue();
             switch (attrName) {
-                case "quickContactBadgeOverlay": {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        Drawable overlay = ViewAttrUtil.getDrawable(resources, type, value);
-                        quickContactBadge.setOverlay(overlay);
-                    }
+                case "textOn": {
+                    CharSequence textOn = ViewAttrUtil.getCharSequence(resources, type, value);
+                    toggleButton.setTextOn(textOn);
+                    break;
+                }
+                case "textOff": {
+                    CharSequence textOf = ViewAttrUtil.getCharSequence(resources, type, value);
+                    toggleButton.setTextOff(textOf);
+                    break;
+                }
+                case "disabledAlpha": {
+                    float disabledAlpha = ViewAttrUtil.getFloat(resources, type, value, 0.5f);
+                    Reflect.from(ToggleButton.class)
+                            .filed("mDisabledAlpha", float.class)
+                            .set(toggleButton, disabledAlpha);
                     break;
                 }
             }

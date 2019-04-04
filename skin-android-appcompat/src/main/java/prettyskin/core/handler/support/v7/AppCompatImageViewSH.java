@@ -35,18 +35,19 @@ public class AppCompatImageViewSH extends ImageViewSH {
         mImageSH = new AppCompatImageSH(defStyleAttr);
     }
 
-    @Override
-    public void prepareParse(View view, AttributeSet set) {
-        super.prepareParse(view, set);
-        mBackgroundSH.prepareParse(view, set);
-        mImageSH.prepareParse(view, set);
-    }
 
     @Override
     public boolean isSupportAttrName(View view, String attrName) {
         return mBackgroundSH.isSupportAttrName(view, attrName)
                 || mImageSH.isSupportAttrName(view, attrName)
                 || super.isSupportAttrName(view, attrName);
+    }
+
+    @Override
+    public void prepareParse(View view, AttributeSet set) {
+        super.prepareParse(view, set);
+        mBackgroundSH.prepareParse(view, set);
+        mImageSH.prepareParse(view, set);
     }
 
     @Override

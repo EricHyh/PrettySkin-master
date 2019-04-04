@@ -29,7 +29,6 @@ public class MainActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        //View contentView = LayoutInflater.from(this).inflate(R.layout.activity_main, null);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: ");
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
@@ -38,6 +37,9 @@ public class MainActivity extends Activity {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
                     | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         }
+
+
+
     }
 
     /**

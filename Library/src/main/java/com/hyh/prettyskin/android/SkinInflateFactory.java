@@ -56,49 +56,15 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
                 view = createView(name, context, attrs);
             }
             if (view != null) {
-                //attrValueKey --> attrName
+                //attrName --> attrValueKey
                 Map<String, String> attrNameMap = getAttrMap(skinAttrs);
-                if (attrNameMap != null && !attrNameMap.isEmpty()) {
-                    //attrName --> AttrValue
-                    Map<String, AttrValue> defaultAttrValueMap = getDefaultAttrValueMap(view, attrs, attrNameMap.values());
-                    SkinView skinView = new SkinView(view, attrNameMap, defaultAttrValueMap);
-                    PrettySkin.getInstance().addSkinAttrItem(skinView);
-                }
+                //attrName --> AttrValue
+                Map<String, AttrValue> defaultAttrValueMap = getDefaultAttrValueMap(view, attrs, attrNameMap.keySet());
+                SkinView skinView = new SkinView(view, attrNameMap, defaultAttrValueMap);
+                PrettySkin.getInstance().addSkinAttrItem(skinView);
             }
         }
         return view;
-    }
-
-
-    //background=ma_btn_bg|textColor=ma_btn_text_color
-    private Map<String, String> getAttrMap(String skinAttrs) {
-        if (!skinAttrs.matches("(.+=.+\\|)*(.+=.+)")) {
-            Logger.e("parse skin attrs error: [" + skinAttrs + "] is not matched [attrName=attrValueKey|attrName=attrValueKey]");
-            return null;
-        }
-        String[] attrArr = skinAttrs.split("\\|");
-        Map<String, String> attrMap = new HashMap<>(attrArr.length);
-        for (String attr : attrArr) {
-            String[] attrInfo = attr.split("=");
-            String attrName = attrInfo[0].trim();
-            String attrValueKey = attrInfo[1].trim();
-            attrMap.put(attrValueKey, attrName);
-        }
-        return attrMap;
-    }
-
-    private Map<String, AttrValue> getDefaultAttrValueMap(View view, AttributeSet attrs, Collection<String> attrNames) {
-        ISkinHandler skinHandler = PrettySkin.getInstance().getSkinHandler(view);
-        if (skinHandler == null) {
-            return Collections.emptyMap();
-        }
-        Map<String, AttrValue> attrValueMap = new HashMap<>(attrNames.size());
-        skinHandler.prepareParse(view, attrs);
-        for (String attrName : attrNames) {
-            attrValueMap.put(attrName, skinHandler.parse(view, attrs, attrName));
-        }
-        skinHandler.finishParse();
-        return attrValueMap;
     }
 
     @Override
@@ -118,5 +84,36 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
             e.printStackTrace();
         }
         return null;
+    }
+
+    //background=ma_btn_bg|textColor=ma_btn_text_color
+    private Map<String, String> getAttrMap(String skinAttrs) {
+        if (!skinAttrs.matches("(.+=.+\\|)*(.+=.+)")) {
+            Logger.e("parse skin attrs error: [" + skinAttrs + "] is not matched [attrName=attrValueKey|attrName=attrValueKey]");
+            return null;
+        }
+        String[] attrArr = skinAttrs.split("\\|");
+        Map<String, String> attrMap = new HashMap<>(attrArr.length);
+        for (String attr : attrArr) {
+            String[] attrInfo = attr.split("=");
+            String attrName = attrInfo[0].trim();
+            String attrValueKey = attrInfo[1].trim();
+            attrMap.put(attrName, attrValueKey);
+        }
+        return attrMap;
+    }
+
+    private Map<String, AttrValue> getDefaultAttrValueMap(View view, AttributeSet attrs, Collection<String> attrNames) {
+        ISkinHandler skinHandler = PrettySkin.getInstance().getSkinHandler(view);
+        if (skinHandler == null) {
+            return Collections.emptyMap();
+        }
+        Map<String, AttrValue> attrValueMap = new HashMap<>(attrNames.size());
+        skinHandler.prepareParse(view, attrs);
+        for (String attrName : attrNames) {
+            attrValueMap.put(attrName, skinHandler.parse(view, attrs, attrName));
+        }
+        skinHandler.finishParse();
+        return attrValueMap;
     }
 }

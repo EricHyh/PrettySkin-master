@@ -21,7 +21,7 @@ import com.hyh.prettyskin.utils.reflect.Reflect;
 
 public class ViewAttrUtil {
 
-    static ImageView.ScaleType[] sScaleTypeArray = {
+    private static final ImageView.ScaleType[] SCALE_TYPE_ARRAY = {
             ImageView.ScaleType.MATRIX,
             ImageView.ScaleType.FIT_XY,
             ImageView.ScaleType.FIT_START,
@@ -33,10 +33,10 @@ public class ViewAttrUtil {
     };
 
     public static ImageView.ScaleType getImageScaleType(int index) {
-        if (index < 0 || index >= sScaleTypeArray.length) {
+        if (index < 0 || index >= SCALE_TYPE_ARRAY.length) {
             return null;
         }
-        return sScaleTypeArray[index];
+        return SCALE_TYPE_ARRAY[index];
     }
 
     public static TextUtils.TruncateAt getTextEllipsize(int index) {

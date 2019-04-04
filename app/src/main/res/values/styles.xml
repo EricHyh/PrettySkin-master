@@ -1,7 +1,6 @@
 <resources>
 
 
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="@android:style/Theme.Holo.Light">
         <!-- Customize your theme here. -->
@@ -9,6 +8,10 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>-->
         <item name="attr_reference5">@drawable/ic_launcher_foreground</item>
+    </style>
+
+    <style name="TestTheme" parent="@android:style/Theme.Translucent.NoTitleBar">
+        <item name="android:windowBackground">@null</item>
     </style>
 
     <style name="TransparentTheme" parent="Base.Theme.AppCompat.Dialog">

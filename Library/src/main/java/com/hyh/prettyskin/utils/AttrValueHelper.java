@@ -1,4 +1,4 @@
-package com.hyh.prettyskin.core.handler;
+package com.hyh.prettyskin.utils;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -10,6 +10,11 @@ import android.view.View;
 import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ValueType;
 import com.hyh.prettyskin.utils.reflect.Reflect;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Administrator
@@ -114,6 +119,9 @@ public class AttrValueHelper {
     }
 
     private static int getTypedValue(TypedArray typedArray, int index) {
+        if (index < 0) {
+            return TypedValue.TYPE_NULL;
+        }
         int type = TypedValue.TYPE_NULL;
         try {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -146,5 +154,48 @@ public class AttrValueHelper {
             e.printStackTrace();
         }
         return type;
+    }
+
+    public static Map<String, Integer> getStyleableFieldMap(Class styleableClass, String styleableName) {
+        Map<String, Integer> fieldNameMap = new HashMap<>();
+        try {
+            Field[] fields = styleableClass.getFields();
+            for (Field field : fields) {
+                if (field.getName().startsWith(styleableName + "_")) {
+                    Object o = field.get(null);
+                    fieldNameMap.put(field.getName(), (Integer) o);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fieldNameMap;
+    }
+
+    public static int getStyleableIndex(Class styleableClass, String styleableName, String attrName) {
+        if (styleableClass == null || TextUtils.isEmpty(styleableName) || TextUtils.isEmpty(attrName)) {
+            return -1;
+        }
+        try {
+            String filedName = styleableName + "_" + attrName;
+            Field field = styleableClass.getDeclaredField(filedName);
+            field.setAccessible(true);
+            if (Modifier.isStatic(field.getModifiers()) && field.getType() == int.class) {
+                return (int) field.get(null);
+            }
+        } catch (Exception e) {
+            //
+        }
+        try {
+            String filedName = styleableName + "_android_" + attrName;
+            Field field = styleableClass.getDeclaredField(filedName);
+            field.setAccessible(true);
+            if (Modifier.isStatic(field.getModifiers()) && field.getType() == int.class) {
+                return (int) field.get(null);
+            }
+        } catch (Exception e) {
+            //
+        }
+        return -1;
     }
 }

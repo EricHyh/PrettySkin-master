@@ -12,8 +12,7 @@ import android.widget.CompoundButton;
 
 import com.hyh.prettyskin.core.AttrValue;
 import com.hyh.prettyskin.core.ValueType;
-import com.hyh.prettyskin.core.handler.AttrValueHelper;
-import com.hyh.prettyskin.utils.AttrUtil;
+import com.hyh.prettyskin.utils.AttrValueHelper;
 import com.hyh.prettyskin.utils.ViewAttrUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
@@ -79,7 +78,7 @@ public class CompoundButtonSH extends ButtonSH {
         if (super.isSupportAttrName(view, attrName)) {
             return super.parse(view, set, attrName);
         } else {
-            int styleableIndex = AttrUtil.getStyleableIndex(mStyleableClass, mStyleableName, attrName);
+            int styleableIndex = AttrValueHelper.getStyleableIndex(mStyleableClass, mStyleableName, attrName);
             return AttrValueHelper.getAttrValue(view, mTypedArray, styleableIndex);
         }
     }
@@ -97,7 +96,7 @@ public class CompoundButtonSH extends ButtonSH {
     public void replace(View view, String attrName, AttrValue attrValue) {
         if (super.isSupportAttrName(view, attrName)) {
             super.replace(view, attrName, attrValue);
-        } else if (view instanceof CompoundButton) {
+        } else {
             Context context = attrValue.getThemeContext();
             int type = attrValue.getType();
             if (context == null && type == ValueType.TYPE_REFERENCE) {

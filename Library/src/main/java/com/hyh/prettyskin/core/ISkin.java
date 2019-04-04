@@ -12,8 +12,6 @@ public interface ISkin {
 
     boolean loadSkinAttrs();
 
-    List<SkinAttr> getSkinAttrs();
-
     AttrValue getAttrValue(String attrValueKey);
 
 }
