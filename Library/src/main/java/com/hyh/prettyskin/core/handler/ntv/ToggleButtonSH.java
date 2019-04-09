@@ -47,7 +47,7 @@ public class ToggleButtonSH extends CompoundButtonSH {
 
     public ToggleButtonSH() {
         //com.android.internal.R.attr.buttonStyleToggle
-        this(ViewAttrUtil.getDefStyleAttr_internal("buttonStyleToggle"));
+        this(ViewAttrUtil.getInternalStyleAttr("buttonStyleToggle"));
     }
 
     public ToggleButtonSH(int defStyleAttr) {

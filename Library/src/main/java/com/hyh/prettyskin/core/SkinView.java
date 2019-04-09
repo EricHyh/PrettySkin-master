@@ -31,6 +31,10 @@ public class SkinView {
         this.defaultAttrValueMap = defaultAttrValueMap;
     }
 
+    public View getView() {
+        return viewReference == null ? null : viewReference.get();
+    }
+
     public boolean isRecycled() {
         return viewReference.get() == null;
     }
@@ -57,7 +61,7 @@ public class SkinView {
             String attrValueKey = entry.getValue();
             if (skinHandler.isSupportAttrName(view, attrName)) {
                 AttrValue attrValue = skin.getAttrValue(attrValueKey);
-                if (attrValue != null ) {
+                if (attrValue != null) {
                     skinHandler.replace(view, attrName, attrValue);
                 }
             }

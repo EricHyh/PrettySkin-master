@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +14,6 @@ import android.widget.TextView;
 
 import com.hyh.prettyskin.android.SkinInflateFactory;
 import com.hyh.prettyskin.core.ISkin;
-import com.hyh.prettyskin.core.PriorityHandler;
 import com.hyh.prettyskin.core.SkinAttr;
 import com.hyh.prettyskin.core.SkinReplaceListener;
 import com.hyh.prettyskin.core.SkinView;
@@ -22,10 +23,12 @@ import com.hyh.prettyskin.core.handler.ntv.TextViewSH;
 import com.hyh.prettyskin.core.handler.ntv.ViewSH;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -58,6 +61,10 @@ public class PrettySkin {
 
     private Context mContext;
 
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+
+    private final PrettySkinActivityLifecycle mPrettySkinActivityLifecycle = new PrettySkinActivityLifecycle();
+
     private final Map<String, List<SkinView>> mSkinAttrItemMap = new HashMap<>();
 
     private final List<SkinView> mSkinAttrItems = new CopyOnWriteArrayList<>();
@@ -86,7 +93,7 @@ public class PrettySkin {
             if (application != context) {
                 installViewFactory(application);
             }
-            application.registerActivityLifecycleCallbacks(new PrettySkinActivityLifecycle());
+            application.registerActivityLifecycleCallbacks(mPrettySkinActivityLifecycle);
         }
     }
 
@@ -174,7 +181,8 @@ public class PrettySkin {
 
     public synchronized void recoverDefaultSkin() {
         mCurrentSkin = null;
-        if (mSkinAttrItems.isEmpty()) {
+        if (!mSkinAttrItems.isEmpty()) {
+            final TreeSet<SkinView> skinViews = new TreeSet<>(new SkinViewComparator());
             Iterator<SkinView> iterator = mSkinAttrItems.iterator();
             while (iterator.hasNext()) {
                 SkinView skinView = iterator.next();
@@ -182,7 +190,17 @@ public class PrettySkin {
                     iterator.remove();
                     continue;
                 }
-                skinView.recoverSkin();
+                skinViews.add(skinView);
+            }
+            if (!skinViews.isEmpty()) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (final SkinView skinView : skinViews) {
+                            skinView.recoverSkin();
+                        }
+                    }
+                });
             }
         }
     }
@@ -219,8 +237,9 @@ public class PrettySkin {
         return REPLACE_CODE_OK;
     }
 
-    private synchronized void updateSkin(ISkin skin) {
-        if (mSkinAttrItems.isEmpty()) {
+    private synchronized void updateSkin(final ISkin skin) {
+        if (!mSkinAttrItems.isEmpty()) {
+            final TreeSet<SkinView> skinViews = new TreeSet<>(new SkinViewComparator());
             Iterator<SkinView> iterator = mSkinAttrItems.iterator();
             while (iterator.hasNext()) {
                 SkinView skinView = iterator.next();
@@ -228,7 +247,17 @@ public class PrettySkin {
                     iterator.remove();
                     continue;
                 }
-                skinView.changeSkin(skin);
+                skinViews.add(skinView);
+            }
+            if (!skinViews.isEmpty()) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (final SkinView skinView : skinViews) {
+                            skinView.changeSkin(skin);
+                        }
+                    }
+                });
             }
         }
     }
@@ -271,6 +300,9 @@ public class PrettySkin {
 
     private static class PrettySkinActivityLifecycle implements Application.ActivityLifecycleCallbacks {
 
+
+        private int mTopActivityHashCode;
+
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
             PrettySkin.getInstance().installViewFactory(activity);
@@ -278,32 +310,85 @@ public class PrettySkin {
 
         @Override
         public void onActivityStarted(Activity activity) {
-            PriorityHandler.getInstance().setTopActivityHashCode(System.identityHashCode(activity));
+            mTopActivityHashCode = System.identityHashCode(activity);
         }
 
         @Override
         public void onActivityResumed(Activity activity) {
-
+            mTopActivityHashCode = System.identityHashCode(activity);
         }
 
         @Override
         public void onActivityPaused(Activity activity) {
-
         }
 
         @Override
         public void onActivityStopped(Activity activity) {
-            PriorityHandler.getInstance().removeTopActivityHashCode(System.identityHashCode(activity));
+            if (mTopActivityHashCode != 0 && mTopActivityHashCode == System.identityHashCode(activity)) {
+                mTopActivityHashCode = 0;
+            }
         }
 
         @Override
         public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
         }
 
         @Override
         public void onActivityDestroyed(Activity activity) {
+            if (mTopActivityHashCode != 0 && mTopActivityHashCode == System.identityHashCode(activity)) {
+                mTopActivityHashCode = 0;
+            }
+        }
+    }
 
+    private static class SkinViewComparator implements Comparator<SkinView> {
+
+        @Override
+        public int compare(SkinView skinView1, SkinView skinView2) {
+            View view1 = skinView1.getView();
+            if (view1 == null) {
+                return 1;
+            }
+            View view2 = skinView2.getView();
+            if (view2 == null) {
+                return -1;
+            }
+            Context context1 = view1.getContext();
+            Context context2 = view2.getContext();
+            return compare(context1, context2);
+        }
+
+        int compare(Context context1, Context context2) {
+            if (context1 == null) {
+                return 1;
+            }
+            if (context2 == null) {
+                return -1;
+            }
+            int context1_type = 1;
+            int context2_type = 1;
+            if (context1 instanceof Activity) {
+                Activity activity1 = (Activity) context1;
+                Integer topActivityHashCode = PrettySkin.getInstance().mPrettySkinActivityLifecycle.mTopActivityHashCode;
+                if (System.identityHashCode(activity1) == topActivityHashCode) {
+                    context1_type = 0;
+                } else {
+                    context1_type = 2;
+                }
+            }
+            if (context2 instanceof Activity) {
+                Activity activity2 = (Activity) context2;
+                Integer topActivityHashCode = PrettySkin.getInstance().mPrettySkinActivityLifecycle.mTopActivityHashCode;
+                if (System.identityHashCode(activity2) == topActivityHashCode) {
+                    context2_type = 0;
+                } else {
+                    context2_type = 2;
+                }
+            }
+            if (context1_type == context2_type) {
+                return 1;
+            }
+            return context1_type - context2_type;
         }
     }
 }

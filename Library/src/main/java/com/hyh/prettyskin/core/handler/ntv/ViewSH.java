@@ -225,8 +225,11 @@ public class ViewSH implements ISkinHandler {
                     }
                     case ValueType.TYPE_REFERENCE: {
                         int drawableId = 0;
-                        Drawable background = null;
                         if (value != null) {
+                            drawableId = (int) value;
+                        }
+                        Drawable background = null;
+                        if (drawableId != 0) {
                             background = resources.getDrawable(drawableId);
                         }
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
