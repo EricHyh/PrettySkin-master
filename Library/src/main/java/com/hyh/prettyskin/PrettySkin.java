@@ -9,8 +9,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.hyh.prettyskin.android.SkinInflateFactory;
 import com.hyh.prettyskin.core.ISkin;
@@ -18,9 +16,8 @@ import com.hyh.prettyskin.core.SkinAttr;
 import com.hyh.prettyskin.core.SkinReplaceListener;
 import com.hyh.prettyskin.core.SkinView;
 import com.hyh.prettyskin.core.handler.ISkinHandler;
-import com.hyh.prettyskin.core.handler.ntv.ButtonSH;
-import com.hyh.prettyskin.core.handler.ntv.TextViewSH;
-import com.hyh.prettyskin.core.handler.ntv.ViewSH;
+import com.hyh.prettyskin.core.handler.ISkinHandlerMap;
+import com.hyh.prettyskin.core.handler.ntv.NativeSkinHandlerMap;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.Comparator;
@@ -72,9 +69,7 @@ public class PrettySkin {
     private final Map<Class<? extends View>, ISkinHandler> mSkinHandlerMap = new ConcurrentHashMap<>();
 
     {
-        mSkinHandlerMap.put(View.class, new ViewSH());
-        mSkinHandlerMap.put(TextView.class, new TextViewSH());
-        mSkinHandlerMap.put(Button.class, new ButtonSH());
+        mSkinHandlerMap.putAll(new NativeSkinHandlerMap().get());
     }
 
     private ISkin mCurrentSkin;
@@ -101,6 +96,9 @@ public class PrettySkin {
         mSkinHandlerMap.put(viewClass, skinHandler);
     }
 
+    public synchronized void addSkinHandler(ISkinHandlerMap map) {
+        mSkinHandlerMap.putAll(map.get());
+    }
 
     public synchronized ISkin getCurrentSkin() {
         return mCurrentSkin;

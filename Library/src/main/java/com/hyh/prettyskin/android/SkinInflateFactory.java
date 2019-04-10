@@ -113,7 +113,9 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
         Map<String, AttrValue> attrValueMap = new HashMap<>(attrNames.size());
         skinHandler.prepareParse(view, attrs);
         for (String attrName : attrNames) {
-            attrValueMap.put(attrName, skinHandler.parse(view, attrs, attrName));
+            AttrValue attrValue = skinHandler.parse(view, attrs, attrName);
+            Logger.d("getDefaultAttrValueMap attrName = " + attrName + ", attrValue = " + attrValue);
+            attrValueMap.put(attrName, attrValue);
         }
         skinHandler.finishParse();
         return attrValueMap;

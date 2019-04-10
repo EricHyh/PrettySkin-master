@@ -6,6 +6,8 @@ import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.demo.widget.CustomView;
 import com.hyh.prettyskin.demo.widget.CustomViewSH;
 
+import prettyskin.core.handler.support.v7.AppCompatSkinHandlerMap;
+
 /**
  * @author Administrator
  * @description
@@ -19,5 +21,6 @@ public class AppContext extends Application {
         super.onCreate();
         PrettySkin.getInstance().init(this);
         PrettySkin.getInstance().addSkinHandler(CustomView.class, new CustomViewSH());
+        PrettySkin.getInstance().addSkinHandler(new AppCompatSkinHandlerMap());
     }
 }

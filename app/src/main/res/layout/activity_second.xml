@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorAccent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     skin:skin_attrs="background=sc_bg"
     tools:ignore="MissingPrefix">
 
@@ -17,6 +17,12 @@
         android:layout_height="wrap_content"
         android:text="按钮"
         skin:skin_attrs="background=sc_bg|textColor=sc_btn_text_color"/>
+
+
+    <com.hyh.prettyskin.demo.widget.CustomButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="自定义按钮"/>
 
 
     <Switch

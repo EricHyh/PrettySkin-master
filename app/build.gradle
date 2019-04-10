@@ -19,4 +19,5 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation rootProject.ext.appcompat
     implementation project(':Library')
+    implementation project(':skin-android-appcompat')
 }

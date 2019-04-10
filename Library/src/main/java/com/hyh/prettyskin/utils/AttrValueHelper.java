@@ -198,4 +198,21 @@ public class AttrValueHelper {
         }
         return -1;
     }
+
+    public static int getTextAppearanceStyleableIndex(Class styleableClass, String attrName) {
+        if (styleableClass == null || TextUtils.isEmpty(attrName)) {
+            return -1;
+        }
+        try {
+            String filedName = "TextAppearance_" + attrName;
+            Field field = styleableClass.getDeclaredField(filedName);
+            field.setAccessible(true);
+            if (Modifier.isStatic(field.getModifiers()) && field.getType() == int.class) {
+                return (int) field.get(null);
+            }
+        } catch (Exception e) {
+            //
+        }
+        return -1;
+    }
 }

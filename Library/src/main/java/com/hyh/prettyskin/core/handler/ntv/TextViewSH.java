@@ -49,6 +49,8 @@ public class TextViewSH extends ViewSH {
 
     private TypedArray mTypedArray;
 
+    private TypedArray mAppearanceTypedArray;
+
     {
         mSupportAttrNames.add("textAppearance");
         //mSupportAttrNames.add("editable");
@@ -133,6 +135,23 @@ public class TextViewSH extends ViewSH {
         super.prepareParse(view, set);
         Context context = view.getContext();
         mTypedArray = context.obtainStyledAttributes(set, mAttrs, mDefStyleAttr, mDefStyleRes);
+
+        int[] appearanceAttrs = Reflect.from(mStyleableClass).filed("TextViewAppearance", int[].class).get(null);
+        TypedArray typedArray = context.obtainStyledAttributes(set,
+                appearanceAttrs,
+                mDefStyleAttr,
+                mDefStyleRes);
+        if (typedArray != null) {
+            Integer textAppearanceIndex = Reflect.from(mStyleableClass).filed("TextViewAppearance_textAppearance", int.class).get(null);
+            if (textAppearanceIndex != null) {
+                int appearanceId = typedArray.getResourceId(textAppearanceIndex, -1);
+                if (appearanceId != -1) {
+                    mAppearanceTypedArray = context.obtainStyledAttributes(appearanceId,
+                            Reflect.from(mStyleableClass).filed("TextAppearance", int[].class).get(null));
+                }
+            }
+            typedArray.recycle();
+        }
     }
 
     @Override
@@ -141,8 +160,17 @@ public class TextViewSH extends ViewSH {
             return super.parse(view, set, attrName);
         } else {
             int styleableIndex = AttrValueHelper.getStyleableIndex(mStyleableClass, mStyleableName, attrName);
-            return AttrValueHelper.getAttrValue(view, mTypedArray, styleableIndex);
+            AttrValue attrValue = AttrValueHelper.getAttrValue(view, mTypedArray, styleableIndex);
+            if (attrValue != null) {
+                return attrValue;
+            }
+            return parseTextAppearance(view, set, attrName);
         }
+    }
+
+    private AttrValue parseTextAppearance(View view, AttributeSet set, String attrName) {
+        int styleableIndex = AttrValueHelper.getTextAppearanceStyleableIndex(mStyleableClass, attrName);
+        return AttrValueHelper.getAttrValue(view, mAppearanceTypedArray, styleableIndex);
     }
 
     @Override
@@ -151,6 +179,10 @@ public class TextViewSH extends ViewSH {
         if (mTypedArray != null) {
             mTypedArray.recycle();
             mTypedArray = null;
+        }
+        if (mAppearanceTypedArray != null) {
+            mAppearanceTypedArray.recycle();
+            mAppearanceTypedArray = null;
         }
     }
 

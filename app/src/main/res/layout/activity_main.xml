@@ -82,7 +82,6 @@
         android:layout_height="wrap_content"
         android:onClick="changeSkin"
         android:text="换肤"
-        android:textColor="#000000"
         skin:skin_attrs="background=ma_btn_bg|textColor=ma_btn_text_color"/>
 
     <Button
@@ -97,6 +96,11 @@
         android:layout_height="wrap_content"
         android:onClick="startSecondAct"
         android:text="startSecondAct"/>
+
+    <com.hyh.prettyskin.demo.widget.CustomButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="自定义按钮"/>
 
 
     <ImageView
