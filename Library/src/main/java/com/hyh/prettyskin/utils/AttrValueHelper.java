@@ -35,7 +35,7 @@ public class AttrValueHelper {
         Object value = null;
         int indexType = getTypedValue(typedArray, styleableIndex);
         if (indexType == TypedValue.TYPE_NULL) {
-            return null;
+            return new AttrValue(context, type, null);
         }
         switch (indexType) {
             case TypedValue.TYPE_INT_COLOR_ARGB8:
