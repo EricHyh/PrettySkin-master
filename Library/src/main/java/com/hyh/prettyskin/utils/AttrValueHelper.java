@@ -7,8 +7,8 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 
-import com.hyh.prettyskin.core.AttrValue;
-import com.hyh.prettyskin.core.ValueType;
+import com.hyh.prettyskin.AttrValue;
+import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.lang.reflect.Field;

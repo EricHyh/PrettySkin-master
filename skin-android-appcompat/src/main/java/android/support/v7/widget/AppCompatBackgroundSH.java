@@ -13,9 +13,9 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.hyh.prettyskin.core.AttrValue;
-import com.hyh.prettyskin.core.ValueType;
-import com.hyh.prettyskin.core.handler.ISkinHandler;
+import com.hyh.prettyskin.AttrValue;
+import com.hyh.prettyskin.ValueType;
+import com.hyh.prettyskin.ISkinHandler;
 import com.hyh.prettyskin.utils.ViewAttrUtil;
 
 

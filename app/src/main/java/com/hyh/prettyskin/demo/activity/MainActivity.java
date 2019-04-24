@@ -11,7 +11,7 @@ import android.view.WindowManager;
 
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.R;
-import com.hyh.prettyskin.core.ThemeSkin;
+import com.hyh.prettyskin.ThemeSkin;
 import com.hyh.prettyskin.utils.NumberUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 

@@ -11,13 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.hyh.prettyskin.android.SkinInflateFactory;
-import com.hyh.prettyskin.core.ISkin;
-import com.hyh.prettyskin.core.SkinAttr;
-import com.hyh.prettyskin.core.SkinReplaceListener;
-import com.hyh.prettyskin.core.SkinView;
-import com.hyh.prettyskin.core.handler.ISkinHandler;
-import com.hyh.prettyskin.core.handler.ISkinHandlerMap;
-import com.hyh.prettyskin.core.handler.ntv.NativeSkinHandlerMap;
+import com.hyh.prettyskin.sh.NativeSkinHandlerMap;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.Comparator;

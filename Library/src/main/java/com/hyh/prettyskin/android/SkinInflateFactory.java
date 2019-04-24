@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.hyh.prettyskin.PrettySkin;
-import com.hyh.prettyskin.core.AttrValue;
-import com.hyh.prettyskin.core.SkinView;
-import com.hyh.prettyskin.core.handler.ISkinHandler;
+import com.hyh.prettyskin.AttrValue;
+import com.hyh.prettyskin.SkinView;
+import com.hyh.prettyskin.ISkinHandler;
 import com.hyh.prettyskin.utils.Logger;
 
 import java.lang.reflect.Constructor;

@@ -12,7 +12,7 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.hyh.prettyskin.core.ValueType;
+import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 /**

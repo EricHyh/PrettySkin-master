@@ -4,7 +4,7 @@ import android.os.Process;
 import android.view.View;
 
 import com.hyh.prettyskin.PrettySkin;
-import com.hyh.prettyskin.core.SkinView;
+import com.hyh.prettyskin.SkinView;
 
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;

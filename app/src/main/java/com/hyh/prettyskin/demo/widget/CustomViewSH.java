@@ -2,8 +2,8 @@ package com.hyh.prettyskin.demo.widget;
 
 import android.view.View;
 
-import com.hyh.prettyskin.core.AttrValue;
-import com.hyh.prettyskin.core.handler.ntv.ViewSH;
+import com.hyh.prettyskin.AttrValue;
+import com.hyh.prettyskin.sh.ViewSH;
 
 /**
  * @author Administrator

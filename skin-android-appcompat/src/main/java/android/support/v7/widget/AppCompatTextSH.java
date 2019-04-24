@@ -6,8 +6,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
-import com.hyh.prettyskin.core.AttrValue;
-import com.hyh.prettyskin.core.handler.ISkinHandler;
+import com.hyh.prettyskin.AttrValue;
+import com.hyh.prettyskin.ISkinHandler;
 
 /**
  * @author Administrator
