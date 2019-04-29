@@ -1,1 +1,1 @@
-include ':app', ':Library', ':skin-android-appcompat', ':skin-androidx-appcompat'
+include ':android-appcompat-sample', ':Library', ':skin-android-appcompat', ':skin-androidx-appcompat', ':skin-package-first'

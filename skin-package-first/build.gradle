@@ -1,0 +1,19 @@
+apply plugin: 'com.android.application'
+apply from: rootProject.getRootDir().getAbsolutePath() + File.separator + 'common.gradle'
+
+android {
+    defaultConfig {
+        applicationId "com.hyh.prettyskin.demo"
+        versionCode 100
+        versionName "1.0.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+}
