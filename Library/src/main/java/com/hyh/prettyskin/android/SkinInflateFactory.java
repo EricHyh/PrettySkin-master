@@ -56,12 +56,12 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
                 view = createView(name, context, attrs);
             }
             if (view != null) {
-                //attrName --> attrValueKey
-                Map<String, String> attrNameMap = getAttrMap(skinAttrs);
-                if (attrNameMap != null && !attrNameMap.isEmpty()) {
-                    //attrName --> AttrValue
-                    Map<String, AttrValue> defaultAttrValueMap = getDefaultAttrValueMap(view, attrs, attrNameMap.keySet());
-                    SkinView skinView = new SkinView(view, attrNameMap, defaultAttrValueMap);
+                //attrName --> attrKey
+                Map<String, String> attrKeyMap = getAttrKeyMap(skinAttrs);
+                if (attrKeyMap != null && !attrKeyMap.isEmpty()) {
+                    //attrName --> attrValue
+                    Map<String, AttrValue> defaultAttrValueMap = getDefaultAttrValueMap(view, attrs, attrKeyMap.keySet());
+                    SkinView skinView = new SkinView(view, attrKeyMap, defaultAttrValueMap);
                     PrettySkin.getInstance().addSkinAttrItem(skinView);
                 }
             }
@@ -89,7 +89,7 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
     }
 
     //background=ma_btn_bg|textColor=ma_btn_text_color
-    private Map<String, String> getAttrMap(String skinAttrs) {
+    private Map<String, String> getAttrKeyMap(String skinAttrs) {
         if (!skinAttrs.matches("(.+=.+\\|)*(.+=.+)")) {
             Logger.e("parse skin attrs error: [" + skinAttrs + "] is not matched [attrName=attrValueKey|attrName=attrValueKey]");
             return null;
@@ -99,8 +99,8 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
         for (String attr : attrArr) {
             String[] attrInfo = attr.split("=");
             String attrName = attrInfo[0].trim();
-            String attrValueKey = attrInfo[1].trim();
-            attrMap.put(attrName, attrValueKey);
+            String attrKey = attrInfo[1].trim();
+            attrMap.put(attrName, attrKey);
         }
         return attrMap;
     }

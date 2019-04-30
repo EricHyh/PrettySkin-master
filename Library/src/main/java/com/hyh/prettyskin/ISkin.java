@@ -8,8 +8,19 @@ package com.hyh.prettyskin;
 
 public interface ISkin {
 
+    /**
+     * 加载皮肤属性
+     *
+     * @return 是否加载成功
+     */
     boolean loadSkinAttrs();
 
-    AttrValue getAttrValue(String attrValueKey);
+    /**
+     * 根据属性的Key获取属性的Value
+     *
+     * @param attrKey 属性的Key
+     * @return
+     */
+    AttrValue getAttrValue(String attrKey);
 
 }

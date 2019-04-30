@@ -16,15 +16,15 @@ public class SkinView {
 
     private WeakReference<View> viewReference;
 
-    //attrName --> attrValueKey
-    private Map<String, String> attrNameMap;
+    //attrName --> attrKey
+    private Map<String, String> attrKeyMap;
 
-    //attrName --> AttrValue
+    //attrName --> attrValue
     private Map<String, AttrValue> defaultAttrValueMap;
 
-    public SkinView(View view, Map<String, String> attrNameMap, Map<String, AttrValue> defaultAttrValueMap) {
+    public SkinView(View view, Map<String, String> attrKeyMap, Map<String, AttrValue> defaultAttrValueMap) {
         this.viewReference = new WeakReference<>(view);
-        this.attrNameMap = attrNameMap;
+        this.attrKeyMap = attrKeyMap;
         this.defaultAttrValueMap = defaultAttrValueMap;
     }
 
@@ -37,7 +37,7 @@ public class SkinView {
     }
 
     public void changeSkin(ISkin skin) {
-        if (skin == null || attrNameMap == null || attrNameMap.isEmpty()) {
+        if (skin == null || attrKeyMap == null || attrKeyMap.isEmpty()) {
             return;
         }
         View view = viewReference.get();
@@ -48,12 +48,12 @@ public class SkinView {
         if (skinHandler == null) {
             return;
         }
-        Set<Map.Entry<String, String>> entrySet = attrNameMap.entrySet();
+        Set<Map.Entry<String, String>> entrySet = attrKeyMap.entrySet();
         for (Map.Entry<String, String> entry : entrySet) {
             String attrName = entry.getKey();
-            String attrValueKey = entry.getValue();
+            String attrKey = entry.getValue();
             if (skinHandler.isSupportAttrName(view, attrName)) {
-                AttrValue attrValue = skin.getAttrValue(attrValueKey);
+                AttrValue attrValue = skin.getAttrValue(attrKey);
                 if (attrValue != null) {
                     skinHandler.replace(view, attrName, attrValue);
                 }

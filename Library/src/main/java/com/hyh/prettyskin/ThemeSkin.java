@@ -53,12 +53,12 @@ public class ThemeSkin implements ISkin {
         mSkinAttrMap = new HashMap<>(filedNameMap.size());
         Set<Map.Entry<String, Integer>> entrySet = filedNameMap.entrySet();
         for (Map.Entry<String, Integer> entry : entrySet) {
-            String attrValueKey = entry.getKey().substring(styleableName.length() + 1);
+            String attrKey = entry.getKey().substring(styleableName.length() + 1);
             Integer attrIndex = entry.getValue();
             AttrValue attrValue = AttrValueHelper.getAttrValue(mContext, typedArray, attrIndex);
             if (attrValue != null) {
-                SkinAttr skinAttr = new SkinAttr(attrValueKey, attrValue);
-                mSkinAttrMap.put(attrValueKey, skinAttr);
+                SkinAttr skinAttr = new SkinAttr(attrKey, attrValue);
+                mSkinAttrMap.put(attrKey, skinAttr);
             }
         }
         typedArray.recycle();
@@ -66,9 +66,9 @@ public class ThemeSkin implements ISkin {
     }
 
     @Override
-    public AttrValue getAttrValue(String attrValueKey) {
+    public AttrValue getAttrValue(String attrKey) {
         if (mSkinAttrMap != null) {
-            SkinAttr skinAttr = mSkinAttrMap.get(attrValueKey);
+            SkinAttr skinAttr = mSkinAttrMap.get(attrKey);
             if (skinAttr != null) {
                 return skinAttr.getAttrValue();
             }

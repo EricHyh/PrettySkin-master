@@ -1,0 +1,11 @@
+<resources>
+
+    <declare-styleable name="skin_first">
+        <attr name="title_bar_color" format="color|reference"/>
+    </declare-styleable>
+
+    <style name="skin_first_1">
+        <item name="title_bar_color">#FF0000</item>
+    </style>
+
+</resources>

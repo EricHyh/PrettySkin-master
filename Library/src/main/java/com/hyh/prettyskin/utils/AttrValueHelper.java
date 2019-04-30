@@ -156,6 +156,12 @@ public class AttrValueHelper {
         return type;
     }
 
+
+    /**
+     * @param styleableClass 样式Class，如R.styleable.class
+     * @param styleableName  样式名称
+     * @return 返回该样式下所有属性的（属性名称-属性索引）
+     */
     public static Map<String, Integer> getStyleableFieldMap(Class styleableClass, String styleableName) {
         Map<String, Integer> fieldNameMap = new HashMap<>();
         try {

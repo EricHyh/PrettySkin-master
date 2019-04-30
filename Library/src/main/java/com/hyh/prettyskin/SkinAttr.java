@@ -7,17 +7,17 @@ package com.hyh.prettyskin;
  */
 public class SkinAttr {
 
-    private String attrValueKey;
+    private String attrKey;
 
     private AttrValue attrValue;
 
-    public SkinAttr(String attrValueKey, AttrValue attrValue) {
-        this.attrValueKey = attrValueKey;
+    public SkinAttr(String attrKey, AttrValue attrValue) {
+        this.attrKey = attrKey;
         this.attrValue = attrValue;
     }
 
-    public String getAttrValueKey() {
-        return attrValueKey;
+    public String getAttrKey() {
+        return attrKey;
     }
 
     public AttrValue getAttrValue() {

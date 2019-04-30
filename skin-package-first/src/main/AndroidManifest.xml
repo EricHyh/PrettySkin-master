@@ -1,2 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.hyh.prettyskin"/>
+          package="com.hyh.prettyskin">
+
+    <application>
+        <meta-data
+            android:name="declare-styleable"
+            android:value="skin_first"/>
+        <meta-data
+            android:name="style"
+            android:resource="@style/skin_first_1"/>
+    </application>
+</manifest>
