@@ -15,7 +15,6 @@ import com.hyh.prettyskin.sh.NativeSkinHandlerMap;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +55,6 @@ public class PrettySkin {
 
     private final PrettySkinActivityLifecycle mPrettySkinActivityLifecycle = new PrettySkinActivityLifecycle();
 
-    private final Map<String, List<SkinView>> mSkinAttrItemMap = new HashMap<>();
 
     private final List<SkinView> mSkinAttrItems = new CopyOnWriteArrayList<>();
 
@@ -103,7 +101,7 @@ public class PrettySkin {
     }
 
     public ISkinHandler getSkinHandler(Class viewClass) {
-        if (viewClass == null || viewClass.isAssignableFrom(View.class)) {
+        if (viewClass == null || !View.class.isAssignableFrom(viewClass)) {
             return null;
         }
         ISkinHandler skinHandler = mSkinHandlerMap.get(viewClass);
@@ -254,7 +252,7 @@ public class PrettySkin {
         }
     }
 
-    private static class ReplaceTask extends AsyncTask<Void, SkinAttr, Boolean> {
+    private static class ReplaceTask extends AsyncTask<Void, Void, Boolean> {
 
         private ISkin mSkin;
 

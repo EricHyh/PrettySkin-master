@@ -1,11 +1,24 @@
 <resources>
 
     <declare-styleable name="skin_first">
-        <attr name="title_bar_color" format="color|reference"/>
+        <attr name="title_bar_bg_color" format="color|reference"/>
     </declare-styleable>
 
+    <string-array name="skin_list">
+        <item>skin_first_1</item>
+        <item>skin_first_2</item>
+        <item>skin_first_3</item>
+    </string-array>
+
     <style name="skin_first_1">
-        <item name="title_bar_color">#FF0000</item>
+        <item name="title_bar_bg_color">#FF0000</item>
     </style>
 
+    <style name="skin_first_2">
+        <item name="title_bar_bg_color">#00FF00</item>
+    </style>
+
+    <style name="skin_first_3">
+        <item name="title_bar_bg_color">#0000FF</item>
+    </style>
 </resources>

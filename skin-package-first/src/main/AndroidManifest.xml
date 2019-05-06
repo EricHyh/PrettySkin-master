@@ -3,10 +3,24 @@
 
     <application>
         <meta-data
-            android:name="declare-styleable"
+            android:name="skin_r_class_path"
+            android:value="com.hyh.prettyskin.R"/>
+        <meta-data
+            android:name="skin_declare_styleable"
             android:value="skin_first"/>
         <meta-data
-            android:name="style"
+            android:name="skin_theme_list"
+            android:resource="@array/skin_list"/>
+
+        <meta-data
+            android:name="skin_first_1"
             android:resource="@style/skin_first_1"/>
+        <meta-data
+            android:name="skin_first_2"
+            android:resource="@style/skin_first_2"/>
+        <meta-data
+            android:name="skin_first_3"
+            android:resource="@style/skin_first_3"/>
     </application>
+
 </manifest>

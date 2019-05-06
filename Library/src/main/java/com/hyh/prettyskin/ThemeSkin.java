@@ -25,7 +25,7 @@ public class ThemeSkin implements ISkin {
 
     private String mStyleableName;
 
-    private Map<String, SkinAttr> mSkinAttrMap;
+    private Map<String, AttrValue> mSkinAttrMap;
 
     public ThemeSkin(Context context, int themeResId, Class styleableClass, String styleableName) {
         this.mContext = new ContextThemeWrapper(context.getApplicationContext(), themeResId);
@@ -36,6 +36,7 @@ public class ThemeSkin implements ISkin {
 
     @Override
     public boolean loadSkinAttrs() {
+        if (mSkinAttrMap != null) return true;
         final Class styleableClass = mStyleableClass;
         final String styleableName = mStyleableName;
         if (styleableClass == null || TextUtils.isEmpty(styleableName)) {
@@ -57,8 +58,7 @@ public class ThemeSkin implements ISkin {
             Integer attrIndex = entry.getValue();
             AttrValue attrValue = AttrValueHelper.getAttrValue(mContext, typedArray, attrIndex);
             if (attrValue != null) {
-                SkinAttr skinAttr = new SkinAttr(attrKey, attrValue);
-                mSkinAttrMap.put(attrKey, skinAttr);
+                mSkinAttrMap.put(attrKey, attrValue);
             }
         }
         typedArray.recycle();
@@ -67,13 +67,7 @@ public class ThemeSkin implements ISkin {
 
     @Override
     public AttrValue getAttrValue(String attrKey) {
-        if (mSkinAttrMap != null) {
-            SkinAttr skinAttr = mSkinAttrMap.get(attrKey);
-            if (skinAttr != null) {
-                return skinAttr.getAttrValue();
-            }
-        }
-        return null;
+        return mSkinAttrMap == null ? null : mSkinAttrMap.get(attrKey);
     }
 
 

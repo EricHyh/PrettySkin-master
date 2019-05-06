@@ -22,6 +22,7 @@ public class NativeSkinHandlerMap implements ISkinHandlerMap {
 
     {
         mSkinHandlerMap.put(View.class, new ViewSH());
+        mSkinHandlerMap.put(View.class, new ViewGroupSH());
         mSkinHandlerMap.put(TextView.class, new TextViewSH());
         mSkinHandlerMap.put(Button.class, new ButtonSH());
     }
