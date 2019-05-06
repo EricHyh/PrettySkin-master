@@ -37,7 +37,7 @@ public class AppContext extends Application {
                     File filesDir = getFilesDir();
                     File file = new File(filesDir, "skin-package-first-debug.apk");
                     StreamUtil.copyFileToTargetPath(inputStream, file.getAbsolutePath());
-                    PrettySkin.getInstance().replaceSkinSync(new ApkThemeSkin(getApplicationContext(), file.getAbsolutePath()));
+                    PrettySkin.getInstance().replaceSkinSync(new ApkThemeSkin(getApplicationContext(), file.getAbsolutePath(), 2));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

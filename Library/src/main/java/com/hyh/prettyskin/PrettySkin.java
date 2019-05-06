@@ -89,6 +89,7 @@ public class PrettySkin {
     }
 
     public synchronized void addSkinHandler(ISkinHandlerMap map) {
+        if (map == null || map.get() == null) return;
         mSkinHandlerMap.putAll(map.get());
     }
 
