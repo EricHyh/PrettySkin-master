@@ -31,6 +31,14 @@ public class MainActivity extends BaseActivity {
 
         initToolBar();
         initDrawerLayout();
+
+
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor();
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor();
+        }*/
     }
 
     private void initToolBar() {

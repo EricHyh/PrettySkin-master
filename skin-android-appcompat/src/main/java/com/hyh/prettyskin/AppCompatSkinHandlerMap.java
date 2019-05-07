@@ -3,10 +3,10 @@ package com.hyh.prettyskin;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 
+import com.hyh.prettyskin.sh.AppCompatButtonSH;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.hyh.prettyskin.sh.AppCompatButtonSH;
 
 /**
  * @author Administrator

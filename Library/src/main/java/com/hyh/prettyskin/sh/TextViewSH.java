@@ -191,14 +191,14 @@ public class TextViewSH extends ViewSH {
         if (super.isSupportAttrName(view, attrName)) {
             super.replace(view, attrName, attrValue);
         } else if (view instanceof TextView) {
-            Context context = attrValue.getThemeContext();
+            Context themeContext = attrValue.getThemeContext();
             int type = attrValue.getType();
-            if (context == null && type == ValueType.TYPE_REFERENCE) {
+            if (themeContext == null && type == ValueType.TYPE_REFERENCE) {
                 return;
             }
             Resources resources = null;
-            if (context != null) {
-                resources = context.getResources();
+            if (themeContext != null) {
+                resources = themeContext.getResources();
             }
             TextView textView = (TextView) view;
             Object value = attrValue.getValue();
@@ -209,7 +209,7 @@ public class TextViewSH extends ViewSH {
                         textAppearance = (int) value;
                     }
                     if (textAppearance != -1) {
-                        textView.setTextAppearance(context, textAppearance);
+                        textView.setTextAppearance(themeContext, textAppearance);
                     }
                     break;
                 }

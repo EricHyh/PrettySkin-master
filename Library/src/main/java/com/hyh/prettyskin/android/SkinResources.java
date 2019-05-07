@@ -2,6 +2,7 @@ package com.hyh.prettyskin.android;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
@@ -30,6 +31,14 @@ public class SkinResources extends Resources {
         return super.getIdentifier(name, defType, mSkinPackageName);
     }
 
+    public static Resources createSkinResources(Context context, ApplicationInfo applicationInfo) {
+        try {
+            return context.getPackageManager().getResourcesForApplication(applicationInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public static Resources createSkinResources(Context context, String skinPath) {
         AssetManager assetManager = createAssetManager(skinPath);

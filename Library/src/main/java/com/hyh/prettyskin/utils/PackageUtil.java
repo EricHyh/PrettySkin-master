@@ -17,6 +17,8 @@ public class PackageUtil {
         PackageInfo packageInfo = null;
         try {
             packageInfo = context.getPackageManager().getPackageArchiveInfo(apkPath, PackageManager.GET_META_DATA);
+            packageInfo.applicationInfo.sourceDir = apkPath;
+            packageInfo.applicationInfo.publicSourceDir = apkPath;
         } catch (Exception e) {
             e.printStackTrace();
         }

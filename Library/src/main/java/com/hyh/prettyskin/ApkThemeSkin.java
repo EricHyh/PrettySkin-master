@@ -46,6 +46,8 @@ public class ApkThemeSkin implements ISkin {
         this.mApplicationContext = context.getApplicationContext();
         this.mApkPath = apkPath;
         this.mIndex = index;
+
+
     }
 
     @Override
@@ -59,7 +61,8 @@ public class ApkThemeSkin implements ISkin {
         if (TextUtils.isEmpty(skinRClassPath)) return false;
         String skinDeclareStyleable = metaData.getString(SKIN_DECLARE_STYLEABLE);
         if (TextUtils.isEmpty(skinDeclareStyleable)) return false;
-        Resources resources = SkinResources.createSkinResources(mApplicationContext, mApkPath);
+
+        Resources resources = SkinResources.createSkinResources(mApplicationContext, applicationInfo);
         if (resources == null) return false;
 
         int skinThemeArrayId = metaData.getInt(SKIN_THEME_LIST);
