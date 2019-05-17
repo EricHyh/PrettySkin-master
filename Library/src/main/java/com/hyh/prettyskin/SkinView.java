@@ -3,6 +3,7 @@ package com.hyh.prettyskin;
 import android.view.View;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,6 +37,10 @@ public class SkinView {
         return viewReference.get() == null;
     }
 
+    public boolean isSupportAttr(String attrKey) {
+        return attrKeyMap != null && attrKeyMap.containsValue(attrKey);
+    }
+
     public void changeSkin(ISkin skin) {
         if (skin == null || attrKeyMap == null || attrKeyMap.isEmpty()) {
             return;
@@ -52,6 +57,35 @@ public class SkinView {
         for (Map.Entry<String, String> entry : entrySet) {
             String attrName = entry.getKey();
             String attrKey = entry.getValue();
+            if (skinHandler.isSupportAttrName(view, attrName)) {
+                AttrValue attrValue = skin.getAttrValue(attrKey);
+                if (attrValue != null) {
+                    skinHandler.replace(view, attrName, attrValue);
+                }
+            }
+        }
+    }
+
+
+    public void changeSkin(ISkin skin, List<String> changedAttrKeys) {
+        if (skin == null || attrKeyMap == null || attrKeyMap.isEmpty()) {
+            return;
+        }
+        View view = viewReference.get();
+        if (view == null) {
+            return;
+        }
+        ISkinHandler skinHandler = PrettySkin.getInstance().getSkinHandler(view);
+        if (skinHandler == null) {
+            return;
+        }
+        Set<Map.Entry<String, String>> entrySet = attrKeyMap.entrySet();
+        for (Map.Entry<String, String> entry : entrySet) {
+            String attrName = entry.getKey();
+            String attrKey = entry.getValue();
+            if (!changedAttrKeys.contains(attrKey)) {
+                continue;
+            }
             if (skinHandler.isSupportAttrName(view, attrName)) {
                 AttrValue attrValue = skin.getAttrValue(attrKey);
                 if (attrValue != null) {

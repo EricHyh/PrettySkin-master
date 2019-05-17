@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * Created by Eric_He on 2018/10/14.
  */
-public class ThemeSkin implements ISkin {
+public class ThemeSkin extends BaseSkin {
 
     private Context mContext;
 
@@ -25,7 +25,7 @@ public class ThemeSkin implements ISkin {
 
     private String mStyleableName;
 
-    private Map<String, AttrValue> mSkinAttrMap;
+    private Map<String, AttrValue> mInnerSkinAttrMap;
 
     public ThemeSkin(Context context, int themeResId, Class styleableClass, String styleableName) {
         this.mContext = new ContextThemeWrapper(context.getApplicationContext(), themeResId);
@@ -36,7 +36,7 @@ public class ThemeSkin implements ISkin {
 
     @Override
     public boolean loadSkinAttrs() {
-        if (mSkinAttrMap != null) return true;
+        if (mInnerSkinAttrMap != null) return true;
         final Class styleableClass = mStyleableClass;
         final String styleableName = mStyleableName;
         if (styleableClass == null || TextUtils.isEmpty(styleableName)) {
@@ -51,14 +51,14 @@ public class ThemeSkin implements ISkin {
             return false;
         }
         TypedArray typedArray = mContext.obtainStyledAttributes(attrs);
-        mSkinAttrMap = new HashMap<>(filedNameMap.size());
+        mInnerSkinAttrMap = new HashMap<>(filedNameMap.size());
         Set<Map.Entry<String, Integer>> entrySet = filedNameMap.entrySet();
         for (Map.Entry<String, Integer> entry : entrySet) {
             String attrKey = entry.getKey().substring(styleableName.length() + 1);
             Integer attrIndex = entry.getValue();
             AttrValue attrValue = AttrValueHelper.getAttrValue(mContext, typedArray, attrIndex);
             if (attrValue != null) {
-                mSkinAttrMap.put(attrKey, attrValue);
+                mInnerSkinAttrMap.put(attrKey, attrValue);
             }
         }
         typedArray.recycle();
@@ -66,10 +66,9 @@ public class ThemeSkin implements ISkin {
     }
 
     @Override
-    public AttrValue getAttrValue(String attrKey) {
-        return mSkinAttrMap == null ? null : mSkinAttrMap.get(attrKey);
+    protected AttrValue getInnerAttrValue(String attrKey) {
+        return mInnerSkinAttrMap == null ? null : mInnerSkinAttrMap.get(attrKey);
     }
-
 
     @Override
     public boolean equals(Object o) {

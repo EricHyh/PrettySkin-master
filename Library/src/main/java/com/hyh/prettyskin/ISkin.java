@@ -23,4 +23,9 @@ public interface ISkin {
      */
     AttrValue getAttrValue(String attrKey);
 
+    /**
+     * 设置皮肤属性，如果该KEY已存在则替换属性
+     */
+    void setOuterAttrValue(String attrKey, AttrValue attrValue);
+
 }

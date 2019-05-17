@@ -26,7 +26,7 @@ import dalvik.system.DexClassLoader;
  * @data 2019/4/30
  */
 
-public class ApkThemeSkin implements ISkin {
+public class ApkThemeSkin extends BaseSkin {
 
     private static final String SKIN_R_CLASS_PATH = "skin_r_class_path";
     private static final String SKIN_DECLARE_STYLEABLE = "skin_declare_styleable";
@@ -36,7 +36,7 @@ public class ApkThemeSkin implements ISkin {
     private final String mApkPath;
     private final int mIndex;
 
-    private HashMap<String, AttrValue> mSkinAttrMap;
+    private HashMap<String, AttrValue> mInnerSkinAttrMap;
 
     public ApkThemeSkin(Context context, String apkPath) {
         this(context, apkPath, 0);
@@ -52,7 +52,7 @@ public class ApkThemeSkin implements ISkin {
 
     @Override
     public boolean loadSkinAttrs() {
-        if (mSkinAttrMap != null) return true;
+        if (mInnerSkinAttrMap != null) return true;
         ApplicationInfo applicationInfo = PackageUtil.getApplicationInfo(mApplicationContext, mApkPath);
         if (applicationInfo == null) return false;
         Bundle metaData = applicationInfo.metaData;
@@ -100,14 +100,14 @@ public class ApkThemeSkin implements ISkin {
         SkinContext skinContext = new SkinContext(mApplicationContext, resources, skinThemeId);
         TypedArray typedArray = skinContext.obtainStyledAttributes(attrs);
 
-        mSkinAttrMap = new HashMap<>(filedNameMap.size());
+        mInnerSkinAttrMap = new HashMap<>(filedNameMap.size());
         Set<Map.Entry<String, Integer>> entrySet = filedNameMap.entrySet();
         for (Map.Entry<String, Integer> entry : entrySet) {
             String attrKey = entry.getKey().substring(styleableName.length() + 1);
             Integer attrIndex = entry.getValue();
             AttrValue attrValue = AttrValueHelper.getAttrValue(skinContext, typedArray, attrIndex);
             if (attrValue != null) {
-                mSkinAttrMap.put(attrKey, attrValue);
+                mInnerSkinAttrMap.put(attrKey, attrValue);
             }
         }
         typedArray.recycle();
@@ -124,7 +124,7 @@ public class ApkThemeSkin implements ISkin {
     }
 
     @Override
-    public AttrValue getAttrValue(String attrKey) {
-        return mSkinAttrMap == null ? null : mSkinAttrMap.get(attrKey);
+    protected AttrValue getInnerAttrValue(String attrKey) {
+        return mInnerSkinAttrMap == null ? null : mInnerSkinAttrMap.get(attrKey);
     }
 }

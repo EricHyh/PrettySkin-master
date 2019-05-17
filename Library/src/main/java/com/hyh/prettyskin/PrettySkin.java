@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -51,7 +52,7 @@ public class PrettySkin {
 
     private Context mContext;
 
-    private final Handler mHandler = new Handler(Looper.getMainLooper());
+    private final ChangeSkinHandler mHandler = new ChangeSkinHandler();
 
     private final PrettySkinActivityLifecycle mPrettySkinActivityLifecycle = new PrettySkinActivityLifecycle();
 
@@ -184,14 +185,7 @@ public class PrettySkin {
                 skinViews.add(skinView);
             }
             if (!skinViews.isEmpty()) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (final SkinView skinView : skinViews) {
-                            skinView.recoverSkin();
-                        }
-                    }
-                });
+                mHandler.postRecoverSkin(skinViews);
             }
         }
     }
@@ -228,6 +222,31 @@ public class PrettySkin {
         return REPLACE_CODE_OK;
     }
 
+    public synchronized void notifySkinAttrChanged(final List<String> changedAttrKeys) {
+        if (mCurrentSkin == null) return;
+        if (changedAttrKeys == null || changedAttrKeys.isEmpty()) return;
+        if (!mSkinAttrItems.isEmpty()) {
+            final TreeSet<SkinView> skinViews = new TreeSet<>(new SkinViewComparator());
+            Iterator<SkinView> iterator = mSkinAttrItems.iterator();
+            while (iterator.hasNext()) {
+                SkinView skinView = iterator.next();
+                if (skinView == null || skinView.isRecycled()) {
+                    iterator.remove();
+                    continue;
+                }
+                for (String attrKey : changedAttrKeys) {
+                    if (skinView.isSupportAttr(attrKey)) {
+                        skinViews.add(skinView);
+                        break;
+                    }
+                }
+            }
+            if (!skinViews.isEmpty()) {
+                mHandler.postUpdateSkin(skinViews, mCurrentSkin, changedAttrKeys);
+            }
+        }
+    }
+
     private synchronized void updateSkin(final ISkin skin) {
         if (!mSkinAttrItems.isEmpty()) {
             final TreeSet<SkinView> skinViews = new TreeSet<>(new SkinViewComparator());
@@ -241,14 +260,7 @@ public class PrettySkin {
                 skinViews.add(skinView);
             }
             if (!skinViews.isEmpty()) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (final SkinView skinView : skinViews) {
-                            skinView.changeSkin(skin);
-                        }
-                    }
-                });
+                mHandler.postUpdateSkin(skinViews, skin);
             }
         }
     }
@@ -380,6 +392,31 @@ public class PrettySkin {
                 return 1;
             }
             return context1_type - context2_type;
+        }
+    }
+
+    private static class ChangeSkinHandler extends Handler {
+
+        ChangeSkinHandler() {
+            super(Looper.getMainLooper());
+        }
+
+        void postUpdateSkin(TreeSet<SkinView> skinViews, ISkin skin) {
+
+        }
+
+        void postUpdateSkin(TreeSet<SkinView> skinViews, ISkin skin, List<String> changedAttrKeys) {
+
+        }
+
+        void postRecoverSkin(TreeSet<SkinView> skinViews) {
+
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
         }
     }
 }
