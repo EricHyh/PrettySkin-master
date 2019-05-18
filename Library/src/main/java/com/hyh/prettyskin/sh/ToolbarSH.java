@@ -2,7 +2,6 @@ package com.hyh.prettyskin.sh;
 
 import android.annotation.TargetApi;
 import android.os.Build;
-import android.widget.Toolbar;
 
 /**
  * @author Administrator
@@ -13,7 +12,6 @@ import android.widget.Toolbar;
 public class ToolbarSH extends ViewGroupSH {
 
     public ToolbarSH() {
-        Toolbar toolbar = new Toolbar(null);
     }
 
     public ToolbarSH(int defStyleAttr) {

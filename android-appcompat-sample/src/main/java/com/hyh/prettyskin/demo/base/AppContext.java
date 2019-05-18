@@ -2,16 +2,9 @@ package com.hyh.prettyskin.demo.base;
 
 import android.app.Application;
 
-import com.hyh.prettyskin.ApkThemeSkin;
-import com.hyh.prettyskin.AppCompatSkinHandlerMap;
 import com.hyh.prettyskin.PrettySkin;
-import com.hyh.prettyskin.demo.utils.StreamUtil;
-import com.hyh.prettyskin.demo.utils.ThreadManager;
-import com.hyh.prettyskin.demo.widget.CustomView;
-import com.hyh.prettyskin.demo.widget.CustomViewSH;
-
-import java.io.File;
-import java.io.InputStream;
+import com.hyh.prettyskin.R;
+import com.hyh.prettyskin.ThemeSkin;
 
 /**
  * @author Administrator
@@ -24,11 +17,11 @@ public class AppContext extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        PrettySkin.getInstance().init(this);
-        PrettySkin.getInstance().addSkinHandler(CustomView.class, new CustomViewSH());
-        PrettySkin.getInstance().addSkinHandler(new AppCompatSkinHandlerMap());
+        //PrettySkin.getInstance().init(this);
+        //PrettySkin.getInstance().addSkinHandler(CustomView.class, new CustomViewSH());
+        //PrettySkin.getInstance().addSkinHandler(new AppCompatSkinHandlerMap());
 
-        ThreadManager.execute(new Runnable() {
+       /* ThreadManager.execute(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -42,6 +35,9 @@ public class AppContext extends Application {
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
+
+        ThemeSkin prettySkin = new ThemeSkin(this, R.style.PrettySkin_1, R.styleable.class, "PrettySkin");
+        PrettySkin.getInstance().replaceSkinSync(prettySkin);
     }
 }

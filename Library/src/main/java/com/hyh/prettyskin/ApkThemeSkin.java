@@ -46,8 +46,6 @@ public class ApkThemeSkin extends BaseSkin {
         this.mApplicationContext = context.getApplicationContext();
         this.mApkPath = apkPath;
         this.mIndex = index;
-
-
     }
 
     @Override

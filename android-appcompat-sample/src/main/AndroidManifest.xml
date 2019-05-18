@@ -12,10 +12,25 @@
 
         <activity
             android:name=".demo.activity.MainActivity">
+            <!--<intent-filter>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>-->
+
+        </activity>
+
+        <activity
+            android:name=".demo.activity.Test1Activity">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".demo.activity.Test2Activity">
+
 
         </activity>
 

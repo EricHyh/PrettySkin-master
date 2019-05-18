@@ -50,19 +50,23 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
                 view = mFactory.onCreateView(name, context, attrs);
             }
         }
-        String skinAttrs = attrs.getAttributeValue(NAMESPACE, SKIN_ATTRS);
-        if (!TextUtils.isEmpty(skinAttrs)) {
-            if (view == null) {
-                view = createView(name, context, attrs);
-            }
-            if (view != null) {
-                //attrName --> attrKey
-                Map<String, String> attrKeyMap = getAttrKeyMap(skinAttrs);
-                if (attrKeyMap != null && !attrKeyMap.isEmpty()) {
-                    //attrName --> attrValue
-                    Map<String, AttrValue> defaultAttrValueMap = getDefaultAttrValueMap(view, attrs, attrKeyMap.keySet());
-                    SkinView skinView = new SkinView(view, attrKeyMap, defaultAttrValueMap);
-                    PrettySkin.getInstance().addSkinAttrItem(skinView);
+        boolean skinable = PrettySkin.getInstance().isSkinableContext(context);
+        Logger.d(context.getClass().getName() + " skinable = " + skinable);
+        if (skinable) {
+            String skinAttrs = attrs.getAttributeValue(NAMESPACE, SKIN_ATTRS);
+            if (!TextUtils.isEmpty(skinAttrs)) {
+                if (view == null) {
+                    view = createView(name, context, attrs);
+                }
+                if (view != null) {
+                    //attrName --> attrKey
+                    Map<String, String> attrKeyMap = getAttrKeyMap(skinAttrs);
+                    if (attrKeyMap != null && !attrKeyMap.isEmpty()) {
+                        //attrName --> attrValue
+                        Map<String, AttrValue> defaultAttrValueMap = getDefaultAttrValueMap(view, attrs, attrKeyMap.keySet());
+                        SkinView skinView = new SkinView(view, attrKeyMap, defaultAttrValueMap);
+                        PrettySkin.getInstance().addSkinAttrItem(skinView);
+                    }
                 }
             }
         }

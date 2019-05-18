@@ -15,6 +15,7 @@ import com.hyh.prettyskin.android.SkinInflateFactory;
 import com.hyh.prettyskin.sh.NativeSkinHandlerMap;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
+import java.lang.ref.WeakReference;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -56,7 +57,6 @@ public class PrettySkin {
 
     private final PrettySkinActivityLifecycle mPrettySkinActivityLifecycle = new PrettySkinActivityLifecycle();
 
-
     private final List<SkinView> mSkinAttrItems = new CopyOnWriteArrayList<>();
 
     private final Map<Class<? extends View>, ISkinHandler> mSkinHandlerMap = new ConcurrentHashMap<>();
@@ -64,6 +64,8 @@ public class PrettySkin {
     {
         mSkinHandlerMap.putAll(new NativeSkinHandlerMap().get());
     }
+
+    private final List<ContextReference> mSkinableContextList = new CopyOnWriteArrayList<>();
 
     private ISkin mCurrentSkin;
 
@@ -131,6 +133,8 @@ public class PrettySkin {
     }
 
     private void installViewFactory(Context context) {
+        addSkinableContext(context);
+
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         LayoutInflater.Factory factory = layoutInflater.getFactory();
         if (factory == null) {
@@ -150,6 +154,28 @@ public class PrettySkin {
                 Reflect.from(LayoutInflater.class)
                         .filed("mFactory2", LayoutInflater.Factory.class)
                         .set(layoutInflater, skinInflateFactory);
+            }
+        }
+    }
+
+
+    public boolean isSkinableContext(Context context) {
+        ContextReference contextReference = new ContextReference(context);
+        return mSkinableContextList.contains(contextReference);
+    }
+
+    private void addSkinableContext(Context context) {
+        ContextReference contextReference = new ContextReference(context);
+        if (!mSkinableContextList.contains(contextReference)) {
+            mSkinableContextList.add(contextReference);
+        }
+
+        //清除被回收的Context
+        Iterator<ContextReference> iterator = mSkinableContextList.iterator();
+        while (iterator.hasNext()) {
+            ContextReference next = iterator.next();
+            if (next.get() == null) {
+                iterator.remove();
             }
         }
     }
@@ -397,26 +423,118 @@ public class PrettySkin {
 
     private static class ChangeSkinHandler extends Handler {
 
+        private static final int MSG_UPDATE_ALL = 1;
+        private static final int MSG_UPDATE_SPECIFIED = 2;
+        private static final int MSG_RECOVER = 3;
+
         ChangeSkinHandler() {
             super(Looper.getMainLooper());
         }
 
         void postUpdateSkin(TreeSet<SkinView> skinViews, ISkin skin) {
-
+            Message message = obtainMessage(MSG_UPDATE_ALL);
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.skinViews = skinViews;
+            messageInfo.skin = skin;
+            message.obj = messageInfo;
+            sendMessage(message);
         }
 
         void postUpdateSkin(TreeSet<SkinView> skinViews, ISkin skin, List<String> changedAttrKeys) {
-
+            Message message = obtainMessage(MSG_UPDATE_SPECIFIED);
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.skinViews = skinViews;
+            messageInfo.skin = skin;
+            messageInfo.changedAttrKeys = changedAttrKeys;
+            message.obj = messageInfo;
+            sendMessage(message);
         }
 
         void postRecoverSkin(TreeSet<SkinView> skinViews) {
-
+            Message message = obtainMessage(MSG_RECOVER);
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.skinViews = skinViews;
+            message.obj = messageInfo;
+            sendMessage(message);
         }
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-
+            Object obj = msg.obj;
+            if (obj == null || !(obj instanceof MessageInfo)) {
+                return;
+            }
+            MessageInfo messageInfo = (MessageInfo) obj;
+            int what = msg.what;
+            switch (what) {
+                case MSG_UPDATE_ALL: {
+                    performUpdateSkin(messageInfo.skinViews, messageInfo.skin);
+                    break;
+                }
+                case MSG_UPDATE_SPECIFIED: {
+                    performUpdateSkin(messageInfo.skinViews, messageInfo.skin, messageInfo.changedAttrKeys);
+                    break;
+                }
+                case MSG_RECOVER: {
+                    performRecoverSkin(messageInfo.skinViews);
+                    break;
+                }
+            }
         }
+
+        private void performUpdateSkin(TreeSet<SkinView> skinViews, ISkin skin) {
+            for (SkinView skinView : skinViews) {
+                skinView.changeSkin(skin);
+            }
+        }
+
+        private void performUpdateSkin(TreeSet<SkinView> skinViews, ISkin skin, List<String> changedAttrKeys) {
+            for (SkinView skinView : skinViews) {
+                skinView.changeSkin(skin, changedAttrKeys);
+            }
+        }
+
+        private void performRecoverSkin(TreeSet<SkinView> skinViews) {
+            for (SkinView skinView : skinViews) {
+                skinView.recoverSkin();
+            }
+        }
+    }
+
+    private static class ContextReference {
+
+        private final WeakReference<Context> mContextRef;
+
+        ContextReference(Context context) {
+            mContextRef = new WeakReference<>(context);
+        }
+
+        Context get() {
+            return mContextRef.get();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Context thatContext = ((ContextReference) o).get();
+            Context thisContext = this.get();
+            return thatContext == thisContext;
+        }
+
+        @Override
+        public int hashCode() {
+            Context context = mContextRef.get();
+            return context == null ? 0 : context.hashCode();
+        }
+    }
+
+    private static class MessageInfo {
+
+        TreeSet<SkinView> skinViews;
+        ISkin skin;
+        List<String> changedAttrKeys;
+
     }
 }
