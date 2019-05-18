@@ -527,6 +527,7 @@ public class PrettySkin {
         public int hashCode() {
             Context context = mContextRef.get();
             return context == null ? 0 : context.hashCode();
+
         }
     }
 
