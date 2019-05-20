@@ -17,7 +17,6 @@ import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.lang.ref.WeakReference;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
@@ -169,13 +168,10 @@ public class PrettySkin {
         if (!mSkinableContextList.contains(contextReference)) {
             mSkinableContextList.add(contextReference);
         }
-
         //清除被回收的Context
-        Iterator<ContextReference> iterator = mSkinableContextList.iterator();
-        while (iterator.hasNext()) {
-            ContextReference next = iterator.next();
-            if (next.get() == null) {
-                iterator.remove();
+        for (ContextReference reference : mSkinableContextList) {
+            if (reference.get() == null) {
+                mSkinableContextList.remove(reference);
             }
         }
     }
@@ -201,11 +197,9 @@ public class PrettySkin {
         mCurrentSkin = null;
         if (!mSkinAttrItems.isEmpty()) {
             final TreeSet<SkinView> skinViews = new TreeSet<>(new SkinViewComparator());
-            Iterator<SkinView> iterator = mSkinAttrItems.iterator();
-            while (iterator.hasNext()) {
-                SkinView skinView = iterator.next();
+            for (SkinView skinView : mSkinAttrItems) {
                 if (skinView == null || skinView.isRecycled()) {
-                    iterator.remove();
+                    skinViews.remove(skinView);
                     continue;
                 }
                 skinViews.add(skinView);
@@ -253,11 +247,9 @@ public class PrettySkin {
         if (changedAttrKeys == null || changedAttrKeys.isEmpty()) return;
         if (!mSkinAttrItems.isEmpty()) {
             final TreeSet<SkinView> skinViews = new TreeSet<>(new SkinViewComparator());
-            Iterator<SkinView> iterator = mSkinAttrItems.iterator();
-            while (iterator.hasNext()) {
-                SkinView skinView = iterator.next();
+            for (SkinView skinView : mSkinAttrItems) {
                 if (skinView == null || skinView.isRecycled()) {
-                    iterator.remove();
+                    mSkinAttrItems.remove(skinView);
                     continue;
                 }
                 for (String attrKey : changedAttrKeys) {
@@ -276,11 +268,9 @@ public class PrettySkin {
     private synchronized void updateSkin(final ISkin skin) {
         if (!mSkinAttrItems.isEmpty()) {
             final TreeSet<SkinView> skinViews = new TreeSet<>(new SkinViewComparator());
-            Iterator<SkinView> iterator = mSkinAttrItems.iterator();
-            while (iterator.hasNext()) {
-                SkinView skinView = iterator.next();
+            for (SkinView skinView : mSkinAttrItems) {
                 if (skinView == null || skinView.isRecycled()) {
-                    iterator.remove();
+                    mSkinAttrItems.remove(skinView);
                     continue;
                 }
                 skinViews.add(skinView);
