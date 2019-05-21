@@ -46,11 +46,14 @@ public class Logger {
 
 
     public static void w(String content) {
-        StackTraceElement traceElement = getCallerStackTraceElement();
-        content = generateContent(traceElement, content);
-        Log.w(TAG, content);
+        w(content, null);
     }
 
+    public static void w(String content, Throwable throwable) {
+        StackTraceElement traceElement = getCallerStackTraceElement();
+        content = generateContent(traceElement, content);
+        Log.w(TAG, content, throwable);
+    }
 
     public static void i(String content) {
         StackTraceElement traceElement = getCallerStackTraceElement();

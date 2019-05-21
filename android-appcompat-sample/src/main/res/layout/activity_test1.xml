@@ -28,4 +28,18 @@
         android:textColor="#00FF00"
         skin:skin_attrs="background=tv_bg|textColor=tv_color"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/red"
+        skin:skin_attrs="background=view_bg1"/>
+
+    <View
+        android:id="@+id/view_test_bg"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/red"/>
+
 </LinearLayout>

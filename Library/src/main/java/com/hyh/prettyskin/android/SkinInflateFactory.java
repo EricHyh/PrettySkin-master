@@ -6,13 +6,13 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.AttrValue;
-import com.hyh.prettyskin.SkinView;
 import com.hyh.prettyskin.ISkinHandler;
+import com.hyh.prettyskin.PrettySkin;
+import com.hyh.prettyskin.SkinView;
 import com.hyh.prettyskin.utils.Logger;
+import com.hyh.prettyskin.utils.reflect.Reflect;
 
-import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,6 +25,14 @@ import java.util.Map;
  */
 
 public class SkinInflateFactory implements LayoutInflater.Factory2 {
+
+
+    private static final String[] sClassPrefixList = {
+            "android.widget.",
+            "android.view.",
+            "android.webkit.",
+            "android.app."
+    };
 
     private static final String NAMESPACE = "http://schemas.android.com/android/skin";
 
@@ -79,17 +87,33 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
     }
 
     private View createView(String name, Context context, AttributeSet attrs) {
-        try {
-            if (-1 == name.indexOf('.')) {
-                name = "android.widget." + name;
+        if (-1 == name.indexOf('.')) {
+            for (String prefix : sClassPrefixList) {
+                View view = createView(name, prefix, context, attrs);
+                if (view != null) {
+                    return view;
+                }
             }
-            Class<?> viewClass = getClass().getClassLoader().loadClass(name);
-            Constructor<?> constructor = viewClass.getConstructor(Context.class, AttributeSet.class);
-            return (View) constructor.newInstance(context, attrs);
-        } catch (Exception e) {
-            e.printStackTrace();
+            return null;
+        } else {
+            return (View) Reflect.from(name)
+                    .constructor()
+                    .param(Context.class, context)
+                    .param(AttributeSet.class, attrs)
+                    .newInstance();
         }
-        return null;
+    }
+
+    private View createView(String name, String prefix, Context context, AttributeSet attrs) {
+        Class<?> viewClass = Reflect.classForName(prefix + name);
+        if (viewClass == null) {
+            return null;
+        }
+        return (View) Reflect.from(viewClass)
+                .constructor()
+                .param(Context.class, context)
+                .param(AttributeSet.class, attrs)
+                .newInstance();
     }
 
     //background=ma_btn_bg|textColor=ma_btn_text_color

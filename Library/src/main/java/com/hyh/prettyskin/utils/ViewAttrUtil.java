@@ -148,11 +148,9 @@ public class ViewAttrUtil {
         return drawable;
     }
 
-
     public static int getColor(Resources resources, int type, Object value) {
         return getColor(resources, type, value, 0);
     }
-
 
     public static int getColor(Resources resources, int type, Object value, int defaultValue) {
         int color = defaultValue;

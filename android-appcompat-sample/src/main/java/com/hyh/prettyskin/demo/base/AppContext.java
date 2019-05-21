@@ -2,10 +2,6 @@ package com.hyh.prettyskin.demo.base;
 
 import android.app.Application;
 
-import com.hyh.prettyskin.PrettySkin;
-import com.hyh.prettyskin.R;
-import com.hyh.prettyskin.ThemeSkin;
-
 /**
  * @author Administrator
  * @description
@@ -37,7 +33,6 @@ public class AppContext extends Application {
             }
         });*/
 
-        ThemeSkin prettySkin = new ThemeSkin(this, R.style.PrettySkin_1, R.styleable.class, "PrettySkin");
-        PrettySkin.getInstance().replaceSkinSync(prettySkin);
+
     }
 }

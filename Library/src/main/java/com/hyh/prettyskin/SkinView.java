@@ -2,7 +2,9 @@ package com.hyh.prettyskin;
 
 import android.view.View;
 
-import java.lang.ref.WeakReference;
+import com.hyh.prettyskin.utils.ViewReferenceUtil;
+
+import java.lang.ref.Reference;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,7 +17,7 @@ import java.util.Set;
 
 public class SkinView {
 
-    private WeakReference<View> viewReference;
+    private Reference<View> viewReference;
 
     //attrName --> attrKey
     private Map<String, String> attrKeyMap;
@@ -24,7 +26,7 @@ public class SkinView {
     private Map<String, AttrValue> defaultAttrValueMap;
 
     public SkinView(View view, Map<String, String> attrKeyMap, Map<String, AttrValue> defaultAttrValueMap) {
-        this.viewReference = new WeakReference<>(view);
+        this.viewReference = ViewReferenceUtil.createViewReference(this, view);
         this.attrKeyMap = attrKeyMap;
         this.defaultAttrValueMap = defaultAttrValueMap;
     }

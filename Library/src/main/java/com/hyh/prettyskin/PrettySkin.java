@@ -52,7 +52,9 @@ public class PrettySkin {
 
     private Context mContext;
 
-    private final ChangeSkinHandler mHandler = new ChangeSkinHandler();
+    private final ChangeSkinHandler mChangeSkinHandler = new ChangeSkinHandler();
+
+    private final ListenerHandler mListenerHandler = new ListenerHandler();
 
     private final PrettySkinActivityLifecycle mPrettySkinActivityLifecycle = new PrettySkinActivityLifecycle();
 
@@ -65,6 +67,8 @@ public class PrettySkin {
     }
 
     private final List<ContextReference> mSkinableContextList = new CopyOnWriteArrayList<>();
+
+    private final List<SkinChangedListener> mListeners = new CopyOnWriteArrayList<>();
 
     private ISkin mCurrentSkin;
 
@@ -86,13 +90,22 @@ public class PrettySkin {
         }
     }
 
-    public synchronized void addSkinHandler(Class<? extends View> viewClass, ISkinHandler skinHandler) {
+    public void addSkinHandler(Class<? extends View> viewClass, ISkinHandler skinHandler) {
         mSkinHandlerMap.put(viewClass, skinHandler);
     }
 
-    public synchronized void addSkinHandler(ISkinHandlerMap map) {
+    public void addSkinHandler(ISkinHandlerMap map) {
         if (map == null || map.get() == null) return;
         mSkinHandlerMap.putAll(map.get());
+    }
+
+    public void addSkinReplaceListener(SkinChangedListener listener) {
+        if (listener == null || mListeners.contains(listener)) return;
+        mListeners.add(listener);
+    }
+
+    public void removeSkinReplaceListener(SkinChangedListener listener) {
+        mListeners.remove(listener);
     }
 
     public synchronized ISkin getCurrentSkin() {
@@ -157,7 +170,6 @@ public class PrettySkin {
         }
     }
 
-
     public boolean isSkinableContext(Context context) {
         ContextReference contextReference = new ContextReference(context);
         return mSkinableContextList.contains(contextReference);
@@ -205,9 +217,10 @@ public class PrettySkin {
                 skinViews.add(skinView);
             }
             if (!skinViews.isEmpty()) {
-                mHandler.postRecoverSkin(skinViews);
+                mChangeSkinHandler.postRecoverSkin(skinViews);
             }
         }
+        mListenerHandler.postSkinRecovered();
     }
 
     public synchronized void replaceSkinAsync(ISkin skin, SkinReplaceListener listener) {
@@ -239,6 +252,7 @@ public class PrettySkin {
         }
         mCurrentSkin = skin;
         updateSkin(skin);
+        mListenerHandler.postSkinChanged(mCurrentSkin);
         return REPLACE_CODE_OK;
     }
 
@@ -260,9 +274,10 @@ public class PrettySkin {
                 }
             }
             if (!skinViews.isEmpty()) {
-                mHandler.postUpdateSkin(skinViews, mCurrentSkin, changedAttrKeys);
+                mChangeSkinHandler.postUpdateSkin(skinViews, mCurrentSkin, changedAttrKeys);
             }
         }
+        mListenerHandler.postSkinAttrChanged(changedAttrKeys);
     }
 
     private synchronized void updateSkin(final ISkin skin) {
@@ -276,7 +291,7 @@ public class PrettySkin {
                 skinViews.add(skinView);
             }
             if (!skinViews.isEmpty()) {
-                mHandler.postUpdateSkin(skinViews, skin);
+                mChangeSkinHandler.postUpdateSkin(skinViews, skin);
             }
         }
     }
@@ -303,6 +318,7 @@ public class PrettySkin {
             if (result) {
                 PrettySkin.getInstance().mCurrentSkin = mSkin;
                 PrettySkin.getInstance().updateSkin(mSkin);
+                PrettySkin.getInstance().mListenerHandler.postSkinChanged(mSkin);
             }
             if (mListener != null) {
                 if (result) {
@@ -316,9 +332,7 @@ public class PrettySkin {
         }
     }
 
-
     private static class PrettySkinActivityLifecycle implements Application.ActivityLifecycleCallbacks {
-
 
         private int mTopActivityHashCode;
 
@@ -488,6 +502,78 @@ public class PrettySkin {
         private void performRecoverSkin(TreeSet<SkinView> skinViews) {
             for (SkinView skinView : skinViews) {
                 skinView.recoverSkin();
+            }
+        }
+    }
+
+    private static class ListenerHandler extends Handler {
+
+        private static final int MSG_SKIN_CHANGED = 1;
+        private static final int MSG_SKIN_ATTR_CHANGED = 2;
+        private static final int MSG_SKIN_RECOVERED = 3;
+
+        ListenerHandler() {
+            super(Looper.getMainLooper());
+        }
+
+        void postSkinChanged(ISkin currentSkin) {
+            Message message = obtainMessage(MSG_SKIN_CHANGED);
+            message.obj = currentSkin;
+            sendMessage(message);
+        }
+
+        void postSkinAttrChanged(List<String> changedAttrKeys) {
+            Message message = obtainMessage(MSG_SKIN_ATTR_CHANGED);
+            message.obj = changedAttrKeys;
+            sendMessage(message);
+        }
+
+        void postSkinRecovered() {
+            sendEmptyMessage(MSG_SKIN_RECOVERED);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int what = msg.what;
+            switch (what) {
+                case MSG_SKIN_CHANGED: {
+                    Object obj = msg.obj;
+                    if (obj != null && obj instanceof ISkin) {
+                        ISkin skin = (ISkin) obj;
+                        List<SkinChangedListener> listeners = PrettySkin.getInstance().mListeners;
+                        if (!listeners.isEmpty()) {
+                            for (SkinChangedListener listener : listeners) {
+                                listener.onSkinChanged(skin);
+                            }
+                        }
+                    }
+                    break;
+                }
+                case MSG_SKIN_ATTR_CHANGED: {
+                    Object obj = msg.obj;
+                    if (obj != null && obj instanceof List) {
+                        List<String> changedAttrKeys = (List<String>) obj;
+                        ISkin currentSkin = PrettySkin.getInstance().getCurrentSkin();
+                        List<SkinChangedListener> listeners = PrettySkin.getInstance().mListeners;
+                        if (!listeners.isEmpty()) {
+                            for (SkinChangedListener listener : listeners) {
+                                listener.onSkinAttrChanged(currentSkin, changedAttrKeys);
+                            }
+                        }
+                    }
+                    break;
+                }
+                case MSG_SKIN_RECOVERED: {
+                    List<SkinChangedListener> listeners = PrettySkin.getInstance().mListeners;
+                    if (!listeners.isEmpty()) {
+                        for (SkinChangedListener listener : listeners) {
+                            listener.onSkinRecovered();
+                        }
+                    }
+                    break;
+                }
             }
         }
     }
