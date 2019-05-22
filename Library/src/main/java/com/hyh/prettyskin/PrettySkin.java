@@ -211,7 +211,7 @@ public class PrettySkin {
             final TreeSet<SkinView> skinViews = new TreeSet<>(new SkinViewComparator());
             for (SkinView skinView : mSkinAttrItems) {
                 if (skinView == null || skinView.isRecycled()) {
-                    skinViews.remove(skinView);
+                    mSkinAttrItems.remove(skinView);
                     continue;
                 }
                 skinViews.add(skinView);
@@ -581,9 +581,11 @@ public class PrettySkin {
     private static class ContextReference {
 
         private final WeakReference<Context> mContextRef;
+        private final int mHashCode;
 
         ContextReference(Context context) {
             mContextRef = new WeakReference<>(context);
+            mHashCode = (context == null) ? 0 : context.hashCode();
         }
 
         Context get() {
@@ -601,9 +603,7 @@ public class PrettySkin {
 
         @Override
         public int hashCode() {
-            Context context = mContextRef.get();
-            return context == null ? 0 : context.hashCode();
-
+            return mHashCode;
         }
     }
 

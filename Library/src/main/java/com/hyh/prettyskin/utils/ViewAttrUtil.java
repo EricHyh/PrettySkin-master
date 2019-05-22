@@ -96,16 +96,12 @@ public class ViewAttrUtil {
                 }
             }
             case ValueType.TYPE_STRING: {
+                if (value == null) return null;
                 if (valueClass == String.class) {
-                    if (value instanceof String) {
-                        return (T) value;
-                    } else if (value instanceof CharSequence) {
-                        if (value == null) return null;
+                    if (value instanceof CharSequence) {
                         return (T) value.toString();
                     }
-                }
-                if (valueClass == CharSequence.class) {
-                    if (value == null) return null;
+                } else if (valueClass == CharSequence.class) {
                     if (value instanceof CharSequence) {
                         return (T) value;
                     }
@@ -115,16 +111,24 @@ public class ViewAttrUtil {
             case ValueType.TYPE_COLOR_INT: {
                 if (valueClass == int.class) {
                     return (T) value;
+                } else if (valueClass == ColorStateList.class) {
+                    int color = (int) value;
+                    return (T) ColorStateList.valueOf(color);
                 } else {
                     return defaultValue;
                 }
             }
             case ValueType.TYPE_COLOR_STATE_LIST: {
-                if (valueClass == ColorStateList.class) {
+                if (valueClass == int.class) {
+                    ColorStateList colorStateList = (ColorStateList) value;
+                    if (colorStateList != null) {
+                        Integer defaultColor = colorStateList.getDefaultColor();
+                        return (T) defaultColor;
+                    }
+                } else if (valueClass == ColorStateList.class) {
                     return (T) value;
-                } else {
-                    return defaultValue;
                 }
+                return defaultValue;
             }
             case ValueType.TYPE_DRAWABLE: {
                 if (valueClass == Drawable.class) {
