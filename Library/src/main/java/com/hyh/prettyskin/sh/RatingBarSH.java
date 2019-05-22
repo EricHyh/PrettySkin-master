@@ -1,7 +1,6 @@
 package com.hyh.prettyskin.sh;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.RatingBar;
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.AttrValueHelper;
-import com.hyh.prettyskin.utils.ViewAttrUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.ArrayList;
@@ -103,29 +101,24 @@ public class RatingBarSH extends AbsSeekBarSH {
                 if (context == null && type == ValueType.TYPE_REFERENCE) {
                     return;
                 }
-                Resources resources = null;
-                if (context != null) {
-                    resources = context.getResources();
-                }
-                Object value = attrValue.getValue();
                 switch (attrName) {
                     case "numStars": {
-                        int numStars = ViewAttrUtil.getInt(resources, type, value, 5);
+                        int numStars = attrValue.getTypedValue(int.class, 5);
                         ratingBar.setNumStars(numStars);
                         break;
                     }
                     case "isIndicator": {
-                        boolean isIndicator = ViewAttrUtil.getBoolean(resources, type, value);
+                        boolean isIndicator = attrValue.getTypedValue(boolean.class, false);
                         ratingBar.setIsIndicator(isIndicator);
                         break;
                     }
                     case "rating": {
-                        float rating = ViewAttrUtil.getFloat(resources, type, value, -1);
+                        float rating = attrValue.getTypedValue(float.class, -1.0f);
                         ratingBar.setRating(rating);
                         break;
                     }
                     case "stepSize": {
-                        float stepSize = ViewAttrUtil.getFloat(resources, type, value, -1);
+                        float stepSize = attrValue.getTypedValue(float.class, -1.0f);
                         ratingBar.setStepSize(stepSize);
                         break;
                     }

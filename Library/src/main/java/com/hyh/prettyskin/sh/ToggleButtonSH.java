@@ -1,7 +1,6 @@
 package com.hyh.prettyskin.sh;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
@@ -100,25 +99,20 @@ public class ToggleButtonSH extends CompoundButtonSH {
             if (context == null && type == ValueType.TYPE_REFERENCE) {
                 return;
             }
-            Resources resources = null;
-            if (context != null) {
-                resources = context.getResources();
-            }
             ToggleButton toggleButton = (ToggleButton) view;
-            Object value = attrValue.getValue();
             switch (attrName) {
                 case "textOn": {
-                    CharSequence textOn = ViewAttrUtil.getCharSequence(resources, type, value);
+                    CharSequence textOn = attrValue.getTypedValue(CharSequence.class, null);
                     toggleButton.setTextOn(textOn);
                     break;
                 }
                 case "textOff": {
-                    CharSequence textOf = ViewAttrUtil.getCharSequence(resources, type, value);
+                    CharSequence textOf = attrValue.getTypedValue(CharSequence.class, null);
                     toggleButton.setTextOff(textOf);
                     break;
                 }
                 case "disabledAlpha": {
-                    float disabledAlpha = ViewAttrUtil.getFloat(resources, type, value, 0.5f);
+                    float disabledAlpha = attrValue.getTypedValue(float.class, 0.5f);
                     Reflect.from(ToggleButton.class)
                             .filed("mDisabledAlpha", float.class)
                             .set(toggleButton, disabledAlpha);

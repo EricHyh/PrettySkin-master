@@ -36,6 +36,7 @@
 
         <attr name="tv_bg" format="color|reference"/>
         <attr name="tv_color" format="color|reference"/>
+        <attr name="tv_appearance" format="reference"/>
 
         <attr name="view_bg1" format="color|reference"/>
         <attr name="view_bg2" format="color|reference"/>
@@ -55,6 +56,7 @@
 
         <item name="tv_bg">#FF00FF</item>
         <item name="tv_color">#FF0000</item>
+        <item name="tv_appearance">@style/TextView_textAppearance</item>
 
         <item name="view_bg1">#FFFF00</item>
         <item name="view_bg2">#00FFFF</item>
@@ -80,5 +82,9 @@
     <fraction name="test_fraction_2">12.0</fraction>
 
     <bool name="test_bool_1">true</bool>
+
+    <style name="TextView_textAppearance">
+        <item name="android:textColor">#FF00FF</item>
+    </style>
 
 </resources>

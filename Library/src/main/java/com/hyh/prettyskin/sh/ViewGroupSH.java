@@ -2,7 +2,6 @@ package com.hyh.prettyskin.sh;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -113,75 +112,56 @@ public class ViewGroupSH extends ViewSH {
             if (context == null && type == ValueType.TYPE_REFERENCE) {
                 return;
             }
-            Resources resources = null;
-            if (context != null) {
-                resources = context.getResources();
-            }
             ViewGroup viewGroup = (ViewGroup) view;
-            Object value = attrValue.getValue();
             switch (attrName) {
                 case "clipChildren": {
-                    boolean clipChildren = ViewAttrUtil.getBoolean(resources, type, value, true);
+                    boolean clipChildren = attrValue.getTypedValue(boolean.class, true);
                     viewGroup.setClipChildren(clipChildren);
                     break;
                 }
                 case "clipToPadding": {
-                    boolean clipToPadding = ViewAttrUtil.getBoolean(resources, type, value, true);
+                    boolean clipToPadding = attrValue.getTypedValue(boolean.class, true);
                     viewGroup.setClipToPadding(clipToPadding);
                     break;
                 }
                 case "animationCache": {
-                    boolean animationCache = ViewAttrUtil.getBoolean(resources, type, true);
+                    boolean animationCache = attrValue.getTypedValue(boolean.class, true);
                     viewGroup.setAnimationCacheEnabled(animationCache);
                     break;
                 }
                 case "persistentDrawingCache": {
-                    int persistentDrawingCache = ViewAttrUtil.getInt(resources, type, value);
+                    int persistentDrawingCache = attrValue.getTypedValue(int.class, 0);
                     viewGroup.setPersistentDrawingCache(persistentDrawingCache);
                     break;
                 }
                 case "addStatesFromChildren": {
-                    boolean addStatesFromChildren = ViewAttrUtil.getBoolean(resources, type, value);
+                    boolean addStatesFromChildren = attrValue.getTypedValue(boolean.class, false);
                     viewGroup.setAddStatesFromChildren(addStatesFromChildren);
                     break;
                 }
                 case "alwaysDrawnWithCache": {
-                    boolean alwaysDrawnWithCache = ViewAttrUtil.getBoolean(resources, type, value, true);
+                    boolean alwaysDrawnWithCache = attrValue.getTypedValue(boolean.class, false);
                     viewGroup.setAlwaysDrawnWithCacheEnabled(alwaysDrawnWithCache);
                     break;
                 }
                 case "layoutAnimation": {
-                    LayoutAnimationController layoutAnimation = ViewAttrUtil.getLayoutAnimation(context, type, value);
+                    LayoutAnimationController layoutAnimation = attrValue.getTypedValue(LayoutAnimationController.class, null);
                     viewGroup.setLayoutAnimation(layoutAnimation);
                     break;
                 }
                 case "descendantFocusability": {
-                    int index = ViewAttrUtil.getInt(resources, type, value);
-                    int descendantFocusability = ViewGroup.FOCUS_BEFORE_DESCENDANTS;
-                    switch (index) {
-                        case 0: {
-                            descendantFocusability = ViewGroup.FOCUS_BEFORE_DESCENDANTS;
-                            break;
-                        }
-                        case 1: {
-                            descendantFocusability = ViewGroup.FOCUS_AFTER_DESCENDANTS;
-                            break;
-                        }
-                        case 2: {
-                            descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS;
-                            break;
-                        }
-                    }
+                    int index = attrValue.getTypedValue(int.class, 0);
+                    int descendantFocusability = ViewAttrUtil.getDescendantFocusability(index);
                     viewGroup.setDescendantFocusability(descendantFocusability);
                     break;
                 }
                 case "splitMotionEvents": {
-                    boolean splitMotionEvents = ViewAttrUtil.getBoolean(resources, type, value);
+                    boolean splitMotionEvents = attrValue.getTypedValue(boolean.class, false);
                     viewGroup.setMotionEventSplittingEnabled(splitMotionEvents);
                     break;
                 }
                 case "animateLayoutChanges": {
-                    boolean animateLayoutChanges = ViewAttrUtil.getBoolean(resources, type, value);
+                    boolean animateLayoutChanges = attrValue.getTypedValue(boolean.class, false);
                     if (animateLayoutChanges) {
                         viewGroup.setLayoutTransition(new LayoutTransition());
                     } else {
@@ -191,21 +171,21 @@ public class ViewGroupSH extends ViewSH {
                 }
                 case "layoutMode": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                        int layoutMode = ViewAttrUtil.getInt(resources, type, value, -1);
+                        int layoutMode = attrValue.getTypedValue(int.class, -1);
                         viewGroup.setLayoutMode(layoutMode);
                     }
                     break;
                 }
                 case "transitionGroup": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        boolean transitionGroup = ViewAttrUtil.getBoolean(resources, type, value);
+                        boolean transitionGroup = attrValue.getTypedValue(boolean.class, false);
                         viewGroup.setTransitionGroup(transitionGroup);
                     }
                     break;
                 }
                 case "touchscreenBlocksFocus": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        boolean touchscreenBlocksFocus = ViewAttrUtil.getBoolean(resources, type, value);
+                        boolean touchscreenBlocksFocus = attrValue.getTypedValue(boolean.class, false);
                         viewGroup.setTouchscreenBlocksFocus(touchscreenBlocksFocus);
                     }
                     break;

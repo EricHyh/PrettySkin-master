@@ -2,7 +2,6 @@ package com.hyh.prettyskin.sh;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.os.Build;
@@ -13,7 +12,6 @@ import android.widget.CompoundButton;
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.AttrValueHelper;
-import com.hyh.prettyskin.utils.ViewAttrUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.ArrayList;
@@ -102,29 +100,24 @@ public class CompoundButtonSH extends ButtonSH {
             if (context == null && type == ValueType.TYPE_REFERENCE) {
                 return;
             }
-            Resources resources = null;
-            if (context != null) {
-                resources = context.getResources();
-            }
             CompoundButton compoundButton = (CompoundButton) view;
-            Object value = attrValue.getValue();
             switch (attrName) {
                 case "buttonTintMode": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                        PorterDuff.Mode tintMode = attrValue.getTypedValue( PorterDuff.Mode.class, null);
                         compoundButton.setButtonTintMode(tintMode);
                     }
                     break;
                 }
                 case "buttonTint": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        ColorStateList buttonTint = ViewAttrUtil.getColorStateList(resources, type, value);
+                        ColorStateList buttonTint = attrValue.getTypedValue(ColorStateList.class, null);
                         compoundButton.setButtonTintList(buttonTint);
                     }
                     break;
                 }
                 case "checked": {
-                    boolean checked = ViewAttrUtil.getBoolean(resources, type, value);
+                    boolean checked = attrValue.getTypedValue(boolean.class, false);
                     compoundButton.setChecked(checked);
                     break;
                 }

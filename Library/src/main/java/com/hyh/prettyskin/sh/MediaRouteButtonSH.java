@@ -2,7 +2,6 @@ package com.hyh.prettyskin.sh;
 
 import android.app.MediaRouteButton;
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.media.MediaRouter;
@@ -105,14 +104,9 @@ public class MediaRouteButtonSH extends ViewSH {
             if (context == null && type == ValueType.TYPE_REFERENCE) {
                 return;
             }
-            Resources resources = null;
-            if (context != null) {
-                resources = context.getResources();
-            }
-            Object value = attrValue.getValue();
             switch (attrName) {
                 case "externalRouteEnabledDrawable": {
-                    Drawable drawable = ViewAttrUtil.getDrawable(resources, type, value);
+                    Drawable drawable = attrValue.getTypedValue(Drawable.class, null);
                     //setRemoteIndicatorDrawable(Drawable d)
                     Reflect.from(mediaRouteButton.getClass())
                             .method("setRemoteIndicatorDrawable")
@@ -121,7 +115,7 @@ public class MediaRouteButtonSH extends ViewSH {
                     break;
                 }
                 case "minWidth": {
-                    int minWidth = ViewAttrUtil.getInt(resources, type, value);
+                    int minWidth = attrValue.getTypedValue(int.class, 0);
                     Reflect.from(mediaRouteButton.getClass())
                             .filed("mMinWidth", int.class)
                             .set(mediaRouteButton, minWidth);
@@ -129,7 +123,7 @@ public class MediaRouteButtonSH extends ViewSH {
                     break;
                 }
                 case "minHeight": {
-                    int minHeight = ViewAttrUtil.getInt(resources, type, value);
+                    int minHeight = attrValue.getTypedValue(int.class, 0);
                     Reflect.from(mediaRouteButton.getClass())
                             .filed("mMinHeight", int.class)
                             .set(mediaRouteButton, minHeight);
@@ -138,7 +132,7 @@ public class MediaRouteButtonSH extends ViewSH {
                 }
                 case "mediaRouteTypes": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        int mediaRouteTypes = ViewAttrUtil.getInt(resources, type, value, MediaRouter.ROUTE_TYPE_LIVE_AUDIO);
+                        int mediaRouteTypes = attrValue.getTypedValue(int.class, MediaRouter.ROUTE_TYPE_LIVE_AUDIO);
                         mediaRouteButton.setRouteTypes(mediaRouteTypes);
                     }
                     break;

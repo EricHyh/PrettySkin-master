@@ -160,7 +160,7 @@ public class AppCompatBackgroundSH implements ISkinHandler {
             }
             case "app:backgroundTint": {
                 if (view instanceof TintableBackgroundView) {
-                    ColorStateList backgroundTint = ViewAttrUtil.getColorStateList(resources, type, value);
+                    ColorStateList backgroundTint = attrValue.getTypedValue(ColorStateList.class, null);
                     TintableBackgroundView tintableBackgroundView = (TintableBackgroundView) view;
                     tintableBackgroundView.setSupportBackgroundTintList(backgroundTint);
                 }
@@ -168,7 +168,7 @@ public class AppCompatBackgroundSH implements ISkinHandler {
             }
             case "app:backgroundTintMode": {
                 if (view instanceof TintableBackgroundView) {
-                    PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                    PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                     TintableBackgroundView tintableBackgroundView = (TintableBackgroundView) view;
                     tintableBackgroundView.setSupportBackgroundTintMode(tintMode);
                 }

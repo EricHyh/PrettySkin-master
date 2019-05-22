@@ -1,7 +1,6 @@
 package com.hyh.prettyskin.sh;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -11,7 +10,6 @@ import android.widget.Chronometer;
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.AttrValueHelper;
-import com.hyh.prettyskin.utils.ViewAttrUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.ArrayList;
@@ -98,21 +96,16 @@ public class ChronometerSH extends TextViewSH {
             if (context == null && type == ValueType.TYPE_REFERENCE) {
                 return;
             }
-            Resources resources = null;
-            if (context != null) {
-                resources = context.getResources();
-            }
             Chronometer chronometer = (Chronometer) view;
-            Object value = attrValue.getValue();
             switch (attrName) {
                 case "format": {
-                    String format = ViewAttrUtil.getString(resources, type, value);
+                    String format = attrValue.getTypedValue(String.class, null);
                     chronometer.setFormat(format);
                     break;
                 }
                 case "countDown": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        boolean countDown = ViewAttrUtil.getBoolean(resources, type, value);
+                        boolean countDown = attrValue.getTypedValue(boolean.class, false);
                         chronometer.setCountDown(countDown);
                     }
                     break;

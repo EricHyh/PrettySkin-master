@@ -2,7 +2,6 @@ package com.hyh.prettyskin.sh;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -127,14 +126,9 @@ public class ProgressBarSH extends ViewSH {
                 if (context == null && type == ValueType.TYPE_REFERENCE) {
                     return;
                 }
-                Resources resources = null;
-                if (context != null) {
-                    resources = context.getResources();
-                }
-                Object value = attrValue.getValue();
                 switch (attrName) {
                     case "progressDrawable": {
-                        Drawable progressDrawable = ViewAttrUtil.getDrawable(resources, type, value);
+                        Drawable progressDrawable = attrValue.getTypedValue(Drawable.class, null);
                         if (progressDrawable != null
                                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
                                 && ViewAttrUtil.needsTileify(progressDrawable)) {
@@ -149,10 +143,7 @@ public class ProgressBarSH extends ViewSH {
                         break;
                     }
                     case "minWidth": {
-                        int minWidth = 24;
-                        if (value != null) {
-                            minWidth = (int) value;
-                        }
+                        int minWidth = attrValue.getTypedValue(int.class, 24);
                         Reflect.from(ProgressBar.class)
                                 .filed("mMinWidth", int.class)
                                 .set(progressBar, minWidth);
@@ -160,10 +151,7 @@ public class ProgressBarSH extends ViewSH {
                         break;
                     }
                     case "maxWidth": {
-                        int maxWidth = 48;
-                        if (value != null) {
-                            maxWidth = (int) value;
-                        }
+                        int maxWidth = attrValue.getTypedValue(int.class, 48);
                         Reflect.from(ProgressBar.class)
                                 .filed("mMaxWidth", int.class)
                                 .set(progressBar, maxWidth);
@@ -171,10 +159,7 @@ public class ProgressBarSH extends ViewSH {
                         break;
                     }
                     case "minHeight": {
-                        int minHeight = 24;
-                        if (value != null) {
-                            minHeight = (int) value;
-                        }
+                        int minHeight = attrValue.getTypedValue(int.class, 24);
                         Reflect.from(ProgressBar.class)
                                 .filed("mMinHeight", int.class)
                                 .set(progressBar, minHeight);
@@ -182,10 +167,7 @@ public class ProgressBarSH extends ViewSH {
                         break;
                     }
                     case "maxHeight": {
-                        int maxHeight = 48;
-                        if (value != null) {
-                            maxHeight = (int) value;
-                        }
+                        int maxHeight = attrValue.getTypedValue(int.class, 48);
                         Reflect.from(ProgressBar.class)
                                 .filed("mMaxHeight", int.class)
                                 .set(progressBar, maxHeight);
@@ -197,68 +179,40 @@ public class ProgressBarSH extends ViewSH {
                         break;
                     }
                     case "interpolator": {
-                        int interpolatorId = android.R.anim.linear_interpolator;
-                        Interpolator interpolator = null;
-                        switch (type) {
-                            case ValueType.TYPE_REFERENCE: {
-                                interpolator = AnimationUtils.loadInterpolator(context, interpolatorId);
-                                break;
-                            }
-                            case ValueType.TYPE_OBJECT: {
-                                if (value instanceof Interpolator) {
-                                    interpolator = (Interpolator) value;
-                                }
-                                break;
-                            }
-                        }
+                        Interpolator interpolator = AnimationUtils.loadInterpolator(context, android.R.anim.linear_interpolator);
+                        interpolator = attrValue.getTypedValue(Interpolator.class, interpolator);
                         progressBar.setInterpolator(interpolator);
                         break;
                     }
                     case "min": {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            int min = 0;
-                            if (value != null) {
-                                min = (int) value;
-                            }
+                            int min = attrValue.getTypedValue(int.class, 0);
                             progressBar.setMin(min);
                         }
                         break;
                     }
                     case "max": {
-                        int max = 100;
-                        if (value != null) {
-                            max = (int) value;
-                        }
+                        int max = attrValue.getTypedValue(int.class, 100);
                         progressBar.setMax(max);
                         break;
                     }
                     case "progress": {
-                        int progress = 0;
-                        if (value != null) {
-                            progress = (int) value;
-                        }
+                        int progress = attrValue.getTypedValue(int.class, 0);
                         progressBar.setProgress(progress);
                         break;
                     }
                     case "secondaryProgress": {
-                        int secondaryProgress = 0;
-                        if (value != null) {
-                            secondaryProgress = (int) value;
-                        }
+                        int secondaryProgress = attrValue.getTypedValue(int.class, 0);
                         progressBar.setSecondaryProgress(secondaryProgress);
                         break;
                     }
                     case "indeterminateDrawable": {
-                        Drawable indeterminateDrawable = ViewAttrUtil.getDrawable(resources, type, value);
+                        Drawable indeterminateDrawable = attrValue.getTypedValue(Drawable.class, null);
                         progressBar.setIndeterminateDrawable(indeterminateDrawable);
                         break;
                     }
                     case "indeterminateOnly": {
-                        boolean indeterminateOnly = false;
-                        if (value != null) {
-                            indeterminateOnly = (boolean) value;
-                        }
-
+                        boolean indeterminateOnly = attrValue.getTypedValue(boolean.class, false);
                         Reflect.from(ProgressBar.class)
                                 .filed("mOnlyIndeterminate", boolean.class)
                                 .set(progressBar, indeterminateOnly);
@@ -266,18 +220,12 @@ public class ProgressBarSH extends ViewSH {
                         break;
                     }
                     case "indeterminate": {
-                        boolean indeterminate = false;
-                        if (value != null) {
-                            indeterminate = (boolean) value;
-                        }
+                        boolean indeterminate = attrValue.getTypedValue(boolean.class, false);
                         progressBar.setIndeterminate(indeterminate);
                         break;
                     }
                     case "mirrorForRtl": {
-                        boolean mirrorForRtl = false;
-                        if (value != null) {
-                            mirrorForRtl = (boolean) value;
-                        }
+                        boolean mirrorForRtl = attrValue.getTypedValue(boolean.class, false);
                         Reflect.from(ProgressBar.class)
                                 .filed("mMirrorForRtl", boolean.class)
                                 .set(progressBar, mirrorForRtl);
@@ -285,56 +233,56 @@ public class ProgressBarSH extends ViewSH {
                     }
                     case "progressTintMode": {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                            PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                             progressBar.setProgressTintMode(tintMode);
                         }
                         break;
                     }
                     case "progressTint": {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            ColorStateList tint = ViewAttrUtil.getColorStateList(resources, type, value);
+                            ColorStateList tint = attrValue.getTypedValue(ColorStateList.class, null);
                             progressBar.setProgressTintList(tint);
                         }
                         break;
                     }
                     case "progressBackgroundTintMode": {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                            PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                             progressBar.setProgressBackgroundTintMode(tintMode);
                         }
                         break;
                     }
                     case "progressBackgroundTint": {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            ColorStateList tint = ViewAttrUtil.getColorStateList(resources, type, value);
+                            ColorStateList tint = attrValue.getTypedValue(ColorStateList.class, null);
                             progressBar.setProgressBackgroundTintList(tint);
                         }
                         break;
                     }
                     case "secondaryProgressTintMode": {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                            PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                             progressBar.setSecondaryProgressTintMode(tintMode);
                         }
                         break;
                     }
                     case "secondaryProgressTint": {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            ColorStateList tint = ViewAttrUtil.getColorStateList(resources, type, value);
+                            ColorStateList tint = attrValue.getTypedValue(ColorStateList.class, null);
                             progressBar.setSecondaryProgressTintList(tint);
                         }
                         break;
                     }
                     case "indeterminateTintMode": {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                            PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                             progressBar.setIndeterminateTintMode(tintMode);
                         }
                         break;
                     }
                     case "indeterminateTint": {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            ColorStateList tint = ViewAttrUtil.getColorStateList(resources, type, value);
+                            ColorStateList tint = attrValue.getTypedValue(ColorStateList.class, null);
                             progressBar.setIndeterminateTintList(tint);
                         }
                         break;

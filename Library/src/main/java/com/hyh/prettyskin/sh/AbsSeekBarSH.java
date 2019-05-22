@@ -2,7 +2,6 @@ package com.hyh.prettyskin.sh;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -14,7 +13,6 @@ import android.widget.AbsSeekBar;
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.AttrValueHelper;
-import com.hyh.prettyskin.utils.ViewAttrUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.ArrayList;
@@ -111,41 +109,36 @@ public class AbsSeekBarSH extends ProgressBarSH {
                 if (context == null && type == ValueType.TYPE_REFERENCE) {
                     return;
                 }
-                Resources resources = null;
-                if (context != null) {
-                    resources = context.getResources();
-                }
-                Object value = attrValue.getValue();
                 switch (attrName) {
                     case "thumb": {
-                        Drawable thumb = ViewAttrUtil.getDrawable(resources, type, value);
+                        Drawable thumb = attrValue.getTypedValue(Drawable.class, null);
                         absSeekBar.setThumb(thumb);
                         break;
                     }
                     case "thumbTintMode": {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                            PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                             absSeekBar.setThumbTintMode(tintMode);
                         }
                         break;
                     }
                     case "thumbTint": {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            ColorStateList tint = ViewAttrUtil.getColorStateList(resources, type, value);
+                            ColorStateList tint = attrValue.getTypedValue(ColorStateList.class, null);
                             absSeekBar.setThumbTintList(tint);
                         }
                         break;
                     }
                     case "tickMark": {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            Drawable tickMark = ViewAttrUtil.getDrawable(resources, type, value);
+                            Drawable tickMark = attrValue.getTypedValue(Drawable.class, null);
                             absSeekBar.setTickMark(tickMark);
                         }
                         break;
                     }
                     case "tickMarkTintMode": {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                            PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                             absSeekBar.setTickMarkTintMode(tintMode);
                         }
                         break;
@@ -153,7 +146,7 @@ public class AbsSeekBarSH extends ProgressBarSH {
                     case "tickMarkTint": {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                ColorStateList tint = ViewAttrUtil.getColorStateList(resources, type, value);
+                                ColorStateList tint = attrValue.getTypedValue(ColorStateList.class, null);
                                 absSeekBar.setTickMarkTintList(tint);
                             }
                         }
@@ -161,13 +154,13 @@ public class AbsSeekBarSH extends ProgressBarSH {
                     }
                     case "splitTrack": {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            boolean splitTrack = ViewAttrUtil.getBoolean(resources, type, value);
+                            boolean splitTrack = attrValue.getTypedValue(boolean.class, false);
                             absSeekBar.setSplitTrack(splitTrack);
                         }
                         break;
                     }
                     case "thumbOffset": {
-                        int thumbOffset = ViewAttrUtil.getInt(resources, type, value);
+                        int thumbOffset = attrValue.getTypedValue(int.class,0);
                         absSeekBar.setThumbOffset(thumbOffset);
                         break;
                     }

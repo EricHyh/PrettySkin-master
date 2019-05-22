@@ -134,7 +134,7 @@ public class AppCompatImageSH implements ISkinHandler {
             case "app:tint": {
                 if (view instanceof TintableImageSourceView) {
                     TintableImageSourceView tintableImageSourceView = (TintableImageSourceView) view;
-                    ColorStateList tint = ViewAttrUtil.getColorStateList(resources, type, value);
+                    ColorStateList tint = attrValue.getTypedValue(ColorStateList.class, null);
                     tintableImageSourceView.setSupportImageTintList(tint);
                 }
                 break;
@@ -142,7 +142,7 @@ public class AppCompatImageSH implements ISkinHandler {
             case "app:tintMode": {
                 if (view instanceof TintableImageSourceView) {
                     TintableImageSourceView tintableImageSourceView = (TintableImageSourceView) view;
-                    PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                    PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                     tintableImageSourceView.setSupportImageTintMode(tintMode);
                 }
                 break;

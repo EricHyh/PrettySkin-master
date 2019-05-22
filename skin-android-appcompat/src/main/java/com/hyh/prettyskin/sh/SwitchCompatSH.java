@@ -2,7 +2,6 @@ package com.hyh.prettyskin.sh;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -13,8 +12,6 @@ import android.view.View;
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.AttrValueHelper;
-import com.hyh.prettyskin.sh.CompoundButtonSH;
-import com.hyh.prettyskin.utils.ViewAttrUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.ArrayList;
@@ -113,83 +110,75 @@ public class SwitchCompatSH extends CompoundButtonSH {
             if (context == null && type == ValueType.TYPE_REFERENCE) {
                 return;
             }
-            Resources resources = null;
-            if (context != null) {
-                resources = context.getResources();
-            }
             SwitchCompat switchCompat = (SwitchCompat) view;
-            Object value = attrValue.getValue();
             switch (attrName) {
                 case "thumb": {
-                    Drawable thumb = ViewAttrUtil.getDrawable(resources, type, value);
+                    Drawable thumb = attrValue.getTypedValue(Drawable.class, null);
                     switchCompat.setThumbDrawable(thumb);
                     break;
                 }
                 case "track": {
-                    Drawable track = ViewAttrUtil.getDrawable(resources, type, value);
+                    Drawable track = attrValue.getTypedValue(Drawable.class, null);
                     switchCompat.setTrackDrawable(track);
                     break;
                 }
                 case "textOn": {
-                    CharSequence textOn = ViewAttrUtil.getCharSequence(resources, type, value);
+                    CharSequence textOn = attrValue.getTypedValue(CharSequence.class, null);
                     switchCompat.setTextOn(textOn);
                     break;
                 }
                 case "textOff": {
-                    CharSequence textOff = ViewAttrUtil.getCharSequence(resources, type, value);
+                    CharSequence textOff = attrValue.getTypedValue(CharSequence.class, null);
                     switchCompat.setTextOff(textOff);
                     break;
                 }
                 case "showText": {
-                    boolean showText = ViewAttrUtil.getBoolean(resources, type, value);
+                    boolean showText = attrValue.getTypedValue(boolean.class, false);
                     switchCompat.setShowText(showText);
                     break;
                 }
                 case "thumbTextPadding": {
-                    int thumbTextPadding = ViewAttrUtil.getInt(resources, type, value);
+                    int thumbTextPadding = attrValue.getTypedValue(int.class, 0);
                     switchCompat.setThumbTextPadding(thumbTextPadding);
                     break;
                 }
                 case "switchMinWidth": {
-                    int switchMinWidth = ViewAttrUtil.getInt(resources, type, value);
+                    int switchMinWidth = attrValue.getTypedValue(int.class, 0);
                     switchCompat.setSwitchMinWidth(switchMinWidth);
                     break;
                 }
                 case "switchPadding": {
-                    int switchPadding = ViewAttrUtil.getInt(resources, type, value);
+                    int switchPadding = attrValue.getTypedValue(int.class, 0);
                     switchCompat.setSwitchPadding(switchPadding);
                     break;
                 }
                 case "splitTrack": {
-                    boolean splitTrack = ViewAttrUtil.getBoolean(resources, type, value);
+                    boolean splitTrack = attrValue.getTypedValue(boolean.class, false);
                     switchCompat.setSplitTrack(splitTrack);
                     break;
                 }
                 case "thumbTint": {
-                    ColorStateList thumbTint = ViewAttrUtil.getColorStateList(resources, type, value);
+                    ColorStateList thumbTint = attrValue.getTypedValue(ColorStateList.class, null);
                     switchCompat.setThumbTintList(thumbTint);
                     break;
                 }
                 case "thumbTintMode": {
-                    PorterDuff.Mode thumbTintMode = ViewAttrUtil.getTintMode(type, value);
+                    PorterDuff.Mode thumbTintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                     switchCompat.setThumbTintMode(thumbTintMode);
                     break;
                 }
                 case "trackTint": {
-                    ColorStateList trackTint = ViewAttrUtil.getColorStateList(resources, type, value);
+                    ColorStateList trackTint = attrValue.getTypedValue(ColorStateList.class, null);
                     switchCompat.setTrackTintList(trackTint);
                     break;
                 }
                 case "trackTintMode": {
-                    PorterDuff.Mode trackTintMode = ViewAttrUtil.getTintMode(type, value);
+                    PorterDuff.Mode trackTintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                     switchCompat.setTrackTintMode(trackTintMode);
                     break;
                 }
                 case "switchTextAppearance": {
-                    int textAppearance = -1;
-                    if (value != null) {
-                        textAppearance = (int) value;
-                    }
+                    int textAppearance = attrValue.getTypedValue(int.class, -1);
                     if (textAppearance != -1) {
                         switchCompat.setTextAppearance(context, textAppearance);
                     }

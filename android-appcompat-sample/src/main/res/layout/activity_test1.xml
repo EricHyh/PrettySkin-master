@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutAnimation="@anim/layout"
     android:orientation="vertical"
     tools:ignore="MissingPrefix">
 
@@ -25,10 +26,11 @@
         android:layout_height="wrap_content"
         android:background="#0000FF"
         android:text="测试TextView"
+        android:textAppearance="@android:style/TextAppearance.Holo.Widget.TextView"
         android:textColor="#00FF00"
-        skin:skin_attrs="background=tv_bg|textColor=tv_color"/>
+        skin:skin_attrs="textAppearance=tv_appearance"/>
 
-    <View
+    <com.hyh.prettyskin.demo.widget.CustomView
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:layout_marginTop="10dp"

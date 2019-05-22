@@ -2,7 +2,6 @@ package com.hyh.prettyskin.sh;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.AttrValueHelper;
-import com.hyh.prettyskin.utils.ViewAttrUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.ArrayList;
@@ -196,18 +194,11 @@ public class TextViewSH extends ViewSH {
             if (themeContext == null && type == ValueType.TYPE_REFERENCE) {
                 return;
             }
-            Resources resources = null;
-            if (themeContext != null) {
-                resources = themeContext.getResources();
-            }
             TextView textView = (TextView) view;
             Object value = attrValue.getValue();
             switch (attrName) {
                 case "textAppearance": {
-                    int textAppearance = -1;
-                    if (value != null) {
-                        textAppearance = (int) value;
-                    }
+                    int textAppearance = attrValue.getTypedValue(int.class, -1);
                     if (textAppearance != -1) {
                         textView.setTextAppearance(themeContext, textAppearance);
                     }
@@ -267,7 +258,7 @@ public class TextViewSH extends ViewSH {
                 }
                 case "drawableLeft": {
                     Drawable[] compoundDrawables = textView.getCompoundDrawables();
-                    Drawable drawableLeft = ViewAttrUtil.getDrawable(resources, type, value);
+                    Drawable drawableLeft = attrValue.getTypedValue(Drawable.class, null);
                     Drawable drawableTop = compoundDrawables[1];
                     Drawable drawableRight = compoundDrawables[2];
                     Drawable drawableBottom = compoundDrawables[3];
@@ -277,7 +268,7 @@ public class TextViewSH extends ViewSH {
                 case "drawableTop": {
                     Drawable[] compoundDrawables = textView.getCompoundDrawables();
                     Drawable drawableLeft = compoundDrawables[0];
-                    Drawable drawableTop = ViewAttrUtil.getDrawable(resources, type, value);
+                    Drawable drawableTop = attrValue.getTypedValue(Drawable.class, null);
                     Drawable drawableRight = compoundDrawables[2];
                     Drawable drawableBottom = compoundDrawables[3];
                     textView.setCompoundDrawables(drawableLeft, drawableTop, drawableRight, drawableBottom);
@@ -287,7 +278,7 @@ public class TextViewSH extends ViewSH {
                     Drawable[] compoundDrawables = textView.getCompoundDrawables();
                     Drawable drawableLeft = compoundDrawables[0];
                     Drawable drawableTop = compoundDrawables[1];
-                    Drawable drawableRight = ViewAttrUtil.getDrawable(resources, type, value);
+                    Drawable drawableRight = attrValue.getTypedValue(Drawable.class, null);
                     Drawable drawableBottom = compoundDrawables[3];
                     textView.setCompoundDrawables(drawableLeft, drawableTop, drawableRight, drawableBottom);
                     break;
@@ -297,7 +288,7 @@ public class TextViewSH extends ViewSH {
                     Drawable drawableLeft = compoundDrawables[0];
                     Drawable drawableTop = compoundDrawables[1];
                     Drawable drawableRight = compoundDrawables[2];
-                    Drawable drawableBottom = ViewAttrUtil.getDrawable(resources, type, value);
+                    Drawable drawableBottom = attrValue.getTypedValue(Drawable.class, null);
                     textView.setCompoundDrawables(drawableLeft, drawableTop, drawableRight, drawableBottom);
                     break;
                 }
@@ -311,14 +302,14 @@ public class TextViewSH extends ViewSH {
                 }
                 case "drawableTint": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        ColorStateList tint = ViewAttrUtil.getColorStateList(resources, type, value);
+                        ColorStateList tint = attrValue.getTypedValue(ColorStateList.class, null);
                         textView.setCompoundDrawableTintList(tint);
                     }
                     break;
                 }
                 case "drawableTintMode": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                        PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                         textView.setForegroundTintMode(tintMode);
                     }
                     break;
@@ -332,18 +323,12 @@ public class TextViewSH extends ViewSH {
                     break;
                 }
                 case "maxLines": {
-                    int maxLines = Integer.MAX_VALUE;
-                    if (value != null) {
-                        maxLines = (int) value;
-                    }
+                    int maxLines = attrValue.getTypedValue(int.class, Integer.MAX_VALUE);
                     textView.setMaxLines(maxLines);
                     break;
                 }
                 case "maxHeight": {
-                    int maxPixels = Integer.MAX_VALUE;
-                    if (value != null) {
-                        maxPixels = (int) value;
-                    }
+                    int maxPixels = attrValue.getTypedValue(int.class, Integer.MAX_VALUE);
                     textView.setMaxHeight(maxPixels);
                     break;
                 }
@@ -356,34 +341,22 @@ public class TextViewSH extends ViewSH {
                     break;
                 }
                 case "minLines": {
-                    int minLines = 0;
-                    if (value != null) {
-                        minLines = (int) value;
-                    }
+                    int minLines = attrValue.getTypedValue(int.class, 0);
                     textView.setMinLines(minLines);
                     break;
                 }
                 case "minHeight": {
-                    int minHeight = 0;
-                    if (value != null) {
-                        minHeight = (int) value;
-                    }
+                    int minHeight = attrValue.getTypedValue(int.class, 0);
                     textView.setMinHeight(minHeight);
                     break;
                 }
                 case "maxEms": {
-                    int maxEms = Integer.MAX_VALUE;
-                    if (value != null) {
-                        maxEms = (int) value;
-                    }
+                    int maxEms = attrValue.getTypedValue(int.class, Integer.MAX_VALUE);
                     textView.setMaxEms(maxEms);
                     break;
                 }
                 case "maxWidth": {
-                    int maxWidth = Integer.MAX_VALUE;
-                    if (value != null) {
-                        maxWidth = (int) value;
-                    }
+                    int maxWidth = attrValue.getTypedValue(int.class, Integer.MAX_VALUE);
                     textView.setMaxWidth(maxWidth);
                     break;
                 }
@@ -396,114 +369,66 @@ public class TextViewSH extends ViewSH {
                     break;
                 }
                 case "minEms": {
-                    int minEms = 0;
-                    if (value != null) {
-                        minEms = (int) value;
-                    }
+                    int minEms = attrValue.getTypedValue(int.class, 0);
                     textView.setMinEms(minEms);
                     break;
                 }
                 case "minWidth": {
-                    int minWidth = 0;
-                    if (value != null) {
-                        minWidth = (int) value;
-                    }
+                    int minWidth = attrValue.getTypedValue(int.class, 0);
                     textView.setMinWidth(minWidth);
                     break;
                 }
                 case "gravity": {
-                    int gravity = Gravity.NO_GRAVITY;
-                    if (value != null) {
-                        gravity = (int) value;
-                    }
+                    int gravity = attrValue.getTypedValue(int.class, Gravity.NO_GRAVITY);
                     textView.setGravity(gravity);
                     break;
                 }
                 case "hint": {
-                    CharSequence hint = ViewAttrUtil.getCharSequence(resources, type, value);
+                    CharSequence hint = attrValue.getTypedValue(CharSequence.class, null);
                     textView.setHint(hint);
                     break;
                 }
                 case "text": {
-                    CharSequence text = ViewAttrUtil.getCharSequence(resources, type, value);
+                    CharSequence text = attrValue.getTypedValue(CharSequence.class, null);
                     textView.setText(text);
                     break;
                 }
                 case "scrollHorizontally": {
-                    boolean whether = false;
-                    if (value != null) {
-                        whether = (boolean) value;
-                    }
+                    boolean whether = attrValue.getTypedValue(boolean.class, false);
                     textView.setHorizontallyScrolling(whether);
                     break;
                 }
                 case "singleLine": {
-                    boolean singleLine = false;
-                    if (value != null) {
-                        singleLine = (boolean) value;
-                    }
+                    boolean singleLine = attrValue.getTypedValue(boolean.class, false);
                     textView.setSingleLine(singleLine);
                     break;
                 }
                 case "ellipsize": {
-                    int ellipsize = -1;
-                    TextUtils.TruncateAt where = null;
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_INT: {
-                                ellipsize = (int) value;
-                                break;
-                            }
-                            case ValueType.TYPE_OBJECT: {
-                                if (value instanceof TextUtils.TruncateAt) {
-                                    where = (TextUtils.TruncateAt) value;
-                                }
-                                break;
-                            }
-                        }
-
-                    }
-                    if (where == null) {
-                        boolean isSingleLine = Reflect.from(TextView.class)
-                                .method("isSingleLine", boolean.class)
-                                .invoke(textView);
-                        if (isSingleLine && textView.getKeyListener() == null && ellipsize < 0) {
-                            ellipsize = 3; // END
-                        }
-                        where = ViewAttrUtil.getTextEllipsize(ellipsize);
-                    }
+                    boolean isSingleLine = Reflect.from(TextView.class)
+                            .method("isSingleLine", boolean.class)
+                            .invoke(textView);
+                    TextUtils.TruncateAt where = (isSingleLine && textView.getKeyListener() == null) ? TextUtils.TruncateAt.END : null;
+                    where = attrValue.getTypedValue(TextUtils.TruncateAt.class, where);
                     textView.setEllipsize(where);
                     break;
                 }
                 case "marqueeRepeatLimit": {
-                    int marqueeLimit = 3;
-                    if (value != null) {
-                        marqueeLimit = (int) value;
-                    }
+                    int marqueeLimit = attrValue.getTypedValue(int.class, 3);
                     textView.setMarqueeRepeatLimit(marqueeLimit);
                     break;
                 }
                 case "includeFontPadding": {
-                    boolean includepad = true;
-                    if (value != null) {
-                        includepad = (boolean) value;
-                    }
+                    boolean includepad = attrValue.getTypedValue(boolean.class, true);
                     textView.setIncludeFontPadding(includepad);
                     break;
                 }
                 case "cursorVisible": {
-                    boolean visible = true;
-                    if (value != null) {
-                        visible = (boolean) value;
-                    }
+                    boolean visible = attrValue.getTypedValue(boolean.class, true);
                     textView.setCursorVisible(visible);
                     break;
                 }
                 case "maxLength": {
-                    int maxlength = -1;
-                    if (value != null) {
-                        maxlength = (int) value;
-                    }
+                    int maxlength = attrValue.getTypedValue(int.class, -1);
                     if (maxlength >= 0) {
                         textView.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxlength)});
                     } else {
@@ -513,17 +438,12 @@ public class TextViewSH extends ViewSH {
                 }
                 case "textScaleX": {
                     float size = 1.0f;
-                    if (value != null) {
-                        size = (float) value;
-                    }
+                    size = attrValue.getTypedValue(float.class, size);
                     textView.setTextScaleX(size);
                     break;
                 }
                 case "freezesText": {
-                    boolean freezesText = false;
-                    if (value != null) {
-                        freezesText = (boolean) value;
-                    }
+                    boolean freezesText = attrValue.getTypedValue(boolean.class, false);
                     textView.setFreezesText(freezesText);
                     break;
                 }
@@ -552,7 +472,7 @@ public class TextViewSH extends ViewSH {
                                 .filed("mShadowDy", float.class)
                                 .get(textView);
                     }
-                    int color = ViewAttrUtil.getColor(resources, type, value);
+                    int color = attrValue.getTypedValue(int.class, 0);
                     textView.setShadowLayer(radius, dx, dy, color);
                     break;
                 }
@@ -565,7 +485,7 @@ public class TextViewSH extends ViewSH {
                                 .filed("mShadowRadius", float.class)
                                 .get(textView);
                     }
-                    float dx = ViewAttrUtil.getFloat(resources, type, value);
+                    float dx = attrValue.getTypedValue(float.class, 0.0f);
                     float dy = 0;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         dy = textView.getShadowDy();
@@ -602,7 +522,7 @@ public class TextViewSH extends ViewSH {
                                 .filed("mShadowDx", float.class)
                                 .get(textView);
                     }
-                    float dy = ViewAttrUtil.getFloat(resources, type, value);
+                    float dy = attrValue.getTypedValue(float.class, 0.0f);
                     int color = 0;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         color = textView.getShadowColor();
@@ -615,7 +535,7 @@ public class TextViewSH extends ViewSH {
                     break;
                 }
                 case "shadowRadius": {
-                    float radius = ViewAttrUtil.getFloat(resources, type, value);
+                    float radius = attrValue.getTypedValue(float.class, 0.0f);
                     float dx = 0;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         dx = textView.getShadowDx();
@@ -645,66 +565,43 @@ public class TextViewSH extends ViewSH {
                 }
                 case "enabled": {
                     boolean enabled = textView.isEnabled();
-                    if (value != null) {
-                        enabled = (boolean) value;
-                    }
+                    enabled = attrValue.getTypedValue(boolean.class, enabled);
                     textView.setEnabled(enabled);
                     break;
                 }
                 case "textColorHighlight": {
-                    int highlightColor = ViewAttrUtil.getColor(resources, type, value, 0x6633B5E5);
+                    int highlightColor = attrValue.getTypedValue(int.class, 0x6633B5E5);
                     textView.setHighlightColor(highlightColor);
                     break;
                 }
                 case "textColor": {
-                    ColorStateList color = ViewAttrUtil.getColorStateList(resources, type, value, 0xFF000000);
+                    ColorStateList color = attrValue.getTypedValue(ColorStateList.class, ColorStateList.valueOf(0xFF000000));
                     textView.setTextColor(color);
                     break;
                 }
                 case "textColorHint": {
-                    ColorStateList color = ViewAttrUtil.getColorStateList(resources, type, value);
-                    ;
+                    ColorStateList color = attrValue.getTypedValue(ColorStateList.class, null);
                     textView.setHintTextColor(color);
                     break;
                 }
                 case "textColorLink": {
-                    ColorStateList color = ViewAttrUtil.getColorStateList(resources, type, value);
-                    ;
+                    ColorStateList color = attrValue.getTypedValue(ColorStateList.class, null);
                     textView.setLinkTextColor(color);
                     break;
                 }
                 case "textSize": {
                     float size = textView.getTextSize();
-                    if (value != null) {
-                        size = (float) value;
-                    }
+                    size = attrValue.getTypedValue(float.class, size);
                     textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
                     break;
                 }
                 case "typeface": {
-                    int typefaceIndex = -1;
-                    Typeface tf = null;
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_INT: {
-                                typefaceIndex = (int) value;
-                                break;
-                            }
-                            case ValueType.TYPE_OBJECT: {
-                                if (value instanceof Typeface) {
-                                    tf = (Typeface) value;
-                                }
-                            }
-                        }
-                    }
-                    if (typefaceIndex != -1) {
-                        tf = ViewAttrUtil.getTextTypeface(typefaceIndex);
-                    }
-                    textView.setTypeface(tf);
+                    Typeface typeface = attrValue.getTypedValue(Typeface.class, null);
+                    textView.setTypeface(typeface);
                     break;
                 }
                 case "textStyle": {
-                    int textStyle = ViewAttrUtil.getInt(resources, type, value, -1);
+                    int textStyle = attrValue.getTypedValue(int.class, -1);
                     textView.setTypeface(textView.getTypeface(), textStyle);
                     break;
                 }

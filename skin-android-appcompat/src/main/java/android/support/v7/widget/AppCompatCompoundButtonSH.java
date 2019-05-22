@@ -17,9 +17,8 @@ import android.view.View;
 import android.widget.CompoundButton;
 
 import com.hyh.prettyskin.AttrValue;
-import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.ISkinHandler;
-import com.hyh.prettyskin.utils.ViewAttrUtil;
+import com.hyh.prettyskin.ValueType;
 
 /**
  * Created by Eric_He on 2018/12/4.
@@ -113,12 +112,12 @@ public class AppCompatCompoundButtonSH implements ISkinHandler {
                 break;
             }
             case "app:buttonTint": {
-                ColorStateList buttonTint = ViewAttrUtil.getColorStateList(resources, type, value);
+                ColorStateList buttonTint = attrValue.getTypedValue(ColorStateList.class, null);
                 CompoundButtonCompat.setButtonTintList(compoundButton, buttonTint);
                 break;
             }
             case "app:buttonTintMode": {
-                PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                 CompoundButtonCompat.setButtonTintMode(compoundButton, tintMode);
                 break;
             }

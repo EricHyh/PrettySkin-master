@@ -2,7 +2,6 @@ package com.hyh.prettyskin.sh;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -117,39 +116,34 @@ public class SwitchSH extends CompoundButtonSH {
             if (context == null && type == ValueType.TYPE_REFERENCE) {
                 return;
             }
-            Resources resources = null;
-            if (context != null) {
-                resources = context.getResources();
-            }
             Switch switchView = (Switch) view;
-            Object value = attrValue.getValue();
             switch (attrName) {
                 case "thumb": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        Drawable thumb = ViewAttrUtil.getDrawable(resources, type, value);
+                        Drawable thumb = attrValue.getTypedValue(Drawable.class, null);
                         switchView.setThumbDrawable(thumb);
                     }
                     break;
                 }
                 case "track": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        Drawable track = ViewAttrUtil.getDrawable(resources, type, value);
+                        Drawable track = attrValue.getTypedValue(Drawable.class, null);
                         switchView.setTrackDrawable(track);
                     }
                     break;
                 }
                 case "textOn": {
-                    CharSequence textOn = ViewAttrUtil.getCharSequence(resources, type, value);
+                    CharSequence textOn = attrValue.getTypedValue(CharSequence.class, null);
                     switchView.setTextOn(textOn);
                     break;
                 }
                 case "textOff": {
-                    CharSequence textOff = ViewAttrUtil.getCharSequence(resources, type, value);
+                    CharSequence textOff = attrValue.getTypedValue(CharSequence.class, null);
                     switchView.setTextOff(textOff);
                     break;
                 }
                 case "showText": {
-                    boolean showText = ViewAttrUtil.getBoolean(resources, type, value);
+                    boolean showText = attrValue.getTypedValue(boolean.class, false);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         switchView.setShowText(showText);
                     } else {
@@ -167,7 +161,7 @@ public class SwitchSH extends CompoundButtonSH {
                     break;
                 }
                 case "thumbTextPadding": {
-                    int thumbTextPadding = ViewAttrUtil.getInt(resources, type, value);
+                    int thumbTextPadding = attrValue.getTypedValue(int.class, 0);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         switchView.setThumbTextPadding(thumbTextPadding);
                     } else {
@@ -179,7 +173,7 @@ public class SwitchSH extends CompoundButtonSH {
                     break;
                 }
                 case "switchMinWidth": {
-                    int switchMinWidth = ViewAttrUtil.getInt(resources, type, value);
+                    int switchMinWidth = attrValue.getTypedValue(int.class, 0);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         switchView.setSwitchMinWidth(switchMinWidth);
                     } else {
@@ -191,7 +185,7 @@ public class SwitchSH extends CompoundButtonSH {
                     break;
                 }
                 case "switchPadding": {
-                    int switchPadding = ViewAttrUtil.getInt(resources, type, value);
+                    int switchPadding = attrValue.getTypedValue(int.class, 0);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         switchView.setSwitchPadding(switchPadding);
                     } else {
@@ -203,7 +197,7 @@ public class SwitchSH extends CompoundButtonSH {
                     break;
                 }
                 case "splitTrack": {
-                    boolean splitTrack = ViewAttrUtil.getBoolean(resources, type, value);
+                    boolean splitTrack = attrValue.getTypedValue(boolean.class, false);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         switchView.setSplitTrack(splitTrack);
                     } else {
@@ -216,37 +210,34 @@ public class SwitchSH extends CompoundButtonSH {
                 }
                 case "thumbTint": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        ColorStateList thumbTint = ViewAttrUtil.getColorStateList(resources, type, value);
+                        ColorStateList thumbTint = attrValue.getTypedValue(ColorStateList.class, null);
                         switchView.setThumbTintList(thumbTint);
                     }
                     break;
                 }
                 case "thumbTintMode": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                        PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                         switchView.setThumbTintMode(tintMode);
                     }
                     break;
                 }
                 case "trackTint": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        ColorStateList trackTint = ViewAttrUtil.getColorStateList(resources, type, value);
+                        ColorStateList trackTint = attrValue.getTypedValue(ColorStateList.class, null);
                         switchView.setTrackTintList(trackTint);
                     }
                     break;
                 }
                 case "trackTintMode": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                        PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                         switchView.setTrackTintMode(tintMode);
                     }
                     break;
                 }
                 case "switchTextAppearance": {
-                    int switchTextAppearance = -1;
-                    if (value != null) {
-                        switchTextAppearance = (int) value;
-                    }
+                    int switchTextAppearance = attrValue.getTypedValue(int.class, -1);
                     if (switchTextAppearance != -1) {
                         switchView.setSwitchTextAppearance(context, switchTextAppearance);
                     }

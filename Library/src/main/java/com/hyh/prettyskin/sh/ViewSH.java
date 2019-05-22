@@ -1,6 +1,5 @@
 package com.hyh.prettyskin.sh;
 
-import android.animation.AnimatorInflater;
 import android.animation.StateListAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -17,10 +16,9 @@ import android.view.View;
 import android.view.ViewOutlineProvider;
 
 import com.hyh.prettyskin.AttrValue;
+import com.hyh.prettyskin.ISkinHandler;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.AttrValueHelper;
-import com.hyh.prettyskin.ISkinHandler;
-import com.hyh.prettyskin.utils.ViewAttrUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.ArrayList;
@@ -204,34 +202,13 @@ public class ViewSH implements ISkinHandler {
             case "background": {
                 switch (type) {
                     case ValueType.TYPE_COLOR_INT: {
-                        int color = 0;
-                        if (value != null) {
-                            color = (int) value;
-                        }
+                        int color = attrValue.getTypedValue(int.class, 0);
                         view.setBackgroundColor(color);
                         break;
                     }
-                    case ValueType.TYPE_DRAWABLE: {
-                        Drawable background = null;
-                        if (value != null) {
-                            background = (Drawable) value;
-                        }
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            view.setBackground(background);
-                        } else {
-                            view.setBackgroundDrawable(background);
-                        }
-                        break;
-                    }
+                    case ValueType.TYPE_DRAWABLE:
                     case ValueType.TYPE_REFERENCE: {
-                        int drawableId = 0;
-                        if (value != null) {
-                            drawableId = (int) value;
-                        }
-                        Drawable background = null;
-                        if (drawableId != 0) {
-                            background = resources.getDrawable(drawableId);
-                        }
+                        Drawable background = attrValue.getTypedValue(Drawable.class, null);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             view.setBackground(background);
                         } else {
@@ -247,7 +224,7 @@ public class ViewSH implements ISkinHandler {
                 break;
             }
             case "paddingLeft": {
-                int paddingLeft = ViewAttrUtil.getInt(resources, type, value);
+                int paddingLeft = attrValue.getTypedValue(int.class, 0);
                 int paddingTop = view.getPaddingTop();
                 int paddingRight = view.getPaddingRight();
                 int paddingBottom = view.getPaddingBottom();
@@ -256,7 +233,7 @@ public class ViewSH implements ISkinHandler {
             }
             case "paddingTop": {
                 int paddingLeft = view.getPaddingLeft();
-                int paddingTop = ViewAttrUtil.getInt(resources, type, value);
+                int paddingTop = attrValue.getTypedValue(int.class, 0);
                 int paddingRight = view.getPaddingRight();
                 int paddingBottom = view.getPaddingBottom();
                 view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
@@ -265,7 +242,7 @@ public class ViewSH implements ISkinHandler {
             case "paddingRight": {
                 int paddingLeft = view.getPaddingLeft();
                 int paddingTop = view.getPaddingTop();
-                int paddingRight = ViewAttrUtil.getInt(resources, type, value);
+                int paddingRight = attrValue.getTypedValue(int.class, 0);
                 int paddingBottom = view.getPaddingBottom();
                 view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
                 break;
@@ -274,7 +251,7 @@ public class ViewSH implements ISkinHandler {
                 int paddingLeft = view.getPaddingLeft();
                 int paddingTop = view.getPaddingTop();
                 int paddingRight = view.getPaddingRight();
-                int paddingBottom = ViewAttrUtil.getInt(resources, type, value);
+                int paddingBottom = attrValue.getTypedValue(int.class, 0);
                 view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
                 break;
             }
@@ -295,216 +272,171 @@ public class ViewSH implements ISkinHandler {
                 break;
             }
             case "scrollX": {
-                int scrollX = ViewAttrUtil.getInt(resources, type, value);
+                int scrollX = attrValue.getTypedValue(int.class, 0);
                 view.setScrollX(scrollX);
                 break;
             }
             case "scrollY": {
-                int scrollY = ViewAttrUtil.getInt(resources, type, value);
+                int scrollY = attrValue.getTypedValue(int.class, 0);
                 view.setScrollY(scrollY);
                 break;
             }
             case "alpha": {
-                float alpha = ViewAttrUtil.getFloat(resources, type, value, 1.0f);
-                if (value != null) {
-                    alpha = (float) value;
-                }
+                float alpha = attrValue.getTypedValue(float.class, 1.0f);
                 view.setAlpha(alpha);
                 break;
             }
             case "transformPivotX": {
-                float pivotX = ViewAttrUtil.getFloat(resources, type, value);
+                float pivotX = attrValue.getTypedValue(float.class, 0.0f);
                 view.setPivotX(pivotX);
                 break;
             }
             case "transformPivotY": {
-                float pivotY = ViewAttrUtil.getFloat(resources, type, value);
+                float pivotY = attrValue.getTypedValue(float.class, 0.0f);
                 view.setPivotY(pivotY);
                 break;
             }
             case "translationX": {
-                float translationX = ViewAttrUtil.getFloat(resources, type, value);
+                float translationX = attrValue.getTypedValue(float.class, 0.0f);
                 view.setTranslationX(translationX);
                 break;
             }
             case "translationY": {
-                float translationY = ViewAttrUtil.getFloat(resources, type, value);
+                float translationY = attrValue.getTypedValue(float.class, 0.0f);
                 view.setTranslationY(translationY);
                 break;
             }
             case "translationZ": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    float translationZ = ViewAttrUtil.getFloat(resources, type, value);
+                    float translationZ = attrValue.getTypedValue(float.class, 0.0f);
                     view.setTranslationZ(translationZ);
                 }
                 break;
             }
             case "elevation": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    float elevation = ViewAttrUtil.getFloat(resources, type, value);
+                    float elevation = attrValue.getTypedValue(float.class, 0.0f);
                     view.setElevation(elevation);
                 }
                 break;
             }
             case "rotation": {
-                float rotation = ViewAttrUtil.getFloat(resources, type, value);
+                float rotation = attrValue.getTypedValue(float.class, 0.0f);
                 view.setRotation(rotation);
                 break;
             }
             case "rotationX": {
-                float rotationX = ViewAttrUtil.getFloat(resources, type, value);
+                float rotationX = attrValue.getTypedValue(float.class, 0.0f);
                 view.setRotationX(rotationX);
                 break;
             }
             case "rotationY": {
-                float rotationY = ViewAttrUtil.getFloat(resources, type, value);
+                float rotationY = attrValue.getTypedValue(float.class, 0.0f);
                 view.setRotationY(rotationY);
                 break;
             }
             case "scaleX": {
-                float scaleX = ViewAttrUtil.getFloat(resources, type, value);
+                float scaleX = attrValue.getTypedValue(float.class, 0.0f);
                 view.setScaleX(scaleX);
                 break;
             }
             case "scaleY": {
-                float scaleY = ViewAttrUtil.getFloat(resources, type, value);
+                float scaleY = attrValue.getTypedValue(float.class, 0.0f);
                 view.setScaleY(scaleY);
                 break;
             }
             case "fitsSystemWindows": {
-                boolean fitsSystemWindows = false;
-                if (value != null) {
-                    fitsSystemWindows = (boolean) value;
-                }
+                boolean fitsSystemWindows = attrValue.getTypedValue(boolean.class, false);
                 view.setFitsSystemWindows(fitsSystemWindows);
                 break;
             }
             case "focusable": {
-                boolean focusable = false;
-                if (value != null) {
-                    focusable = (boolean) value;
-                }
+                boolean focusable = attrValue.getTypedValue(boolean.class, false);
                 view.setFocusable(focusable);
                 break;
             }
             case "focusableInTouchMode": {
-                boolean focusableInTouchMode = false;
-                if (value != null) {
-                    focusableInTouchMode = (boolean) value;
-                }
+                boolean focusableInTouchMode = attrValue.getTypedValue(boolean.class, false);
                 view.setFocusableInTouchMode(focusableInTouchMode);
                 break;
             }
             case "clickable": {
-                boolean clickable = false;
-                if (value != null) {
-                    clickable = (boolean) value;
-                }
+                boolean clickable = attrValue.getTypedValue(boolean.class, false);
                 view.setClickable(clickable);
                 break;
             }
             case "longClickable": {
-                boolean longClickable = false;
-                if (value != null) {
-                    longClickable = (boolean) value;
-                }
+                boolean longClickable = attrValue.getTypedValue(boolean.class, false);
                 view.setLongClickable(longClickable);
                 break;
             }
             case "contextClickable": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    boolean contextClickable = false;
-                    if (value != null) {
-                        contextClickable = (boolean) value;
-                    }
+                    boolean contextClickable = attrValue.getTypedValue(boolean.class, false);
                     view.setContextClickable(contextClickable);
                 }
                 break;
             }
             case "saveEnabled": {
-                boolean saveEnabled = false;
-                if (value != null) {
-                    saveEnabled = (boolean) value;
-                }
+                boolean saveEnabled = attrValue.getTypedValue(boolean.class, false);
                 view.setSaveEnabled(saveEnabled);
                 break;
             }
             case "duplicateParentState": {
-                boolean duplicateParentState = false;
-                if (value != null) {
-                    duplicateParentState = (boolean) value;
-                }
+                boolean duplicateParentState = attrValue.getTypedValue(boolean.class, false);
                 view.setDuplicateParentStateEnabled(duplicateParentState);
                 break;
             }
             case "visibility": {
-                int visibility = View.VISIBLE;
-                if (value != null) {
-                    visibility = (int) value;
-                }
+                int visibility = attrValue.getTypedValue(int.class, View.VISIBLE);
                 view.setVisibility(visibility);
                 break;
             }
             case "layoutDirection": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    int layoutDirection = View.LAYOUT_DIRECTION_LTR;
-                    if (value != null) {
-                        layoutDirection = (int) value;
-                    }
+                    int layoutDirection = attrValue.getTypedValue(int.class, View.LAYOUT_DIRECTION_LTR);
                     view.setLayoutDirection(layoutDirection);
                 }
                 break;
             }
             case "drawingCacheQuality": {
-                int drawingCacheQuality = View.DRAWING_CACHE_QUALITY_AUTO;
-                if (value != null) {
-                    drawingCacheQuality = (int) value;
-                }
+                int drawingCacheQuality = attrValue.getTypedValue(int.class, View.DRAWING_CACHE_QUALITY_AUTO);
                 view.setDrawingCacheQuality(drawingCacheQuality);
                 break;
             }
             case "contentDescription": {
-                CharSequence contentDescription = null;
-                if (value != null) {
-                    contentDescription = (CharSequence) value;
-                }
+                CharSequence contentDescription = attrValue.getTypedValue(CharSequence.class, null);
                 view.setContentDescription(contentDescription);
                 break;
             }
             case "accessibilityTraversalBefore": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                    int beforeId = View.NO_ID;
-                    if (value != null) {
-                        beforeId = (int) value;
-                    }
+                    int beforeId = attrValue.getTypedValue(int.class, View.NO_ID);
                     view.setAccessibilityTraversalBefore(beforeId);
                 }
                 break;
             }
             case "accessibilityTraversalAfter": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                    int afterId = View.NO_ID;
-                    if (value != null) {
-                        afterId = (int) value;
-                    }
+                    int afterId = attrValue.getTypedValue(int.class, View.NO_ID);
                     view.setAccessibilityTraversalAfter(afterId);
                 }
                 break;
             }
             case "labelFor": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    int labelForId = ViewAttrUtil.getInt(resources, type, value, View.NO_ID);
+                    int labelForId = attrValue.getTypedValue(int.class, View.NO_ID);
                     view.setLabelFor(labelForId);
                 }
                 break;
             }
             case "soundEffectsEnabled": {
-                boolean soundEffectsEnabled = ViewAttrUtil.getBoolean(resources, type, value);
+                boolean soundEffectsEnabled = attrValue.getTypedValue(boolean.class, false);
                 view.setSoundEffectsEnabled(soundEffectsEnabled);
                 break;
             }
             case "hapticFeedbackEnabled": {
-                boolean hapticFeedbackEnabled = ViewAttrUtil.getBoolean(resources, type, value);
+                boolean hapticFeedbackEnabled = attrValue.getTypedValue(boolean.class, false);
                 view.setHapticFeedbackEnabled(hapticFeedbackEnabled);
                 break;
             }
@@ -512,7 +444,7 @@ public class ViewSH implements ISkinHandler {
                 final int SCROLLBARS_NONE = 0x00000000;
                 final int SCROLLBARS_HORIZONTAL = 0x00000100;
                 final int SCROLLBARS_VERTICAL = 0x00000200;
-                int scrollbars = ViewAttrUtil.getInt(resources, type, value, SCROLLBARS_NONE);
+                int scrollbars = attrValue.getTypedValue(int.class, SCROLLBARS_NONE);
                 boolean horizontalScrollBarEnabled = (scrollbars & SCROLLBARS_HORIZONTAL) == SCROLLBARS_HORIZONTAL;
                 boolean verticalScrollBarEnabled = (scrollbars & SCROLLBARS_VERTICAL) == SCROLLBARS_VERTICAL;
                 view.setHorizontalScrollBarEnabled(horizontalScrollBarEnabled);
@@ -520,27 +452,27 @@ public class ViewSH implements ISkinHandler {
                 break;
             }
             case "fadeScrollbars": {
-                boolean fadeScrollbars = ViewAttrUtil.getBoolean(resources, type, value);
+                boolean fadeScrollbars = attrValue.getTypedValue(boolean.class, false);
                 view.setScrollbarFadingEnabled(fadeScrollbars);
                 break;
             }
             case "scrollbarFadeDuration": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    int scrollBarFadeDuration = ViewAttrUtil.getInt(resources, type, value);
+                    int scrollBarFadeDuration = attrValue.getTypedValue(int.class, 0);
                     view.setScrollBarFadeDuration(scrollBarFadeDuration);
                 }
                 break;
             }
             case "scrollbarDefaultDelayBeforeFade": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    int scrollBarDefaultDelayBeforeFade = ViewAttrUtil.getInt(resources, type, value);
+                    int scrollBarDefaultDelayBeforeFade = attrValue.getTypedValue(int.class, 0);
                     view.setScrollBarDefaultDelayBeforeFade(scrollBarDefaultDelayBeforeFade);
                 }
                 break;
             }
             case "scrollbarSize": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    int scrollbarSize = ViewAttrUtil.getInt(resources, type, value);
+                    int scrollbarSize = attrValue.getTypedValue(int.class, 0);
                     view.setScrollBarSize(scrollbarSize);
                 }
                 break;
@@ -577,7 +509,7 @@ public class ViewSH implements ISkinHandler {
                 final int FADING_EDGE_NONE = 0x00000000;
                 final int FADING_EDGE_HORIZONTAL = 0x00001000;
                 final int FADING_EDGE_VERTICAL = 0x00002000;
-                int requiresFadingEdge = ViewAttrUtil.getInt(resources, type, value, FADING_EDGE_NONE);
+                int requiresFadingEdge = attrValue.getTypedValue(int.class, FADING_EDGE_NONE);
                 boolean horizontalFadingEdgeEnabled = (requiresFadingEdge & FADING_EDGE_HORIZONTAL) == FADING_EDGE_HORIZONTAL;
                 boolean verticalFadingEdgeEnabled = (requiresFadingEdge & FADING_EDGE_VERTICAL) == FADING_EDGE_VERTICAL;
                 view.setHorizontalFadingEdgeEnabled(horizontalFadingEdgeEnabled);
@@ -585,148 +517,141 @@ public class ViewSH implements ISkinHandler {
                 break;
             }
             case "scrollbarStyle": {
-                int scrollbarStyle = ViewAttrUtil.getInt(resources, type, value, View.SCROLLBARS_INSIDE_OVERLAY);
+                int scrollbarStyle = attrValue.getTypedValue(int.class, View.SCROLLBARS_INSIDE_OVERLAY);
                 view.setScrollBarStyle(scrollbarStyle);
                 break;
             }
             case "isScrollContainer": {
-                boolean isScrollContainer = ViewAttrUtil.getBoolean(resources, type, value);
+                boolean isScrollContainer = attrValue.getTypedValue(boolean.class, false);
                 view.setScrollContainer(isScrollContainer);
                 break;
             }
             case "keepScreenOn": {
-                boolean keepScreenOn = ViewAttrUtil.getBoolean(resources, type, value);
+                boolean keepScreenOn = attrValue.getTypedValue(boolean.class, false);
                 view.setKeepScreenOn(keepScreenOn);
                 break;
             }
             case "filterTouchesWhenObscured": {
-                boolean enabled = ViewAttrUtil.getBoolean(resources, type, value);
+                boolean enabled = attrValue.getTypedValue(boolean.class, false);
                 view.setFilterTouchesWhenObscured(enabled);
                 break;
             }
             case "nextFocusLeft": {
-                int nextFocusLeftId = ViewAttrUtil.getInt(resources, type, value, View.NO_ID);
+                int nextFocusLeftId = attrValue.getTypedValue(int.class, View.NO_ID);
                 view.setNextFocusLeftId(nextFocusLeftId);
                 break;
             }
             case "nextFocusRight": {
-                int nextFocusRightId = ViewAttrUtil.getInt(resources, type, value, View.NO_ID);
+                int nextFocusRightId = attrValue.getTypedValue(int.class, View.NO_ID);
                 view.setNextFocusRightId(nextFocusRightId);
                 break;
             }
             case "nextFocusUp": {
-                int nextFocusUpId = ViewAttrUtil.getInt(resources, type, value, View.NO_ID);
+                int nextFocusUpId = attrValue.getTypedValue(int.class, View.NO_ID);
                 view.setNextFocusUpId(nextFocusUpId);
                 break;
             }
             case "nextFocusDown": {
-                int nextFocusDownId = ViewAttrUtil.getInt(resources, type, value, View.NO_ID);
+                int nextFocusDownId = attrValue.getTypedValue(int.class, View.NO_ID);
                 view.setNextFocusDownId(nextFocusDownId);
                 break;
             }
             case "nextFocusForward": {
-                int nextFocusForwardId = ViewAttrUtil.getInt(resources, type, value, View.NO_ID);
+                int nextFocusForwardId = attrValue.getTypedValue(int.class, View.NO_ID);
                 view.setNextFocusForwardId(nextFocusForwardId);
                 break;
             }
             case "nextClusterForward": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    int nextClusterForwardId = ViewAttrUtil.getInt(resources, type, value, View.NO_ID);
+                    int nextClusterForwardId = attrValue.getTypedValue(int.class, View.NO_ID);
                     view.setNextClusterForwardId(nextClusterForwardId);
                 }
                 break;
             }
             case "minWidth": {
-                int minWidth = ViewAttrUtil.getInt(resources, type, value);
+                int minWidth = attrValue.getTypedValue(int.class, 0);
                 view.setMinimumWidth(minWidth);
                 break;
             }
             case "minHeight": {
-                int minHeight = ViewAttrUtil.getInt(resources, type, value);
+                int minHeight = attrValue.getTypedValue(int.class, 0);
                 view.setMinimumHeight(minHeight);
                 break;
             }
             case "overScrollMode": {
-                int overScrollMode = ViewAttrUtil.getInt(resources, type, value, View.OVER_SCROLL_IF_CONTENT_SCROLLS);
+                int overScrollMode = attrValue.getTypedValue(int.class, View.OVER_SCROLL_IF_CONTENT_SCROLLS);
                 view.setOverScrollMode(overScrollMode);
                 break;
             }
             case "verticalScrollbarPosition": {
-                int position = ViewAttrUtil.getInt(resources, type, value, View.SCROLLBAR_POSITION_DEFAULT);
+                int position = attrValue.getTypedValue(int.class, View.SCROLLBAR_POSITION_DEFAULT);
                 view.setVerticalScrollbarPosition(position);
                 break;
             }
             case "layerType": {
-                int layerType = ViewAttrUtil.getInt(resources, type, value, View.LAYER_TYPE_NONE);
+                int layerType = attrValue.getTypedValue(int.class, View.LAYER_TYPE_NONE);
                 view.setLayerType(layerType, null);
                 break;
             }
             case "textDirection": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    int textDirection = ViewAttrUtil.getInt(resources, type, value, View.TEXT_DIRECTION_INHERIT);
+                    int textDirection = attrValue.getTypedValue(int.class, View.TEXT_DIRECTION_INHERIT);
                     view.setTextDirection(textDirection);
                 }
                 break;
             }
             case "textAlignment": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    int textAlignment = ViewAttrUtil.getInt(resources, type, value, View.TEXT_ALIGNMENT_INHERIT);
+                    int textAlignment = attrValue.getTypedValue(int.class, View.TEXT_ALIGNMENT_INHERIT);
                     view.setTextAlignment(textAlignment);
                 }
                 break;
             }
             case "importantForAccessibility": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    int mode = ViewAttrUtil.getInt(resources, type, value, View.IMPORTANT_FOR_ACCESSIBILITY_AUTO);
+                    int mode = attrValue.getTypedValue(int.class, View.IMPORTANT_FOR_ACCESSIBILITY_AUTO);
                     view.setImportantForAccessibility(mode);
                 }
                 break;
             }
             case "accessibilityLiveRegion": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    int mode = ViewAttrUtil.getInt(resources, type, value, View.ACCESSIBILITY_LIVE_REGION_NONE);
+                    int mode = attrValue.getTypedValue(int.class, View.ACCESSIBILITY_LIVE_REGION_NONE);
                     view.setAccessibilityLiveRegion(mode);
                 }
                 break;
             }
             case "transitionName": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    String transitionName = ViewAttrUtil.getString(resources, type, value);
+                    String transitionName = attrValue.getTypedValue(String.class, null);
                     view.setTransitionName(transitionName);
                 }
                 break;
             }
             case "nestedScrollingEnabled": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    boolean nestedScrollingEnabled = ViewAttrUtil.getBoolean(resources, type, value);
+                    boolean nestedScrollingEnabled = attrValue.getTypedValue(boolean.class, false);
                     view.setNestedScrollingEnabled(nestedScrollingEnabled);
                 }
                 break;
             }
             case "stateListAnimator": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (type == ValueType.TYPE_REFERENCE) {
-                        StateListAnimator stateListAnimator = null;
-                        int stateListAnimatorId;
-                        if (value != null) {
-                            stateListAnimatorId = (int) value;
-                            stateListAnimator = AnimatorInflater.loadStateListAnimator(context, stateListAnimatorId);
-                        }
-                        view.setStateListAnimator(stateListAnimator);
-                    }
+                    StateListAnimator stateListAnimator = attrValue.getTypedValue(StateListAnimator.class, null);
+                    view.setStateListAnimator(stateListAnimator);
                 }
                 break;
             }
             case "backgroundTint": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    ColorStateList tint = ViewAttrUtil.getColorStateList(resources, type, value);
+                    ColorStateList tint = attrValue.getTypedValue(ColorStateList.class, null);
                     view.setBackgroundTintList(tint);
                 }
                 break;
             }
             case "backgroundTintMode": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                    PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                     view.setBackgroundTintMode(tintMode);
                 }
                 break;
@@ -734,25 +659,23 @@ public class ViewSH implements ISkinHandler {
             case "outlineProvider": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     ViewOutlineProvider provider = ViewOutlineProvider.BACKGROUND;
-                    if (value != null) {
-                        int providerInt = (int) value;
-                        switch (providerInt) {
-                            case 0: {
-                                provider = ViewOutlineProvider.BACKGROUND;
-                                break;
-                            }
-                            case 1: {
-                                provider = null;
-                                break;
-                            }
-                            case 2: {
-                                provider = ViewOutlineProvider.BOUNDS;
-                                break;
-                            }
-                            case 3: {
-                                provider = ViewOutlineProvider.PADDED_BOUNDS;
-                                break;
-                            }
+                    int providerInt = attrValue.getTypedValue(int.class, 0);
+                    switch (providerInt) {
+                        case 0: {
+                            provider = ViewOutlineProvider.BACKGROUND;
+                            break;
+                        }
+                        case 1: {
+                            provider = null;
+                            break;
+                        }
+                        case 2: {
+                            provider = ViewOutlineProvider.BOUNDS;
+                            break;
+                        }
+                        case 3: {
+                            provider = ViewOutlineProvider.PADDED_BOUNDS;
+                            break;
                         }
                     }
                     view.setOutlineProvider(provider);
@@ -761,28 +684,28 @@ public class ViewSH implements ISkinHandler {
             }
             case "foreground": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    Drawable foreground = ViewAttrUtil.getDrawable(resources, type, value);
+                    Drawable foreground = attrValue.getTypedValue(Drawable.class, null);
                     view.setForeground(foreground);
                 }
                 break;
             }
             case "foregroundGravity": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    int gravity = ViewAttrUtil.getInt(resources, type, value, Gravity.NO_GRAVITY);
+                    int gravity = attrValue.getTypedValue(int.class, Gravity.NO_GRAVITY);
                     view.setForegroundGravity(gravity);
                 }
                 break;
             }
             case "foregroundTintMode": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                    PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                     view.setForegroundTintMode(tintMode);
                 }
                 break;
             }
             case "foregroundTint": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    ColorStateList tint = ViewAttrUtil.getColorStateList(resources, type, value);
+                    ColorStateList tint = attrValue.getTypedValue(ColorStateList.class, null);
                     view.setForegroundTintList(tint);
                 }
                 break;
@@ -793,7 +716,7 @@ public class ViewSH implements ISkinHandler {
             }
             case "scrollIndicators": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    int indicators = ViewAttrUtil.getInt(resources, type, value);
+                    int indicators = attrValue.getTypedValue(int.class, view.getScrollIndicators());
                     view.setScrollIndicators(indicators);
                 }
                 break;
@@ -828,21 +751,21 @@ public class ViewSH implements ISkinHandler {
             }
             case "tooltipText": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    CharSequence tooltipText = ViewAttrUtil.getCharSequence(resources, type, value);
+                    CharSequence tooltipText = attrValue.getTypedValue(CharSequence.class, null);
                     view.setTooltipText(tooltipText);
                 }
                 break;
             }
             case "keyboardNavigationCluster": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    boolean isCluster = ViewAttrUtil.getBoolean(resources, type, value, true);
+                    boolean isCluster = attrValue.getTypedValue(boolean.class, true);
                     view.setKeyboardNavigationCluster(isCluster);
                 }
                 break;
             }
             case "focusedByDefault": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    boolean isFocusedByDefault = ViewAttrUtil.getBoolean(resources, type, value, true);
+                    boolean isFocusedByDefault = attrValue.getTypedValue(boolean.class, true);
                     if (value != null) {
                         isFocusedByDefault = (boolean) value;
                     }
@@ -854,17 +777,7 @@ public class ViewSH implements ISkinHandler {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     String[] autofillHints = null;
                     if (value != null) {
-                        String autofillHintsStr = null;
-                        switch (type) {
-                            case ValueType.TYPE_STRING: {
-                                autofillHintsStr = (String) value;
-                                break;
-                            }
-                            case ValueType.TYPE_REFERENCE: {
-                                autofillHintsStr = resources.getString((int) value);
-                                break;
-                            }
-                        }
+                        String autofillHintsStr = attrValue.getTypedValue(String.class, null);
                         if (!TextUtils.isEmpty(autofillHintsStr)) {
                             String[] split = autofillHintsStr.split(",");
                             autofillHints = new String[split.length];
@@ -880,14 +793,14 @@ public class ViewSH implements ISkinHandler {
             }
             case "importantForAutofill": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    int mode = ViewAttrUtil.getInt(resources, type, value, View.IMPORTANT_FOR_AUTOFILL_AUTO);
+                    int mode = attrValue.getTypedValue(int.class, View.IMPORTANT_FOR_AUTOFILL_AUTO);
                     view.setImportantForAutofill(mode);
                 }
                 break;
             }
             case "defaultFocusHighlightEnabled": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    boolean defaultFocusHighlightEnabled = ViewAttrUtil.getBoolean(resources, type, value, true);
+                    boolean defaultFocusHighlightEnabled = attrValue.getTypedValue(boolean.class, true);
                     view.setDefaultFocusHighlightEnabled(defaultFocusHighlightEnabled);
                 }
                 break;

@@ -1,7 +1,6 @@
 package com.hyh.prettyskin.sh;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -13,7 +12,6 @@ import android.widget.QuickContactBadge;
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.AttrValueHelper;
-import com.hyh.prettyskin.utils.ViewAttrUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 /**
@@ -94,15 +92,10 @@ public class QuickContactBadgeSH extends ImageViewSH {
             if (context == null && type == ValueType.TYPE_REFERENCE) {
                 return;
             }
-            Resources resources = null;
-            if (context != null) {
-                resources = context.getResources();
-            }
-            Object value = attrValue.getValue();
             switch (attrName) {
                 case "quickContactBadgeOverlay": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        Drawable overlay = ViewAttrUtil.getDrawable(resources, type, value);
+                        Drawable overlay = attrValue.getTypedValue(Drawable.class, null);
                         quickContactBadge.setOverlay(overlay);
                     }
                     break;

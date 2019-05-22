@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -42,12 +41,18 @@ public class Test1Activity extends Activity {
         view.setBackgroundDrawable(new DynamicDrawable("view_bg2", new ColorDrawable(Color.RED)));
 
 
-        TypedValue typedValue = new TypedValue();
-        getResources().getValue(R.fraction.test_fraction_1, typedValue, true);
-
+        AttrValue attrValue1 = new AttrValue(this, ValueType.TYPE_REFERENCE, R.dimen.test_dimen_1);
+        AttrValue attrValue2 = new AttrValue(this, ValueType.TYPE_REFERENCE, R.fraction.test_fraction_1);
+        AttrValue attrValue3 = new AttrValue(this, ValueType.TYPE_REFERENCE, R.bool.test_bool_1);
+        AttrValue attrValue4 = new AttrValue(this, ValueType.TYPE_REFERENCE, R.integer.test_integer_1);
+        AttrValue attrValue5 = new AttrValue(this, ValueType.TYPE_REFERENCE, R.drawable.custom_drawable);
+        AttrValue attrValue6 = new AttrValue(this, ValueType.TYPE_REFERENCE, R.color.black);
+        AttrValue attrValue7 = new AttrValue(this, ValueType.TYPE_REFERENCE, R.color.custom_color);
+        AttrValue attrValue8 = new AttrValue(this, ValueType.TYPE_REFERENCE, R.anim.layout);
 
 
         Log.d(TAG, "onCreate: ");
+
 
     }
 

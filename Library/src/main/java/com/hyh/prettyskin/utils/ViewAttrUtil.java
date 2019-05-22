@@ -1,17 +1,25 @@
 package com.hyh.prettyskin.utils;
 
+import android.animation.AnimatorInflater;
+import android.animation.StateListAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.TextUtils;
+import android.util.TypedValue;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
 import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
@@ -32,52 +40,9 @@ public class ViewAttrUtil {
             ImageView.ScaleType.CENTER_INSIDE
     };
 
-    public static ImageView.ScaleType getImageScaleType(int index) {
-        if (index < 0 || index >= SCALE_TYPE_ARRAY.length) {
-            return null;
-        }
-        return SCALE_TYPE_ARRAY[index];
-    }
-
-    public static TextUtils.TruncateAt getTextEllipsize(int index) {
-        TextUtils.TruncateAt where = null;
-        switch (index) {
-            case 1:
-                where = TextUtils.TruncateAt.START;
-                break;
-            case 2:
-                where = TextUtils.TruncateAt.MIDDLE;
-                break;
-            case 3:
-                where = TextUtils.TruncateAt.END;
-                break;
-            case 4:
-                where = TextUtils.TruncateAt.MARQUEE;
-                break;
-        }
-        return where;
-    }
-
-    public static Typeface getTextTypeface(int index) {
-        Typeface tf = null;
-        switch (index) {
-            case 1:
-                tf = Typeface.SANS_SERIF;
-                break;
-            case 2:
-                tf = Typeface.SERIF;
-                break;
-            case 3:
-                tf = Typeface.MONOSPACE;
-                break;
-        }
-        return tf;
-    }
-
     public static int getAndroidStyleAttr(String styleName) {
         return Reflect.from("android.R$attr").filed(styleName, int.class).get(null);
     }
-
 
     public static int getInternalStyleAttr(String styleName) {
         return Reflect.from("com.android.internal.R$attr").filed(styleName, int.class).get(null);
@@ -102,232 +67,291 @@ public class ViewAttrUtil {
     }
 
 
-    public static PorterDuff.Mode getTintMode(int type, Object value) {
-        PorterDuff.Mode tintMode = null;
-        if (value != null) {
-            switch (type) {
-                case ValueType.TYPE_INT: {
-                    int index = (int) value;
-                    tintMode = ViewAttrUtil.getTintMode(index);
-                    break;
-                }
-                case ValueType.TYPE_OBJECT: {
-                    if (value instanceof PorterDuff.Mode) {
-                        tintMode = (PorterDuff.Mode) value;
-                    }
-                    break;
+    public static <T> T getTypedValue(AttrValue attrValue, Class<T> valueClass, T defaultValue) {
+        if (attrValue == null || valueClass == null) return defaultValue;
+        int type = attrValue.getType();
+        Object value = attrValue.getValue();
+        switch (type) {
+            case ValueType.TYPE_NULL: {
+                return defaultValue;
+            }
+            case ValueType.TYPE_REFERENCE: {
+                return getTypedReferenceValue(attrValue, valueClass, defaultValue);
+            }
+            case ValueType.TYPE_INT: {
+                return getTypedIntValue(valueClass, defaultValue, value);
+            }
+            case ValueType.TYPE_FLOAT: {
+                if (valueClass == float.class) {
+                    return (T) value;
+                } else {
+                    return defaultValue;
                 }
             }
+            case ValueType.TYPE_BOOLEAN: {
+                if (valueClass == boolean.class) {
+                    return (T) value;
+                } else {
+                    return defaultValue;
+                }
+            }
+            case ValueType.TYPE_STRING: {
+                if (valueClass == String.class) {
+                    if (value instanceof String) {
+                        return (T) value;
+                    } else if (value instanceof CharSequence) {
+                        if (value == null) return null;
+                        return (T) value.toString();
+                    }
+                }
+                if (valueClass == CharSequence.class) {
+                    if (value == null) return null;
+                    if (value instanceof CharSequence) {
+                        return (T) value;
+                    }
+                }
+                return defaultValue;
+            }
+            case ValueType.TYPE_COLOR_INT: {
+                if (valueClass == int.class) {
+                    return (T) value;
+                } else {
+                    return defaultValue;
+                }
+            }
+            case ValueType.TYPE_COLOR_STATE_LIST: {
+                if (valueClass == ColorStateList.class) {
+                    return (T) value;
+                } else {
+                    return defaultValue;
+                }
+            }
+            case ValueType.TYPE_DRAWABLE: {
+                if (valueClass == Drawable.class) {
+                    return (T) value;
+                } else {
+                    return defaultValue;
+                }
+            }
+            case ValueType.TYPE_OBJECT: {
+                return getTypedObjectValue(attrValue, valueClass, defaultValue);
+            }
         }
-        return tintMode;
+        return defaultValue;
     }
 
 
-    public static PorterDuff.Mode getTintMode(int index) {
+    private static <T> T getTypedReferenceValue(AttrValue attrValue, Class<T> valueClass, T defaultValue) {
+        Context themeContext = attrValue.getThemeContext();
+        Object value = attrValue.getValue();
+        if (themeContext == null) return defaultValue;
+        Resources resources = themeContext.getResources();
+        int resourceId = (int) value;
+        String resourceTypeName = resources.getResourceTypeName(resourceId);
+        if (TextUtils.isEmpty(resourceTypeName)) return defaultValue;
+        switch (resourceTypeName) {
+            case "integer": {
+                if (valueClass == int.class) {
+                    Integer integer = resources.getInteger(resourceId);
+                    return (T) integer;
+                }
+                return defaultValue;
+            }
+            case "style": {
+                if (valueClass == int.class) {
+                    return (T) value;
+                }
+                return defaultValue;
+            }
+            case "fraction": {
+                if (valueClass == float.class) {
+                    try {
+                        TypedValue typedValue = new TypedValue();
+                        resources.getValue(resourceId, typedValue, true);
+                        switch (typedValue.type) {
+                            case TypedValue.TYPE_FLOAT: {
+                                Float f = typedValue.getFloat();
+                                return (T) f;
+                            }
+                            case TypedValue.TYPE_FRACTION: {
+                                Float fraction = typedValue.getFraction(1, 1);
+                                return (T) fraction;
+                            }
+                        }
+                    } catch (Exception e) {
+                        Logger.w("convert reference value to fraction failed, resourceId = " + resourceId + " ", e);
+                    }
+                }
+                return defaultValue;
+            }
+            case "dimen": {
+                if (valueClass == float.class) {
+                    Float dimen = resources.getDimension(resourceId);
+                    return (T) dimen;
+                } else if (valueClass == int.class) {
+                    Integer dimen = resources.getDimensionPixelSize(resourceId);
+                    return (T) dimen;
+                }
+                return defaultValue;
+            }
+            case "bool": {
+                if (valueClass == boolean.class) {
+                    Boolean bool = resources.getBoolean(resourceId);
+                    return (T) bool;
+                }
+                return defaultValue;
+            }
+            case "string": {
+                if (valueClass == String.class || valueClass == CharSequence.class) {
+                    String string = resources.getString(resourceId);
+                    return (T) string;
+                }
+                return defaultValue;
+            }
+            case "color": {
+                if (valueClass == int.class) {
+                    Integer color = resources.getColor(resourceId);
+                    return (T) color;
+                } else if (valueClass == ColorStateList.class) {
+                    return (T) resources.getColorStateList(resourceId);
+                }
+                return defaultValue;
+            }
+            case "drawable":
+            case "mipmap": {
+                if (valueClass == Drawable.class) {
+                    Drawable drawable = resources.getDrawable(resourceId);
+                    return (T) drawable;
+                }
+                return defaultValue;
+            }
+            case "anim": {
+                if (valueClass == Animation.class) {
+                    try {
+                        return (T) AnimationUtils.loadAnimation(themeContext, resourceId);
+                    } catch (Exception e) {
+                        Logger.w("value convert to animation failed ", e);
+                    }
+                } else if (valueClass == LayoutAnimationController.class) {
+                    try {
+                        return (T) AnimationUtils.loadLayoutAnimation(themeContext, resourceId);
+                    } catch (Exception e) {
+                        Logger.w("value convert to layout animation failed ", e);
+                    }
+                } else if (valueClass == Interpolator.class) {
+                    try {
+                        return (T) AnimationUtils.loadInterpolator(themeContext, resourceId);
+                    } catch (Exception e) {
+                        Logger.w("value convert to interpolator failed ", e);
+                    }
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && valueClass == StateListAnimator.class) {
+                    try {
+                        return (T) AnimatorInflater.loadStateListAnimator(themeContext, resourceId);
+                    } catch (Exception e) {
+                        Logger.w("value convert to StateListAnimator failed ", e);
+                    }
+                }
+                return defaultValue;
+            }
+            default: {
+                return defaultValue;
+            }
+        }
+    }
+
+    private static <T> T getTypedIntValue(Class<T> valueClass, T defaultValue, Object value) {
+        if (valueClass == int.class) {
+            return (T) value;
+        } else if (valueClass == PorterDuff.Mode.class) {
+            int index = (int) value;
+            return (T) getTintMode(index, (PorterDuff.Mode) defaultValue);
+        } else if (valueClass == Typeface.class) {
+            int index = (int) value;
+            return (T) getTextTypeface(index, (Typeface) defaultValue);
+        } else if (valueClass == ImageView.ScaleType.class) {
+            int index = (int) value;
+            return (T) getImageScaleType(index, (ImageView.ScaleType) defaultValue);
+        } else if (valueClass == TextUtils.TruncateAt.class) {
+            int index = (int) value;
+            return (T) getTextEllipsize(index, (TextUtils.TruncateAt) defaultValue);
+        } else {
+            return defaultValue;
+        }
+    }
+
+    private static <T> T getTypedObjectValue(AttrValue attrValue, Class<T> valueClass, T defaultValue) {
+        Object value = attrValue.getValue();
+        if (value == null || !valueClass.isAssignableFrom(value.getClass())) return defaultValue;
+        return (T) value;
+    }
+
+    private static PorterDuff.Mode getTintMode(int index, PorterDuff.Mode defaultMode) {
         return Reflect.from(Drawable.class)
                 .method("parseTintMode", PorterDuff.Mode.class)
                 .param(int.class, index)
                 .param(PorterDuff.Mode.class, null)
+                .defaultValue(defaultMode)
                 .invoke(null);
     }
 
-    public static Drawable getDrawable(Resources resources, int type, Object value) {
-        Drawable drawable = null;
-        if (value != null) {
-            switch (type) {
-                case ValueType.TYPE_REFERENCE: {
-                    drawable = resources.getDrawable((Integer) value);
-                    break;
-                }
-                case ValueType.TYPE_DRAWABLE: {
-                    drawable = (Drawable) value;
-                    break;
-                }
+    private static ImageView.ScaleType getImageScaleType(int index, ImageView.ScaleType defaultScaleType) {
+        if (index < 0 || index >= SCALE_TYPE_ARRAY.length) {
+            return defaultScaleType;
+        }
+        return SCALE_TYPE_ARRAY[index];
+    }
+
+    private static Typeface getTextTypeface(int index, Typeface defaultTypeface) {
+        Typeface tf = defaultTypeface;
+        switch (index) {
+            case 1:
+                tf = Typeface.SANS_SERIF;
+                break;
+            case 2:
+                tf = Typeface.SERIF;
+                break;
+            case 3:
+                tf = Typeface.MONOSPACE;
+                break;
+        }
+        return tf;
+    }
+
+    private static TextUtils.TruncateAt getTextEllipsize(int index, TextUtils.TruncateAt defaultEllipsize) {
+        TextUtils.TruncateAt where = defaultEllipsize;
+        switch (index) {
+            case 1:
+                where = TextUtils.TruncateAt.START;
+                break;
+            case 2:
+                where = TextUtils.TruncateAt.MIDDLE;
+                break;
+            case 3:
+                where = TextUtils.TruncateAt.END;
+                break;
+            case 4:
+                where = TextUtils.TruncateAt.MARQUEE;
+                break;
+        }
+        return where;
+    }
+
+    public static int getDescendantFocusability(int index) {
+        int descendantFocusability = ViewGroup.FOCUS_BEFORE_DESCENDANTS;
+        switch (index) {
+            case 0: {
+                descendantFocusability = ViewGroup.FOCUS_BEFORE_DESCENDANTS;
+                break;
+            }
+            case 1: {
+                descendantFocusability = ViewGroup.FOCUS_AFTER_DESCENDANTS;
+                break;
+            }
+            case 2: {
+                descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS;
+                break;
             }
         }
-        return drawable;
-    }
-
-    public static int getColor(Resources resources, int type, Object value) {
-        return getColor(resources, type, value, 0);
-    }
-
-    public static int getColor(Resources resources, int type, Object value, int defaultValue) {
-        int color = defaultValue;
-        if (value != null) {
-            switch (type) {
-                case ValueType.TYPE_COLOR_INT: {
-                    color = (int) value;
-                    break;
-                }
-                case ValueType.TYPE_REFERENCE: {
-                    color = resources.getColor((Integer) value);
-                    break;
-                }
-            }
-        }
-        return color;
-    }
-
-    public static ColorStateList getColorStateList(Resources resources, int type, Object value) {
-        return getColorStateList(resources, type, value, null);
-    }
-
-    public static ColorStateList getColorStateList(Resources resources, int type, Object value, ColorStateList defaultValue) {
-        ColorStateList colorStateList = defaultValue;
-        if (value != null) {
-            switch (type) {
-                case ValueType.TYPE_COLOR_INT: {
-                    colorStateList = ColorStateList.valueOf((Integer) value);
-                    break;
-                }
-                case ValueType.TYPE_COLOR_STATE_LIST: {
-                    colorStateList = (ColorStateList) value;
-                    break;
-                }
-                case ValueType.TYPE_REFERENCE: {
-                    colorStateList = resources.getColorStateList((Integer) value);
-                    break;
-                }
-            }
-        }
-        return colorStateList;
-    }
-
-    public static ColorStateList getColorStateList(Resources resources, int type, Object value, int defaultValue) {
-        ColorStateList colorStateList = ColorStateList.valueOf(defaultValue);
-        if (value != null) {
-            switch (type) {
-                case ValueType.TYPE_COLOR_INT: {
-                    colorStateList = ColorStateList.valueOf((Integer) value);
-                    break;
-                }
-                case ValueType.TYPE_COLOR_STATE_LIST: {
-                    colorStateList = (ColorStateList) value;
-                    break;
-                }
-                case ValueType.TYPE_REFERENCE: {
-                    colorStateList = resources.getColorStateList((Integer) value);
-                    break;
-                }
-            }
-        }
-        return colorStateList;
-    }
-
-    public static boolean getBoolean(Resources resources, int type, Object value) {
-        return getBoolean(resources, type, value, false);
-    }
-
-    public static boolean getBoolean(Resources resources, int type, Object value, boolean defaultValue) {
-        boolean result = defaultValue;
-        if (value != null) {
-            switch (type) {
-                case ValueType.TYPE_BOOLEAN: {
-                    result = (boolean) value;
-                    break;
-                }
-                case ValueType.TYPE_REFERENCE: {
-                    result = resources.getBoolean((Integer) value);
-                    break;
-                }
-            }
-        }
-        return result;
-    }
-
-
-    public static int getInt(Resources resources, int type, Object value) {
-        return getInt(resources, type, value, 0);
-    }
-
-    public static int getInt(Resources resources, int type, Object value, int defaultValue) {
-        int result = defaultValue;
-        if (value != null) {
-            switch (type) {
-                case ValueType.TYPE_INT: {
-                    result = (int) value;
-                    break;
-                }
-                case ValueType.TYPE_REFERENCE: {
-                    result = resources.getInteger((Integer) value);
-                    break;
-                }
-            }
-        }
-        return result;
-    }
-
-    public static float getFloat(Resources resources, int type, Object value) {
-        return getFloat(resources, type, value, 0.0f);
-    }
-
-    public static float getFloat(Resources resources, int type, Object value, float defaultValue) {
-        float result = defaultValue;
-        if (value != null) {
-            switch (type) {
-                case ValueType.TYPE_FLOAT: {
-                    result = (float) value;
-                    break;
-                }
-                case ValueType.TYPE_REFERENCE: {
-                    result = resources.getFraction((int) value, 1, 1);
-                    break;
-                }
-            }
-        }
-        return result;
-    }
-
-    public static CharSequence getCharSequence(Resources resources, int type, Object value) {
-        return getCharSequence(resources, type, value, null);
-    }
-
-    public static CharSequence getCharSequence(Resources resources, int type, Object value, CharSequence defaultValue) {
-        CharSequence result = defaultValue;
-        if (value != null) {
-            switch (type) {
-                case ValueType.TYPE_STRING: {
-                    result = (CharSequence) value;
-                    break;
-                }
-                case ValueType.TYPE_REFERENCE: {
-                    result = resources.getString((int) value);
-                    break;
-                }
-            }
-        }
-        return result;
-    }
-
-    public static String getString(Resources resources, int type, Object value) {
-        return getString(resources, type, value, null);
-    }
-
-    public static String getString(Resources resources, int type, Object value, CharSequence defaultValue) {
-        CharSequence result = getCharSequence(resources, type, value, defaultValue);
-        if (result == null) {
-            return null;
-        }
-        return result.toString();
-    }
-
-    public static LayoutAnimationController getLayoutAnimation(Context context, int type, Object value) {
-        LayoutAnimationController layoutAnimationController = null;
-        if (value != null) {
-            switch (type) {
-                case ValueType.TYPE_REFERENCE: {
-                    layoutAnimationController = AnimationUtils.loadLayoutAnimation(context, (int) value);
-                    break;
-                }
-                case ValueType.TYPE_OBJECT: {
-                    if (value instanceof LayoutAnimationController) {
-                        layoutAnimationController = (LayoutAnimationController) value;
-                    }
-                    break;
-                }
-            }
-        }
-        return layoutAnimationController;
+        return descendantFocusability;
     }
 }

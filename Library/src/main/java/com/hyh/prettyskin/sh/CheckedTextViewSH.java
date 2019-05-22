@@ -2,7 +2,6 @@ package com.hyh.prettyskin.sh;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -106,28 +105,23 @@ public class CheckedTextViewSH extends TextViewSH {
             if (context == null && type == ValueType.TYPE_REFERENCE) {
                 return;
             }
-            Resources resources = null;
-            if (context != null) {
-                resources = context.getResources();
-            }
             CheckedTextView checkedTextView = (CheckedTextView) view;
-            Object value = attrValue.getValue();
             switch (attrName) {
                 case "checkMark": {
-                    Drawable checkMark = ViewAttrUtil.getDrawable(resources, type, value);
+                    Drawable checkMark = attrValue.getTypedValue(Drawable.class, null);
                     checkedTextView.setCheckMarkDrawable(checkMark);
                     break;
                 }
                 case "checkMarkTintMode": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                        PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                         checkedTextView.setCheckMarkTintMode(tintMode);
                     }
                     break;
                 }
                 case "checkMarkTint": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        ColorStateList colorStateList = ViewAttrUtil.getColorStateList(resources, type, value);
+                        ColorStateList colorStateList = attrValue.getTypedValue(ColorStateList.class, null);
                         checkedTextView.setCheckMarkTintList(colorStateList);
                     }
                     break;
@@ -137,7 +131,7 @@ public class CheckedTextViewSH extends TextViewSH {
                     break;
                 }
                 case "checked": {
-                    boolean checked = ViewAttrUtil.getBoolean(resources, type, value);
+                    boolean checked = attrValue.getTypedValue(boolean.class, false);
                     checkedTextView.setChecked(checked);
                     break;
                 }

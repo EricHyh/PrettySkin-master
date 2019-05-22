@@ -1,7 +1,6 @@
 package com.hyh.prettyskin.sh;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.text.TextUtils;
@@ -12,7 +11,6 @@ import android.widget.TextClock;
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.AttrValueHelper;
-import com.hyh.prettyskin.utils.ViewAttrUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.ArrayList;
@@ -101,16 +99,11 @@ public class TextClockSH extends TextViewSH {
             if (context == null && type == ValueType.TYPE_REFERENCE) {
                 return;
             }
-            Resources resources = null;
-            if (context != null) {
-                resources = context.getResources();
-            }
             TextClock textClock = (TextClock) view;
-            Object value = attrValue.getValue();
             switch (attrName) {
                 case "format12Hour": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        CharSequence format12Hour = ViewAttrUtil.getCharSequence(resources, type, value);
+                        CharSequence format12Hour = attrValue.getTypedValue(CharSequence.class, null);
                         if (!TextUtils.isEmpty(format12Hour)) {
                             textClock.setFormat12Hour(format12Hour);
                         }
@@ -119,7 +112,7 @@ public class TextClockSH extends TextViewSH {
                 }
                 case "format24Hour": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        CharSequence format24Hour = ViewAttrUtil.getCharSequence(resources, type, value);
+                        CharSequence format24Hour = attrValue.getTypedValue(CharSequence.class, null);
                         if (!TextUtils.isEmpty(format24Hour)) {
                             textClock.setFormat24Hour(format24Hour);
                         }
@@ -128,7 +121,7 @@ public class TextClockSH extends TextViewSH {
                 }
                 case "timeZone": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        String timeZone = ViewAttrUtil.getString(resources, type, value);
+                        String timeZone = attrValue.getTypedValue(String.class, null);
                         if (!TextUtils.isEmpty(timeZone)) {
                             textClock.setTimeZone(timeZone);
                         }

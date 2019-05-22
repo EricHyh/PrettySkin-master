@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.AttrValueHelper;
-import com.hyh.prettyskin.utils.ViewAttrUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.ArrayList;
@@ -148,101 +147,59 @@ public class ImageViewSH extends ViewSH {
                     break;
                 }
                 case "baselineAlignBottom": {
-                    boolean baselineAlignBottom = false;
-                    if (value != null) {
-                        baselineAlignBottom = (boolean) value;
-                    }
+                    boolean baselineAlignBottom = attrValue.getTypedValue(boolean.class, false);
                     imageView.setBaselineAlignBottom(baselineAlignBottom);
                     break;
                 }
                 case "baseline": {
-                    int baseline = -1;
-                    if (value != null) {
-                        baseline = (int) value;
-                    }
+                    int baseline = attrValue.getTypedValue(int.class, -1);
                     imageView.setBaseline(baseline);
                     break;
                 }
                 case "adjustViewBounds": {
-                    boolean adjustViewBounds = false;
-                    if (value != null) {
-                        adjustViewBounds = (boolean) value;
-                    }
+                    boolean adjustViewBounds = attrValue.getTypedValue(boolean.class, false);
                     imageView.setAdjustViewBounds(adjustViewBounds);
                     break;
                 }
                 case "maxWidth": {
-                    int maxWidth = Integer.MAX_VALUE;
-                    if (value != null) {
-                        maxWidth = (int) value;
-                    }
+                    int maxWidth = attrValue.getTypedValue(int.class, Integer.MAX_VALUE);
                     imageView.setMaxWidth(maxWidth);
                     break;
                 }
                 case "maxHeight": {
-                    int maxHeight = Integer.MAX_VALUE;
-                    if (value != null) {
-                        maxHeight = (int) value;
-                    }
+                    int maxHeight = attrValue.getTypedValue(int.class, Integer.MAX_VALUE);
                     imageView.setMaxHeight(maxHeight);
                     break;
                 }
                 case "scaleType": {
-                    int index = -1;
-                    ImageView.ScaleType scaleType = null;
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_INT: {
-                                index = (int) value;
-                                break;
-                            }
-                            case ValueType.TYPE_OBJECT: {
-                                if (value instanceof ImageView.ScaleType) {
-                                    scaleType = (ImageView.ScaleType) value;
-                                }
-                                break;
-                            }
-                        }
-                    }
-                    if (index >= 0) {
-                        scaleType = ViewAttrUtil.getImageScaleType(index);
-                    }
-                    if (scaleType == null) {
-                        scaleType = ImageView.ScaleType.FIT_CENTER;
-                    }
+                    ImageView.ScaleType scaleType = attrValue.getTypedValue(ImageView.ScaleType.class, ImageView.ScaleType.FIT_CENTER);
                     imageView.setScaleType(scaleType);
                     break;
                 }
                 case "tint": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        ColorStateList tint = ViewAttrUtil.getColorStateList(resources, type, value);
+                        ColorStateList tint = attrValue.getTypedValue(ColorStateList.class, null);
                         imageView.setImageTintList(tint);
                     }
                     break;
                 }
                 case "tintMode": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        PorterDuff.Mode tintMode = ViewAttrUtil.getTintMode(type, value);
+                        PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                         imageView.setImageTintMode(tintMode);
                     }
                     break;
                 }
                 case "drawableAlpha": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        int drawableAlpha = 255;
-                        if (value != null) {
-                            drawableAlpha = (int) value;
-                        }
+                        int drawableAlpha = attrValue.getTypedValue(int.class, 255);
                         imageView.setImageAlpha(drawableAlpha);
                     }
                     break;
                 }
                 case "cropToPadding": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        boolean cropToPadding = false;
-                        if (value != null) {
-                            cropToPadding = (boolean) value;
-                        }
+                        boolean cropToPadding = attrValue.getTypedValue(boolean.class, false);
                         imageView.setCropToPadding(cropToPadding);
                     }
                     break;
