@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.hyh.prettyskin.android.SkinInflateFactory;
 import com.hyh.prettyskin.sh.NativeSkinHandlerMap;
+import com.hyh.prettyskin.utils.Logger;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.lang.ref.WeakReference;
@@ -80,11 +81,11 @@ public class PrettySkin {
             return;
         }
         mContext = context.getApplicationContext();
-        installViewFactory(context);
+        installViewFactory(context, false);
         Application application = getApplication(context);
         if (application != null) {
             if (application != context) {
-                installViewFactory(application);
+                installViewFactory(application, false);
             }
             application.registerActivityLifecycleCallbacks(mPrettySkinActivityLifecycle);
         }
@@ -127,8 +128,12 @@ public class PrettySkin {
         return skinHandler;
     }
 
-    public synchronized void setContextSkinable(Context context) {
-        installViewFactory(context);
+    public boolean setContextSkinable(Context context) {
+        return installViewFactory(context, false);
+    }
+
+    public boolean setContextSkinable(Context context, boolean force) {
+        return installViewFactory(context, force);
     }
 
     private Application getApplication(Context context) {
@@ -144,30 +149,40 @@ public class PrettySkin {
         return application;
     }
 
-    private void installViewFactory(Context context) {
-        addSkinableContext(context);
-
+    private synchronized boolean installViewFactory(Context context, boolean force) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        LayoutInflater.Factory factory = layoutInflater.getFactory();
-        if (factory == null) {
-            layoutInflater.setFactory2(new SkinInflateFactory());
-        } else {
-            if (factory instanceof SkinInflateFactory) {
-                return;
-            }
-            LayoutInflater.Factory2 factory2 = layoutInflater.getFactory2();
-            if (factory2 == null) {
-                SkinInflateFactory skinInflateFactory = new SkinInflateFactory(factory);
-                Reflect.from(LayoutInflater.class)
-                        .filed("mFactory", LayoutInflater.Factory.class)
-                        .set(layoutInflater, skinInflateFactory);
+        Context layoutInflaterContext = layoutInflater.getContext();
+
+        if (layoutInflaterContext == context) {
+            addSkinableContext(context);
+            LayoutInflater.Factory factory = layoutInflater.getFactory();
+            if (factory == null) {
+                layoutInflater.setFactory2(new SkinInflateFactory());
             } else {
-                SkinInflateFactory skinInflateFactory = new SkinInflateFactory(factory2);
-                Reflect.from(LayoutInflater.class)
-                        .filed("mFactory2", LayoutInflater.Factory.class)
-                        .set(layoutInflater, skinInflateFactory);
+                if (factory instanceof SkinInflateFactory) {
+                    return true;
+                }
+                LayoutInflater.Factory2 factory2 = layoutInflater.getFactory2();
+                if (factory2 == null) {
+                    SkinInflateFactory skinInflateFactory = new SkinInflateFactory(factory);
+                    Reflect.from(LayoutInflater.class)
+                            .filed("mFactory", LayoutInflater.Factory.class)
+                            .set(layoutInflater, skinInflateFactory);
+                } else {
+                    SkinInflateFactory skinInflateFactory = new SkinInflateFactory(factory2);
+                    Reflect.from(LayoutInflater.class)
+                            .filed("mFactory2", LayoutInflater.Factory.class)
+                            .set(layoutInflater, skinInflateFactory);
+                }
+            }
+            return true;
+        } else {
+            Logger.w("You need set your context skinable, but your context has not self layout inflater. You can refer to ContextThemeWrapper.");
+            if (force) {
+                return installViewFactory(layoutInflaterContext, false);
             }
         }
+        return false;
     }
 
     public boolean isSkinableContext(Context context) {
@@ -338,7 +353,7 @@ public class PrettySkin {
 
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-            PrettySkin.getInstance().installViewFactory(activity);
+            PrettySkin.getInstance().installViewFactory(activity, false);
         }
 
         @Override
