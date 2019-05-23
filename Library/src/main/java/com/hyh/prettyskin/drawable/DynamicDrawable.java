@@ -2,9 +2,13 @@ package com.hyh.prettyskin.drawable;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
-import android.graphics.PixelFormat;
+import android.graphics.Outline;
+import android.graphics.PorterDuff;
+import android.graphics.Rect;
+import android.graphics.Region;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -27,6 +31,8 @@ import java.util.List;
 
 public class DynamicDrawable extends Drawable {
 
+    private final DrawableState mDrawableState = new DrawableState();
+
     private final String mAttrKey;
 
     private final Drawable mDefaultDrawable;
@@ -36,6 +42,7 @@ public class DynamicDrawable extends Drawable {
     private Drawable mSkinDrawable;
 
     public DynamicDrawable(String attrKey, Drawable defaultDrawable) {
+        if (defaultDrawable == null) throw new NullPointerException("defaultDrawable can't be null!");
         this.mAttrKey = attrKey;
         this.mDefaultDrawable = defaultDrawable;
         this.mSkinChangedListener = new InnerSkinChangedListener(this);
@@ -48,38 +55,124 @@ public class DynamicDrawable extends Drawable {
                 mSkinDrawable = convertAttrValueToDrawable(attrValue);
             }
         }
+        onDrawableChanged();
     }
 
     @Override
     public void draw(Canvas canvas) {
-        Drawable drawable = getCurrentDrawable();
-        drawable.draw(canvas);
+        getCurrentDrawable().draw(canvas);
     }
 
     @Override
     public void setBounds(int left, int top, int right, int bottom) {
-        super.setBounds(left, top, right, bottom);
         if (mDefaultDrawable != null) {
             mDefaultDrawable.setBounds(left, top, right, bottom);
         }
         if (mSkinDrawable != null) {
             mSkinDrawable.setBounds(left, top, right, bottom);
         }
+        super.setBounds(left, top, right, bottom);
     }
 
+    @Override
+    public void setBounds(Rect bounds) {
+        super.setBounds(bounds);
+        if (mDefaultDrawable != null) {
+            mDefaultDrawable.setBounds(bounds);
+        }
+        if (mSkinDrawable != null) {
+            mSkinDrawable.setBounds(bounds);
+        }
+    }
 
     @Override
     public void setAlpha(int alpha) {
+        if (mDrawableState.alpha != alpha) {
+            mDrawableState.alpha = alpha;
+            if (mDefaultDrawable != null) {
+                mDefaultDrawable.setAlpha(alpha);
+            }
+            if (mSkinDrawable != null) {
+                mSkinDrawable.setAlpha(alpha);
+            }
+            invalidateSelf();
+        }
+    }
+
+    @Override
+    public int getAlpha() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            return getCurrentDrawable().getAlpha();
+        } else {
+            return super.getAlpha();
+        }
+    }
+
+    @Override
+    public void setChangingConfigurations(int configs) {
+        super.setChangingConfigurations(configs);
         if (mDefaultDrawable != null) {
-            mDefaultDrawable.setAlpha(alpha);
+            mDefaultDrawable.setChangingConfigurations(configs);
         }
         if (mSkinDrawable != null) {
-            mSkinDrawable.setAlpha(alpha);
+            mSkinDrawable.setChangingConfigurations(configs);
+        }
+    }
+
+    @Override
+    public Rect getDirtyBounds() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return getCurrentDrawable().getDirtyBounds();
+        } else {
+            return super.getDirtyBounds();
+        }
+    }
+
+    @Override
+    public void setDither(boolean dither) {
+        super.setDither(dither);
+        mDrawableState.dither = dither;
+        if (mDefaultDrawable != null) {
+            mDefaultDrawable.setDither(dither);
+        }
+        if (mSkinDrawable != null) {
+            mSkinDrawable.setDither(dither);
+        }
+    }
+
+    @Override
+    public void setFilterBitmap(boolean filter) {
+        super.setFilterBitmap(filter);
+        mDrawableState.filterBitmap = filter;
+        if (mDefaultDrawable != null) {
+            mDefaultDrawable.setFilterBitmap(filter);
+        }
+        if (mSkinDrawable != null) {
+            mSkinDrawable.setFilterBitmap(filter);
+        }
+    }
+
+    @Override
+    public boolean isFilterBitmap() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return getCurrentDrawable().isFilterBitmap();
+        } else {
+            return super.isFilterBitmap();
+        }
+    }
+
+    @Override
+    public boolean onLayoutDirectionChanged(int layoutDirection) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return getCurrentDrawable().onLayoutDirectionChanged(layoutDirection);
+        } else {
+            return super.onLayoutDirectionChanged(layoutDirection);
         }
     }
 
     @Override
     public void setColorFilter(ColorFilter colorFilter) {
+        mDrawableState.colorFilter = colorFilter;
         if (mDefaultDrawable != null) {
             mDefaultDrawable.setColorFilter(colorFilter);
         }
@@ -89,19 +182,195 @@ public class DynamicDrawable extends Drawable {
     }
 
     @Override
-    public int getOpacity() {
-        Drawable drawable = getCurrentDrawable();
-        if (drawable != null) {
-            return drawable.getOpacity();
+    public void setTintList(ColorStateList tint) {
+        super.setTintList(tint);
+        mDrawableState.tint = tint;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (mDefaultDrawable != null) {
+                mDefaultDrawable.setTintList(tint);
+            }
+            if (mSkinDrawable != null) {
+                mSkinDrawable.setTintList(tint);
+            }
         }
-        return PixelFormat.UNKNOWN;
     }
 
     @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        Logger.d("DynamicDrawable finalize: " + this);
-        PrettySkin.getInstance().removeSkinReplaceListener(mSkinChangedListener);
+    public void setTintMode(PorterDuff.Mode tintMode) {
+        super.setTintMode(tintMode);
+        mDrawableState.tintMode = tintMode;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (mDefaultDrawable != null) {
+                mDefaultDrawable.setTintMode(tintMode);
+            }
+            if (mSkinDrawable != null) {
+                mSkinDrawable.setTintMode(tintMode);
+            }
+        }
+    }
+
+    @Override
+    public ColorFilter getColorFilter() {
+        return mDrawableState.colorFilter;
+    }
+
+    @Override
+    public void setHotspot(float x, float y) {
+        super.setHotspot(x, y);
+        mDrawableState.hotspot = new float[]{x, y};
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (mDefaultDrawable != null) {
+                mDefaultDrawable.setHotspot(x, y);
+            }
+            if (mSkinDrawable != null) {
+                mSkinDrawable.setHotspot(x, y);
+            }
+        }
+    }
+
+    @Override
+    public void setHotspotBounds(int left, int top, int right, int bottom) {
+        super.setHotspotBounds(left, top, right, bottom);
+        mDrawableState.hotspotBounds = new int[]{left, top, right, bottom};
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (mDefaultDrawable != null) {
+                mDefaultDrawable.setHotspotBounds(left, top, right, bottom);
+            }
+            if (mSkinDrawable != null) {
+                mSkinDrawable.setHotspotBounds(left, top, right, bottom);
+            }
+        }
+    }
+
+    @Override
+    public void getHotspotBounds(Rect outRect) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getCurrentDrawable().getHotspotBounds(outRect);
+        } else {
+            super.getHotspotBounds(outRect);
+        }
+    }
+
+    @Override
+    public boolean isStateful() {
+        return getCurrentDrawable().isStateful();
+    }
+
+    @Override
+    public boolean setState(int[] stateSet) {
+        if (mDefaultDrawable != null) {
+            mDefaultDrawable.setState(stateSet);
+        }
+        if (mSkinDrawable != null) {
+            mSkinDrawable.setState(stateSet);
+        }
+        return super.setState(stateSet);
+    }
+
+    @Override
+    public void jumpToCurrentState() {
+        super.jumpToCurrentState();
+        if (mDefaultDrawable != null) {
+            mDefaultDrawable.jumpToCurrentState();
+        }
+        if (mSkinDrawable != null) {
+            mSkinDrawable.jumpToCurrentState();
+        }
+    }
+
+    @Override
+    public void setAutoMirrored(boolean mirrored) {
+        super.setAutoMirrored(mirrored);
+        mDrawableState.mirrored = mirrored;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (mDefaultDrawable != null) {
+                mDefaultDrawable.setAutoMirrored(mirrored);
+            }
+            if (mSkinDrawable != null) {
+                mSkinDrawable.setAutoMirrored(mirrored);
+            }
+        }
+    }
+
+    @Override
+    public boolean isAutoMirrored() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            return getCurrentDrawable().isAutoMirrored();
+        } else {
+            return super.isAutoMirrored();
+        }
+    }
+
+    @Override
+    public void applyTheme(Resources.Theme t) {
+        super.applyTheme(t);
+        mDrawableState.theme = t;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (mDefaultDrawable != null && mDefaultDrawable.canApplyTheme()) {
+                mDefaultDrawable.applyTheme(t);
+            }
+            if (mSkinDrawable != null && mSkinDrawable.canApplyTheme()) {
+                mSkinDrawable.applyTheme(t);
+            }
+        }
+    }
+
+    @Override
+    public boolean canApplyTheme() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return getCurrentDrawable().canApplyTheme();
+        } else {
+            return super.canApplyTheme();
+        }
+    }
+
+    @Override
+    public Region getTransparentRegion() {
+        return getCurrentDrawable().getTransparentRegion();
+    }
+
+    @Override
+    public int getIntrinsicWidth() {
+        return getCurrentDrawable().getIntrinsicWidth();
+    }
+
+    @Override
+    public int getIntrinsicHeight() {
+        return getCurrentDrawable().getIntrinsicHeight();
+    }
+
+    @Override
+    public int getMinimumWidth() {
+        return getCurrentDrawable().getMinimumWidth();
+    }
+
+    @Override
+    public int getMinimumHeight() {
+        return getCurrentDrawable().getMinimumHeight();
+    }
+
+    @Override
+    public boolean getPadding(Rect padding) {
+        return getCurrentDrawable().getPadding(padding);
+    }
+
+    @Override
+    public void getOutline(Outline outline) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getCurrentDrawable().getOutline(outline);
+        } else {
+            super.getOutline(outline);
+        }
+    }
+
+    @Override
+    public Drawable.ConstantState getConstantState() {
+        return getCurrentDrawable().getConstantState();
+    }
+
+    @Override
+    public int getOpacity() {
+        return getCurrentDrawable().getOpacity();
     }
 
     private Drawable convertAttrValueToDrawable(AttrValue attrValue) {
@@ -126,7 +395,7 @@ public class DynamicDrawable extends Drawable {
             }
             case ValueType.TYPE_COLOR_STATE_LIST: {
                 ColorStateList colorStateList = (ColorStateList) value;
-                result = new ColorDrawable(colorStateList.getDefaultColor());
+                result = new ColorListDrawable(colorStateList);
                 break;
             }
         }
@@ -163,14 +432,55 @@ public class DynamicDrawable extends Drawable {
 
     private void onDrawableChanged() {
         Drawable currentDrawable = getCurrentDrawable();
+
+        if (currentDrawable == mSkinDrawable) {
+            mDefaultDrawable.setCallback(null);
+        }
+        currentDrawable.setCallback(getCallback());
+
+        currentDrawable.setAlpha(mDrawableState.alpha);
+        currentDrawable.setDither(mDrawableState.dither);
+        currentDrawable.setColorFilter(mDrawableState.colorFilter);
+        currentDrawable.setFilterBitmap(mDrawableState.filterBitmap);
+        currentDrawable.setChangingConfigurations(getChangingConfigurations());
         currentDrawable.setBounds(getBounds());
-        currentDrawable.setState(getState());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            currentDrawable.setTintList(mDrawableState.tint);
+            currentDrawable.setTintMode(mDrawableState.tintMode);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            float[] hotspot = mDrawableState.hotspot;
+            int[] hotspotBounds = mDrawableState.hotspotBounds;
+            if (hotspot != null) {
+                currentDrawable.setHotspot(hotspot[0], hotspot[1]);
+            }
+            if (hotspotBounds != null) {
+                currentDrawable.setHotspotBounds(hotspotBounds[0], hotspotBounds[1], hotspotBounds[2], hotspotBounds[3]);
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            currentDrawable.setAutoMirrored(mDrawableState.mirrored);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Resources.Theme theme = mDrawableState.theme;
+            if (theme != null && currentDrawable.canApplyTheme()) {
+                currentDrawable.applyTheme(theme);
+            }
+        }
         currentDrawable.setCallback(getCallback());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             currentDrawable.setLayoutDirection(getLayoutDirection());
         }
-        currentDrawable.setChangingConfigurations(getChangingConfigurations());
+        currentDrawable.setLevel(getLevel());
+        currentDrawable.setState(getState());
         invalidateSelf();
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        Logger.d("DynamicDrawable finalize: " + this);
+        PrettySkin.getInstance().removeSkinReplaceListener(mSkinChangedListener);
     }
 
     private static class InnerSkinChangedListener implements SkinChangedListener {
@@ -204,5 +514,18 @@ public class DynamicDrawable extends Drawable {
                 dynamicDrawable.onSkinRecovered();
             }
         }
+    }
+
+    private static class DrawableState {
+        int alpha;
+        boolean dither;
+        ColorFilter colorFilter;
+        boolean filterBitmap;
+        ColorStateList tint;
+        PorterDuff.Mode tintMode;
+        float[] hotspot;
+        int[] hotspotBounds;
+        boolean mirrored;
+        Resources.Theme theme;
     }
 }

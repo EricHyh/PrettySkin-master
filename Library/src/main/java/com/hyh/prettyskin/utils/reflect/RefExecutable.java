@@ -54,7 +54,7 @@ public abstract class RefExecutable<E, T extends RefExecutable<E, T>> extends Re
         return (T) this;
     }
 
-    public T param(Class type, Object param) {
+    public <P> T param(Class<P> type, P param) {
         parameterTypeList.add(type);
         parameterList.add(param);
         return (T) this;

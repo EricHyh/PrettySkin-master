@@ -12,6 +12,8 @@ public abstract class RefAccessible<E, T extends RefAccessible<E, T>> {
 
     private E defaultValue;
 
+    private Lazy<E> lazyDefaultValue;
+
     private ReflectResult<E> reflectResult;
 
     private boolean printException;
@@ -22,6 +24,11 @@ public abstract class RefAccessible<E, T extends RefAccessible<E, T>> {
 
     public T defaultValue(E defaultValue) {
         this.defaultValue = defaultValue;
+        return (T) this;
+    }
+
+    public T defaultValue(Lazy<E> defaultValue) {
+        this.lazyDefaultValue = defaultValue;
         return (T) this;
     }
 
@@ -75,6 +82,10 @@ public abstract class RefAccessible<E, T extends RefAccessible<E, T>> {
     @SuppressWarnings("unchecked")
     E getDefaultValue(Class realType) {
         Class<E> ensureType = getEnsureType();
+        E defaultValue = this.defaultValue;
+        if (defaultValue == null && lazyDefaultValue != null) {
+            defaultValue = lazyDefaultValue.get();
+        }
         if (ensureType != null) {
             if (defaultValue != null && Reflect.isAssignableFrom(defaultValue.getClass(), ensureType)) {
                 return defaultValue;
@@ -91,7 +102,6 @@ public abstract class RefAccessible<E, T extends RefAccessible<E, T>> {
         }
         return null;
     }
-
 
     abstract Class<E> getEnsureType();
 

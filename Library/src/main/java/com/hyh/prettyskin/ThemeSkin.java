@@ -51,6 +51,7 @@ public class ThemeSkin extends BaseSkin {
             return false;
         }
         TypedArray typedArray = mContext.obtainStyledAttributes(attrs);
+
         mInnerSkinAttrMap = new HashMap<>(filedNameMap.size());
         Set<Map.Entry<String, Integer>> entrySet = filedNameMap.entrySet();
         for (Map.Entry<String, Integer> entry : entrySet) {

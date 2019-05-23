@@ -53,7 +53,6 @@ public class Test1Activity extends Activity {
 
         Log.d(TAG, "onCreate: ");
 
-
     }
 
 
