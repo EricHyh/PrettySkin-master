@@ -37,18 +37,14 @@ public class Test1Activity extends Activity {
         setContentView(LayoutInflater.from(contextWrapper).inflate(R.layout.activity_test1, null));
 
         View view = findViewById(R.id.view_test_bg);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        view.setBackgroundDrawable(new DynamicDrawable("view_bg2", new ColorDrawable(Color.RED)));
+            }
+        });
 
-
-        AttrValue attrValue1 = new AttrValue(this, ValueType.TYPE_REFERENCE, R.dimen.test_dimen_1);
-        AttrValue attrValue2 = new AttrValue(this, ValueType.TYPE_REFERENCE, R.fraction.test_fraction_1);
-        AttrValue attrValue3 = new AttrValue(this, ValueType.TYPE_REFERENCE, R.bool.test_bool_1);
-        AttrValue attrValue4 = new AttrValue(this, ValueType.TYPE_REFERENCE, R.integer.test_integer_1);
-        AttrValue attrValue5 = new AttrValue(this, ValueType.TYPE_REFERENCE, R.drawable.custom_drawable);
-        AttrValue attrValue6 = new AttrValue(this, ValueType.TYPE_REFERENCE, R.color.black);
-        AttrValue attrValue7 = new AttrValue(this, ValueType.TYPE_REFERENCE, R.color.custom_color);
-        AttrValue attrValue8 = new AttrValue(this, ValueType.TYPE_REFERENCE, R.anim.layout);
+        view.setBackgroundDrawable(new DynamicDrawable("view_bg3", new ColorDrawable(Color.RED)));
 
 
         Log.d(TAG, "onCreate: ");
@@ -68,6 +64,7 @@ public class Test1Activity extends Activity {
     public void refreshSkin(View view) {
         ThemeSkin prettySkin = new ThemeSkin(this, R.style.PrettySkin_1, R.styleable.class, "PrettySkin");
         prettySkin.setOuterAttrValue("tv_bg", new AttrValue(null, ValueType.TYPE_COLOR_INT, 0xFF000000));
+        prettySkin.setOuterAttrValue("view_bg3", new AttrValue(null, ValueType.TYPE_COLOR_STATE_LIST, getResources().getColorStateList(R.color.sc_btn_text_color)));
         PrettySkin.getInstance().replaceSkinSync(prettySkin);
     }
 }

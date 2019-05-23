@@ -12,6 +12,7 @@ import android.graphics.Region;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.view.View;
 
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ISkin;
@@ -19,6 +20,7 @@ import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.SkinChangedListener;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.Logger;
+import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -29,7 +31,7 @@ import java.util.List;
  * @data 2019/5/20
  */
 
-public class DynamicDrawable extends Drawable {
+public class DynamicDrawable extends Drawable implements Drawable.Callback {
 
     private final DrawableState mDrawableState = new DrawableState();
 
@@ -46,8 +48,8 @@ public class DynamicDrawable extends Drawable {
         this.mAttrKey = attrKey;
         this.mDefaultDrawable = defaultDrawable;
         this.mSkinChangedListener = new InnerSkinChangedListener(this);
+        defaultDrawable.setCallback(this);
         PrettySkin.getInstance().addSkinReplaceListener(mSkinChangedListener);
-
         ISkin currentSkin = PrettySkin.getInstance().getCurrentSkin();
         if (currentSkin != null) {
             AttrValue attrValue = currentSkin.getAttrValue(attrKey);
@@ -76,13 +78,13 @@ public class DynamicDrawable extends Drawable {
 
     @Override
     public void setBounds(Rect bounds) {
-        super.setBounds(bounds);
         if (mDefaultDrawable != null) {
             mDefaultDrawable.setBounds(bounds);
         }
         if (mSkinDrawable != null) {
             mSkinDrawable.setBounds(bounds);
         }
+        super.setBounds(bounds);
     }
 
     @Override
@@ -95,7 +97,6 @@ public class DynamicDrawable extends Drawable {
             if (mSkinDrawable != null) {
                 mSkinDrawable.setAlpha(alpha);
             }
-            invalidateSelf();
         }
     }
 
@@ -373,6 +374,7 @@ public class DynamicDrawable extends Drawable {
         return getCurrentDrawable().getOpacity();
     }
 
+
     private Drawable convertAttrValueToDrawable(AttrValue attrValue) {
         Drawable result = null;
         int type = attrValue.getType();
@@ -436,7 +438,7 @@ public class DynamicDrawable extends Drawable {
         if (currentDrawable == mSkinDrawable) {
             mDefaultDrawable.setCallback(null);
         }
-        currentDrawable.setCallback(getCallback());
+        currentDrawable.setCallback(this);
 
         currentDrawable.setAlpha(mDrawableState.alpha);
         currentDrawable.setDither(mDrawableState.dither);
@@ -467,7 +469,6 @@ public class DynamicDrawable extends Drawable {
                 currentDrawable.applyTheme(theme);
             }
         }
-        currentDrawable.setCallback(getCallback());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             currentDrawable.setLayoutDirection(getLayoutDirection());
         }
@@ -476,11 +477,53 @@ public class DynamicDrawable extends Drawable {
         invalidateSelf();
     }
 
+
+    @Override
+    public void invalidateSelf() {
+        Callback callback = getCallback();
+        if (callback != null && callback instanceof View) {
+            View view = (View) callback;
+            final Rect dirty = getDirtyBounds();
+            final int scrollX = view.getScrollX();
+            final int scrollY = view.getScrollY();
+            view.invalidate(dirty.left + scrollX, dirty.top + scrollY,
+                    dirty.right + scrollX, dirty.bottom + scrollY);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                view.invalidateOutline();
+            } else {
+                Reflect.from(View.class).method("rebuildOutline").invoke(view);
+            }
+        } else {
+            super.invalidateSelf();
+        }
+    }
+
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
         Logger.d("DynamicDrawable finalize: " + this);
         PrettySkin.getInstance().removeSkinReplaceListener(mSkinChangedListener);
+    }
+
+    @Override
+    public void invalidateDrawable(Drawable who) {
+        invalidateSelf();
+    }
+
+    @Override
+    public void scheduleDrawable(Drawable who, Runnable what, long when) {
+        Callback callback = getCallback();
+        if (callback != null) {
+            callback.scheduleDrawable(this, what, when);
+        }
+    }
+
+    @Override
+    public void unscheduleDrawable(Drawable who, Runnable what) {
+        Callback callback = getCallback();
+        if (callback != null) {
+            callback.unscheduleDrawable(this, what);
+        }
     }
 
     private static class InnerSkinChangedListener implements SkinChangedListener {
@@ -517,7 +560,7 @@ public class DynamicDrawable extends Drawable {
     }
 
     private static class DrawableState {
-        int alpha;
+        int alpha = 255;
         boolean dither;
         ColorFilter colorFilter;
         boolean filterBitmap;

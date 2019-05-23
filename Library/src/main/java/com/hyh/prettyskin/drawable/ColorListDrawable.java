@@ -28,7 +28,7 @@ class ColorListDrawable extends Drawable {
     private final ColorStateList mColorStateList;
     private final int mDefaultColor;
 
-    private int mAlpha;
+    private int mAlpha = 255;
     private ColorStateList mTint;
     private PorterDuff.Mode mTintMode = PorterDuff.Mode.SRC_IN;
     private PorterDuffColorFilter mTintFilter;
@@ -106,12 +106,14 @@ class ColorListDrawable extends Drawable {
             mTintFilter = updateTintFilter(mTintFilter);
             return true;
         }
-        return false;
+        invalidateSelf();
+        return true;
     }
 
     @Override
     public boolean isStateful() {
-        return mTint != null && mTint.isStateful();
+        return mColorStateList.isStateful()
+                || (mTint != null && mTint.isStateful());
     }
 
     public boolean hasFocusStateSpecified() {
