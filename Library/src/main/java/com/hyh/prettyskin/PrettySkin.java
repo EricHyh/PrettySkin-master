@@ -203,7 +203,22 @@ public class PrettySkin {
         }
     }
 
-    public synchronized void addSkinAttrItem(SkinView skinView) {
+    public synchronized SkinView getSkinView(View view) {
+        if (view == null) {
+            return null;
+        }
+        int index = mSkinAttrItems.indexOf(new SkinView(view, null, null));
+        SkinView skinView = null;
+        if (index < mSkinAttrItems.size()) {
+            skinView = mSkinAttrItems.get(index);
+        }
+        if (skinView != null && skinView.getView() == view) {
+            return skinView;
+        }
+        return null;
+    }
+
+    public synchronized void addSkinView(SkinView skinView) {
         if (skinView == null) {
             return;
         }
@@ -213,11 +228,18 @@ public class PrettySkin {
         }
     }
 
-    public synchronized void removeSkinAttrItem(SkinView skinView) {
+    public synchronized void removeSkinView(SkinView skinView) {
         if (skinView == null) {
             return;
         }
         mSkinAttrItems.remove(skinView);
+    }
+
+    public synchronized void removeSkinView(View view) {
+        if (view == null) {
+            return;
+        }
+        mSkinAttrItems.remove(new SkinView(view, null, null));
     }
 
     public synchronized void recoverDefaultSkin() {

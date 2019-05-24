@@ -69,7 +69,7 @@ public class ViewReferenceUtil {
                         SkinView skinView = skinViewRef.get();
                         if (skinView != null) {
                             try {
-                                PrettySkin.getInstance().removeSkinAttrItem(skinView);
+                                PrettySkin.getInstance().removeSkinView(skinView);
                             } catch (Exception e) {
                                 Logger.e("CleanupThread remove skinView error ", e);
                             }

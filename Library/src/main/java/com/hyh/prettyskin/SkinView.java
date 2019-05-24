@@ -17,16 +17,19 @@ import java.util.Set;
 
 public class SkinView {
 
-    private Reference<View> viewReference;
+    private final Reference<View> viewReference;
+
+    private final int hashCode;
 
     //attrName --> attrKey
-    private Map<String, String> attrKeyMap;
+    private final Map<String, String> attrKeyMap;
 
     //attrName --> attrValue
-    private Map<String, AttrValue> defaultAttrValueMap;
+    private final Map<String, AttrValue> defaultAttrValueMap;
 
     public SkinView(View view, Map<String, String> attrKeyMap, Map<String, AttrValue> defaultAttrValueMap) {
         this.viewReference = ViewReferenceUtil.createViewReference(this, view);
+        this.hashCode = view == null ? 0 : System.identityHashCode(view);
         this.attrKeyMap = attrKeyMap;
         this.defaultAttrValueMap = defaultAttrValueMap;
     }
@@ -116,5 +119,21 @@ public class SkinView {
                 }
             }
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return this.hashCode;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+
+        SkinView that = (SkinView) obj;
+        View thisView = this.getView();
+        View thatView = that.getView();
+        return thisView == thatView;
     }
 }

@@ -44,8 +44,6 @@ import java.util.Map;
 //                  奔驰宝马贵者趣，公交自行程序员。
 //                  别人笑我忒疯癫，我笑自己命太贱；
 //                  不见满街漂亮妹，哪个归得程序员？
-
-
 public class Reflect {
 
     private static final Map<String, Class> CLASS_MAP = new HashMap<>();
@@ -57,19 +55,18 @@ public class Reflect {
     private static final Map<String, Constructor> CONSTRUCTOR_MAP = new HashMap<>();
 
     //用于保证返回值为基础数据类型时，不返回null
-    private static final Map<Class, Object> ELEMENTARY_DEFAULT_VALUE = new HashMap<>(8);
+    private static final Map<Class, Object> PRIMITIVE_DEFAULT_VALUE = new HashMap<>(8);
 
     static {
-        ELEMENTARY_DEFAULT_VALUE.put(byte.class, Byte.valueOf("0"));
-        ELEMENTARY_DEFAULT_VALUE.put(short.class, Short.valueOf("0"));
-        ELEMENTARY_DEFAULT_VALUE.put(int.class, 0);
-        ELEMENTARY_DEFAULT_VALUE.put(long.class, 0L);
-        ELEMENTARY_DEFAULT_VALUE.put(float.class, 0.0f);
-        ELEMENTARY_DEFAULT_VALUE.put(double.class, 0.0d);
-        ELEMENTARY_DEFAULT_VALUE.put(boolean.class, false);
-        ELEMENTARY_DEFAULT_VALUE.put(char.class, '\u0000');
+        PRIMITIVE_DEFAULT_VALUE.put(byte.class, Byte.valueOf("0"));
+        PRIMITIVE_DEFAULT_VALUE.put(short.class, Short.valueOf("0"));
+        PRIMITIVE_DEFAULT_VALUE.put(int.class, 0);
+        PRIMITIVE_DEFAULT_VALUE.put(long.class, 0L);
+        PRIMITIVE_DEFAULT_VALUE.put(float.class, 0.0f);
+        PRIMITIVE_DEFAULT_VALUE.put(double.class, 0.0d);
+        PRIMITIVE_DEFAULT_VALUE.put(boolean.class, false);
+        PRIMITIVE_DEFAULT_VALUE.put(char.class, '\u0000');
     }
-
 
     public static boolean isAssignableFrom(Class<?> child, Class<?> parent) {
         if (child == parent) {
@@ -94,6 +91,8 @@ public class Reflect {
             return child == Boolean.class;
         } else if (parent == char.class) {
             return child == Character.class;
+        } else if (parent == void.class) {
+            return child == Void.class;
         }
         return false;
     }
@@ -103,7 +102,7 @@ public class Reflect {
     }
 
     private static Throwable getRealThrowable(Throwable throwable, int num) {
-        if (throwable == null || num >= 10) {
+        if (throwable == null || num >= 16) {
             return throwable;
         }
         if (throwable instanceof InvocationTargetException || throwable instanceof UndeclaredThrowableException) {
@@ -121,7 +120,7 @@ public class Reflect {
 
     @SuppressWarnings("unchecked")
     public static <E> E getDefaultValue(Class<E> valueType) {
-        return (E) ELEMENTARY_DEFAULT_VALUE.get(valueType);
+        return (E) PRIMITIVE_DEFAULT_VALUE.get(valueType);
     }
 
     public static Class classForName(String className) {

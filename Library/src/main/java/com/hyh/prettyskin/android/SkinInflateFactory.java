@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ISkinHandler;
+import com.hyh.prettyskin.ISkinable;
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.SkinView;
 import com.hyh.prettyskin.utils.Logger;
@@ -58,22 +59,33 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
                 view = mFactory.onCreateView(name, context, attrs);
             }
         }
-        boolean skinable = PrettySkin.getInstance().isSkinableContext(context);
-        Logger.d(context.getClass().getName() + " skinable = " + skinable);
-        if (skinable) {
+        boolean isSkinable = PrettySkin.getInstance().isSkinableContext(context);
+        Logger.d(context.getClass().getName() + " isSkinable = " + isSkinable);
+        if (isSkinable) {
             String skinAttrs = attrs.getAttributeValue(NAMESPACE, SKIN_ATTRS);
             if (!TextUtils.isEmpty(skinAttrs)) {
                 if (view == null) {
                     view = createView(name, context, attrs);
                 }
                 if (view != null) {
+                    if (view instanceof ISkinable) {
+                        ISkinable skinable = (ISkinable) view;
+                        if (!skinable.isSkinable(view)) {
+                            return view;
+                        }
+                    } else if (context instanceof ISkinable) {
+                        ISkinable skinable = (ISkinable) context;
+                        if (!skinable.isSkinable(view)) {
+                            return view;
+                        }
+                    }
                     //attrName --> attrKey
                     Map<String, String> attrKeyMap = getAttrKeyMap(skinAttrs);
                     if (attrKeyMap != null && !attrKeyMap.isEmpty()) {
                         //attrName --> attrValue
                         Map<String, AttrValue> defaultAttrValueMap = getDefaultAttrValueMap(view, attrs, attrKeyMap.keySet());
                         SkinView skinView = new SkinView(view, attrKeyMap, defaultAttrValueMap);
-                        PrettySkin.getInstance().addSkinAttrItem(skinView);
+                        PrettySkin.getInstance().addSkinView(skinView);
                     }
                 }
             }
