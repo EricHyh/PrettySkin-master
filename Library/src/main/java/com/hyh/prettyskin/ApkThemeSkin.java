@@ -34,18 +34,19 @@ public class ApkThemeSkin extends BaseSkin {
 
     private final Context mApplicationContext;
     private final String mApkPath;
-    private final int mIndex;
+    private int mSkinIndex;
 
+    private SkinContext mSkinContext;
     private HashMap<String, AttrValue> mInnerSkinAttrMap;
 
     public ApkThemeSkin(Context context, String apkPath) {
         this(context, apkPath, 0);
     }
 
-    public ApkThemeSkin(Context context, String apkPath, int index) {
+    public ApkThemeSkin(Context context, String apkPath, int skinIndex) {
         this.mApplicationContext = context.getApplicationContext();
         this.mApkPath = apkPath;
-        this.mIndex = index;
+        this.mSkinIndex = skinIndex;
     }
 
     @Override
@@ -66,11 +67,10 @@ public class ApkThemeSkin extends BaseSkin {
         int skinThemeArrayId = metaData.getInt(SKIN_THEME_LIST);
         String[] skinThemeArray = resources.getStringArray(skinThemeArrayId);
 
-        if (skinThemeArray.length < mIndex) return false;
-        String skinTheme = skinThemeArray[mIndex];
+        if (skinThemeArray.length < mSkinIndex) return false;
+        String skinTheme = skinThemeArray[mSkinIndex];
         int skinThemeId = metaData.getInt(skinTheme);
         if (skinThemeId == 0) return false;
-
 
         File dataDir = mApplicationContext.getFilesDir();
         File skinDexDir = new File(dataDir, "skin".concat(File.separator).concat("dex"));
@@ -95,15 +95,15 @@ public class ApkThemeSkin extends BaseSkin {
             return false;
         }
 
-        SkinContext skinContext = new SkinContext(mApplicationContext, resources, skinThemeId);
-        TypedArray typedArray = skinContext.obtainStyledAttributes(attrs);
+        mSkinContext = new SkinContext(mApplicationContext, resources, skinThemeId);
+        TypedArray typedArray = mSkinContext.obtainStyledAttributes(attrs);
 
         mInnerSkinAttrMap = new HashMap<>(filedNameMap.size());
         Set<Map.Entry<String, Integer>> entrySet = filedNameMap.entrySet();
         for (Map.Entry<String, Integer> entry : entrySet) {
             String attrKey = entry.getKey().substring(styleableName.length() + 1);
             Integer attrIndex = entry.getValue();
-            AttrValue attrValue = AttrValueHelper.getAttrValue(skinContext, typedArray, attrIndex);
+            AttrValue attrValue = AttrValueHelper.getAttrValue(mSkinContext, typedArray, attrIndex);
             if (attrValue != null) {
                 mInnerSkinAttrMap.put(attrKey, attrValue);
             }

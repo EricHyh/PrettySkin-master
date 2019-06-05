@@ -2,6 +2,7 @@
           package="com.hyh.prettyskin">
 
     <application>
+
         <meta-data
             android:name="skin_r_class_path"
             android:value="com.hyh.prettyskin.R"/>
@@ -21,6 +22,7 @@
         <meta-data
             android:name="skin_first_3"
             android:resource="@style/skin_first_3"/>
+
     </application>
 
 </manifest>

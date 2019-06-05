@@ -47,6 +47,8 @@ public class Test1Activity extends Activity {
         view.setBackgroundDrawable(new DynamicDrawable("view_bg3", new ColorDrawable(Color.RED)));
 
 
+
+
         Log.d(TAG, "onCreate: ");
 
     }

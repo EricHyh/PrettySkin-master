@@ -21,7 +21,6 @@ import java.util.List;
 
 public class ToggleButtonSH extends CompoundButtonSH {
 
-
     private final Class mStyleableClass;
 
     private final String mStyleableName;
