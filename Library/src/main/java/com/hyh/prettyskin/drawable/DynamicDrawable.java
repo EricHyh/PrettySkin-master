@@ -15,6 +15,7 @@ import android.os.Build;
 import android.view.View;
 
 import com.hyh.prettyskin.AttrValue;
+import com.hyh.prettyskin.BasePrettySkin;
 import com.hyh.prettyskin.ISkin;
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.SkinChangedListener;
@@ -33,6 +34,8 @@ import java.util.List;
 
 public class DynamicDrawable extends Drawable implements Drawable.Callback {
 
+    private final BasePrettySkin mPrettySkin;
+
     private final DrawableState mDrawableState = new DrawableState();
 
     private final String mAttrKey;
@@ -44,13 +47,19 @@ public class DynamicDrawable extends Drawable implements Drawable.Callback {
     private Drawable mSkinDrawable;
 
     public DynamicDrawable(String attrKey, Drawable defaultDrawable) {
+        this(PrettySkin.getInstance(), attrKey, defaultDrawable);
+    }
+
+    public DynamicDrawable(BasePrettySkin prettySkin, String attrKey, Drawable defaultDrawable) {
+        if (prettySkin == null) throw new NullPointerException("prettySkin can't be null!");
         if (defaultDrawable == null) throw new NullPointerException("defaultDrawable can't be null!");
+        this.mPrettySkin = prettySkin;
         this.mAttrKey = attrKey;
         this.mDefaultDrawable = defaultDrawable;
         this.mSkinChangedListener = new InnerSkinChangedListener(this);
         defaultDrawable.setCallback(this);
-        PrettySkin.getInstance().addSkinReplaceListener(mSkinChangedListener);
-        ISkin currentSkin = PrettySkin.getInstance().getCurrentSkin();
+        mPrettySkin.addSkinReplaceListener(mSkinChangedListener);
+        ISkin currentSkin = mPrettySkin.getCurrentSkin();
         if (currentSkin != null) {
             AttrValue attrValue = currentSkin.getAttrValue(attrKey);
             if (attrValue != null) {
@@ -59,6 +68,7 @@ public class DynamicDrawable extends Drawable implements Drawable.Callback {
         }
         onDrawableChanged();
     }
+
 
     @Override
     public void draw(Canvas canvas) {
@@ -502,7 +512,7 @@ public class DynamicDrawable extends Drawable implements Drawable.Callback {
     protected void finalize() throws Throwable {
         super.finalize();
         Logger.d("DynamicDrawable finalize: " + this);
-        PrettySkin.getInstance().removeSkinReplaceListener(mSkinChangedListener);
+        mPrettySkin.removeSkinReplaceListener(mSkinChangedListener);
     }
 
     @Override

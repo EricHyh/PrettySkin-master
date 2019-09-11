@@ -3,7 +3,6 @@ package com.hyh.prettyskin.utils;
 import android.os.Process;
 import android.view.View;
 
-import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.SkinView;
 
 import java.lang.ref.Reference;
@@ -56,7 +55,7 @@ public class ViewReferenceUtil {
                     // We're forcing this reference to be cleared and replaced by looping every second
                     // when there is nothing to do.
                     // This behavior has been tested and reproduced with heap dumps.
-                    remove = (ViewReference) sReferenceQueue.remove(2000);
+                    remove = (ViewReference) sReferenceQueue.remove(5000);
                 } catch (InterruptedException e) {
                     Logger.e("CleanupThread interrupted ", e);
                     break;
@@ -68,11 +67,7 @@ public class ViewReferenceUtil {
                     if (skinViewRef != null) {
                         SkinView skinView = skinViewRef.get();
                         if (skinView != null) {
-                            try {
-                                PrettySkin.getInstance().removeSkinView(skinView);
-                            } catch (Exception e) {
-                                Logger.e("CleanupThread remove skinView error ", e);
-                            }
+                            skinView.destroy();
                         }
                     }
                 }

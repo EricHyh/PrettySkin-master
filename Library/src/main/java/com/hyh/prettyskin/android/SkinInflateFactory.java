@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.hyh.prettyskin.AttrValue;
+import com.hyh.prettyskin.BasePrettySkin;
 import com.hyh.prettyskin.ISkinHandler;
 import com.hyh.prettyskin.ISkinable;
-import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.SkinView;
 import com.hyh.prettyskin.utils.Logger;
 import com.hyh.prettyskin.utils.reflect.Reflect;
@@ -39,13 +39,17 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
 
     private static final String SKIN_ATTRS = "skin_attrs";
 
-    private LayoutInflater.Factory mFactory;
+    private final BasePrettySkin mPrettySkin;
 
-    public SkinInflateFactory() {
+    private final LayoutInflater.Factory mFactory;
+
+    public SkinInflateFactory(BasePrettySkin prettySkin) {
+        this(prettySkin, null);
     }
 
-    public SkinInflateFactory(LayoutInflater.Factory factory) {
-        mFactory = factory;
+    public SkinInflateFactory(BasePrettySkin prettySkin, LayoutInflater.Factory factory) {
+        this.mPrettySkin = prettySkin;
+        this.mFactory = factory;
     }
 
     @Override
@@ -59,7 +63,7 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
                 view = mFactory.onCreateView(name, context, attrs);
             }
         }
-        boolean isSkinable = PrettySkin.getInstance().isSkinableContext(context);
+        boolean isSkinable = mPrettySkin.isSkinableContext(context);
         Logger.d(context.getClass().getName() + " isSkinable = " + isSkinable);
         if (isSkinable) {
             String skinAttrs = attrs.getAttributeValue(NAMESPACE, SKIN_ATTRS);
@@ -85,7 +89,7 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
                         //attrName --> attrValue
                         Map<String, AttrValue> defaultAttrValueMap = getDefaultAttrValueMap(view, attrs, attrKeyMap.keySet());
                         SkinView skinView = new SkinView(view, attrKeyMap, defaultAttrValueMap);
-                        PrettySkin.getInstance().addSkinView(skinView);
+                        mPrettySkin.addSkinView(skinView);
                     }
                 }
             }
@@ -146,7 +150,7 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
     }
 
     private Map<String, AttrValue> getDefaultAttrValueMap(View view, AttributeSet attrs, Collection<String> attrNames) {
-        ISkinHandler skinHandler = PrettySkin.getInstance().getSkinHandler(view);
+        ISkinHandler skinHandler = mPrettySkin.getSkinHandler(view);
         if (skinHandler == null) {
             return Collections.emptyMap();
         }
