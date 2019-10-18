@@ -2,12 +2,17 @@ package com.hyh.prettyskin.utils;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 
 import com.hyh.prettyskin.AttrValue;
+import com.hyh.prettyskin.ColorStateListFactory;
+import com.hyh.prettyskin.DrawableFactory;
+import com.hyh.prettyskin.TypedArrayFactory;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
@@ -26,10 +31,10 @@ public class AttrValueHelper {
 
 
     public static AttrValue getAttrValue(View view, TypedArray typedArray, int styleableIndex) {
-        return getAttrValue(view.getContext(), typedArray, styleableIndex);
+        return getAttrValue(view.getContext(), typedArray, null, styleableIndex);
     }
 
-    public static AttrValue getAttrValue(Context context, TypedArray typedArray, int styleableIndex) {
+    public static AttrValue getAttrValue(Context context, final TypedArray typedArray, final TypedArrayFactory typedArrayFactory, final int styleableIndex) {
         AttrValue attrValue;
         int type = ValueType.TYPE_NULL;
         Object value = null;
@@ -78,24 +83,68 @@ public class AttrValueHelper {
                 if (!TextUtils.isEmpty(string)) {
                     if (string.matches("^res/color.*/.+\\.xml$")) {
                         try {
-                            value = typedArray.getResourceId(styleableIndex, 0);
-                            type = ValueType.TYPE_REFERENCE;
+                            ColorStateList colorStateList = typedArray.getColorStateList(styleableIndex);
+                            if (typedArrayFactory != null && colorStateList != null) {
+                                value = new ColorStateListFactory() {
+                                    @Override
+                                    public ColorStateList create() {
+                                        TypedArray newTypedArray = typedArrayFactory.create();
+                                        ColorStateList newColorStateList = newTypedArray.getColorStateList(styleableIndex);
+                                        newTypedArray.recycle();
+                                        return newColorStateList;
+                                    }
+                                };
+                                type = ValueType.TYPE_LAZY_COLOR_STATE_LIST;
+                            } else {
+                                value = colorStateList;
+                                type = ValueType.TYPE_COLOR_STATE_LIST;
+                            }
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            Logger.d("AttrValueHelper getAttrValue [" + string + "] getColorStateList failed ", e);
+                        }
+                        if (value == null) {
+                            try {
+                                value = typedArray.getResourceId(styleableIndex, 0);
+                                type = ValueType.TYPE_REFERENCE;
+                            } catch (Exception e) {
+                                Logger.d("AttrValueHelper getAttrValue [" + string + "] getResourceId failed ", e);
+                            }
                         }
                     } else if (string.matches("^res/[(drawable)|(mipmap)].*/.+$")) {
                         try {
-                            value = typedArray.getResourceId(styleableIndex, 0);
-                            type = ValueType.TYPE_REFERENCE;
+                            Drawable drawable = typedArray.getDrawable(styleableIndex);
+                            if (drawable != null && typedArrayFactory != null) {
+                                value = new DrawableFactory() {
+                                    @Override
+                                    public Drawable create() {
+                                        TypedArray newTypedArray = typedArrayFactory.create();
+                                        Drawable newDrawable = newTypedArray.getDrawable(styleableIndex);
+                                        newTypedArray.recycle();
+                                        return newDrawable;
+                                    }
+                                };
+                                type = ValueType.TYPE_LAZY_DRAWABLE;
+                            } else {
+                                value = drawable;
+                                type = ValueType.TYPE_DRAWABLE;
+                            }
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            Logger.d("AttrValueHelper getAttrValue [" + string + "] getDrawable failed ", e);
+                        }
+                        if (value == null) {
+                            try {
+                                value = typedArray.getResourceId(styleableIndex, 0);
+                                type = ValueType.TYPE_REFERENCE;
+                            } catch (Exception e) {
+                                Logger.d("AttrValueHelper getAttrValue [" + string + "] getResourceId failed ", e);
+                            }
                         }
                     } else if (string.matches("^res/anim.*/.+\\.xml$")) {
                         try {
                             value = typedArray.getResourceId(styleableIndex, 0);
                             type = ValueType.TYPE_REFERENCE;
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            Logger.d("AttrValueHelper getAttrValue [" + string + "] getResourceId failed ", e);
                         }
                     }
                     if (value == null) {

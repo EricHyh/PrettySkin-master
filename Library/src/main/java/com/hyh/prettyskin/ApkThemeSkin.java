@@ -86,7 +86,7 @@ public class ApkThemeSkin extends BaseSkin {
         if (styleableClass == null || TextUtils.isEmpty(styleableName)) {
             return false;
         }
-        int[] attrs = Reflect.from(styleableClass).filed(styleableName, int[].class).get(null);
+        final int[] attrs = Reflect.from(styleableClass).filed(styleableName, int[].class).get(null);
         if (attrs == null) {
             return false;
         }
@@ -98,12 +98,19 @@ public class ApkThemeSkin extends BaseSkin {
         mSkinContext = new SkinContext(mApplicationContext, resources, skinThemeId);
         TypedArray typedArray = mSkinContext.obtainStyledAttributes(attrs);
 
+        TypedArrayFactory typedArrayFactory = new TypedArrayFactory() {
+            @Override
+            public TypedArray create() {
+                return mSkinContext.obtainStyledAttributes(attrs);
+            }
+        };
+
         mInnerSkinAttrMap = new HashMap<>(filedNameMap.size());
         Set<Map.Entry<String, Integer>> entrySet = filedNameMap.entrySet();
         for (Map.Entry<String, Integer> entry : entrySet) {
             String attrKey = entry.getKey().substring(styleableName.length() + 1);
             Integer attrIndex = entry.getValue();
-            AttrValue attrValue = AttrValueHelper.getAttrValue(mSkinContext, typedArray, attrIndex);
+            AttrValue attrValue = AttrValueHelper.getAttrValue(mSkinContext, typedArray, typedArrayFactory, attrIndex);
             if (attrValue != null) {
                 mInnerSkinAttrMap.put(attrKey, attrValue);
             }

@@ -42,7 +42,7 @@ public class ThemeSkin extends BaseSkin {
         if (styleableClass == null || TextUtils.isEmpty(styleableName)) {
             return false;
         }
-        int[] attrs = Reflect.from(styleableClass).filed(styleableName, int[].class).get(null);
+        final int[] attrs = Reflect.from(styleableClass).filed(styleableName, int[].class).get(null);
         if (attrs == null) {
             return false;
         }
@@ -52,12 +52,19 @@ public class ThemeSkin extends BaseSkin {
         }
         TypedArray typedArray = mContext.obtainStyledAttributes(attrs);
 
+        TypedArrayFactory typedArrayFactory = new TypedArrayFactory() {
+            @Override
+            public TypedArray create() {
+                return mContext.obtainStyledAttributes(attrs);
+            }
+        };
+
         mInnerSkinAttrMap = new HashMap<>(filedNameMap.size());
         Set<Map.Entry<String, Integer>> entrySet = filedNameMap.entrySet();
         for (Map.Entry<String, Integer> entry : entrySet) {
             String attrKey = entry.getKey().substring(styleableName.length() + 1);
             Integer attrIndex = entry.getValue();
-            AttrValue attrValue = AttrValueHelper.getAttrValue(mContext, typedArray, attrIndex);
+            AttrValue attrValue = AttrValueHelper.getAttrValue(mContext, typedArray, typedArrayFactory, attrIndex);
             if (attrValue != null) {
                 mInnerSkinAttrMap.put(attrKey, attrValue);
             }

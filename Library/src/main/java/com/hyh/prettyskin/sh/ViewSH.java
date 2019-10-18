@@ -207,7 +207,8 @@ public class ViewSH implements ISkinHandler {
                         break;
                     }
                     case ValueType.TYPE_DRAWABLE:
-                    case ValueType.TYPE_REFERENCE: {
+                    case ValueType.TYPE_REFERENCE:
+                    case ValueType.TYPE_LAZY_DRAWABLE: {
                         Drawable background = attrValue.getTypedValue(Drawable.class, null);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             view.setBackground(background);
@@ -766,9 +767,6 @@ public class ViewSH implements ISkinHandler {
             case "focusedByDefault": {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     boolean isFocusedByDefault = attrValue.getTypedValue(boolean.class, true);
-                    if (value != null) {
-                        isFocusedByDefault = (boolean) value;
-                    }
                     view.setFocusedByDefault(isFocusedByDefault);
                 }
                 break;

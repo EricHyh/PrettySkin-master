@@ -195,7 +195,6 @@ public class TextViewSH extends ViewSH {
                 return;
             }
             TextView textView = (TextView) view;
-            Object value = attrValue.getValue();
             switch (attrName) {
                 case "textAppearance": {
                     int textAppearance = attrValue.getTypedValue(int.class, -1);
@@ -241,18 +240,12 @@ public class TextViewSH extends ViewSH {
                     break;
                 }
                 case "autoLink": {
-                    int autoLink = 0;
-                    if (value != null) {
-                        autoLink = (int) value;
-                    }
+                    int autoLink = attrValue.getTypedValue(int.class, 0);
                     textView.setAutoLinkMask(autoLink);
                     break;
                 }
                 case "linksClickable": {
-                    boolean linksClickable = true;
-                    if (value != null) {
-                        linksClickable = (boolean) value;
-                    }
+                    boolean linksClickable = attrValue.getTypedValue(boolean.class, true);
                     textView.setLinksClickable(linksClickable);
                     break;
                 }
@@ -315,10 +308,7 @@ public class TextViewSH extends ViewSH {
                     break;
                 }
                 case "drawablePadding": {
-                    int padding = 0;
-                    if (value != null) {
-                        padding = (int) value;
-                    }
+                    int padding = attrValue.getTypedValue(int.class, 0);
                     textView.setCompoundDrawablePadding(padding);
                     break;
                 }

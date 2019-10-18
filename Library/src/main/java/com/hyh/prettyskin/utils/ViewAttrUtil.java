@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.hyh.prettyskin.AttrValue;
+import com.hyh.prettyskin.ColorStateListFactory;
+import com.hyh.prettyskin.DrawableFactory;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
@@ -130,9 +132,41 @@ public class ViewAttrUtil {
                 }
                 return defaultValue;
             }
+            case ValueType.TYPE_LAZY_COLOR_STATE_LIST: {
+                if (value instanceof ColorStateListFactory) {
+                    ColorStateListFactory colorStateListFactory = (ColorStateListFactory) value;
+                    ColorStateList colorStateList = colorStateListFactory.create();
+                    if (colorStateList == null) {
+                        return null;
+                    }
+                    if (Reflect.isAssignableFrom(colorStateList.getClass(), valueClass)) {
+                        return (T) colorStateList;
+                    } else {
+                        return defaultValue;
+                    }
+                } else {
+                    return defaultValue;
+                }
+            }
             case ValueType.TYPE_DRAWABLE: {
                 if (valueClass == Drawable.class) {
                     return (T) value;
+                } else {
+                    return defaultValue;
+                }
+            }
+            case ValueType.TYPE_LAZY_DRAWABLE: {
+                if (value instanceof DrawableFactory) {
+                    DrawableFactory drawableFactory = (DrawableFactory) value;
+                    Drawable drawable = drawableFactory.create();
+                    if (drawable == null) {
+                        return null;
+                    }
+                    if (Reflect.isAssignableFrom(drawable.getClass(), valueClass)) {
+                        return (T) drawable;
+                    } else {
+                        return defaultValue;
+                    }
                 } else {
                     return defaultValue;
                 }

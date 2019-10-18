@@ -31,14 +31,18 @@ public class ValueType {
 
     public static final int TYPE_COLOR_STATE_LIST = 10;
 
-    //public static final int TYPE_COLOR_ID = 11;
+    public static final int TYPE_LAZY_COLOR_STATE_LIST = 11;
 
-    public static final int TYPE_DRAWABLE = 12;
+    //public static final int TYPE_COLOR_ID = 12;
 
-    //public static final int TYPE_DRAWABLE_ID = 13;
+    public static final int TYPE_DRAWABLE = 13;
 
-    //public static final int TYPE_ANIM_ID = 14;
+    public static final int TYPE_LAZY_DRAWABLE = 14;
 
-    public static final int TYPE_OBJECT = 15;
+    //public static final int TYPE_DRAWABLE_ID = 15;
+
+    //public static final int TYPE_ANIM_ID = 16;
+
+    public static final int TYPE_OBJECT = 17;
 
 }

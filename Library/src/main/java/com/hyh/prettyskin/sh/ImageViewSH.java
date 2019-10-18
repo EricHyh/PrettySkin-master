@@ -2,7 +2,6 @@ package com.hyh.prettyskin.sh;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
@@ -112,31 +111,20 @@ public class ImageViewSH extends ViewSH {
             if (context == null && type == ValueType.TYPE_REFERENCE) {
                 return;
             }
-            Resources resources = null;
-            if (context != null) {
-                resources = context.getResources();
-            }
-            Object value = attrValue.getValue();
             switch (attrName) {
                 case "src": {
                     Drawable drawable = null;
                     Bitmap bitmap = null;
-                    if (value != null) {
-                        switch (type) {
-                            case ValueType.TYPE_REFERENCE: {
-                                drawable = resources.getDrawable((Integer) value);
-                                break;
-                            }
-                            case ValueType.TYPE_DRAWABLE: {
-                                drawable = (Drawable) value;
-                                break;
-                            }
-                            case ValueType.TYPE_OBJECT: {
-                                if (value instanceof Bitmap) {
-                                    bitmap = (Bitmap) value;
-                                }
-                                break;
-                            }
+                    switch (type) {
+                        case ValueType.TYPE_REFERENCE:
+                        case ValueType.TYPE_DRAWABLE:
+                        case ValueType.TYPE_LAZY_DRAWABLE: {
+                            drawable = attrValue.getTypedValue(Drawable.class, null);
+                            break;
+                        }
+                        case ValueType.TYPE_OBJECT: {
+                            bitmap = attrValue.getTypedValue(Bitmap.class, null);
+                            break;
                         }
                     }
                     if (bitmap != null) {

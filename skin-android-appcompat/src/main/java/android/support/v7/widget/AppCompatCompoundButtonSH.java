@@ -95,7 +95,6 @@ public class AppCompatCompoundButtonSH implements ISkinHandler {
     public void replace(View view, String attrName, AttrValue attrValue) {
         Context themeContext = attrValue.getThemeContext();
         int type = attrValue.getType();
-        Object value = attrValue.getValue();
         Resources resources = null;
         if (themeContext != null) {
             resources = themeContext.getResources();
@@ -106,8 +105,9 @@ public class AppCompatCompoundButtonSH implements ISkinHandler {
         CompoundButton compoundButton = (CompoundButton) view;
         switch (attrName) {
             case "button": {
-                if (value != null && value instanceof Drawable) {
-                    compoundButton.setButtonDrawable((Drawable) value);
+                Drawable drawable = attrValue.getTypedValue(Drawable.class, null);
+                if (drawable != null) {
+                    compoundButton.setButtonDrawable(drawable);
                 }
                 break;
             }

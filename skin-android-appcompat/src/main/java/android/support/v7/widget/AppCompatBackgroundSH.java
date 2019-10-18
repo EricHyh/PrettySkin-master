@@ -3,7 +3,6 @@ package android.support.v7.widget;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -14,9 +13,8 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.hyh.prettyskin.AttrValue;
-import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.ISkinHandler;
-import com.hyh.prettyskin.utils.ViewAttrUtil;
+import com.hyh.prettyskin.ValueType;
 
 
 /**
@@ -114,27 +112,16 @@ public class AppCompatBackgroundSH implements ISkinHandler {
         if (context == null && type == ValueType.TYPE_REFERENCE) {
             return;
         }
-        Resources resources = null;
-        if (context != null) {
-            resources = context.getResources();
-        }
-        Object value = attrValue.getValue();
         switch (attrName) {
             case "background": {
                 switch (type) {
                     case ValueType.TYPE_COLOR_INT: {
-                        int color = 0;
-                        if (value != null) {
-                            color = (int) value;
-                        }
+                        int color = attrValue.getTypedValue(int.class, 0);
                         view.setBackgroundColor(color);
                         break;
                     }
                     case ValueType.TYPE_DRAWABLE: {
-                        Drawable background = null;
-                        if (value != null) {
-                            background = (Drawable) value;
-                        }
+                        Drawable background = attrValue.getTypedValue(Drawable.class, null);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             view.setBackground(background);
                         } else {
@@ -143,11 +130,7 @@ public class AppCompatBackgroundSH implements ISkinHandler {
                         break;
                     }
                     case ValueType.TYPE_REFERENCE: {
-                        int drawableId = 0;
-                        Drawable background = null;
-                        if (value != null) {
-                            background = resources.getDrawable(drawableId);
-                        }
+                        Drawable background = attrValue.getTypedValue(Drawable.class, null);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             view.setBackground(background);
                         } else {

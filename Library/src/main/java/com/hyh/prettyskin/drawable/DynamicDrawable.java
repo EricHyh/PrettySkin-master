@@ -16,6 +16,8 @@ import android.view.View;
 
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.BasePrettySkin;
+import com.hyh.prettyskin.ColorStateListFactory;
+import com.hyh.prettyskin.DrawableFactory;
 import com.hyh.prettyskin.ISkin;
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.SkinChangedListener;
@@ -384,7 +386,6 @@ public class DynamicDrawable extends Drawable implements Drawable.Callback {
         return getCurrentDrawable().getOpacity();
     }
 
-
     private Drawable convertAttrValueToDrawable(AttrValue attrValue) {
         Drawable result = null;
         int type = attrValue.getType();
@@ -401,6 +402,11 @@ public class DynamicDrawable extends Drawable implements Drawable.Callback {
                 result = (Drawable) value;
                 break;
             }
+            case ValueType.TYPE_LAZY_DRAWABLE: {
+                DrawableFactory drawableFactory = (DrawableFactory) value;
+                result = drawableFactory.create();
+                break;
+            }
             case ValueType.TYPE_COLOR_INT: {
                 result = new ColorDrawable((Integer) value);
                 break;
@@ -409,6 +415,11 @@ public class DynamicDrawable extends Drawable implements Drawable.Callback {
                 ColorStateList colorStateList = (ColorStateList) value;
                 result = new ColorListDrawable(colorStateList);
                 break;
+            }
+            case ValueType.TYPE_LAZY_COLOR_STATE_LIST: {
+                ColorStateListFactory colorStateListFactory = (ColorStateListFactory) value;
+                ColorStateList colorStateList = colorStateListFactory.create();
+                result = new ColorListDrawable(colorStateList);
             }
         }
         return result;
