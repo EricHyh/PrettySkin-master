@@ -18,7 +18,7 @@ public class AppCompatTextViewSH extends TextViewSH {
     }
 
     public AppCompatTextViewSH(int defStyleAttr) {
-        this(defStyleAttr,0);
+        this(defStyleAttr, 0);
     }
 
     public AppCompatTextViewSH(int defStyleAttr, int defStyleRes) {

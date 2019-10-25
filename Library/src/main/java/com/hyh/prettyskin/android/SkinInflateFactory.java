@@ -150,6 +150,7 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
     }
 
     private Map<String, AttrValue> getDefaultAttrValueMap(View view, AttributeSet attrs, Collection<String> attrNames) {
+        if (!mPrettySkin.isParseDefaultAttrValueEnabled()) return null;
         ISkinHandler skinHandler = mPrettySkin.getSkinHandler(view);
         if (skinHandler == null) {
             return Collections.emptyMap();

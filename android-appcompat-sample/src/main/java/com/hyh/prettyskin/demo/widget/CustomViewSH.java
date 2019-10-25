@@ -30,7 +30,6 @@ public class CustomViewSH extends ViewSH {
         return super.isSupportAttrName(view, attrName);
     }
 
-
     @Override
     public void replace(View view, String attrName, AttrValue attrValue) {
         super.replace(view, attrName, attrValue);

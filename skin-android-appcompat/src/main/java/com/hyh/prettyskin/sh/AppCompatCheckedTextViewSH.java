@@ -3,12 +3,12 @@ package com.hyh.prettyskin.sh;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.AppCompatCheckedTextView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
-import com.hyh.prettyskin.sh.CheckedTextViewSH;
 import com.hyh.prettyskin.utils.ViewAttrUtil;
 
 import java.util.ArrayList;
@@ -51,27 +51,15 @@ public class AppCompatCheckedTextViewSH extends CheckedTextViewSH {
     }
 
     @Override
-    public AttrValue parse(View view, AttributeSet set, String attrName) {
-        if (view instanceof AppCompatCheckedTextView) {
-            AppCompatCheckedTextView checkedTextView = (AppCompatCheckedTextView) view;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                Drawable checkMarkDrawable = checkedTextView.getCheckMarkDrawable();
-            } else {
-
-            }
-        } else {
-
-        }
-
-        if (super.isSupportAttrName(view, attrName)) {
-            return super.parse(view, set, attrName);
-        } else {
+    public AttrValue parse(final View view, final AttributeSet set, String attrName) {
+        if (TextUtils.equals(attrName, "checkMark")) {
             TypedArray a = view.getContext().obtainStyledAttributes(set,
                     TINT_ATTRS, sDefStyleAttr, 0);
             Drawable drawable = a.getDrawable(0);
             a.recycle();
             return new AttrValue(view.getContext(), ValueType.TYPE_DRAWABLE, drawable);
         }
+        return super.parse(view, set, attrName);
     }
 
     @Override

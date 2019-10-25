@@ -22,7 +22,6 @@ import android.widget.Switch;
 import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-import android.widget.Toolbar;
 
 import com.hyh.prettyskin.ISkinHandler;
 import com.hyh.prettyskin.ISkinHandlerMap;
@@ -48,9 +47,11 @@ public class NativeSkinHandlerMap implements ISkinHandlerMap {
         mSkinHandlerMap.put(EditText.class, new EditTextSH());
         mSkinHandlerMap.put(Chronometer.class, new ChronometerSH());
         mSkinHandlerMap.put(CheckedTextView.class, new CheckedTextViewSH());
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             mSkinHandlerMap.put(TextClock.class, new TextClockSH());
         }
+
         mSkinHandlerMap.put(Button.class, new ButtonSH());
 
         mSkinHandlerMap.put(CompoundButton.class, new CompoundButtonSH());
@@ -75,7 +76,7 @@ public class NativeSkinHandlerMap implements ISkinHandlerMap {
         mSkinHandlerMap.put(QuickContactBadge.class, new QuickContactBadgeSH());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mSkinHandlerMap.put(Toolbar.class, new ToolbarSH());
+            mSkinHandlerMap.put(android.widget.Toolbar.class, new ToolbarSH());
         }
     }
 

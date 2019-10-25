@@ -3,11 +3,13 @@ package com.hyh.prettyskin.sh;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
@@ -69,7 +71,7 @@ public class ToolbarSH extends ViewGroupSH {
         mSupportAttrNames.add("collapseContentDescription");
         mSupportAttrNames.add("title");
         mSupportAttrNames.add("subtitle");
-        mSupportAttrNames.add("popupTheme");
+        //mSupportAttrNames.add("popupTheme");
         mSupportAttrNames.add("navigationIcon");
         mSupportAttrNames.add("navigationContentDescription");
         mSupportAttrNames.add("logo");
@@ -290,6 +292,64 @@ public class ToolbarSH extends ViewGroupSH {
                             toolbar.requestLayout();
                         }
                     }
+                    break;
+                }
+                case "collapseIcon": {
+                    Drawable collapseIcon = attrValue.getTypedValue(Drawable.class, null);
+                    Reflect.from(Toolbar.class).filed("mCollapseIcon", Drawable.class).set(toolbar, collapseIcon);
+                    ImageButton collapseButtonView = Reflect.from(Toolbar.class).filed("mCollapseButtonView", ImageButton.class).get(toolbar);
+                    if (collapseButtonView != null) {
+                        collapseButtonView.setImageDrawable(collapseIcon);
+                    }
+                    break;
+                }
+                case "collapseContentDescription": {
+                    CharSequence description = attrValue.getTypedValue(CharSequence.class, null);
+                    Reflect.from(Toolbar.class).filed("mCollapseDescription", CharSequence.class).set(toolbar, description);
+                    ImageButton collapseButtonView = Reflect.from(Toolbar.class).filed("mCollapseButtonView", ImageButton.class).get(toolbar);
+                    if (collapseButtonView != null) {
+                        collapseButtonView.setContentDescription(description);
+                    }
+                    break;
+                }
+                case "title": {
+                    CharSequence title = attrValue.getTypedValue(CharSequence.class, null);
+                    toolbar.setTitle(title);
+                    break;
+                }
+                case "subtitle": {
+                    CharSequence subTitle = attrValue.getTypedValue(CharSequence.class, null);
+                    toolbar.setSubtitle(subTitle);
+                    break;
+                }
+                case "navigationIcon": {
+                    Drawable navigationIcon = attrValue.getTypedValue(Drawable.class, null);
+                    toolbar.setNavigationIcon(navigationIcon);
+                    break;
+                }
+                case "navigationContentDescription": {
+                    CharSequence navDesc = attrValue.getTypedValue(CharSequence.class, null);
+                    toolbar.setNavigationContentDescription(navDesc);
+                    break;
+                }
+                case "logo": {
+                    Drawable logo = attrValue.getTypedValue(Drawable.class, null);
+                    toolbar.setLogo(logo);
+                    break;
+                }
+                case "logoDescription": {
+                    CharSequence logoDescription = attrValue.getTypedValue(CharSequence.class, null);
+                    toolbar.setLogoDescription(logoDescription);
+                    break;
+                }
+                case "titleTextColor": {
+                    int titleTextColor = attrValue.getTypedValue(int.class, 0);
+                    toolbar.setTitleTextColor(titleTextColor);
+                    break;
+                }
+                case "subtitleTextColor": {
+                    int subtitleTextColor = attrValue.getTypedValue(int.class, 0);
+                    toolbar.setSubtitleTextColor(subtitleTextColor);
                     break;
                 }
             }

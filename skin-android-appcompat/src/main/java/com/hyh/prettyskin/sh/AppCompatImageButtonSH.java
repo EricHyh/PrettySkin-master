@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.hyh.prettyskin.AttrValue;
-import com.hyh.prettyskin.sh.ImageButtonSH;
 
 /**
  * @author Administrator

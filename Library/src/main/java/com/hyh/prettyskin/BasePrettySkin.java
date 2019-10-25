@@ -55,6 +55,8 @@ public class BasePrettySkin {
 
     private final List<SkinChangedListener> mListeners = new CopyOnWriteArrayList<>();
 
+    private boolean mIsParseDefaultAttrValueEnabled = true;
+
     private ISkin mCurrentSkin;
 
     public void addSkinHandler(Class<? extends View> viewClass, ISkinHandler skinHandler) {
@@ -154,6 +156,14 @@ public class BasePrettySkin {
                 mSkinableContextList.remove(reference);
             }
         }
+    }
+
+    public void setParseDefaultAttrValueEnabled(boolean enabled) {
+        this.mIsParseDefaultAttrValueEnabled = enabled;
+    }
+
+    public boolean isParseDefaultAttrValueEnabled() {
+        return mIsParseDefaultAttrValueEnabled;
     }
 
     public synchronized SkinView getSkinView(View view) {
