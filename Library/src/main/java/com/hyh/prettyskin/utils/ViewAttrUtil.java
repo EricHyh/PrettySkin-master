@@ -68,7 +68,6 @@ public class ViewAttrUtil {
         return false;
     }
 
-
     public static <T> T getTypedValue(AttrValue attrValue, Class<T> valueClass, T defaultValue) {
         if (attrValue == null || valueClass == null) return defaultValue;
         int type = attrValue.getType();
@@ -177,7 +176,6 @@ public class ViewAttrUtil {
         }
         return defaultValue;
     }
-
 
     private static <T> T getTypedReferenceValue(AttrValue attrValue, Class<T> valueClass, T defaultValue) {
         Context themeContext = attrValue.getThemeContext();
