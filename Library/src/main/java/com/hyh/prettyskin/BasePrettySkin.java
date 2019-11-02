@@ -55,7 +55,7 @@ public class BasePrettySkin {
 
     private final List<SkinChangedListener> mListeners = new CopyOnWriteArrayList<>();
 
-    private boolean mIsParseDefaultAttrValueEnabled = true;
+    private boolean mIsParseDefaultAttrValueEnabled = false;
 
     private ISkin mCurrentSkin;
 

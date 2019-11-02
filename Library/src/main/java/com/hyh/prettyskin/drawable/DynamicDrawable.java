@@ -504,11 +504,17 @@ public class DynamicDrawable extends Drawable implements Drawable.Callback {
         Callback callback = getCallback();
         if (callback != null && callback instanceof View) {
             View view = (View) callback;
-            final Rect dirty = getDirtyBounds();
-            final int scrollX = view.getScrollX();
-            final int scrollY = view.getScrollY();
-            view.invalidate(dirty.left + scrollX, dirty.top + scrollY,
-                    dirty.right + scrollX, dirty.bottom + scrollY);
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    final Rect dirty = getDirtyBounds();
+                    final int scrollX = view.getScrollX();
+                    final int scrollY = view.getScrollY();
+                    view.invalidate(dirty.left + scrollX, dirty.top + scrollY,
+                            dirty.right + scrollX, dirty.bottom + scrollY);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 view.invalidateOutline();
             } else {
