@@ -185,9 +185,7 @@ public class BasePrettySkin {
         if (skinView == null) {
             return;
         }
-        if (mSkinAttrItems.contains(skinView)) {
-            mSkinAttrItems.remove(skinView);
-        }
+        mSkinAttrItems.remove(skinView);
         skinView.bindPrettySkin(this);
         mSkinAttrItems.add(skinView);
         if (mCurrentSkin != null) {

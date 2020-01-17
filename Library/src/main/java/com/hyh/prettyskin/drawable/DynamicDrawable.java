@@ -386,7 +386,7 @@ public class DynamicDrawable extends Drawable implements Drawable.Callback {
         return getCurrentDrawable().getOpacity();
     }
 
-    private Drawable convertAttrValueToDrawable(AttrValue attrValue) {
+    protected Drawable convertAttrValueToDrawable(AttrValue attrValue) {
         Drawable result = null;
         int type = attrValue.getType();
         Object value = attrValue.getValue();
@@ -502,7 +502,7 @@ public class DynamicDrawable extends Drawable implements Drawable.Callback {
     @Override
     public void invalidateSelf() {
         Callback callback = getCallback();
-        if (callback != null && callback instanceof View) {
+        if (callback instanceof View) {
             View view = (View) callback;
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -512,7 +512,7 @@ public class DynamicDrawable extends Drawable implements Drawable.Callback {
                     view.invalidate(dirty.left + scrollX, dirty.top + scrollY,
                             dirty.right + scrollX, dirty.bottom + scrollY);
                 }
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
