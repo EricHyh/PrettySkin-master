@@ -1,5 +1,7 @@
 package com.hyh.prettyskin.utils.reflect;
 
+import android.text.TextUtils;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -97,6 +99,20 @@ public class Reflect {
         return false;
     }
 
+    public static boolean isChildClassLoader(ClassLoader child, ClassLoader targetParent) {
+        ClassLoader parent = child.getParent();
+        if (parent == null) {
+            return false;
+        }
+        boolean result;
+        do {
+            result = parent == targetParent;
+            if (result) break;
+            parent = parent.getParent();
+        } while (parent != null);
+        return result;
+    }
+
     public static Throwable getRealThrowable(Throwable throwable) {
         return getRealThrowable(throwable, 0);
     }
@@ -121,6 +137,20 @@ public class Reflect {
     @SuppressWarnings("unchecked")
     public static <E> E getDefaultValue(Class<E> valueType) {
         return (E) PRIMITIVE_DEFAULT_VALUE.get(valueType);
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public static <T> T safeCast(Object object, Class<T> type) {
+        if (object == null) {
+            return Reflect.getDefaultValue(type);
+        }
+        Class<?> aClass = object.getClass();
+        if (Reflect.isAssignableFrom(aClass, type)) {
+            return (T) object;
+        } else {
+            return Reflect.getDefaultValue(type);
+        }
     }
 
     public static Class classForName(String className) {
@@ -162,9 +192,7 @@ public class Reflect {
         Class result = CLASS_MAP.get(key);
         if (result == null) {
             result = Class.forName(className);
-            if (result != null) {
-                CLASS_MAP.put(key, result);
-            }
+            CLASS_MAP.put(key, result);
         }
         return result;
     }
@@ -342,7 +370,7 @@ public class Reflect {
         return String.valueOf(System.identityHashCode(cls)) + "-" + fieldName;
     }
 
-    private static String generateMethodMapKey(Class cls, String methodName, Class[] parameterTypes) {
+    public static String generateMethodMapKey(Class cls, String methodName, Class[] parameterTypes) {
         StringBuilder key = new StringBuilder();
         key.append(System.identityHashCode(cls))
                 .append("-")
@@ -393,5 +421,18 @@ public class Reflect {
 
     public static RefClass from(ClassLoader classLoader, String className) {
         return new RefClass(classLoader, className);
+    }
+
+    public static boolean copyField(Object src, Object dest, String fieldName) {
+        if (src == null || dest == null || TextUtils.isEmpty(fieldName)) return false;
+        RefResult<Object> result = new RefResult<>();
+        Reflect.from(src.getClass()).filed(fieldName).saveResult(result).get(src);
+        if (!result.isSuccess()) return false;
+        try {
+            Reflect.from(dest.getClass()).filed(fieldName).setWithException(dest, result.getResult());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

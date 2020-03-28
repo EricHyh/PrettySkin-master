@@ -26,10 +26,9 @@ public class RefMethod<E> extends RefExecutable<E, RefMethod<E>> {
 
     public E invoke(Object receiver) {
         if (cls == null) {
-            this.throwable = new ReflectException("Method: " + getMethodSignature() + " not found, because Class is null", this.throwable);
+            this.throwable = new RefException("Method: " + getMethodSignature() + " not found, because Class is null", this.throwable);
             E defaultValue = getDefaultValue(null);
-            saveFailure(defaultValue);
-            tryToPrintException();
+            onFailure(defaultValue, this.throwable);
             return defaultValue;
         }
         Method method = null;
@@ -39,10 +38,9 @@ public class RefMethod<E> extends RefExecutable<E, RefMethod<E>> {
             this.throwable = Reflect.getRealThrowable(e);
         }
         if (method == null) {
-            this.throwable = new ReflectException("Method: " + getMethodSignature() + " not found in Class[" + cls + "]", this.throwable);
+            this.throwable = new RefException("Method: " + getMethodSignature() + " not found in Class[" + cls + "]", this.throwable);
             E defaultValue = getDefaultValue(null);
-            saveFailure(defaultValue);
-            tryToPrintException();
+            onFailure(defaultValue, this.throwable);
             return defaultValue;
         }
 
@@ -54,34 +52,32 @@ public class RefMethod<E> extends RefExecutable<E, RefMethod<E>> {
             invokeSuccess = true;
         } catch (Throwable e) {
             e = Reflect.getRealThrowable(e);
-            this.throwable = new ReflectException("Method: " + getMethodSignature() + " found in Class[" + cls + "], but invoke failed", e);
+            //this.throwable = new RefException("Method: " + getMethodSignature() + " found in Class[" + cls + "], but invoke failed", e);
+            this.throwable = e;
         }
         if (invokeSuccess) {
             E e = ensureResult(result, method.getReturnType());
             if (e == result) {
-                saveSuccess(e);
+                onSuccess(e);
             } else {
-                saveFailure(e);
-                tryToPrintException();
+                onFailure(e, this.throwable);
             }
             return e;
         } else {
-            E e = getDefaultValue(method.getReturnType());
-            saveFailure(e);
-            tryToPrintException();
-            return e;
+            E defaultValue = getDefaultValue(method.getReturnType());
+            onFailure(defaultValue, this.throwable);
+            return defaultValue;
         }
     }
 
 
-    public E invokeWithException(Object receiver) throws ReflectException {
-        ReflectException exception = null;
+    public E invokeWithException(Object receiver) throws Throwable {
+        Throwable exception = null;
         if (cls == null) {
-            exception = new ReflectException("Method: " + getMethodSignature() + " not found, because Class is null", this.throwable);
+            exception = new RefException("Method: " + getMethodSignature() + " not found, because Class is null", this.throwable);
             this.throwable = exception;
             E defaultValue = getDefaultValue(null);
-            saveFailure(defaultValue);
-            tryToPrintException();
+            onFailure(defaultValue, this.throwable);
             throw exception;
         }
         Method method = null;
@@ -91,11 +87,10 @@ public class RefMethod<E> extends RefExecutable<E, RefMethod<E>> {
             this.throwable = Reflect.getRealThrowable(e);
         }
         if (method == null) {
-            exception = new ReflectException("Method: " + getMethodSignature() + " not found in Class[" + cls + "]", this.throwable);
+            exception = new RefException("Method: " + getMethodSignature() + " not found in Class[" + cls + "]", this.throwable);
             this.throwable = exception;
             E defaultValue = getDefaultValue(null);
-            saveFailure(defaultValue);
-            tryToPrintException();
+            onFailure(defaultValue, this.throwable);
             throw exception;
         }
 
@@ -107,23 +102,22 @@ public class RefMethod<E> extends RefExecutable<E, RefMethod<E>> {
             invokeSuccess = true;
         } catch (Throwable e) {
             e = Reflect.getRealThrowable(e);
-            exception = new ReflectException("Method: " + getMethodSignature() + " found in Class[" + cls + "], but invoke failed", e);
+            //exception = new RefException("Method: " + getMethodSignature() + " found in Class[" + cls + "], but invoke failed", e);
+            exception = e;
             this.throwable = exception;
         }
         if (invokeSuccess) {
             E e = ensureResult(result, method.getReturnType());
             if (e == result) {
-                saveSuccess(e);
+                onSuccess(e);
                 return e;
             } else {
-                saveFailure(e);
-                tryToPrintException();
-                throw (ReflectException) this.throwable;
+                onFailure(e, this.throwable);
+                throw this.throwable;
             }
         } else {
-            E e = getDefaultValue(method.getReturnType());
-            saveFailure(e);
-            tryToPrintException();
+            E defaultValue = getDefaultValue(method.getReturnType());
+            onFailure(defaultValue, this.throwable);
             throw exception;
         }
     }

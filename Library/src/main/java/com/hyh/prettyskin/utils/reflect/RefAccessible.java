@@ -14,7 +14,9 @@ public abstract class RefAccessible<E, T extends RefAccessible<E, T>> {
 
     private Lazy<E> lazyDefaultValue;
 
-    private ReflectResult<E> reflectResult;
+    private RefResult<E> refResult;
+
+    private RefAction<E> refAction;
 
     private boolean printException;
 
@@ -37,27 +39,34 @@ public abstract class RefAccessible<E, T extends RefAccessible<E, T>> {
         return (T) this;
     }
 
-    public T saveResult(ReflectResult<E> result) {
-        this.reflectResult = result;
+    public T saveResult(RefResult<E> result) {
+        this.refResult = result;
         return (T) this;
     }
 
+    public T resultAction(RefAction<E> action) {
+        this.refAction = action;
+        return (T) this;
+    }
 
-    void saveFailure(E result) {
-        if (reflectResult != null) {
-            reflectResult.setResult(result);
-            reflectResult.setThrowable(this.throwable);
+    void onSuccess(E result) {
+        if (refResult != null) {
+            refResult.setResult(result);
+            refResult.setSuccess(true);
+        }
+        if (refAction != null) {
+            refAction.onSuccess(result);
         }
     }
 
-    void saveSuccess(E result) {
-        if (reflectResult != null) {
-            reflectResult.setResult(result);
-            reflectResult.setSuccess(true);
+    void onFailure(E result, Throwable throwable) {
+        if (refResult != null) {
+            refResult.setResult(result);
+            refResult.setThrowable(throwable);
         }
-    }
-
-    void tryToPrintException() {
+        if (refAction != null) {
+            refAction.onFailure(result, throwable);
+        }
         if (printException && throwable != null) {
             throwable.printStackTrace();
         }
@@ -71,7 +80,7 @@ public abstract class RefAccessible<E, T extends RefAccessible<E, T>> {
                 return (E) result;
             } else {
                 //Create Exception
-                this.throwable = new ReflectException(getResultTypeErrorMessage(resultType));
+                this.throwable = new RefException(getResultTypeErrorMessage(resultType));
                 return getDefaultValue(null);
             }
         } else {

@@ -18,12 +18,61 @@ public class RefConstructor<E> extends RefExecutable<E, RefConstructor<E>> {
         this.cls = cls;
     }
 
+    @Override
+    public RefConstructor<E> defaultValue(E defaultValue) {
+        return super.defaultValue(defaultValue);
+    }
+
+    @Override
+    public RefConstructor<E> defaultValue(Lazy<E> defaultValue) {
+        return super.defaultValue(defaultValue);
+    }
+
+    @Override
+    public RefConstructor<E> saveResult(RefResult<E> result) {
+        return super.saveResult(result);
+    }
+
+    @Override
+    public RefConstructor<E> printException() {
+        return super.printException();
+    }
+
+    @Override
+    public RefConstructor<E> params(Class[] types, Object[] params) {
+        return super.params(types, params);
+    }
+
+    @Override
+    public RefConstructor<E> params(String[] typePaths, Object[] params) {
+        return super.params(typePaths, params);
+    }
+
+    @Override
+    public RefConstructor<E> params(ClassLoader typeClassLoader, String[] typePaths, Object[] params) {
+        return super.params(typeClassLoader, typePaths, params);
+    }
+
+    @Override
+    public  RefConstructor<E> param(Class type, Object param) {
+        return super.param(type, param);
+    }
+
+    @Override
+    public RefConstructor<E> param(String typePath, Object param) {
+        return super.param(typePath, param);
+    }
+
+    @Override
+    public RefConstructor<E> param(ClassLoader typeClassLoader, String typePath, Object param) {
+        return super.param(typeClassLoader, typePath, param);
+    }
+
     public E newInstance() {
         if (cls == null) {
-            this.throwable = new ReflectException("Constructor: " + getConstructorSignature() + " not found, because Class is null", this.throwable);
+            this.throwable = new RefException("Constructor: " + getConstructorSignature() + " not found, because Class is null", this.throwable);
             E defaultValue = getDefaultValue(null);
-            saveFailure(defaultValue);
-            tryToPrintException();
+            onFailure(defaultValue, this.throwable);
             return defaultValue;
         }
         Constructor<E> constructor = null;
@@ -33,10 +82,9 @@ public class RefConstructor<E> extends RefExecutable<E, RefConstructor<E>> {
             this.throwable = Reflect.getRealThrowable(e);
         }
         if (constructor == null) {
-            this.throwable = new ReflectException("Constructor: " + getConstructorSignature() + " not found in Class[" + cls + "]", this.throwable);
+            this.throwable = new RefException("Constructor: " + getConstructorSignature() + " not found in Class[" + cls + "]", this.throwable);
             E defaultValue = getDefaultValue(cls);
-            saveFailure(defaultValue);
-            tryToPrintException();
+            onFailure(defaultValue, this.throwable);
             return defaultValue;
         }
 
@@ -48,28 +96,28 @@ public class RefConstructor<E> extends RefExecutable<E, RefConstructor<E>> {
             newInstanceSuccess = true;
         } catch (Throwable e) {
             e = Reflect.getRealThrowable(e);
-            this.throwable = new ReflectException("Constructor: " + getConstructorSignature() + " found in Class[" + cls + "], but newInstance failed", e);
+            /*this.throwable = new RefException("Constructor: " + getConstructorSignature() + " found in Class[" + cls + "], but newInstance " +
+                    "failed", e);*/
+            this.throwable = e;
         }
         if (newInstanceSuccess) {
-            saveSuccess(result);
+            onSuccess(result);
             return result;
         } else {
-            E e = getDefaultValue(cls);
-            saveFailure(e);
-            tryToPrintException();
-            return e;
+            E defaultValue = getDefaultValue(cls);
+            onFailure(defaultValue, this.throwable);
+            return defaultValue;
         }
     }
 
 
-    public E newInstanceWithException() throws ReflectException {
-        ReflectException exception = null;
+    public E newInstanceWithException() throws Throwable {
+        Throwable exception = null;
         if (cls == null) {
-            exception = new ReflectException("Constructor: " + getConstructorSignature() + " not found, because Class is null", this.throwable);
+            exception = new RefException("Constructor: " + getConstructorSignature() + " not found, because Class is null", this.throwable);
             this.throwable = exception;
             E defaultValue = getDefaultValue(null);
-            saveFailure(defaultValue);
-            tryToPrintException();
+            onFailure(defaultValue, this.throwable);
             throw exception;
         }
         Constructor<E> constructor = null;
@@ -79,11 +127,10 @@ public class RefConstructor<E> extends RefExecutable<E, RefConstructor<E>> {
             this.throwable = Reflect.getRealThrowable(e);
         }
         if (constructor == null) {
-            exception = new ReflectException("Constructor: " + getConstructorSignature() + " not found in Class[" + cls + "]", this.throwable);
+            exception = new RefException("Constructor: " + getConstructorSignature() + " not found in Class[" + cls + "]", this.throwable);
             this.throwable = exception;
             E defaultValue = getDefaultValue(cls);
-            saveFailure(defaultValue);
-            tryToPrintException();
+            onFailure(defaultValue, this.throwable);
             throw exception;
         }
 
@@ -95,16 +142,16 @@ public class RefConstructor<E> extends RefExecutable<E, RefConstructor<E>> {
             newInstanceSuccess = true;
         } catch (Throwable e) {
             e = Reflect.getRealThrowable(e);
-            exception = new ReflectException("Constructor: " + getConstructorSignature() + " found in Class[" + cls + "], but newInstance failed", e);
+            /*exception = new RefException("Constructor: " + getConstructorSignature() + " found in Class[" + cls + "], but newInstance failed", e);*/
+            exception = e;
             this.throwable = exception;
         }
         if (newInstanceSuccess) {
-            saveSuccess(result);
+            onSuccess(result);
             return result;
         } else {
-            E e = getDefaultValue(cls);
-            saveFailure(e);
-            tryToPrintException();
+            E defaultValue = getDefaultValue(cls);
+            onFailure(defaultValue, this.throwable);
             throw exception;
         }
     }
