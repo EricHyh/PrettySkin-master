@@ -78,6 +78,7 @@ public class ThemeSkin extends BaseSkin {
         return mInnerSkinAttrMap == null ? null : mInnerSkinAttrMap.get(attrKey);
     }
 
+    @SuppressWarnings("all")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

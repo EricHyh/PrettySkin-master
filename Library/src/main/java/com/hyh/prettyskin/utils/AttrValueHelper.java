@@ -34,7 +34,10 @@ public class AttrValueHelper {
         return getAttrValue(view.getContext(), typedArray, null, styleableIndex);
     }
 
-    public static AttrValue getAttrValue(Context context, final TypedArray typedArray, final TypedArrayFactory typedArrayFactory, final int styleableIndex) {
+    public static AttrValue getAttrValue(Context context,
+                                         TypedArray typedArray,
+                                         TypedArrayFactory typedArrayFactory,
+                                         int styleableIndex) {
         AttrValue attrValue;
         int type = ValueType.TYPE_NULL;
         Object value = null;
@@ -80,77 +83,19 @@ public class AttrValueHelper {
             }
             case TypedValue.TYPE_STRING: {
                 String string = typedArray.getString(styleableIndex);//res/drawable-anydpi-v21/ic_launcher_background.xml
-                if (!TextUtils.isEmpty(string)) {
-                    if (string.matches("^res/color.*/.+\\.xml$")) {
-                        try {
-                            ColorStateList colorStateList = typedArray.getColorStateList(styleableIndex);
-                            if (typedArrayFactory != null && colorStateList != null) {
-                                value = new ColorStateListFactory() {
-                                    @Override
-                                    public ColorStateList create() {
-                                        TypedArray newTypedArray = typedArrayFactory.create();
-                                        ColorStateList newColorStateList = newTypedArray.getColorStateList(styleableIndex);
-                                        newTypedArray.recycle();
-                                        return newColorStateList;
-                                    }
-                                };
-                                type = ValueType.TYPE_LAZY_COLOR_STATE_LIST;
-                            } else {
-                                value = colorStateList;
-                                type = ValueType.TYPE_COLOR_STATE_LIST;
-                            }
-                        } catch (Exception e) {
-                            Logger.d("AttrValueHelper getAttrValue [" + string + "] getColorStateList failed ", e);
-                        }
-                        if (value == null) {
-                            try {
-                                value = typedArray.getResourceId(styleableIndex, 0);
-                                type = ValueType.TYPE_REFERENCE;
-                            } catch (Exception e) {
-                                Logger.d("AttrValueHelper getAttrValue [" + string + "] getResourceId failed ", e);
-                            }
-                        }
-                    } else if (string.matches("^res/[(drawable)|(mipmap)].*/.+$")) {
-                        try {
-                            Drawable drawable = typedArray.getDrawable(styleableIndex);
-                            if (drawable != null && typedArrayFactory != null) {
-                                value = new DrawableFactory() {
-                                    @Override
-                                    public Drawable create() {
-                                        TypedArray newTypedArray = typedArrayFactory.create();
-                                        Drawable newDrawable = newTypedArray.getDrawable(styleableIndex);
-                                        newTypedArray.recycle();
-                                        return newDrawable;
-                                    }
-                                };
-                                type = ValueType.TYPE_LAZY_DRAWABLE;
-                            } else {
-                                value = drawable;
-                                type = ValueType.TYPE_DRAWABLE;
-                            }
-                        } catch (Exception e) {
-                            Logger.d("AttrValueHelper getAttrValue [" + string + "] getDrawable failed ", e);
-                        }
-                        if (value == null) {
-                            try {
-                                value = typedArray.getResourceId(styleableIndex, 0);
-                                type = ValueType.TYPE_REFERENCE;
-                            } catch (Exception e) {
-                                Logger.d("AttrValueHelper getAttrValue [" + string + "] getResourceId failed ", e);
-                            }
-                        }
-                    } else if (string.matches("^res/anim.*/.+\\.xml$")) {
-                        try {
-                            value = typedArray.getResourceId(styleableIndex, 0);
-                            type = ValueType.TYPE_REFERENCE;
-                        } catch (Exception e) {
-                            Logger.d("AttrValueHelper getAttrValue [" + string + "] getResourceId failed ", e);
-                        }
+                if (TextUtils.isEmpty(string)) {
+                    type = ValueType.TYPE_STRING;
+                    value = string;
+                } else {
+                    Object[] result = parseResFromStringValue(typedArray, typedArrayFactory, string, styleableIndex);
+                    if (result != null) {
+                        type = (int) result[0];
+                        value = result[1];
                     }
-                    if (value == null) {
-                        type = ValueType.TYPE_STRING;
-                        value = string;
-                    }
+                }
+                if (value == null) {
+                    type = ValueType.TYPE_STRING;
+                    value = string;
                 }
                 break;
             }
@@ -165,6 +110,142 @@ public class AttrValueHelper {
         }
         attrValue = new AttrValue(context, type, value);
         return attrValue;
+    }
+
+    private static Object[] parseResFromStringValue(TypedArray typedArray,
+                                                    final TypedArrayFactory typedArrayFactory,
+                                                    String string,
+                                                    final int styleableIndex) {
+        Object[] result = null;
+        if (string.matches("^res/[(drawable)|(mipmap)].*/.+$")) {
+            result = parseDrawableFromTypeString(typedArray, typedArrayFactory, string, styleableIndex, false);
+            if (result == null) {
+                result = parseResourceIdFromTypeString(typedArray, string, styleableIndex);
+            }
+        } else if (string.matches("^res/color.*/.+\\.xml$")) {
+            result = parseColorFromTypeString(typedArray, typedArrayFactory, string, styleableIndex, false);
+            if (result == null) {
+                result = parseResourceIdFromTypeString(typedArray, string, styleableIndex);
+            }
+        } else if (string.matches("^res/anim.*/.+\\.xml$")) {
+            result = parseAnimFromTypeString(typedArray, typedArrayFactory, string, styleableIndex);
+        } else if (string.matches("^.+/.+/.+$")) {//处理andResGuard混淆
+            result = parseColorFromTypeString(typedArray, typedArrayFactory, string, styleableIndex, true);
+            if (result == null) {
+                result = parseDrawableFromTypeString(typedArray, typedArrayFactory, string, styleableIndex, true);
+            }
+            if (result == null) {
+                result = parseAnimFromTypeString(typedArray, typedArrayFactory, string, styleableIndex);
+            }
+            if (result == null) {
+                result = parseResourceIdFromTypeString(typedArray, string, styleableIndex);
+            }
+        }
+        return result;
+    }
+
+
+    private static Object[] parseResourceIdFromTypeString(TypedArray typedArray,
+                                                          String string,
+                                                          final int styleableIndex) {
+        Object[] result = null;
+        try {
+            int value = typedArray.getResourceId(styleableIndex, 0);
+            if (value != 0) {
+                result = new Object[]{ValueType.TYPE_REFERENCE, value};
+            }
+        } catch (Exception e) {
+            Logger.d("AttrValueHelper getAttrValue [" + string + "] getResourceId failed ", e);
+        }
+        return result;
+    }
+
+    private static Object[] parseDrawableFromTypeString(TypedArray typedArray,
+                                                        final TypedArrayFactory typedArrayFactory,
+                                                        String string,
+                                                        final int styleableIndex,
+                                                        boolean tentative) {
+        Object[] result = null;
+        int type = ValueType.TYPE_NULL;
+        Object value = null;
+        try {
+            Drawable drawable = typedArray.getDrawable(styleableIndex);
+            if (tentative && drawable == null) return null;
+            if (drawable != null && typedArrayFactory != null) {
+                value = new DrawableFactory() {
+                    @Override
+                    public Drawable create() {
+                        TypedArray newTypedArray = typedArrayFactory.create();
+                        Drawable newDrawable = newTypedArray.getDrawable(styleableIndex);
+                        newTypedArray.recycle();
+                        return newDrawable;
+                    }
+                };
+                type = ValueType.TYPE_LAZY_DRAWABLE;
+            } else {
+                value = drawable;
+                type = ValueType.TYPE_DRAWABLE;
+            }
+        } catch (Exception e) {
+            Logger.d("AttrValueHelper getAttrValue [" + string + "] getDrawable failed ", e);
+        }
+        if (value != null) {
+            result = new Object[]{type, value};
+        }
+        return result;
+    }
+
+    private static Object[] parseColorFromTypeString(TypedArray typedArray,
+                                                     final TypedArrayFactory typedArrayFactory,
+                                                     String string,
+                                                     final int styleableIndex,
+                                                     boolean tentative) {
+        Object[] result = null;
+        int type = ValueType.TYPE_NULL;
+        Object value = null;
+        try {
+            ColorStateList colorStateList = typedArray.getColorStateList(styleableIndex);
+            if (tentative && colorStateList == null) {
+                return null;
+            }
+            if (typedArrayFactory != null && colorStateList != null) {
+                value = new ColorStateListFactory() {
+                    @Override
+                    public ColorStateList create() {
+                        TypedArray newTypedArray = typedArrayFactory.create();
+                        ColorStateList newColorStateList = newTypedArray.getColorStateList(styleableIndex);
+                        newTypedArray.recycle();
+                        return newColorStateList;
+                    }
+                };
+                type = ValueType.TYPE_LAZY_COLOR_STATE_LIST;
+            } else {
+                value = colorStateList;
+                type = ValueType.TYPE_COLOR_STATE_LIST;
+            }
+        } catch (Exception e) {
+            Logger.d("AttrValueHelper getAttrValue [" + string + "] getColorStateList failed ", e);
+        }
+        if (value != null) {
+            result = new Object[]{type, value};
+        }
+        return result;
+    }
+
+    private static Object[] parseAnimFromTypeString(TypedArray typedArray,
+                                                    final TypedArrayFactory typedArrayFactory,
+                                                    String string,
+                                                    final int styleableIndex) {
+        try {
+            int value = typedArray.getResourceId(styleableIndex, 0);
+            if (value == 0) {
+                return null;
+            }
+            return new Object[]{ValueType.TYPE_REFERENCE, value};
+        } catch (Exception e) {
+            Logger.d("AttrValueHelper getAttrValue [" + string + "] getResourceId failed ", e);
+        }
+        return null;
     }
 
     private static int getTypedValue(TypedArray typedArray, int index) {
