@@ -18,7 +18,6 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation rootProject.ext.appcompat
-    implementation project(':Library')
+    compileOnly rootProject.ext.appcompat
+    compileOnly project(':Library')
 }

@@ -71,7 +71,7 @@ public class ActionMenuItemViewSH extends AppCompatCheckedTextViewSH {
         super.replace(view, attrName, attrValue);
         if (view instanceof ActionMenuItemView) {
             Object value = attrValue.getValue();
-            if (value != null && value instanceof Integer) {
+            if (value instanceof Integer) {
                 switch (attrName) {
                     case "minWidth": {
                         Reflect.from(view.getClass())

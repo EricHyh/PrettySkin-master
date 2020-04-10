@@ -1,4 +1,4 @@
-include ':android-appcompat-sample',
+include ':appcompat-sample',
         ':Library',
         ':skin-android-appcompat',
         ':skin-androidx-appcompat',

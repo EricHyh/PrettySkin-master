@@ -419,7 +419,7 @@ public class BasePrettySkin {
             int context2_type = 1;
             if (context1 instanceof Activity) {
                 Activity activity1 = (Activity) context1;
-                Integer topActivityHashCode = mPrettySkin.mPrettySkinActivityLifecycle.mTopActivityHashCode;
+                int topActivityHashCode = mPrettySkin.mPrettySkinActivityLifecycle.mTopActivityHashCode;
                 if (System.identityHashCode(activity1) == topActivityHashCode) {
                     context1_type = 0;
                 } else {
@@ -428,7 +428,7 @@ public class BasePrettySkin {
             }
             if (context2 instanceof Activity) {
                 Activity activity2 = (Activity) context2;
-                Integer topActivityHashCode = mPrettySkin.mPrettySkinActivityLifecycle.mTopActivityHashCode;
+                int topActivityHashCode = mPrettySkin.mPrettySkinActivityLifecycle.mTopActivityHashCode;
                 if (System.identityHashCode(activity2) == topActivityHashCode) {
                     context2_type = 0;
                 } else {
@@ -483,7 +483,7 @@ public class BasePrettySkin {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             Object obj = msg.obj;
-            if (obj == null || !(obj instanceof MessageInfo)) {
+            if (!(obj instanceof MessageInfo)) {
                 return;
             }
             MessageInfo messageInfo = (MessageInfo) obj;
@@ -560,7 +560,7 @@ public class BasePrettySkin {
             switch (what) {
                 case MSG_SKIN_CHANGED: {
                     Object obj = msg.obj;
-                    if (obj != null && obj instanceof ISkin) {
+                    if (obj instanceof ISkin) {
                         ISkin skin = (ISkin) obj;
                         List<SkinChangedListener> listeners = mPrettySkin.mListeners;
                         if (!listeners.isEmpty()) {
@@ -573,7 +573,7 @@ public class BasePrettySkin {
                 }
                 case MSG_SKIN_ATTR_CHANGED: {
                     Object obj = msg.obj;
-                    if (obj != null && obj instanceof List) {
+                    if (obj instanceof List) {
                         List<String> changedAttrKeys = (List<String>) obj;
                         ISkin currentSkin = mPrettySkin.getCurrentSkin();
                         List<SkinChangedListener> listeners = mPrettySkin.mListeners;
