@@ -25,6 +25,8 @@ dependencies {
     implementation rootProject.ext.okhttp
     implementation rootProject.ext.okio
     implementation rootProject.ext.retrofit
+    implementation rootProject.ext.gson
+    implementation rootProject.ext.gsonconverter
 
     implementation project(':lib-core')
     implementation project(':lib-android-appcompat')
