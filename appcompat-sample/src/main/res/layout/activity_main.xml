@@ -17,25 +17,19 @@
             android:id="@+id/tool_bar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            android:background="@color/colorPrimary"
-            skin:skin_attrs="background=title_bar_bg_color"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            skin:skin_attrs="background=title_bar_bg_color1|textColor=title_bar_bg_color2"/>
+            android:background="@color/colorPrimary" />
 
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <View
             android:id="@+id/decoration"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="#FFDDDDDD"/>
+            android:background="#FFDDDDDD" />
 
         <android.support.v4.app.FragmentTabHost
             android:id="@+id/fragment_tab_host"
@@ -45,7 +39,7 @@
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="0dp"
-                android:layout_height="0dp"/>
+                android:layout_height="0dp" />
 
         </android.support.v4.app.FragmentTabHost>
 
@@ -55,6 +49,6 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="start"/>
+        android:layout_gravity="start" />
 
 </android.support.v4.widget.DrawerLayout>

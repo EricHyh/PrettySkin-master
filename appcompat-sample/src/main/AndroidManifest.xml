@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.hyh.prettyskin">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.hyh.prettyskin">
 
     <application
         android:name=".demo.base.AppContext"
@@ -8,33 +9,26 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
 
-        <activity
-            android:name=".demo.activity.MainActivity">
-            <!--<intent-filter>
-                <category android:name="android.intent.category.LAUNCHER"/>
-                <action android:name="android.intent.action.MAIN"/>
-            </intent-filter>-->
-
-        </activity>
-
-        <activity
-            android:name=".demo.activity.Test1Activity">
+        <activity android:name=".demo.activity.MainActivity">
             <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER"/>
-                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
-
         </activity>
 
-        <activity
-            android:name=".demo.activity.Test2Activity">
+        <activity android:name=".demo.activity.Test1Activity">
+            <!--<intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>-->
+        </activity>
 
-
+        <activity android:name=".demo.activity.Test2Activity">
         </activity>
 
     </application>
-
 
 </manifest>

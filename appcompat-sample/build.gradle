@@ -18,7 +18,17 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation rootProject.ext.appcompat
+    implementation rootProject.ext.supportAnnotations
     implementation rootProject.ext.recyclerview
-    implementation project(':Library')
-    implementation project(':skin-android-appcompat')
+    implementation rootProject.ext.design
+
+    implementation rootProject.ext.okhttp
+    implementation rootProject.ext.okio
+    implementation rootProject.ext.retrofit
+
+    implementation project(':lib-core')
+    implementation project(':lib-android-appcompat')
+
+
+
 }

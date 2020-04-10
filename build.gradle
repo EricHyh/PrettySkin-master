@@ -26,14 +26,22 @@ task clean(type: Delete) {
 }
 
 ext {
-    compileSdkVersion = 27
-    buildToolsVersion = '27.0.3'
+    compileSdkVersion = 28
+    buildToolsVersion = '28.0.3'
     minSdkVersion = 14
-    targetSdkVersion = 27
+    targetSdkVersion = 28
 
-    appcompat = 'com.android.support:appcompat-v7:27.1.1'
+    appcompat = 'com.android.support:appcompat-v7:28.0.0'
+    supportAnnotations = 'com.android.support:support-annotations:28.0.0'
+    design = 'com.android.support:design:28.0.0'
+    recyclerview = 'com.android.support:recyclerview-v7:28.0.0'
+
     androidx_appcompat = 'androidx.appcompat:appcompat:1.0.0'
-    recyclerview = 'com.android.support:recyclerview-v7:27.1.1'
+
+    okhttp = 'com.squareup.okhttp3:okhttp:3.12.2'
+    okio = 'com.squareup.okio:okio:1.15.0'
+    retrofit = 'com.squareup.retrofit2:retrofit:2.2.0'
+
 
     //cardview = 'com.android.support:cardview-v7:27.1.1'
     //androidx_cardview = 'androidx.cardview:cardview:1.0.0'

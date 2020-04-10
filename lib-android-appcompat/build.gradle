@@ -18,6 +18,6 @@ android {
 }
 
 dependencies {
-    compileOnly rootProject.ext.appcompat
-    compileOnly project(':Library')
+    implementation rootProject.ext.appcompat
+    compileOnly project(':lib-core')
 }

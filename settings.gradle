@@ -1,5 +1,5 @@
 include ':appcompat-sample',
-        ':Library',
-        ':skin-android-appcompat',
-        ':skin-androidx-appcompat',
+        ':lib-core',
+        ':lib-android-appcompat',
+        ':lib-androidx-appcompat',
         ':skin-package-first'
