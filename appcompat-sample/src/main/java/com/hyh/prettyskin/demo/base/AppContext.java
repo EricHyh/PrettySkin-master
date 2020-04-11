@@ -2,6 +2,8 @@ package com.hyh.prettyskin.demo.base;
 
 import android.app.Application;
 
+import com.hyh.prettyskin.demo.lifecycle.ActivityLifecycleHelper;
+
 /**
  * @author Administrator
  * @description
@@ -13,6 +15,9 @@ public class AppContext extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        ActivityLifecycleHelper.getInstance().init(this);
+
+
         //PrettySkin.getInstance().init(this);
         //PrettySkin.getInstance().addSkinHandler(CustomView.class, new CustomViewSH());
         //PrettySkin.getInstance().addSkinHandler(new AppCompatSkinHandlerMap());

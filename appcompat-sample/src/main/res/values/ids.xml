@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="test" type="id"/>
+
+    <item name="view_visible_view_tree_listener_id" type="id" />
+    <item name="view_visible_detector_id" type="id" />
+    <item name="view_visible_handler_id" type="id" />
+    <item name="view_visible_handlers_id" type="id" />
 </resources>

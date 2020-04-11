@@ -1,12 +1,29 @@
 package com.hyh.prettyskin.demo.fragment;
 
 
-import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * @author Administrator
  * @description
  * @data 2020/4/10
  */
-public class OtherFragment extends Fragment {
+public class OtherFragment extends CommonBaseFragment {
+
+    @Override
+    protected View getContentView(LayoutInflater inflater, ViewGroup container) {
+        return null;
+    }
+
+    @Override
+    protected void initView(View contentView) {
+
+    }
+
+    @Override
+    protected void initData() {
+
+    }
 }

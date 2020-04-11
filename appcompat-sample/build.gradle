@@ -28,9 +28,12 @@ dependencies {
     implementation rootProject.ext.gson
     implementation rootProject.ext.gsonconverter
 
+    implementation rootProject.ext.butterknife
+    annotationProcessor rootProject.ext.butterknife_compiler
+
+
     implementation project(':lib-core')
     implementation project(':lib-android-appcompat')
-
 
 
 }

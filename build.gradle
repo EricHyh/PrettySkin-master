@@ -44,6 +44,10 @@ ext {
     gson = 'com.google.code.gson:gson:2.8.0'
     gsonconverter = 'com.squareup.retrofit2:converter-gson:2.3.0'
 
+
+    butterknife = 'com.jakewharton:butterknife:9.0.0'
+    butterknife_compiler = 'com.jakewharton:butterknife-compiler:9.0.0'
+
     //cardview = 'com.android.support:cardview-v7:27.1.1'
     //androidx_cardview = 'androidx.cardview:cardview:1.0.0'
 
