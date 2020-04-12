@@ -13,6 +13,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -21,6 +25,7 @@ dependencies {
     implementation rootProject.ext.supportAnnotations
     implementation rootProject.ext.recyclerview
     implementation rootProject.ext.design
+    implementation rootProject.ext.constraint
 
     implementation rootProject.ext.okhttp
     implementation rootProject.ext.okio
@@ -35,5 +40,8 @@ dependencies {
     implementation project(':lib-core')
     implementation project(':lib-android-appcompat')
 
-
+    implementation(rootProject.ext.glide) {
+        exclude group: "com.android.support"
+    }
+    annotationProcessor rootProject.ext.glide_compiler
 }

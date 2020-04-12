@@ -367,7 +367,7 @@ public class Reflect {
     }
 
     private static String generateFieldMapKey(Class cls, String fieldName) {
-        return String.valueOf(System.identityHashCode(cls)) + "-" + fieldName;
+        return System.identityHashCode(cls) + "-" + fieldName;
     }
 
     public static String generateMethodMapKey(Class cls, String methodName, Class[] parameterTypes) {
