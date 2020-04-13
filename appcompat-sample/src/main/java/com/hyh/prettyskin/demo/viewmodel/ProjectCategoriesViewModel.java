@@ -1,8 +1,8 @@
 package com.hyh.prettyskin.demo.viewmodel;
 
-import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.hyh.prettyskin.demo.bean.ProjectCategoriesBean;
@@ -23,8 +23,8 @@ public class ProjectCategoriesViewModel extends ViewModel {
     private final MutableLiveData<ProjectCategoriesBean> mMutableLiveData = new MutableLiveData<>();
     private final ProjectCategoriesApi mProjectCategoriesApi;
 
-    public ProjectCategoriesViewModel(@NonNull Application application) {
-        mProjectCategoriesApi = RetrofitHelper.create(application, ProjectCategoriesApi.class);
+    public ProjectCategoriesViewModel(@NonNull Context context) {
+        mProjectCategoriesApi = RetrofitHelper.create(context, ProjectCategoriesApi.class);
     }
 
     public MutableLiveData<ProjectCategoriesBean> getMutableLiveData() {

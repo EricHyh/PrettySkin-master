@@ -4,13 +4,15 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="red">#FF0000</color>
-
+    <color name="transparent">#00000000</color>
+    <color name="primary_red">#F85959</color>
 
     <color name="sc_btn_background_color">#ff8855</color>
 
 
-
-    <color name="transparent">#00000000</color>
+    <color name="tabhost_tab_text_color_selected_light_style">@color/primary_red</color>
+    <color name="tabhost_tab_text_color_nor_light_style">@color/black</color>
 </resources>

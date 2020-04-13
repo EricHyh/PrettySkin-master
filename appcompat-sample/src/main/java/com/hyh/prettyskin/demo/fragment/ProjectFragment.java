@@ -1,7 +1,10 @@
 package com.hyh.prettyskin.demo.fragment;
 
 import android.arch.lifecycle.ViewModelProvider;
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,8 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hyh.prettyskin.R;
+import com.hyh.prettyskin.demo.adapter.ProjectItemFactory;
 import com.hyh.prettyskin.demo.bean.ProjectCategoryBean;
 import com.hyh.prettyskin.demo.multiitem.MultiAdapter;
+import com.hyh.prettyskin.demo.multiitem.load.ChrysanthemumFootView;
+import com.hyh.prettyskin.demo.multiitem.load.LoadingItemFactory;
+import com.hyh.prettyskin.demo.multiitem.load.SwipeRefreshClient;
+import com.hyh.prettyskin.demo.utils.DisplayUtil;
 import com.hyh.prettyskin.demo.viewmodel.ProjectViewModel;
 
 import butterknife.BindView;
@@ -34,6 +42,7 @@ public class ProjectFragment extends CommonBaseFragment {
 
     private ProjectViewModel mProjectViewModel;
     private MultiAdapter mMultiAdapter;
+    private LoadingItemFactory mLoadingItemFactory;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,27 +65,67 @@ public class ProjectFragment extends CommonBaseFragment {
 
     @Override
     protected void initView(View contentView) {
-        ButterKnife.bind(contentView);
+        ButterKnife.bind(this, contentView);
 
         mRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
+        mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                outRect.bottom = DisplayUtil.dip2px(view.getContext(), 5);
+            }
+        });
+
         mMultiAdapter = new MultiAdapter(getContext());
 
+        //添加数据Item
+        final ProjectItemFactory projectItemFactory = new ProjectItemFactory();
+        mMultiAdapter.addMultiModule(projectItemFactory);
+
+        //添加加载更多Item
+        ChrysanthemumFootView footView = new ChrysanthemumFootView(contentView.getContext(), Color.TRANSPARENT, Color.GRAY, 0xFFDDDDDD);
+        mLoadingItemFactory = new LoadingItemFactory(footView);
+        mLoadingItemFactory.bindRefreshListener(new SwipeRefreshClient(mSwipeRefreshLayout));
+        mLoadingItemFactory.bindScrollListener(mRecyclerView);
+        mLoadingItemFactory.setLoadingListener(new LoadingItemFactory.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                mProjectViewModel.refresh();
+            }
+
+            @Override
+            public void onLoadMore() {
+                mProjectViewModel.loadMore();
+            }
+        });
+        mMultiAdapter.addMultiModule(mLoadingItemFactory);
+        mRecyclerView.setAdapter(mMultiAdapter);
 
         mProjectViewModel.getMutableLiveData().observe(this, result -> {
             assert result != null;
             if (result.refresh) {
-
+                mLoadingItemFactory.refreshComplete(result.data != null);
+                mLoadingItemFactory.setLoadMoreEnabled(result.data != null);
+                if (result.data != null) {
+                    projectItemFactory.setDataList(result.data.data.projects);
+                }
             } else {
-
+                mLoadingItemFactory.loadMoreComplete(result.data != null);
+                if (result.data != null) {
+                    projectItemFactory.addDataList(result.data.data.projects);
+                    if (result.data.data.total == projectItemFactory.getList().size()) {
+                        mLoadingItemFactory.setNoMore(true);
+                    }
+                }
             }
         });
     }
 
     @Override
     protected void initData() {
-        mProjectViewModel.refresh();
+        mLoadingItemFactory.executeRefresh();
     }
 
     @Override

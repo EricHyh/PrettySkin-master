@@ -36,7 +36,6 @@ public class ProjectsFragment extends CommonBaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mProjectCategoriesViewModel = new ViewModelProvider(this, new ContextViewModelFactory(getContext())).get(ProjectCategoriesViewModel.class);
-
     }
 
     @Override
@@ -46,7 +45,7 @@ public class ProjectsFragment extends CommonBaseFragment {
 
     @Override
     protected void initView(View contentView) {
-        ButterKnife.bind(contentView);
+        ButterKnife.bind(this, contentView);
         final ProjectsAdapter projectsAdapter = new ProjectsAdapter(contentView.getContext(), getChildFragmentManager());
         mViewPager.setAdapter(projectsAdapter);
         mViewPager.setOffscreenPageLimit(1);

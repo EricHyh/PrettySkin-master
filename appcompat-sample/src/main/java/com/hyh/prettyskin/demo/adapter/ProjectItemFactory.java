@@ -1,18 +1,15 @@
 package com.hyh.prettyskin.demo.adapter;
 
+import android.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.hyh.prettyskin.R;
+import com.hyh.prettyskin.databinding.ItemProjectInfoBinding;
 import com.hyh.prettyskin.demo.bean.ProjectBean;
 import com.hyh.prettyskin.demo.multiitem.ItemHolder;
 import com.hyh.prettyskin.demo.multiitem.MultiItemFactory;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class ProjectItemFactory extends MultiItemFactory<ProjectBean> {
 
@@ -29,28 +26,16 @@ public class ProjectItemFactory extends MultiItemFactory<ProjectBean> {
 
     private class ProjectItemHolder extends ItemHolder<ProjectBean> {
 
-        @BindView(R.id.iv_project_image)
-        ImageView mProjectImage;
-
-        @BindView(R.id.tv_project_title)
-        TextView mProjectTitle;
-
-        @BindView(R.id.tv_project_des)
-        TextView mProjectDes;
-
-        @BindView(R.id.tv_share_date)
-        TextView mShareDate;
-
-        @BindView(R.id.tv_author)
-        TextView mAuthor;
+        private ItemProjectInfoBinding mDataBinding;
 
         ProjectItemHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(itemView);
+            mDataBinding = DataBindingUtil.bind(itemView);
         }
 
         @Override
         protected void bindDataAndEvent() {
+            mDataBinding.setProject(getData());
         }
     }
 }

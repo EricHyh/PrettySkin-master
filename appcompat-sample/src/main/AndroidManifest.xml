@@ -2,6 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.hyh.prettyskin">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".demo.base.AppContext"
         android:allowBackup="true"
@@ -26,8 +28,7 @@
             </intent-filter>-->
         </activity>
 
-        <activity android:name=".demo.activity.Test2Activity">
-        </activity>
+        <activity android:name=".demo.activity.Test2Activity"></activity>
 
     </application>
 

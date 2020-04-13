@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.hyh.prettyskin.demo.bean.ProjectCategoryBean;
+import com.hyh.prettyskin.demo.fragment.ProjectFragment;
 
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class ProjectsAdapter extends FragmentStatePagerAdapter {
         ProjectCategoryBean projectCategoryBean = mProjects.get(i);
         Bundle bundle = new Bundle();
         bundle.putParcelable("project_category", projectCategoryBean);
-        return Fragment.instantiate(mContext, projectCategoryBean.name, bundle);
+        return Fragment.instantiate(mContext, ProjectFragment.class.getName(), bundle);
     }
 
     @Override

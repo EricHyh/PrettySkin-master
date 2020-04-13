@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply from: rootProject.getRootDir().getAbsolutePath() + File.separator + 'common.gradle'
 
+apply plugin: 'com.jakewharton.butterknife'
+
 android {
     defaultConfig {
         applicationId "com.hyh.prettyskin.demo"
