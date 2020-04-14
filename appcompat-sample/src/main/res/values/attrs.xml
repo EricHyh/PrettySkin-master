@@ -1,32 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <declare-styleable name="ShapeView">
+
+        <attr name="shape" format="enum">
+            <enum name="rectangle" value="0" />
+            <enum name="ring" value="1" />
+            <enum name="triangle" value="2" />
+        </attr>
+
+        <attr name="border_color" format="color" />
+        <attr name="border_width" format="dimension" />
+
+    </declare-styleable>
+
+
     <declare-styleable name="CustomView">
 
-        <attr name="attr_string" format="string"/>
-        <attr name="attr_color1" format="color"/>
-        <attr name="attr_color2" format="color"/>
-        <attr name="attr_reference1" format="reference"/>
-        <attr name="attr_reference2" format="reference"/>
-        <attr name="attr_reference4" format="reference"/>
-        <attr name="attr_reference5" format="reference"/>
-        <attr name="attr_boolean" format="boolean"/>
-        <attr name="attr_dimension" format="dimension"/>
-        <attr name="attr_float" format="float"/>
-        <attr name="attr_integer" format="integer"/>
-        <attr name="attr_fraction" format="fraction"/>
+        <attr name="attr_string" format="string" />
+        <attr name="attr_color1" format="color" />
+        <attr name="attr_color2" format="color" />
+        <attr name="attr_reference1" format="reference" />
+        <attr name="attr_reference2" format="reference" />
+        <attr name="attr_reference4" format="reference" />
+        <attr name="attr_reference5" format="reference" />
+        <attr name="attr_boolean" format="boolean" />
+        <attr name="attr_dimension" format="dimension" />
+        <attr name="attr_float" format="float" />
+        <attr name="attr_integer" format="integer" />
+        <attr name="attr_fraction" format="fraction" />
 
         <attr name="attr_enum">
-            <enum name="enum1" value="1"/>
-            <enum name="enum2" value="2"/>
+            <enum name="enum1" value="1" />
+            <enum name="enum2" value="2" />
         </attr>
 
         <attr name="attr_flag">
-            <flag name="flag1" value="1"/>
-            <flag name="flag2" value="2"/>
+            <flag name="flag1" value="1" />
+            <flag name="flag2" value="2" />
         </attr>
 
-        <attr name="attr_color_reference" format="color|reference"/>
-        <attr name="attr_string_reference" format="string|reference"/>
+        <attr name="attr_color_reference" format="color|reference" />
+        <attr name="attr_string_reference" format="string|reference" />
 
     </declare-styleable>
 </resources>

@@ -10,7 +10,7 @@ import android.text.TextUtils;
 import com.hyh.prettyskin.android.SkinContext;
 import com.hyh.prettyskin.android.SkinResources;
 import com.hyh.prettyskin.utils.AttrValueHelper;
-import com.hyh.prettyskin.utils.PackageUtil;
+import com.hyh.prettyskin.utils.PrettySkinUtils;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.io.File;
@@ -52,7 +52,7 @@ public class ApkThemeSkin extends BaseSkin {
     @Override
     public boolean loadSkinAttrs() {
         if (mInnerSkinAttrMap != null) return true;
-        ApplicationInfo applicationInfo = PackageUtil.getApplicationInfo(mApplicationContext, mApkPath);
+        ApplicationInfo applicationInfo = PrettySkinUtils.getApplicationInfo(mApplicationContext, mApkPath);
         if (applicationInfo == null) return false;
         Bundle metaData = applicationInfo.metaData;
         if (metaData == null) return false;

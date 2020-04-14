@@ -2,7 +2,10 @@ package com.hyh.prettyskin.demo.base;
 
 import android.app.Application;
 
+import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.demo.lifecycle.ActivityLifecycleHelper;
+import com.hyh.prettyskin.demo.sh.ShapeViewSH;
+import com.hyh.prettyskin.demo.widget.ShapeView;
 
 /**
  * @author Administrator
@@ -17,27 +20,8 @@ public class AppContext extends Application {
         super.onCreate();
         ActivityLifecycleHelper.getInstance().init(this);
 
-
-        //PrettySkin.getInstance().init(this);
-        //PrettySkin.getInstance().addSkinHandler(CustomView.class, new CustomViewSH());
-        //PrettySkin.getInstance().addSkinHandler(new AppCompatSkinHandlerMap());
-
-       /* ThreadManager.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    InputStream inputStream = getAssets().open("skin-package-first-debug.apk");
-
-                    File filesDir = getFilesDir();
-                    File file = new File(filesDir, "skin-package-first-debug.apk");
-                    StreamUtil.copyFileToTargetPath(inputStream, file.getAbsolutePath());
-                    PrettySkin.getInstance().replaceSkinSync(new ApkThemeSkin(getApplicationContext(), file.getAbsolutePath(), 0));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });*/
-
-
+        PrettySkin.getInstance().init(this);
+        PrettySkin.getInstance().addSkinHandler(ShapeView.class, new ShapeViewSH());//添加ShapeView自定义属性处理器
+        //PrettySkin.getInstance().addSkinHandler(new AppCompatSkinHandlerMap());//添加appcompat包中所有View的自定义属性处理器
     }
 }

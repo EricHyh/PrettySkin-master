@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.hyh.prettyskin.R;
 import com.hyh.prettyskin.databinding.ItemProjectInfoBinding;
+import com.hyh.prettyskin.demo.activity.WebActivity;
 import com.hyh.prettyskin.demo.bean.ProjectBean;
 import com.hyh.prettyskin.demo.multiitem.ItemHolder;
 import com.hyh.prettyskin.demo.multiitem.MultiItemFactory;
@@ -36,6 +37,7 @@ public class ProjectItemFactory extends MultiItemFactory<ProjectBean> {
         @Override
         protected void bindDataAndEvent() {
             mDataBinding.setProject(getData());
+            mDataBinding.getRoot().setOnClickListener(v -> WebActivity.start(v.getContext(), getData().link));
         }
     }
 }

@@ -12,6 +12,8 @@
 
     <color name="sc_btn_background_color">#ff8855</color>
 
+    <color name="progress_color">#FF1D8E77</color>
+    <color name="progress_bg_color">#FFDDDDDD</color>
 
     <color name="tabhost_tab_text_color_selected_light_style">@color/primary_red</color>
     <color name="tabhost_tab_text_color_nor_light_style">@color/black</color>

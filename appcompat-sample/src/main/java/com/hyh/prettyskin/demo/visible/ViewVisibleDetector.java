@@ -15,10 +15,9 @@ import java.util.Map;
 
 /**
  * @author Administrator
- * @description
+ * @description 用于监听View的可见与不可见状态
  * @data 2019/6/3
  */
-
 public class ViewVisibleDetector {
 
     public static void setVisibleHandler(View view, IVisibleHandler visibleHandler) {

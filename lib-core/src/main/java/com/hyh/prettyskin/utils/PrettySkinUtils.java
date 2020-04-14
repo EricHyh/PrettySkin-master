@@ -11,7 +11,7 @@ import android.content.pm.PackageManager;
  * @data 2018/9/30
  */
 
-public class PackageUtil {
+public class PrettySkinUtils {
 
     public static ApplicationInfo getApplicationInfo(Context context, String apkPath) {
         PackageInfo packageInfo = null;

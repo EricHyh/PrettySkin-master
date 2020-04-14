@@ -30,25 +30,30 @@
         <item name="textAllCaps">true</item>
     </style>
 
+    <style name="WebProgressBarStyle" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/web_progress</item>
+    </style>
+
+
     <declare-styleable name="PrettySkin">
 
-        <attr name="ma_bg" format="color|reference"/>
-        <attr name="ma_btn_bg" format="color|reference"/>
-        <attr name="ma_btn_text_color" format="color"/>
-        <attr name="ma_iv_bg" format="color|reference"/>
-        <attr name="ma_iv_src" format="reference"/>
+        <attr name="ma_bg" format="color|reference" />
+        <attr name="ma_btn_bg" format="color|reference" />
+        <attr name="ma_btn_text_color" format="color" />
+        <attr name="ma_iv_bg" format="color|reference" />
+        <attr name="ma_iv_src" format="reference" />
 
-        <attr name="tv_bg" format="color|reference"/>
-        <attr name="tv_color" format="color|reference"/>
-        <attr name="tv_appearance" format="reference"/>
+        <attr name="tv_bg" format="color|reference" />
+        <attr name="tv_color" format="color|reference" />
+        <attr name="tv_appearance" format="reference" />
 
-        <attr name="view_bg1" format="color|reference"/>
-        <attr name="view_bg2" format="color|reference"/>
-        <attr name="view_bg3" format="color|reference"/>
+        <attr name="view_bg1" format="color|reference" />
+        <attr name="view_bg2" format="color|reference" />
+        <attr name="view_bg3" format="color|reference" />
 
-        <attr name="sc_bg" format="color|reference"/>
-        <attr name="sc_btn_bg" format="color|reference"/>
-        <attr name="sc_btn_text_color" format="color"/>
+        <attr name="sc_bg" format="color|reference" />
+        <attr name="sc_btn_bg" format="color|reference" />
+        <attr name="sc_btn_text_color" format="color" />
     </declare-styleable>
 
 

@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hyh.prettyskin.R;
+
 /**
  * @author Administrator
  * @description
@@ -13,7 +15,7 @@ public class CustomerAttrFragment extends CommonBaseFragment {
 
     @Override
     protected View getContentView(LayoutInflater inflater, ViewGroup container) {
-        return null;
+        return inflater.inflate(R.layout.fragment_customer_attr, container, false);
     }
 
     @Override

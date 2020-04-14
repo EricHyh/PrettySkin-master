@@ -29,4 +29,29 @@
         <item>@integer/int4</item>
     </integer-array>
 
+
+    <string name="customer_attr_explain">
+        如果你的项目中有一些自定义View及自定义属性，你想将这些自定义属性也添加到换肤管理中，那么来这里看看吧，这里展示了如何将自定义属性添加到皮肤管理。\n
+        \n
+        一、自定义 View\n
+            类名：ShapeView\n
+            说明：这个自定义 View 是一个简单的绘制形状的 View\n
+            自定义属性:\n
+            （1）形状（矩形、圆形、三角形）\n
+            （2）边框宽度\n
+            （3）边框颜色\n
+        \n
+        二、自定义 ISkinHandler 接口（这个接口是用于处理布局中皮肤属性的解析，以及 View 的属性刷新，
+            框架已经针对所有系统的 View 实现了 ISkinHandler 接口，如果你有一个自定义 View，
+            并且有一些自定义属性你也想添加到换肤管理中，那么为这个自定义View实现一个ISkinHandler接口吧，否则你不需要做任何处理）\n
+            类名：ShapeViewSH\n
+            说明：ShapeViewSH 对 Layout 中使用的 ShapeView 的自定义属性进行解析；当发生换肤行为时，会调用 ShapeView 中的相关函数进行修改属性值；
+    </string>
+
+    <string name="dynamic_drawable_explain">
+        如果你的项目中有一些地方不能直接使用View，只能使用Drawable，例如在使用Picasso或者Glide框架时，
+        你可以指定placeHolder或者error，这里不能使用View，但是可以使用Drawable；
+        此时如果你也想将这个Drawable也纳入皮肤管理怎么办？DynamicDrawable就是为了解决这个问题而生的。
+    </string>
+
 </resources>
