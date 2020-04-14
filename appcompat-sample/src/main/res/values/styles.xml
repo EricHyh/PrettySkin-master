@@ -37,67 +37,15 @@
 
     <declare-styleable name="PrettySkin">
 
-        <attr name="ma_bg" format="color|reference" />
-        <attr name="ma_btn_bg" format="color|reference" />
-        <attr name="ma_btn_text_color" format="color" />
-        <attr name="ma_iv_bg" format="color|reference" />
-        <attr name="ma_iv_src" format="reference" />
-
-        <attr name="tv_bg" format="color|reference" />
-        <attr name="tv_color" format="color|reference" />
-        <attr name="tv_appearance" format="reference" />
-
-        <attr name="view_bg1" format="color|reference" />
-        <attr name="view_bg2" format="color|reference" />
-        <attr name="view_bg3" format="color|reference" />
-
-        <attr name="sc_bg" format="color|reference" />
-        <attr name="sc_btn_bg" format="color|reference" />
-        <attr name="sc_btn_text_color" format="color" />
     </declare-styleable>
 
 
-    <style name="PrettySkin_1">
-        <item name="ma_bg">#FF00FF</item>
-        <item name="ma_btn_bg">#00FFFF</item>
-        <item name="ma_btn_text_color">#FF0000</item>
-        <item name="ma_iv_bg">#0000FF</item>
-        <item name="ma_iv_src">@mipmap/icon1</item>
+    <style name="PrettySkin_light">
 
-        <item name="tv_bg">#FF00FF</item>
-        <item name="tv_color">#FF0000</item>
-        <item name="tv_appearance">@style/TextView_textAppearance</item>
-
-        <item name="view_bg1">#FFFF00</item>
-        <item name="view_bg2">#00FFFF</item>
-        <item name="view_bg3">@color/custom_color</item>
-
-        <item name="sc_bg">#1155AA</item>
-        <item name="sc_btn_bg">@color/sc_btn_background_color</item>
-        <item name="sc_btn_text_color">@color/sc_btn_text_color</item>
     </style>
 
-    <style name="Text_Style">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">#00FF00</item>
-        <item name="android:background">#0000FF</item>
-    </style>
+    <style name="PrettySkin_dark">
 
-
-    <dimen name="test_dimen_1">12px</dimen>
-    <dimen name="test_dimen_2">12dp</dimen>
-    <dimen name="test_dimen_3">12sp</dimen>
-
-    <integer name="test_integer_1">12</integer>
-
-    <fraction name="test_fraction_1">12</fraction>
-
-    <fraction name="test_fraction_2">12.0</fraction>
-
-    <bool name="test_bool_1">true</bool>
-
-    <style name="TextView_textAppearance">
-        <item name="android:textColor">#FF00FF</item>
     </style>
 
 </resources>
