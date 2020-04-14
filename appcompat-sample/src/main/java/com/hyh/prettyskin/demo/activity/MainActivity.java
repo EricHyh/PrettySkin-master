@@ -41,6 +41,7 @@ public class MainActivity extends BaseActivity {
         initToolBar();
         initDrawerLayout();
         initFragmentTabHost();
+        initLeftDrawer();
     }
 
     private void initToolBar() {
@@ -68,6 +69,11 @@ public class MainActivity extends BaseActivity {
         setTabWidgetTheme();
         addTabLabels();
     }
+
+    private void initLeftDrawer() {
+
+    }
+
 
     /**
      * 设置tab widget的风格
