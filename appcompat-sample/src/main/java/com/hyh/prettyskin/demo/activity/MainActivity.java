@@ -7,6 +7,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.hyh.prettyskin.demo.fragment.DynamicDrawableFragment;
 import com.hyh.prettyskin.demo.fragment.OtherFragment;
 import com.hyh.prettyskin.demo.fragment.ProjectsFragment;
 import com.hyh.prettyskin.demo.utils.DisplayUtil;
+import com.hyh.prettyskin.utils.reflect.Reflect;
 
 /**
  * @author Administrator
@@ -42,6 +44,11 @@ public class MainActivity extends BaseActivity {
         initDrawerLayout();
         initFragmentTabHost();
         initLeftDrawer();
+
+        int defaultValue = Reflect.from("android.support.design.R$style")
+                .filed("TextAppearance_Design_Tab", int.class)
+                .get(null);
+        Log.d("MainActivity_", "onCreate: defaultValue = " + defaultValue);
     }
 
     private void initToolBar() {

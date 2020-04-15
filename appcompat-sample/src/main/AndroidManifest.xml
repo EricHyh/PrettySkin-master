@@ -12,7 +12,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/PrettySkin_white"
+        android:theme="@style/PrettySkin_black"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
 
         <activity android:name=".demo.activity.MainActivity">

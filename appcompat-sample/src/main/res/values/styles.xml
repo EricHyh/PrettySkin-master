@@ -136,7 +136,7 @@
 
     </style>
 
-    <style name="PrettySkin_black">
+    <style name="PrettySkin_black" parent="AppTheme">
 
         <item name="status_bar_color">@color/status_bar_color_white_style</item>
         <item name="toolbar_bg">#FF061727</item>

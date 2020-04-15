@@ -41,8 +41,29 @@ public class TabLayoutSH extends ViewGroupSH {
         mSupportAttrNames.add("tabIndicator");
         mSupportAttrNames.add("tabIndicatorGravity");
         mSupportAttrNames.add("tabIndicatorFullWidth");
+
         //mSupportAttrNames.add("tabPadding");
+        //mSupportAttrNames.add("tabPaddingStart");
+        //mSupportAttrNames.add("tabPaddingTop");
+        //mSupportAttrNames.add("tabPaddingEnd");
+        //mSupportAttrNames.add("tabPaddingBottom");
+
         mSupportAttrNames.add("tabTextAppearance");
+        mSupportAttrNames.add("tabTextColor");
+        mSupportAttrNames.add("tabSelectedTextColor");
+        mSupportAttrNames.add("tabIconTint");
+        mSupportAttrNames.add("tabIconTintMode");
+        mSupportAttrNames.add("tabRippleColor");
+
+        /*mSupportAttrNames.add("tabIndicatorAnimationDuration");
+        mSupportAttrNames.add("tabMinWidth");
+        mSupportAttrNames.add("tabMaxWidth");
+        mSupportAttrNames.add("tabContentStart");*/
+
+        mSupportAttrNames.add("tabMode");
+        mSupportAttrNames.add("tabGravity");
+        mSupportAttrNames.add("tabInlineLabel");
+        mSupportAttrNames.add("tabUnboundedRipple");
     }
 
     private TypedArray mTypedArray;
@@ -108,7 +129,39 @@ public class TabLayoutSH extends ViewGroupSH {
                     break;
                 }
                 case "tabTextAppearance": {
-                    int id = attrValue.getTypedValue(int.class, 0);
+                    //android.support.design.R.style.TextAppearance_Design_Tab
+                    int defaultValue = Reflect.from("android.support.design.R$style")
+                            .filed("TextAppearance_Design_Tab", int.class)
+                            .get(null);
+                    int tabTextAppearance = attrValue.getTypedValue(int.class, defaultValue);
+
+
+                    Class styleableClass = Reflect.classForName("android.support.v7.appcompat.R$styleable");
+                    String styleableName = "TextAppearance";
+
+                    int styleableIndex = AttrValueHelper.getStyleableIndex(styleableClass, styleableName, "textSize");
+
+
+
+
+                    /*TypedArray ta = context.obtainStyledAttributes(tabTextAppearance, android.support.v7.appcompat.R.styleable.TextAppearance);
+
+                    try {
+                        this.tabTextSize = (float) ta.getDimensionPixelSize(android.support.v7.appcompat.R.styleable.TextAppearance_android_textSize, 0);
+                        this.tabTextColors = MaterialResources.getColorStateList(context, ta, android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor);
+                    } finally {
+                        ta.recycle();
+                    }
+
+                    if (a.hasValue(styleable.TabLayout_tabTextColor)) {
+                        this.tabTextColors = MaterialResources.getColorStateList(context, a, styleable.TabLayout_tabTextColor);
+                    }
+
+                    if (a.hasValue(styleable.TabLayout_tabSelectedTextColor)) {
+                        int selected = a.getColor(styleable.TabLayout_tabSelectedTextColor, 0);
+                        this.tabTextColors = createColorStateList(this.tabTextColors.getDefaultColor(), selected);
+                    }*/
+
 
                     break;
                 }

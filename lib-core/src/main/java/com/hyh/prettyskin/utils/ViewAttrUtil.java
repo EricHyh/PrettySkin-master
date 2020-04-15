@@ -55,9 +55,6 @@ public class ViewAttrUtil {
         return Reflect.from("android.support.v7.appcompat.R$attr").filed(styleName, int.class).get(null);
     }
 
-    /*public static int getDesinStyleAttr(String styleName) {
-        return Reflect.from("android.support.v7.appcompat.R$attr").filed(styleName, int.class).get(null);
-    }*/
 
     public static int getAndroidXStyleAttr(String styleName) {
         return Reflect.from("androidx.appcompat.R$attr").filed(styleName, int.class).get(null);
