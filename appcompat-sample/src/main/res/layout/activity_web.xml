@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -9,18 +12,30 @@
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimary" />
+        android:background="?attr/toolbar_bg"
+        android:elevation="2dp"
+        app:navigationIcon="?attr/web_toolbar_navigation"
+        skin:skin_attrs="background=toolbar_bg|navigationIcon=web_toolbar_navigation" />
 
     <ProgressBar
         android:id="@+id/web_progressbar"
         style="@style/WebProgressBarStyle"
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        skin:skin_attrs="progressDrawable=web_progress_drawable" />
 
-    <com.hyh.prettyskin.demo.widget.CustomWebView
-        android:id="@+id/web_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:foreground="?attr/project_landing_page_mask_color"
+        skin:skin_attrs="foreground=project_landing_page_mask_color">
+
+        <com.hyh.prettyskin.demo.widget.CustomWebView
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
 
 </LinearLayout>

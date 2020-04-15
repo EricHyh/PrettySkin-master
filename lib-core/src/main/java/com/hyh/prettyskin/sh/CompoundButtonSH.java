@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
@@ -42,6 +43,7 @@ public class CompoundButtonSH extends ButtonSH {
     private TypedArray mTypedArray;
 
     {
+        mSupportAttrNames.add("button");
         mSupportAttrNames.add("buttonTintMode");
         mSupportAttrNames.add("buttonTint");
         mSupportAttrNames.add("checked");
@@ -102,9 +104,24 @@ public class CompoundButtonSH extends ButtonSH {
             }
             CompoundButton compoundButton = (CompoundButton) view;
             switch (attrName) {
+                case "button": {
+                    Drawable oldButtonDrawable;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        oldButtonDrawable = compoundButton.getButtonDrawable();
+                    } else {
+                        oldButtonDrawable = Reflect.from(CompoundButton.class)
+                                .filed("mButtonDrawable", Drawable.class)
+                                .get(compoundButton);
+                    }
+                    Drawable drawable = attrValue.getTypedValue(Drawable.class, oldButtonDrawable);
+                    if (drawable != null) {
+                        compoundButton.setButtonDrawable(oldButtonDrawable);
+                    }
+                    break;
+                }
                 case "buttonTintMode": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        PorterDuff.Mode tintMode = attrValue.getTypedValue( PorterDuff.Mode.class, null);
+                        PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                         compoundButton.setButtonTintMode(tintMode);
                     }
                     break;

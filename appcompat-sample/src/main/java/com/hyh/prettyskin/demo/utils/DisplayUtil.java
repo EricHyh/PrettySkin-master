@@ -3,6 +3,7 @@ package com.hyh.prettyskin.demo.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -242,5 +243,10 @@ public class DisplayUtil {
         Resources resources = context.getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
         return dm.density;
+    }
+
+    public static boolean isDarkMode(Context context) {
+        int mode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        return mode == Configuration.UI_MODE_NIGHT_YES;
     }
 }

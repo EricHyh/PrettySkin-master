@@ -2,6 +2,7 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -25,7 +26,9 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:background="?attr/content_bg_color"
+            android:padding="8dp"
+            skin:skin_attrs="background=content_bg_color">
 
             <ImageView
                 android:id="@+id/iv_project_image"
@@ -37,8 +40,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_default="percent"
-                app:layout_constraintWidth_percent="0.3"
-                tools:src="@drawable/image_default_light" />
+                app:layout_constraintWidth_percent="0.3" />
 
             <TextView
                 android:id="@+id/tv_project_title"
@@ -49,13 +51,14 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@{project.title}"
-                android:textColor="@color/black"
+                android:textColor="?attr/project_title_color"
                 android:textSize="16sp"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintLeft_toRightOf="@id/iv_project_image"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/iv_project_image"
+                skin:skin_attrs="textColor=project_title_color"
                 tools:text="This is project title" />
 
             <TextView
@@ -67,13 +70,14 @@
                 android:ellipsize="end"
                 android:maxLines="4"
                 android:text="@{project.desc}"
-                android:textColor="#767676"
+                android:textColor="?attr/project_des_color"
                 android:textSize="14sp"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintLeft_toRightOf="@id/iv_project_image"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_project_title"
+                skin:skin_attrs="textColor=project_des_color"
                 tools:text="This is project description" />
 
 
@@ -84,10 +88,11 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="@{project.niceDate}"
-                android:textColor="#767676"
+                android:textColor="?attr/project_tag_color"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_project_image"
                 app:layout_constraintLeft_toRightOf="@id/iv_project_image"
+                skin:skin_attrs="textColor=project_tag_color"
                 tools:text="2020-01-01 01:01" />
 
             <TextView
@@ -96,10 +101,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:text="@{project.author}"
-                android:textColor="#767676"
+                android:textColor="?attr/project_tag_color"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/tv_share_date"
                 app:layout_constraintLeft_toRightOf="@id/tv_share_date"
+                skin:skin_attrs="textColor=project_tag_color"
                 tools:text="Eric" />
 
         </android.support.constraint.ConstraintLayout>

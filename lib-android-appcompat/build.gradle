@@ -19,5 +19,6 @@ android {
 
 dependencies {
     implementation rootProject.ext.appcompat
+    implementation rootProject.ext.design
     compileOnly project(':lib-core')
 }

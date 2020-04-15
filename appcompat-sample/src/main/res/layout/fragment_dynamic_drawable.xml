@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fillViewport="true">
@@ -19,8 +21,9 @@
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
             android:text="@string/dynamic_drawable_explain"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="?attr/explanation_text_color"
+            android:textSize="16sp"
+            skin:skin_attrs="textColor=explanation_text_color" />
 
 
         <TextView
@@ -30,8 +33,9 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="16dp"
             android:text="1.使用在xml中定义的Drawable："
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="?attr/explanation_text_color"
+            android:textSize="16sp"
+            skin:skin_attrs="textColor=explanation_text_color" />
 
         <Button
             android:id="@+id/button"
@@ -39,6 +43,7 @@
             android:layout_height="100dp"
             android:layout_marginTop="10dp"
             android:text="点击一下看看"
+            android:textColor="@color/black"
             android:textSize="20sp" />
 
         <TextView
@@ -48,8 +53,9 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="16dp"
             android:text="2.使用自定义的Drawable："
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="?attr/explanation_text_color"
+            android:textSize="16sp"
+            skin:skin_attrs="textColor=explanation_text_color" />
 
         <View
             android:id="@+id/view"

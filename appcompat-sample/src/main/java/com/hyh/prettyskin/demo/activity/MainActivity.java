@@ -82,7 +82,6 @@ public class MainActivity extends BaseActivity {
         TabWidget tabWidget = mTabHost.getTabWidget();
         tabWidget.setLayoutParams(
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        tabWidget.setBackgroundColor(mTabHost.getResources().getColor(R.color.white));
         /*tab之间不要分隔标签*/
         tabWidget.setDividerDrawable(null);
     }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="shape_rectangle">0</integer>
+    <integer name="shape_ring">1</integer>
+    <integer name="shape_triangle">2</integer>
+
+
+    <integer name="int1">1</integer>
+    <integer name="int2">2</integer>
+    <integer name="int3">3</integer>
+    <integer name="int4">4</integer>
+
+    <integer-array name="custom_int_array">
+        <item>@integer/int1</item>
+        <item>@integer/int2</item>
+        <item>@integer/int3</item>
+        <item>@integer/int4</item>
+    </integer-array>
+
+    <integer-array name="swipe_refresh_color_schemes_white_style">
+        <item>@color/black</item>
+        <item>@color/red</item>
+    </integer-array>
+
+</resources>

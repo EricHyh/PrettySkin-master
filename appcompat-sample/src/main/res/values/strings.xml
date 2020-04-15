@@ -17,18 +17,6 @@
     </string-array>
 
 
-    <integer name="int1">1</integer>
-    <integer name="int2">2</integer>
-    <integer name="int3">3</integer>
-    <integer name="int4">4</integer>
-
-    <integer-array name="custom_int_array">
-        <item>@integer/int1</item>
-        <item>@integer/int2</item>
-        <item>@integer/int3</item>
-        <item>@integer/int4</item>
-    </integer-array>
-
 
     <string name="customer_attr_explain">
         如果你的项目中有一些自定义View及自定义属性，你想将这些自定义属性也添加到换肤管理中，那么来这里看看吧，这里展示了如何将自定义属性添加到皮肤管理。\n

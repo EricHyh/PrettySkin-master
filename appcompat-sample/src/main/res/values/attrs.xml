@@ -43,5 +43,19 @@
         <attr name="attr_color_reference" format="color|reference" />
         <attr name="attr_string_reference" format="string|reference" />
 
+        <attr name="attr_int_array" format="reference" />
+
     </declare-styleable>
+
+
+    <declare-styleable name="StatusBar">
+
+        <attr name="mode" format="enum">
+            <enum name="light" value="0" />
+            <enum name="dark" value="1" />
+        </attr>
+
+    </declare-styleable>
+
+
 </resources>

@@ -1,9 +1,5 @@
 package com.hyh.prettyskin;
 
-import android.view.View;
-
-import java.util.Map;
-
 /**
  * @author Administrator
  * @description
@@ -12,6 +8,6 @@ import java.util.Map;
 
 public interface ISkinHandlerMap {
 
-    Map<Class<? extends View>, ISkinHandler> get();
+    ISkinHandler get(Class viewClass);
 
 }

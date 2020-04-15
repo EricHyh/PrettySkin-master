@@ -42,6 +42,7 @@ public class ViewAttrUtil {
             ImageView.ScaleType.CENTER_INSIDE
     };
 
+
     public static int getAndroidStyleAttr(String styleName) {
         return Reflect.from("android.R$attr").filed(styleName, int.class).get(null);
     }
@@ -53,6 +54,10 @@ public class ViewAttrUtil {
     public static int getSupportV7StyleAttr(String styleName) {
         return Reflect.from("android.support.v7.appcompat.R$attr").filed(styleName, int.class).get(null);
     }
+
+    /*public static int getDesinStyleAttr(String styleName) {
+        return Reflect.from("android.support.v7.appcompat.R$attr").filed(styleName, int.class).get(null);
+    }*/
 
     public static int getAndroidXStyleAttr(String styleName) {
         return Reflect.from("androidx.appcompat.R$attr").filed(styleName, int.class).get(null);
@@ -288,6 +293,21 @@ public class ViewAttrUtil {
                     }
                 }
                 return defaultValue;
+            }
+            case "array": {
+                if (valueClass == int[].class) {
+                    try {
+                        return (T) resources.getIntArray(resourceId);
+                    } catch (Exception e) {
+                        Logger.w("value convert to int[] failed ", e);
+                    }
+                } else if (valueClass == String[].class) {
+                    try {
+                        return (T) resources.getStringArray(resourceId);
+                    } catch (Exception e) {
+                        Logger.w("value convert to String[] failed ", e);
+                    }
+                }
             }
             default: {
                 return defaultValue;

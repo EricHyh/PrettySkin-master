@@ -81,7 +81,7 @@ public class NativeSkinHandlerMap implements ISkinHandlerMap {
     }
 
     @Override
-    public Map<Class<? extends View>, ISkinHandler> get() {
-        return mSkinHandlerMap;
+    public ISkinHandler get(Class viewClass) {
+        return mSkinHandlerMap.get(viewClass);
     }
 }

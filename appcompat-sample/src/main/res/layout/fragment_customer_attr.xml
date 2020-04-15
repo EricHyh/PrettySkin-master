@@ -2,6 +2,7 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fillViewport="true">
@@ -19,8 +20,9 @@
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
             android:text="@string/customer_attr_explain"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="?attr/explanation_text_color"
+            android:textSize="16sp"
+            skin:skin_attrs="textColor=explanation_text_color" />
 
         <TextView
             android:layout_width="match_parent"
@@ -37,10 +39,12 @@
             android:layout_height="100dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:background="@color/red"
-            app:border_color="@color/black"
-            app:border_width="10dp"
-            app:shape="rectangle" />
+            android:background="?attr/shape_view_bg"
+            app:border_color="?attr/shape_view_bord_color"
+            app:border_width="?attr/shape_view_bord_width"
+            app:shape="?attr/shape_view_shape"
+            skin:skin_attrs="background=shape_view_bg|shape=shape_view_shape
+            |border_color=shape_view_bord_color|border_width=shape_view_bord_width" />
 
     </LinearLayout>
 </ScrollView>

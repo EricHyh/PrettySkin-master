@@ -12,16 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.hyh.prettyskin.android.SkinInflateFactory;
-import com.hyh.prettyskin.sh.NativeSkinHandlerMap;
+import com.hyh.prettyskin.sh.SkinHandlerMaps;
 import com.hyh.prettyskin.utils.Logger;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.lang.ref.WeakReference;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeSet;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -45,27 +43,23 @@ public class BasePrettySkin {
 
     final List<SkinView> mSkinAttrItems = new CopyOnWriteArrayList<>();
 
-    final Map<Class<? extends View>, ISkinHandler> mSkinHandlerMap = new ConcurrentHashMap<>();
-
-    {
-        mSkinHandlerMap.putAll(new NativeSkinHandlerMap().get());
-    }
+    final SkinHandlerMaps mSkinHandlerMaps = new SkinHandlerMaps();
 
     private final List<ContextReference> mSkinableContextList = new CopyOnWriteArrayList<>();
 
     private final List<SkinChangedListener> mListeners = new CopyOnWriteArrayList<>();
 
-    private boolean mIsParseDefaultAttrValueEnabled = false;
+    private boolean mParseDefaultAttrValueEnabled = false;
 
     private ISkin mCurrentSkin;
 
     public void addSkinHandler(Class<? extends View> viewClass, ISkinHandler skinHandler) {
-        mSkinHandlerMap.put(viewClass, skinHandler);
+        mSkinHandlerMaps.addCustomSkinHandler(viewClass, skinHandler);
     }
 
     public void addSkinHandler(ISkinHandlerMap map) {
-        if (map == null || map.get() == null) return;
-        mSkinHandlerMap.putAll(map.get());
+        if (map == null) return;
+        mSkinHandlerMaps.addSkinHandlerMap(map);
     }
 
     public void addSkinReplaceListener(SkinChangedListener listener) {
@@ -86,14 +80,7 @@ public class BasePrettySkin {
     }
 
     public ISkinHandler getSkinHandler(Class viewClass) {
-        if (viewClass == null || !View.class.isAssignableFrom(viewClass)) {
-            return null;
-        }
-        ISkinHandler skinHandler = mSkinHandlerMap.get(viewClass);
-        if (skinHandler == null) {
-            return getSkinHandler(viewClass.getSuperclass());
-        }
-        return skinHandler;
+        return mSkinHandlerMaps.get(viewClass);
     }
 
     public boolean setContextSkinable(Context context) {
@@ -159,11 +146,11 @@ public class BasePrettySkin {
     }
 
     public void setParseDefaultAttrValueEnabled(boolean enabled) {
-        this.mIsParseDefaultAttrValueEnabled = enabled;
+        this.mParseDefaultAttrValueEnabled = enabled;
     }
 
     public boolean isParseDefaultAttrValueEnabled() {
-        return mIsParseDefaultAttrValueEnabled;
+        return mParseDefaultAttrValueEnabled;
     }
 
     public synchronized SkinView getSkinView(View view) {
