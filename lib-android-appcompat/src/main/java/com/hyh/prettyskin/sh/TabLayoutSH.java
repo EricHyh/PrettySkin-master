@@ -2,6 +2,7 @@ package com.hyh.prettyskin.sh;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.TabLayout;
 import android.util.AttributeSet;
 import android.view.View;
@@ -45,12 +46,10 @@ public class TabLayoutSH extends ViewGroupSH {
     }
 
     private TypedArray mTypedArray;
-    private TypedArray mAppearanceTypedArray;
 
     public TabLayoutSH() {
         Class<TabLayout> tabLayoutClass = TabLayout.class;
     }
-
 
     @Override
     public boolean isSupportAttrName(View view, String attrName) {
@@ -62,53 +61,60 @@ public class TabLayoutSH extends ViewGroupSH {
         super.prepareParse(view, set);
         Context context = view.getContext();
         mTypedArray = context.obtainStyledAttributes(set, mAttrs, mDefStyleAttr, mDefStyleRes);
-
-
-        //styleable.TabLayout_tabTextAppearance, style.TextAppearance_Design_Tab
-        if (mTypedArray != null) {
-
-            int styleableIndex = AttrValueHelper.getStyleableIndex(mStyleableClass, mStyleableName, "tabTextAppearance");
-            if (styleableIndex != -1) {
-               /* R.style.TextAppearance_Design_Tab;
-                ViewAttrUtil.getInternalStyleAttr()
-                mTypedArray.getResourceId(styleableIndex,)*/
-            }
-
-
-
-        }
-
-       /* int[] appearanceAttrs = Reflect.from(mStyleableClass).filed("TextViewAppearance", int[].class).get(null);
-        TypedArray typedArray = context.obtainStyledAttributes(set,
-                appearanceAttrs,
-                mDefStyleAttr,
-                mDefStyleRes);
-        if (typedArray != null) {
-            Integer textAppearanceIndex = Reflect.from(mStyleableClass).filed("TextViewAppearance_textAppearance", int.class).get(null);
-            if (textAppearanceIndex != null) {
-                int appearanceId = typedArray.getResourceId(textAppearanceIndex, -1);
-                if (appearanceId != -1) {
-                    mAppearanceTypedArray = context.obtainStyledAttributes(appearanceId,
-                            Reflect.from(mStyleableClass).filed("TextAppearance", int[].class).get(null));
-                }
-            }
-            typedArray.recycle();
-        }*/
     }
 
     @Override
     public AttrValue parse(View view, AttributeSet set, String attrName) {
-        return super.parse(view, set, attrName);
+        if (mSupportAttrNames.contains(attrName)) {
+            int styleableIndex = AttrValueHelper.getStyleableIndex(mStyleableClass, mStyleableName, attrName);
+            return AttrValueHelper.getAttrValue(view, mTypedArray, styleableIndex);
+        } else {
+            return super.parse(view, set, attrName);
+        }
     }
 
     @Override
     public void finishParse() {
         super.finishParse();
-
+        if (mTypedArray != null) {
+            mTypedArray.recycle();
+            mTypedArray = null;
+        }
     }
 
     @Override
     public void replace(View view, String attrName, AttrValue attrValue) {
-        super.replace(view, attrName, attrValue);
+        if (mSupportAttrNames.contains(attrName)) {
+            TabLayout tabLayout = (TabLayout) view;
+            switch (attrName) {
+                case "tabIndicatorHeight": {
+                    tabLayout.setSelectedTabIndicatorHeight(attrValue.getTypedValue(int.class, 0));
+                    break;
+                }
+                case "tabIndicatorColor": {
+                    tabLayout.setSelectedTabIndicatorColor(attrValue.getTypedValue(int.class, 0));
+                    break;
+                }
+                case "tabIndicator": {
+                    tabLayout.setSelectedTabIndicator(attrValue.getTypedValue(Drawable.class, null));
+                    break;
+                }
+                case "tabIndicatorGravity": {
+                    tabLayout.setTabGravity(attrValue.getTypedValue(int.class, 0));
+                    break;
+                }
+                case "tabIndicatorFullWidth": {
+                    tabLayout.setTabIndicatorFullWidth(attrValue.getTypedValue(boolean.class, true));
+                    break;
+                }
+                case "tabTextAppearance": {
+                    int id = attrValue.getTypedValue(int.class, 0);
+
+                    break;
+                }
+            }
+        } else {
+            super.replace(view, attrName, attrValue);
+        }
     }
 }

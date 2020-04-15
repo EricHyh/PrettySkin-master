@@ -77,6 +77,7 @@ public class ViewAttrUtil {
         if (attrValue == null || valueClass == null) return defaultValue;
         int type = attrValue.getType();
         Object value = attrValue.getValue();
+        if (value == null) return defaultValue;
         switch (type) {
             case ValueType.TYPE_NULL: {
                 return defaultValue;
@@ -88,21 +89,24 @@ public class ViewAttrUtil {
                 return getTypedIntValue(valueClass, defaultValue, value);
             }
             case ValueType.TYPE_FLOAT: {
-                if (valueClass == float.class) {
+                if (valueClass == float.class || valueClass == Float.class) {
                     return (T) value;
-                } else {
-                    return defaultValue;
+                } else if (valueClass == int.class || valueClass == Integer.class) {
+                    if (value instanceof Float) {
+                        Integer round = Math.round((float) value);
+                        return (T) round;
+                    }
                 }
+                return defaultValue;
             }
             case ValueType.TYPE_BOOLEAN: {
-                if (valueClass == boolean.class) {
+                if (valueClass == boolean.class || valueClass == Boolean.class) {
                     return (T) value;
                 } else {
                     return defaultValue;
                 }
             }
             case ValueType.TYPE_STRING: {
-                if (value == null) return null;
                 if (valueClass == String.class) {
                     if (value instanceof CharSequence) {
                         return (T) value.toString();
@@ -316,8 +320,15 @@ public class ViewAttrUtil {
     }
 
     private static <T> T getTypedIntValue(Class<T> valueClass, T defaultValue, Object value) {
-        if (valueClass == int.class) {
+        if (valueClass == int.class || valueClass == Integer.class) {
             return (T) value;
+        } else if (valueClass == float.class || valueClass == Float.class) {
+            if (value instanceof Integer) {
+                int num = (int) value;
+                Float f = (float) num;
+                return (T) f;
+            }
+            return defaultValue;
         } else if (valueClass == PorterDuff.Mode.class) {
             int index = (int) value;
             return (T) getTintMode(index, (PorterDuff.Mode) defaultValue);
