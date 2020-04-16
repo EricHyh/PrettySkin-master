@@ -10,9 +10,14 @@ import com.hyh.prettyskin.sh.AppCompatRadioButtonSH;
 import com.hyh.prettyskin.sh.AppCompatRatingBarSH;
 import com.hyh.prettyskin.sh.AppCompatSeekBarSH;
 import com.hyh.prettyskin.sh.AppCompatTextViewSH;
+import com.hyh.prettyskin.sh.CardViewSH;
 import com.hyh.prettyskin.sh.SwipeRefreshLayoutSH;
 import com.hyh.prettyskin.sh.SwitchCompatSH;
+import com.hyh.prettyskin.sh.TabLayoutSH;
 import com.hyh.prettyskin.sh.V7ToolbarSH;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Administrator
@@ -22,9 +27,12 @@ import com.hyh.prettyskin.sh.V7ToolbarSH;
 
 public class AppCompatSkinHandlerMap implements ISkinHandlerMap {
 
+    private final Map<Class, ISkinHandler> mMap = new HashMap<>();
+
     public ISkinHandler get(Class viewClass) {
         if (viewClass == null) return null;
-        ISkinHandler skinHandler = null;
+        ISkinHandler skinHandler = mMap.get(viewClass);
+        if (skinHandler != null) return skinHandler;
         switch (viewClass.getName()) {
             case "android.support.v7.widget.AppCompatButton": {
                 skinHandler = new AppCompatButtonSH();
@@ -78,6 +86,17 @@ public class AppCompatSkinHandlerMap implements ISkinHandlerMap {
                 skinHandler = new SwipeRefreshLayoutSH();
                 break;
             }
+            case "android.support.design.widget.TabLayout": {
+                skinHandler = new TabLayoutSH();
+                break;
+            }
+            case "android.support.v7.widget.CardView": {
+                skinHandler = new CardViewSH();
+                break;
+            }
+        }
+        if (skinHandler != null) {
+            mMap.put(viewClass, skinHandler);
         }
         return skinHandler;
     }

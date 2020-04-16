@@ -39,7 +39,7 @@ public class ViewGroupSH extends ViewSH {
         mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
     }
 
-    private List<String> mSupportAttrNames = new ArrayList<>();
+    private final List<String> mSupportAttrNames = new ArrayList<>();
 
     private TypedArray mTypedArray;
 

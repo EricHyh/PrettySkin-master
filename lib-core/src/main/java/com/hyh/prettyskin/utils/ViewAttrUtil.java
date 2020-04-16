@@ -43,21 +43,16 @@ public class ViewAttrUtil {
     };
 
 
+    public static int getStyleAttr(String rClassPath, String styleName) {
+        return Reflect.from(rClassPath + "$attr").filed(styleName, int.class).get(null);
+    }
+
     public static int getAndroidStyleAttr(String styleName) {
-        return Reflect.from("android.R$attr").filed(styleName, int.class).get(null);
+        return getStyleAttr("android.R", styleName);
     }
 
     public static int getInternalStyleAttr(String styleName) {
-        return Reflect.from("com.android.internal.R$attr").filed(styleName, int.class).get(null);
-    }
-
-    public static int getSupportV7StyleAttr(String styleName) {
-        return Reflect.from("android.support.v7.appcompat.R$attr").filed(styleName, int.class).get(null);
-    }
-
-
-    public static int getAndroidXStyleAttr(String styleName) {
-        return Reflect.from("androidx.appcompat.R$attr").filed(styleName, int.class).get(null);
+        return getStyleAttr("com.android.internal.R", styleName);
     }
 
     public static boolean needsTileify(Drawable progressDrawable) {

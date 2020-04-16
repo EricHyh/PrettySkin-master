@@ -19,8 +19,8 @@ public class SkinHandlerMaps implements ISkinHandlerMap {
     private final CustomSkinHandlerMap mCustomSkinHandlerMap = new CustomSkinHandlerMap();
 
     public SkinHandlerMaps() {
-        mSkinHandlerMaps.add(new NativeSkinHandlerMap());
         mSkinHandlerMaps.add(mCustomSkinHandlerMap);
+        mSkinHandlerMaps.add(new NativeSkinHandlerMap());
     }
 
     public void addSkinHandlerMap(ISkinHandlerMap skinHandlerMap) {

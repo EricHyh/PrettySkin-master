@@ -1,7 +1,5 @@
 package com.hyh.prettyskin.sh;
 
-import com.hyh.prettyskin.sh.CheckBoxSH;
-
 /**
  * Created by Eric_He on 2018/11/8.
  */

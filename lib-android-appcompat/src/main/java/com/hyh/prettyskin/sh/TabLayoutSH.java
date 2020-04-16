@@ -1,6 +1,7 @@
 package com.hyh.prettyskin.sh;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.TabLayout;
@@ -47,12 +48,12 @@ public class TabLayoutSH extends ViewGroupSH {
         //mSupportAttrNames.add("tabPaddingTop");
         //mSupportAttrNames.add("tabPaddingEnd");
         //mSupportAttrNames.add("tabPaddingBottom");
+        //mSupportAttrNames.add("tabTextAppearance");
 
-        mSupportAttrNames.add("tabTextAppearance");
         mSupportAttrNames.add("tabTextColor");
         mSupportAttrNames.add("tabSelectedTextColor");
         mSupportAttrNames.add("tabIconTint");
-        mSupportAttrNames.add("tabIconTintMode");
+        //mSupportAttrNames.add("tabIconTintMode");
         mSupportAttrNames.add("tabRippleColor");
 
         /*mSupportAttrNames.add("tabIndicatorAnimationDuration");
@@ -69,7 +70,7 @@ public class TabLayoutSH extends ViewGroupSH {
     private TypedArray mTypedArray;
 
     public TabLayoutSH() {
-        Class<TabLayout> tabLayoutClass = TabLayout.class;
+        super(android.support.design.R.attr.tabStyle);
     }
 
     @Override
@@ -128,41 +129,49 @@ public class TabLayoutSH extends ViewGroupSH {
                     tabLayout.setTabIndicatorFullWidth(attrValue.getTypedValue(boolean.class, true));
                     break;
                 }
-                case "tabTextAppearance": {
-                    //android.support.design.R.style.TextAppearance_Design_Tab
-                    int defaultValue = Reflect.from("android.support.design.R$style")
-                            .filed("TextAppearance_Design_Tab", int.class)
-                            .get(null);
-                    int tabTextAppearance = attrValue.getTypedValue(int.class, defaultValue);
-
-
-                    Class styleableClass = Reflect.classForName("android.support.v7.appcompat.R$styleable");
-                    String styleableName = "TextAppearance";
-
-                    int styleableIndex = AttrValueHelper.getStyleableIndex(styleableClass, styleableName, "textSize");
-
-
-
-
-                    /*TypedArray ta = context.obtainStyledAttributes(tabTextAppearance, android.support.v7.appcompat.R.styleable.TextAppearance);
-
-                    try {
-                        this.tabTextSize = (float) ta.getDimensionPixelSize(android.support.v7.appcompat.R.styleable.TextAppearance_android_textSize, 0);
-                        this.tabTextColors = MaterialResources.getColorStateList(context, ta, android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor);
-                    } finally {
-                        ta.recycle();
+                case "tabTextColor": {
+                    ColorStateList tabTextColors = tabLayout.getTabTextColors();
+                    int color = attrValue.getTypedValue(int.class, 0);
+                    if (tabTextColors == null) {
+                        tabLayout.setTabTextColors(ColorStateList.valueOf(color));
+                    } else {
+                        int selectedColor = tabTextColors.getColorForState(new int[]{android.R.attr.state_selected}, color);
+                        tabLayout.setTabTextColors(color, selectedColor);
                     }
-
-                    if (a.hasValue(styleable.TabLayout_tabTextColor)) {
-                        this.tabTextColors = MaterialResources.getColorStateList(context, a, styleable.TabLayout_tabTextColor);
+                    break;
+                }
+                case "tabSelectedTextColor": {
+                    ColorStateList tabTextColors = tabLayout.getTabTextColors();
+                    int color = attrValue.getTypedValue(int.class, 0);
+                    if (tabTextColors == null) {
+                        tabLayout.setTabTextColors(color, color);
+                    } else {
+                        tabLayout.setTabTextColors(tabTextColors.getDefaultColor(), color);
                     }
-
-                    if (a.hasValue(styleable.TabLayout_tabSelectedTextColor)) {
-                        int selected = a.getColor(styleable.TabLayout_tabSelectedTextColor, 0);
-                        this.tabTextColors = createColorStateList(this.tabTextColors.getDefaultColor(), selected);
-                    }*/
-
-
+                    break;
+                }
+                case "tabIconTint": {
+                    tabLayout.setTabIconTint(attrValue.getTypedValue(ColorStateList.class, null));
+                    break;
+                }
+                case "tabRippleColor": {
+                    tabLayout.setTabRippleColor(attrValue.getTypedValue(ColorStateList.class, null));
+                    break;
+                }
+                case "tabMode": {
+                    tabLayout.setTabMode(attrValue.getTypedValue(int.class, 1));
+                    break;
+                }
+                case "tabGravity": {
+                    tabLayout.setTabGravity(attrValue.getTypedValue(int.class, 0));
+                    break;
+                }
+                case "tabInlineLabel": {
+                    tabLayout.setInlineLabel(attrValue.getTypedValue(boolean.class, false));
+                    break;
+                }
+                case "tabUnboundedRipple": {
+                    tabLayout.setUnboundedRipple(attrValue.getTypedValue(boolean.class, false));
                     break;
                 }
             }
