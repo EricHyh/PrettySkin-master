@@ -3,7 +3,7 @@ package com.hyh.prettyskin.sh;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.design.widget.NavigationView;
+import android.support.design.widget.BottomNavigationView;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -13,11 +13,11 @@ import com.hyh.prettyskin.utils.AttrValueHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NavigationViewSH extends ViewGroupSH {
+public class BottomNavigationViewSH extends ViewGroupSH {
 
     private final Class mStyleableClass = android.support.design.R.styleable.class;
 
-    private final String mStyleableName = "NavigationView";
+    private final String mStyleableName = "BottomNavigationView";
 
     private final List<String> mSupportAttrNames = new ArrayList<>();
 
@@ -25,21 +25,25 @@ public class NavigationViewSH extends ViewGroupSH {
 
     {
         mSupportAttrNames.add("itemIconTint");
-        //mSupportAttrNames.add("itemTextAppearance");
+        mSupportAttrNames.add("itemIconSize");
+        //mSupportAttrNames.add("itemTextAppearanceActive");
         mSupportAttrNames.add("itemTextColor");
+        mSupportAttrNames.add("labelVisibilityMode");
+        mSupportAttrNames.add("itemHorizontalTranslationEnabled");
         mSupportAttrNames.add("itemBackground");
-        mSupportAttrNames.add("itemIconPadding");
     }
 
-    public NavigationViewSH() {
-        super(android.support.design.R.attr.navigationViewStyle);
+
+    public BottomNavigationViewSH() {
+        super(android.support.design.R.attr.bottomNavigationStyle);
+        Class<BottomNavigationView> bottomNavigationViewClass = BottomNavigationView.class;
     }
 
-    public NavigationViewSH(int defStyleAttr) {
+    public BottomNavigationViewSH(int defStyleAttr) {
         super(defStyleAttr);
     }
 
-    public NavigationViewSH(int defStyleAttr, int defStyleRes) {
+    public BottomNavigationViewSH(int defStyleAttr, int defStyleRes) {
         super(defStyleAttr, defStyleRes);
     }
 
@@ -53,9 +57,9 @@ public class NavigationViewSH extends ViewGroupSH {
         super.prepareParse(view, set);
         mTypedArray = view.getContext().obtainStyledAttributes(
                 set,
-                android.support.design.R.styleable.NavigationView,
+                android.support.design.R.styleable.BottomNavigationView,
                 mDefStyleAttr,
-                android.support.design.R.style.Widget_Design_NavigationView);
+                android.support.design.R.style.Widget_Design_BottomNavigationView);
     }
 
     @Override
@@ -80,24 +84,33 @@ public class NavigationViewSH extends ViewGroupSH {
     @Override
     public void replace(View view, String attrName, AttrValue attrValue) {
         if (mSupportAttrNames.contains(attrName)) {
-            NavigationView navigationView = (NavigationView) view;
+            BottomNavigationView bottomNavigationView = (BottomNavigationView) view;
             switch (attrName) {
                 case "itemIconTint": {
-                    navigationView.setItemIconTintList(
-                            attrValue.getTypedValue(ColorStateList.class, null));
+                    bottomNavigationView
+                            .setItemIconTintList(attrValue.getTypedValue(ColorStateList.class, null));
                     break;
                 }
-                case "itemTextColor": {
-                    navigationView.setItemTextColor(
-                            attrValue.getTypedValue(ColorStateList.class, null));
+                case "itemIconSize": {
+                    int size = view.getResources().getDimensionPixelSize(
+                            android.support.design.R.dimen.design_bottom_navigation_icon_size);
+                    bottomNavigationView
+                            .setItemIconSize(attrValue.getTypedValue(int.class, size));
+                    break;
+                }
+                case "labelVisibilityMode": {
+                    bottomNavigationView
+                            .setLabelVisibilityMode(attrValue.getTypedValue(int.class, -1));
+                    break;
+                }
+                case "itemHorizontalTranslationEnabled": {
+                    bottomNavigationView
+                            .setItemHorizontalTranslationEnabled(attrValue.getTypedValue(boolean.class, true));
                     break;
                 }
                 case "itemBackground": {
-                    navigationView.setItemBackground(attrValue.getTypedValue(Drawable.class, null));
-                    break;
-                }
-                case "itemIconPadding": {
-                    navigationView.setItemIconPadding(attrValue.getTypedValue(int.class, 0));
+                    bottomNavigationView
+                            .setItemBackground(attrValue.getTypedValue(Drawable.class, null));
                     break;
                 }
             }
