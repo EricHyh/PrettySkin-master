@@ -36,7 +36,6 @@ public class BottomNavigationViewSH extends ViewGroupSH {
 
     public BottomNavigationViewSH() {
         super(android.support.design.R.attr.bottomNavigationStyle);
-        Class<BottomNavigationView> bottomNavigationViewClass = BottomNavigationView.class;
     }
 
     public BottomNavigationViewSH(int defStyleAttr) {

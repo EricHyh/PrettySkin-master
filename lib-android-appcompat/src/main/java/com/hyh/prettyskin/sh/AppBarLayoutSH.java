@@ -30,7 +30,6 @@ public class AppBarLayoutSH extends ViewGroupSH {
     private TypedArray mTypedArray;
 
     public AppBarLayoutSH() {
-        Class<AppBarLayout> appBarLayoutClass = AppBarLayout.class;
     }
 
     public AppBarLayoutSH(int defStyleAttr) {

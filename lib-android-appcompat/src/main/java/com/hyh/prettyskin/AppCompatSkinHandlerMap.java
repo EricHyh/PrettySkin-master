@@ -1,19 +1,27 @@
 package com.hyh.prettyskin;
 
 import com.hyh.prettyskin.sh.ActionMenuItemViewSH;
+import com.hyh.prettyskin.sh.AppBarLayoutSH;
 import com.hyh.prettyskin.sh.AppCompatButtonSH;
 import com.hyh.prettyskin.sh.AppCompatCheckBoxSH;
 import com.hyh.prettyskin.sh.AppCompatCheckedTextViewSH;
+import com.hyh.prettyskin.sh.AppCompatEditTextSH;
 import com.hyh.prettyskin.sh.AppCompatImageButtonSH;
 import com.hyh.prettyskin.sh.AppCompatImageViewSH;
 import com.hyh.prettyskin.sh.AppCompatRadioButtonSH;
 import com.hyh.prettyskin.sh.AppCompatRatingBarSH;
 import com.hyh.prettyskin.sh.AppCompatSeekBarSH;
 import com.hyh.prettyskin.sh.AppCompatTextViewSH;
+import com.hyh.prettyskin.sh.BottomNavigationViewSH;
 import com.hyh.prettyskin.sh.CardViewSH;
+import com.hyh.prettyskin.sh.CollapsingToolbarLayoutSH;
+import com.hyh.prettyskin.sh.FloatingActionButtonSH;
+import com.hyh.prettyskin.sh.NavigationViewSH;
 import com.hyh.prettyskin.sh.SwipeRefreshLayoutSH;
 import com.hyh.prettyskin.sh.SwitchCompatSH;
 import com.hyh.prettyskin.sh.TabLayoutSH;
+import com.hyh.prettyskin.sh.TextInputEditTextSH;
+import com.hyh.prettyskin.sh.TextInputLayoutSH;
 import com.hyh.prettyskin.sh.V7ToolbarSH;
 
 import java.util.HashMap;
@@ -48,6 +56,10 @@ public class AppCompatSkinHandlerMap implements ISkinHandlerMap {
             }
             case "android.support.v7.widget.AppCompatCheckedTextView": {
                 skinHandler = new AppCompatCheckedTextViewSH();
+                break;
+            }
+            case "android.support.v7.widget.AppCompatEditText": {
+                skinHandler = new AppCompatEditTextSH();
                 break;
             }
             case "android.support.v7.widget.AppCompatImageButton": {
@@ -86,12 +98,40 @@ public class AppCompatSkinHandlerMap implements ISkinHandlerMap {
                 skinHandler = new SwipeRefreshLayoutSH();
                 break;
             }
+            case "android.support.v7.widget.CardView": {
+                skinHandler = new CardViewSH();
+                break;
+            }
+            case "android.support.design.widget.AppBarLayout": {
+                skinHandler = new AppBarLayoutSH();
+                break;
+            }
+            case "android.support.design.widget.NavigationView": {
+                skinHandler = new NavigationViewSH();
+                break;
+            }
+            case "android.support.design.widget.BottomNavigationView": {
+                skinHandler = new BottomNavigationViewSH();
+                break;
+            }
             case "android.support.design.widget.TabLayout": {
                 skinHandler = new TabLayoutSH();
                 break;
             }
-            case "android.support.v7.widget.CardView": {
-                skinHandler = new CardViewSH();
+            case "android.support.design.widget.CollapsingToolbarLayout": {
+                skinHandler = new CollapsingToolbarLayoutSH();
+                break;
+            }
+            case "android.support.design.widget.FloatingActionButton": {
+                skinHandler = new FloatingActionButtonSH();
+                break;
+            }
+            case "android.support.design.widget.TextInputEditText": {
+                skinHandler = new TextInputEditTextSH();
+                break;
+            }
+            case "android.support.design.widget.TextInputLayout": {
+                skinHandler = new TextInputLayoutSH();
                 break;
             }
         }
