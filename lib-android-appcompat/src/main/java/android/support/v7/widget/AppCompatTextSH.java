@@ -186,22 +186,38 @@ public class AppCompatTextSH implements ISkinHandler {
         switch (attrName) {
             case "drawableLeft": {
                 Drawable[] drawables = textView.getCompoundDrawables();
-                textView.setCompoundDrawables(attrValue.getTypedValue(Drawable.class,null),);
+                textView.setCompoundDrawables(
+                        attrValue.getTypedValue(Drawable.class, null),
+                        drawables[1],
+                        drawables[2],
+                        drawables[3]);
                 break;
             }
             case "drawableTop": {
                 Drawable[] drawables = textView.getCompoundDrawables();
-                attrValue = new AttrValue(view.getContext(), ValueType.TYPE_DRAWABLE, drawables[1]);
+                textView.setCompoundDrawables(
+                        drawables[0],
+                        attrValue.getTypedValue(Drawable.class, null),
+                        drawables[2],
+                        drawables[3]);
                 break;
             }
             case "drawableRight": {
                 Drawable[] drawables = textView.getCompoundDrawables();
-                attrValue = new AttrValue(view.getContext(), ValueType.TYPE_DRAWABLE, drawables[2]);
+                textView.setCompoundDrawables(
+                        drawables[0],
+                        drawables[1],
+                        attrValue.getTypedValue(Drawable.class, null),
+                        drawables[3]);
                 break;
             }
             case "drawableBottom": {
                 Drawable[] drawables = textView.getCompoundDrawables();
-                attrValue = new AttrValue(view.getContext(), ValueType.TYPE_DRAWABLE, drawables[3]);
+                textView.setCompoundDrawables(
+                        drawables[0],
+                        drawables[1],
+                        drawables[2],
+                        attrValue.getTypedValue(Drawable.class, null));
                 break;
             }
             case "textColor": {
