@@ -39,8 +39,8 @@ public class AppCompatCompoundButtonSH implements ISkinHandler {
         return (view instanceof TintableCompoundButton
                 && view instanceof CompoundButton)
                 && (TextUtils.equals(attrName, "button"))
-                || (TextUtils.equals(attrName, "app:buttonTint"))
-                || (TextUtils.equals(attrName, "app:buttonTintMode"));
+                || (TextUtils.equals(attrName, "buttonTint"))
+                || (TextUtils.equals(attrName, "buttonTintMode"));
     }
 
     @Override
@@ -66,12 +66,12 @@ public class AppCompatCompoundButtonSH implements ISkinHandler {
                     }
                     break;
                 }
-                case "app:buttonTint": {
+                case "buttonTint": {
                     ColorStateList colorStateList = mTypedArray.getColorStateList(R.styleable.CompoundButton_buttonTint);
                     attrValue = new AttrValue(view.getContext(), ValueType.TYPE_COLOR_STATE_LIST, colorStateList);
                     break;
                 }
-                case "app:buttonTintMode": {
+                case "buttonTintMode": {
                     PorterDuff.Mode tintMode = DrawableUtils.parseTintMode(
                             mTypedArray.getInt(R.styleable.CompoundButton_buttonTintMode, -1), null);
                     attrValue = new AttrValue(view.getContext(), ValueType.TYPE_OBJECT, tintMode);
@@ -111,12 +111,12 @@ public class AppCompatCompoundButtonSH implements ISkinHandler {
                 }
                 break;
             }
-            case "app:buttonTint": {
+            case "buttonTint": {
                 ColorStateList buttonTint = attrValue.getTypedValue(ColorStateList.class, null);
                 CompoundButtonCompat.setButtonTintList(compoundButton, buttonTint);
                 break;
             }
-            case "app:buttonTintMode": {
+            case "buttonTintMode": {
                 PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                 CompoundButtonCompat.setButtonTintMode(compoundButton, tintMode);
                 break;

@@ -36,8 +36,8 @@ public class AppCompatBackgroundSH implements ISkinHandler {
     public boolean isSupportAttrName(View view, String attrName) {
         return view instanceof TintableBackgroundView &&
                 (TextUtils.equals(attrName, "background")
-                        || TextUtils.equals(attrName, "app:backgroundTint")
-                        || TextUtils.equals(attrName, "app:backgroundTintMode"));
+                        || TextUtils.equals(attrName, "backgroundTint")
+                        || TextUtils.equals(attrName, "backgroundTintMode"));
     }
 
     @Override
@@ -57,7 +57,7 @@ public class AppCompatBackgroundSH implements ISkinHandler {
                 }
                 break;
             }
-            case "app:backgroundTint": {
+            case "backgroundTint": {
                 ColorStateList backgroundTint = null;
                 if (view instanceof TintableBackgroundView) {
                     TintableBackgroundView tintableBackgroundView = (TintableBackgroundView) view;
@@ -74,7 +74,7 @@ public class AppCompatBackgroundSH implements ISkinHandler {
                 }
                 break;
             }
-            case "app:backgroundTintMode": {
+            case "backgroundTintMode": {
                 PorterDuff.Mode backgroundTintMode = null;
                 if (view instanceof TintableBackgroundView) {
                     TintableBackgroundView tintableBackgroundView = (TintableBackgroundView) view;
@@ -133,7 +133,7 @@ public class AppCompatBackgroundSH implements ISkinHandler {
                 }
                 break;
             }
-            case "app:backgroundTint": {
+            case "backgroundTint": {
                 if (view instanceof TintableBackgroundView) {
                     ColorStateList backgroundTint = attrValue.getTypedValue(ColorStateList.class, null);
                     TintableBackgroundView tintableBackgroundView = (TintableBackgroundView) view;
@@ -141,7 +141,7 @@ public class AppCompatBackgroundSH implements ISkinHandler {
                 }
                 break;
             }
-            case "app:backgroundTintMode": {
+            case "backgroundTintMode": {
                 if (view instanceof TintableBackgroundView) {
                     PorterDuff.Mode tintMode = attrValue.getTypedValue(PorterDuff.Mode.class, null);
                     TintableBackgroundView tintableBackgroundView = (TintableBackgroundView) view;

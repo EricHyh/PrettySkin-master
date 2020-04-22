@@ -7,6 +7,7 @@ import android.os.Build;
 import android.support.v4.widget.AutoSizeableTextView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
@@ -178,6 +179,7 @@ public class AppCompatTextSH implements ISkinHandler {
     public void finishParse() {
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void replace(View view, String attrName, AttrValue attrValue) {
         TextView textView = (TextView) view;
@@ -221,51 +223,111 @@ public class AppCompatTextSH implements ISkinHandler {
                 break;
             }
             case "textColor": {
-
+                textView.setTextColor(attrValue.getTypedValue(ColorStateList.class, null));
                 break;
             }
             case "textColorHint": {
-
+                textView.setHintTextColor(attrValue.getTypedValue(ColorStateList.class, null));
                 break;
             }
             case "textColorLink": {
-
+                textView.setLinkTextColor(attrValue.getTypedValue(ColorStateList.class, null));
                 break;
             }
             case "textSize": {
-
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, attrValue.getTypedValue(float.class, 0.0f));
                 break;
             }
             case "autoSizeTextType": {
-
+                autoSizeableTextView.setAutoSizeTextTypeWithDefaults(attrValue.getTypedValue(int.class, 0));
                 break;
             }
             case "autoSizeStepGranularity": {
-
+                int autoSizeStepGranularity = attrValue.getTypedValue(int.class, -1);
+                if (autoSizeStepGranularity > 0) {
+                    int autoSizeMinTextSize = autoSizeableTextView.getAutoSizeMinTextSize();
+                    int autoSizeMaxTextSize = autoSizeableTextView.getAutoSizeMaxTextSize();
+                    autoSizeableTextView.setAutoSizeTextTypeUniformWithConfiguration(
+                            autoSizeMinTextSize,
+                            autoSizeMaxTextSize,
+                            autoSizeStepGranularity,
+                            TypedValue.COMPLEX_UNIT_PX);
+                }
                 break;
             }
             case "autoSizeMinTextSize": {
-
+                int autoSizeMinTextSize = attrValue.getTypedValue(int.class, -1);
+                if (autoSizeMinTextSize > 0) {
+                    int autoSizeMaxTextSize = autoSizeableTextView.getAutoSizeMaxTextSize();
+                    int autoSizeStepGranularity = autoSizeableTextView.getAutoSizeStepGranularity();
+                    autoSizeableTextView.setAutoSizeTextTypeUniformWithConfiguration(
+                            autoSizeMinTextSize,
+                            autoSizeMaxTextSize,
+                            autoSizeStepGranularity,
+                            TypedValue.COMPLEX_UNIT_PX);
+                }
                 break;
             }
             case "autoSizeMaxTextSize": {
-
+                int autoSizeMaxTextSize = attrValue.getTypedValue(int.class, -1);
+                if (autoSizeMaxTextSize > 0) {
+                    int autoSizeMinTextSize = autoSizeableTextView.getAutoSizeMinTextSize();
+                    int autoSizeStepGranularity = autoSizeableTextView.getAutoSizeStepGranularity();
+                    autoSizeableTextView.setAutoSizeTextTypeUniformWithConfiguration(
+                            autoSizeMinTextSize,
+                            autoSizeMaxTextSize,
+                            autoSizeStepGranularity,
+                            TypedValue.COMPLEX_UNIT_PX);
+                }
                 break;
             }
             case "autoSizePresetSizes": {
-
+                int[] presetSizes = attrValue.getTypedValue(int[].class, null);
+                if (presetSizes != null) {
+                    autoSizeableTextView.setAutoSizeTextTypeUniformWithPresetSizes(presetSizes, TypedValue.COMPLEX_UNIT_PX);
+                }
                 break;
             }
             case "firstBaselineToTopHeight": {
-
+                int firstBaselineToTopHeight = attrValue.getTypedValue(int.class, -1);
+                if (firstBaselineToTopHeight > 0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        textView.setFirstBaselineToTopHeight(firstBaselineToTopHeight);
+                    } else {
+                        Reflect.from(view.getClass())
+                                .method("setFirstBaselineToTopHeight")
+                                .param(int.class, firstBaselineToTopHeight)
+                                .invoke(view);
+                    }
+                }
                 break;
             }
             case "lastBaselineToBottomHeight": {
-
+                int lastBaselineToBottomHeight = attrValue.getTypedValue(int.class, -1);
+                if (lastBaselineToBottomHeight > 0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        textView.setLastBaselineToBottomHeight(lastBaselineToBottomHeight);
+                    } else {
+                        Reflect.from(view.getClass())
+                                .method("setLastBaselineToBottomHeight")
+                                .param(int.class, lastBaselineToBottomHeight)
+                                .invoke(view);
+                    }
+                }
                 break;
             }
             case "lineHeight": {
-
+                int lineHeight = attrValue.getTypedValue(int.class, -1);
+                if (lineHeight > 0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        textView.setLineHeight(lineHeight);
+                    } else {
+                        Reflect.from(view.getClass())
+                                .method("setLineHeight")
+                                .param(int.class, lineHeight)
+                                .invoke(view);
+                    }
+                }
                 break;
             }
         }

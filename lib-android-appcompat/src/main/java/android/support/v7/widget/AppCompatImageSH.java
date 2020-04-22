@@ -14,9 +14,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.hyh.prettyskin.AttrValue;
-import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.ISkinHandler;
-import com.hyh.prettyskin.utils.ViewAttrUtil;
+import com.hyh.prettyskin.ValueType;
 
 /**
  * @author Administrator
@@ -37,8 +36,8 @@ public class AppCompatImageSH implements ISkinHandler {
         return view instanceof ImageView
                 && view instanceof TintableImageSourceView
                 && (TextUtils.equals(attrName, "srcCompat")
-                || TextUtils.equals(attrName, "app:tint")
-                || TextUtils.equals(attrName, "app:tintMode"));
+                || TextUtils.equals(attrName, "tint")
+                || TextUtils.equals(attrName, "tintMode"));
     }
 
     @Override
@@ -59,7 +58,7 @@ public class AppCompatImageSH implements ISkinHandler {
                 }
                 break;
             }
-            case "app:tint": {
+            case "tint": {
                 if (view instanceof TintableImageSourceView) {
                     TintableImageSourceView tintableImageSourceView = (TintableImageSourceView) view;
                     ColorStateList supportImageTintList = tintableImageSourceView.getSupportImageTintList();
@@ -69,7 +68,7 @@ public class AppCompatImageSH implements ISkinHandler {
                 }
                 break;
             }
-            case "app:tintMode": {
+            case "tintMode": {
                 if (view instanceof TintableImageSourceView) {
                     TintableImageSourceView tintableImageSourceView = (TintableImageSourceView) view;
                     PorterDuff.Mode supportBackgroundTintMode = tintableImageSourceView.getSupportImageTintMode();

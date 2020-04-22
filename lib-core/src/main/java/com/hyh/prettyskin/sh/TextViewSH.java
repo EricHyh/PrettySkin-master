@@ -642,27 +642,27 @@ public class TextViewSH extends ViewSH {
                 }
                 case "firstBaselineToTopHeight": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        int value = attrValue.getTypedValue(int.class, -1);
-                        if (value > 0) {
-                            textView.setFirstBaselineToTopHeight(value);
+                        int firstBaselineToTopHeight = attrValue.getTypedValue(int.class, -1);
+                        if (firstBaselineToTopHeight > 0) {
+                            textView.setFirstBaselineToTopHeight(firstBaselineToTopHeight);
                         }
                     }
                     break;
                 }
                 case "lastBaselineToBottomHeight": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        int value = attrValue.getTypedValue(int.class, -1);
-                        if (value > 0) {
-                            textView.setLastBaselineToBottomHeight(value);
+                        int lastBaselineToBottomHeight = attrValue.getTypedValue(int.class, -1);
+                        if (lastBaselineToBottomHeight > 0) {
+                            textView.setLastBaselineToBottomHeight(lastBaselineToBottomHeight);
                         }
                     }
                     break;
                 }
                 case "lineHeight": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        int value = attrValue.getTypedValue(int.class, -1);
-                        if (value > 0) {
-                            textView.setLineHeight(value);
+                        int lineHeight = attrValue.getTypedValue(int.class, -1);
+                        if (lineHeight > 0) {
+                            textView.setLineHeight(lineHeight);
                         }
                     }
                     break;
