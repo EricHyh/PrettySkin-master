@@ -120,15 +120,7 @@ public class AppCompatBackgroundSH implements ISkinHandler {
                         view.setBackgroundColor(color);
                         break;
                     }
-                    case ValueType.TYPE_DRAWABLE: {
-                        Drawable background = attrValue.getTypedValue(Drawable.class, null);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            view.setBackground(background);
-                        } else {
-                            view.setBackgroundDrawable(background);
-                        }
-                        break;
-                    }
+                    case ValueType.TYPE_DRAWABLE:
                     case ValueType.TYPE_REFERENCE: {
                         Drawable background = attrValue.getTypedValue(Drawable.class, null);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

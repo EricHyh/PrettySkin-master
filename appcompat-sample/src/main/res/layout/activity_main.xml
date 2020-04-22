@@ -11,6 +11,11 @@
     skin:skin_attrs="background=content_bg_color"
     tools:ignore="MissingPrefix">
 
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:autoSizeMaxTextSize=""/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

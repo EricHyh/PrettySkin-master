@@ -73,8 +73,8 @@ public class TextViewSH extends ViewSH {
         mSupportAttrNames.add("drawablePadding");
         mSupportAttrNames.add("maxLines");
         mSupportAttrNames.add("maxHeight");
-        //mSupportAttrNames.add("lines");
-        //mSupportAttrNames.add("height");
+        mSupportAttrNames.add("lines");
+        mSupportAttrNames.add("height");
         mSupportAttrNames.add("minLines");
         mSupportAttrNames.add("minHeight");
         mSupportAttrNames.add("maxEms");
@@ -107,6 +107,18 @@ public class TextViewSH extends ViewSH {
         mSupportAttrNames.add("textSize");
         mSupportAttrNames.add("typeface");
         mSupportAttrNames.add("textStyle");
+
+        //Android-26 新增
+        mSupportAttrNames.add("autoSizeTextType");
+        mSupportAttrNames.add("autoSizeMinTextSize");
+        mSupportAttrNames.add("autoSizeMaxTextSize");
+        mSupportAttrNames.add("autoSizeStepGranularity");
+        mSupportAttrNames.add("autoSizePresetSizes");
+
+        //Android-28 新增
+        mSupportAttrNames.add("firstBaselineToTopHeight");
+        mSupportAttrNames.add("lastBaselineToBottomHeight");
+        mSupportAttrNames.add("lineHeight");
     }
 
 
@@ -203,42 +215,18 @@ public class TextViewSH extends ViewSH {
                     }
                     break;
                 }
-                case "editable": {
-                    //TODO 暂不实现
-                    break;
-                }
-                case "inputMethod": {
-                    //TODO 暂不实现
-                    break;
-                }
-                case "numeric": {
-                    //TODO 暂不实现
-                    break;
-                }
-                case "digits": {
-                    //TODO 暂不实现
-                    break;
-                }
-                case "phoneNumber": {
-                    //TODO 暂不实现
-                    break;
-                }
-                case "autoText": {
-                    //TODO 暂不实现
-                    break;
-                }
-                case "capitalize": {
-                    //TODO 暂不实现
-                    break;
-                }
-                case "bufferType": {
-                    //TODO 暂不实现
-                    break;
-                }
+                /*case "editable":
+                case "inputMethod":
+                case "numeric":
+                case "digits":
+                case "phoneNumber":
+                case "autoText":
+                case "capitalize":
+                case "bufferType":
                 case "selectAllOnFocus": {
-                    //TODO 暂不实现
+                    //暂不实现
                     break;
-                }
+                }*/
                 case "autoLink": {
                     int autoLink = attrValue.getTypedValue(int.class, 0);
                     textView.setAutoLinkMask(autoLink);
@@ -285,14 +273,11 @@ public class TextViewSH extends ViewSH {
                     textView.setCompoundDrawables(drawableLeft, drawableTop, drawableRight, drawableBottom);
                     break;
                 }
-                case "drawableStart": {
-                    //TODO 暂不实现
-                    break;
-                }
+                /*case "drawableStart":
                 case "drawableEnd": {
-                    //TODO 暂不实现
+                    //暂不实现
                     break;
-                }
+                }*/
                 case "drawableTint": {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         ColorStateList tint = attrValue.getTypedValue(ColorStateList.class, null);
@@ -323,11 +308,11 @@ public class TextViewSH extends ViewSH {
                     break;
                 }
                 case "lines": {
-                    //TODO 暂未实现
+                    textView.setLines(attrValue.getTypedValue(int.class, -1));
                     break;
                 }
                 case "height": {
-                    //TODO 暂未实现
+                    textView.setHeight(attrValue.getTypedValue(int.class, -1));
                     break;
                 }
                 case "minLines": {
@@ -351,11 +336,11 @@ public class TextViewSH extends ViewSH {
                     break;
                 }
                 case "ems": {
-                    //TODO 暂未实现
+                    textView.setEms(attrValue.getTypedValue(int.class, -1));
                     break;
                 }
                 case "width": {
-                    //TODO 暂未实现
+                    textView.setWidth(attrValue.getTypedValue(int.class, -1));
                     break;
                 }
                 case "minEms": {
@@ -593,6 +578,93 @@ public class TextViewSH extends ViewSH {
                 case "textStyle": {
                     int textStyle = attrValue.getTypedValue(int.class, -1);
                     textView.setTypeface(textView.getTypeface(), textStyle);
+                    break;
+                }
+                case "autoSizeTextType": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        textView.setAutoSizeTextTypeWithDefaults(attrValue.getTypedValue(int.class, TextView.AUTO_SIZE_TEXT_TYPE_NONE));
+                    }
+                    break;
+                }
+                case "autoSizeMinTextSize": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        int autoSizeMinTextSize = attrValue.getTypedValue(int.class, -1);
+                        if (autoSizeMinTextSize > 0) {
+                            int autoSizeMaxTextSize = textView.getAutoSizeMaxTextSize();
+                            int autoSizeStepGranularity = textView.getAutoSizeStepGranularity();
+                            textView.setAutoSizeTextTypeUniformWithConfiguration(
+                                    autoSizeMinTextSize,
+                                    autoSizeMaxTextSize,
+                                    autoSizeStepGranularity,
+                                    TypedValue.COMPLEX_UNIT_PX);
+                        }
+                    }
+                    break;
+                }
+                case "autoSizeMaxTextSize": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        int autoSizeMaxTextSize = attrValue.getTypedValue(int.class, -1);
+                        if (autoSizeMaxTextSize > 0) {
+                            int autoSizeMinTextSize = textView.getAutoSizeMinTextSize();
+                            int autoSizeStepGranularity = textView.getAutoSizeStepGranularity();
+                            textView.setAutoSizeTextTypeUniformWithConfiguration(
+                                    autoSizeMinTextSize,
+                                    autoSizeMaxTextSize,
+                                    autoSizeStepGranularity,
+                                    TypedValue.COMPLEX_UNIT_PX);
+                        }
+                    }
+                    break;
+                }
+                case "autoSizeStepGranularity": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        int autoSizeStepGranularity = attrValue.getTypedValue(int.class, -1);
+                        if (autoSizeStepGranularity > 0) {
+                            int autoSizeMinTextSize = textView.getAutoSizeMinTextSize();
+                            int autoSizeMaxTextSize = textView.getAutoSizeMaxTextSize();
+                            textView.setAutoSizeTextTypeUniformWithConfiguration(
+                                    autoSizeMinTextSize,
+                                    autoSizeMaxTextSize,
+                                    autoSizeStepGranularity,
+                                    TypedValue.COMPLEX_UNIT_PX);
+                        }
+                    }
+                    break;
+                }
+                case "autoSizePresetSizes": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        int[] presetSizes = attrValue.getTypedValue(int[].class, null);
+                        if (presetSizes != null) {
+                            textView.setAutoSizeTextTypeUniformWithPresetSizes(presetSizes, TypedValue.COMPLEX_UNIT_PX);
+                        }
+                    }
+                    break;
+                }
+                case "firstBaselineToTopHeight": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        int value = attrValue.getTypedValue(int.class, -1);
+                        if (value > 0) {
+                            textView.setFirstBaselineToTopHeight(value);
+                        }
+                    }
+                    break;
+                }
+                case "lastBaselineToBottomHeight": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        int value = attrValue.getTypedValue(int.class, -1);
+                        if (value > 0) {
+                            textView.setLastBaselineToBottomHeight(value);
+                        }
+                    }
+                    break;
+                }
+                case "lineHeight": {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        int value = attrValue.getTypedValue(int.class, -1);
+                        if (value > 0) {
+                            textView.setLineHeight(value);
+                        }
+                    }
                     break;
                 }
             }
