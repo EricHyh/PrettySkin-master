@@ -33,11 +33,12 @@ public class AppCompatImageSH implements ISkinHandler {
 
     @Override
     public boolean isSupportAttrName(View view, String attrName) {
-        return view instanceof ImageView
-                && view instanceof TintableImageSourceView
-                && (TextUtils.equals(attrName, "srcCompat")
-                || TextUtils.equals(attrName, "tint")
-                || TextUtils.equals(attrName, "tintMode"));
+        return view instanceof ImageView && view instanceof TintableImageSourceView &&
+                (
+                        TextUtils.equals(attrName, "srcCompat")
+                                || TextUtils.equals(attrName, "tint")
+                                || TextUtils.equals(attrName, "tintMode")
+                );
     }
 
     @Override

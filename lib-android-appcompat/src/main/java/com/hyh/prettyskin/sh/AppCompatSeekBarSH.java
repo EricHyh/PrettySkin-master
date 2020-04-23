@@ -1,13 +1,13 @@
 package com.hyh.prettyskin.sh;
 
-import com.hyh.prettyskin.sh.SeekBarSH;
+import android.annotation.SuppressLint;
 
 /**
  * @author Administrator
  * @description
  * @data 2018/11/6
  */
-
+@SuppressLint("RestrictedApi")
 public class AppCompatSeekBarSH extends SeekBarSH {
 
     public AppCompatSeekBarSH() {

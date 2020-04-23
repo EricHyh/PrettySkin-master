@@ -36,11 +36,12 @@ public class AppCompatCompoundButtonSH implements ISkinHandler {
 
     @Override
     public boolean isSupportAttrName(View view, String attrName) {
-        return (view instanceof TintableCompoundButton
-                && view instanceof CompoundButton)
-                && (TextUtils.equals(attrName, "button"))
-                || (TextUtils.equals(attrName, "buttonTint"))
-                || (TextUtils.equals(attrName, "buttonTintMode"));
+        return (view instanceof TintableCompoundButton && view instanceof CompoundButton) &&
+                (
+                        TextUtils.equals(attrName, "button")
+                                || TextUtils.equals(attrName, "buttonTint")
+                                || TextUtils.equals(attrName, "buttonTintMode")
+                );
     }
 
     @Override

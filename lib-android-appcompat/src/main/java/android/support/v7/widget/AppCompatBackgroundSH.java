@@ -35,9 +35,11 @@ public class AppCompatBackgroundSH implements ISkinHandler {
     @Override
     public boolean isSupportAttrName(View view, String attrName) {
         return view instanceof TintableBackgroundView &&
-                (TextUtils.equals(attrName, "background")
-                        || TextUtils.equals(attrName, "backgroundTint")
-                        || TextUtils.equals(attrName, "backgroundTintMode"));
+                (
+                        TextUtils.equals(attrName, "background")
+                                || TextUtils.equals(attrName, "backgroundTint")
+                                || TextUtils.equals(attrName, "backgroundTintMode")
+                );
     }
 
     @Override
