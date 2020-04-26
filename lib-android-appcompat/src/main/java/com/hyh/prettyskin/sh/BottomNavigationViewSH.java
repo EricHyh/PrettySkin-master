@@ -1,5 +1,6 @@
 package com.hyh.prettyskin.sh;
 
+import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -80,6 +81,7 @@ public class BottomNavigationViewSH extends ViewGroupSH {
         }
     }
 
+    @SuppressLint("PrivateResource")
     @Override
     public void replace(View view, String attrName, AttrValue attrValue) {
         if (mSupportAttrNames.contains(attrName)) {

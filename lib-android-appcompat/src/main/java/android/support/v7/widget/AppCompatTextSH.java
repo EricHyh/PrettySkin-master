@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v4.widget.AutoSizeableTextView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -61,10 +60,7 @@ public class AppCompatTextSH implements ISkinHandler {
     @Override
     public AttrValue parse(View view, AttributeSet set, String attrName) {
         AttrValue attrValue = null;
-
         TextView textView = (TextView) view;
-        AutoSizeableTextView autoSizeableTextView = (AutoSizeableTextView) view;
-
         switch (attrName) {
             case "drawableLeft": {
                 Drawable[] drawables = textView.getCompoundDrawables();
