@@ -15,20 +15,18 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        app:background="?android:attr/selectableItemBackground"
+        android:background="?attr/item_bg_color"
+        app:background="?attr/item_bg_color"
+        app:cardCornerRadius="0dp"
         app:cardElevation="1dp"
-        tools:layout_marginBottom="5dp"
-        tools:layout_marginLeft="5dp"
-        tools:layout_marginRight="5dp"
-        tools:layout_marginTop="5dp">
+        skin:skin_attrs="background=item_bg_color">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/content_bg_color"
+            android:background="?attr/item_bg_color"
             android:padding="8dp"
-            skin:skin_attrs="background=content_bg_color">
+            skin:skin_attrs="background=item_bg_color">
 
             <ImageView
                 android:id="@+id/iv_project_image"

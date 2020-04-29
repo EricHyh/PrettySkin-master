@@ -1,5 +1,7 @@
 package com.hyh.prettyskin;
 
+import android.support.design.internal.FlowLayoutSH;
+
 import com.hyh.prettyskin.sh.ActionMenuItemViewSH;
 import com.hyh.prettyskin.sh.AppBarLayoutSH;
 import com.hyh.prettyskin.sh.AppCompatButtonSH;
@@ -12,10 +14,16 @@ import com.hyh.prettyskin.sh.AppCompatRadioButtonSH;
 import com.hyh.prettyskin.sh.AppCompatRatingBarSH;
 import com.hyh.prettyskin.sh.AppCompatSeekBarSH;
 import com.hyh.prettyskin.sh.AppCompatTextViewSH;
+import com.hyh.prettyskin.sh.BottomAppBarSH;
 import com.hyh.prettyskin.sh.BottomNavigationViewSH;
 import com.hyh.prettyskin.sh.CardViewSH;
+import com.hyh.prettyskin.sh.ChipGroupSH;
+import com.hyh.prettyskin.sh.ChipSH;
 import com.hyh.prettyskin.sh.CollapsingToolbarLayoutSH;
 import com.hyh.prettyskin.sh.FloatingActionButtonSH;
+import com.hyh.prettyskin.sh.ForegroundLinearLayoutSH;
+import com.hyh.prettyskin.sh.MaterialButtonSH;
+import com.hyh.prettyskin.sh.MaterialCardViewSH;
 import com.hyh.prettyskin.sh.NavigationViewSH;
 import com.hyh.prettyskin.sh.SwipeRefreshLayoutSH;
 import com.hyh.prettyskin.sh.SwitchCompatSH;
@@ -102,8 +110,13 @@ public class AppCompatSkinHandlerMap implements ISkinHandlerMap {
                 skinHandler = new CardViewSH();
                 break;
             }
+
             case "android.support.design.widget.AppBarLayout": {
                 skinHandler = new AppBarLayoutSH();
+                break;
+            }
+            case "android.support.design.bottomappbar.BottomAppBar": {
+                skinHandler = new BottomAppBarSH();
                 break;
             }
             case "android.support.design.widget.NavigationView": {
@@ -132,6 +145,30 @@ public class AppCompatSkinHandlerMap implements ISkinHandlerMap {
             }
             case "android.support.design.widget.TextInputLayout": {
                 skinHandler = new TextInputLayoutSH();
+                break;
+            }
+            case "android.support.design.internal.FlowLayout": {
+                skinHandler = new FlowLayoutSH();
+                break;
+            }
+            case "android.support.design.chip.ChipGroup": {
+                skinHandler = new ChipGroupSH();
+                break;
+            }
+            case "android.support.design.chip.Chip": {
+                skinHandler = new ChipSH();
+                break;
+            }
+            case "android.support.design.internal.ForegroundLinearLayout": {
+                skinHandler = new ForegroundLinearLayoutSH();
+                break;
+            }
+            case "android.support.design.button.MaterialButton": {
+                skinHandler = new MaterialButtonSH();
+                break;
+            }
+            case "android.support.design.card.MaterialCardView": {
+                skinHandler = new MaterialCardViewSH();
                 break;
             }
         }

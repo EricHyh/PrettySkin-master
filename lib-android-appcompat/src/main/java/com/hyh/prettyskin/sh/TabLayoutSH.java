@@ -10,7 +10,6 @@ import android.view.View;
 
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.utils.AttrValueHelper;
-import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +21,8 @@ import java.util.List;
  */
 public class TabLayoutSH extends ViewGroupSH {
 
-    private final Class mStyleableClass;
-
-    private final String mStyleableName;
-
-    private final int[] mAttrs;
-
-    {
-        mStyleableClass = Reflect.classForName("android.support.design.R$styleable");
-        mStyleableName = "TabLayout";
-        mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
-    }
+    private final Class mStyleableClass = android.support.design.R.styleable.class;
+    private final String mStyleableName = "TabLayout";
 
     private List<String> mSupportAttrNames = new ArrayList<>();
 
@@ -82,7 +72,11 @@ public class TabLayoutSH extends ViewGroupSH {
     public void prepareParse(View view, AttributeSet set) {
         super.prepareParse(view, set);
         Context context = view.getContext();
-        mTypedArray = context.obtainStyledAttributes(set, mAttrs, mDefStyleAttr, mDefStyleRes);
+        mTypedArray = context.obtainStyledAttributes(
+                set,
+                android.support.design.R.styleable.TabLayout,
+                mDefStyleAttr,
+                mDefStyleRes);
     }
 
     @Override

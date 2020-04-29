@@ -30,6 +30,13 @@ public class SwipeRefreshLayoutSH extends ViewGroupSH {
     public SwipeRefreshLayoutSH() {
     }
 
+    public SwipeRefreshLayoutSH(int defStyleAttr) {
+        super(defStyleAttr);
+    }
+
+    public SwipeRefreshLayoutSH(int defStyleAttr, int defStyleRes) {
+        super(defStyleAttr, defStyleRes);
+    }
 
     @Override
     public boolean isSupportAttrName(View view, String attrName) {

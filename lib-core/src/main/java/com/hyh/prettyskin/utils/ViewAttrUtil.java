@@ -23,6 +23,7 @@ import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ColorStateListFactory;
 import com.hyh.prettyskin.DrawableFactory;
 import com.hyh.prettyskin.ValueType;
+import com.hyh.prettyskin.utils.reflect.Lazy;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 /**
@@ -183,58 +184,69 @@ public class ViewAttrUtil {
         Object value = attrValue.getValue();
         if (themeContext == null) return defaultValue;
         Resources resources = themeContext.getResources();
-        int resourceId = (int) value;
+        Integer resourceId = (int) value;
         String resourceTypeName = resources.getResourceTypeName(resourceId);
         if (TextUtils.isEmpty(resourceTypeName)) return defaultValue;
         switch (resourceTypeName) {
             case "integer": {
-                if (valueClass == int.class) {
+                if (valueClass == int.class || valueClass == Integer.class) {
                     Integer integer = resources.getInteger(resourceId);
                     return (T) integer;
+                } else if (valueClass == float.class || valueClass == Float.class) {
+                    int integer = resources.getInteger(resourceId);
+                    Float f = (float) integer;
+                    return (T) f;
                 }
                 return defaultValue;
             }
             case "style": {
-                if (valueClass == int.class) {
+                if (valueClass == int.class || valueClass == Integer.class) {
                     return (T) value;
                 }
                 return defaultValue;
             }
             case "fraction": {
-                if (valueClass == float.class) {
-                    try {
-                        TypedValue typedValue = new TypedValue();
-                        resources.getValue(resourceId, typedValue, true);
-                        switch (typedValue.type) {
-                            case TypedValue.TYPE_FLOAT: {
-                                Float f = typedValue.getFloat();
-                                return (T) f;
-                            }
-                            case TypedValue.TYPE_FRACTION: {
-                                Float fraction = typedValue.getFraction(1, 1);
-                                return (T) fraction;
-                            }
+                Float fraction = null;
+                try {
+                    TypedValue typedValue = new TypedValue();
+                    resources.getValue(resourceId, typedValue, true);
+                    switch (typedValue.type) {
+                        case TypedValue.TYPE_FLOAT: {
+                            fraction = typedValue.getFloat();
                         }
-                    } catch (Exception e) {
-                        Logger.w("convert reference value to fraction failed, resourceId = " + resourceId + " ", e);
+                        case TypedValue.TYPE_FRACTION: {
+                            fraction = typedValue.getFraction(1, 1);
+                        }
                     }
+                } catch (Exception e) {
+                    Logger.w("convert reference value to fraction failed, resourceId = " + resourceId + " ", e);
+                }
+                if (fraction == null) return defaultValue;
+
+                if (valueClass == float.class || valueClass == Float.class) {
+                    return (T) fraction;
+                } else if (valueClass == int.class || valueClass == Integer.class) {
+                    Integer round = Math.round((float) value);
+                    return (T) round;
                 }
                 return defaultValue;
             }
             case "dimen": {
-                if (valueClass == float.class) {
+                if (valueClass == float.class || valueClass == Float.class) {
                     Float dimen = resources.getDimension(resourceId);
                     return (T) dimen;
-                } else if (valueClass == int.class) {
+                } else if (valueClass == int.class || valueClass == Integer.class) {
                     Integer dimen = resources.getDimensionPixelSize(resourceId);
                     return (T) dimen;
                 }
                 return defaultValue;
             }
             case "bool": {
-                if (valueClass == boolean.class) {
+                if (valueClass == boolean.class || valueClass == Boolean.class) {
                     Boolean bool = resources.getBoolean(resourceId);
                     return (T) bool;
+                } else if (valueClass == int.class || valueClass == Integer.class) {
+                    return (T) value;
                 }
                 return defaultValue;
             }
@@ -242,11 +254,13 @@ public class ViewAttrUtil {
                 if (valueClass == String.class || valueClass == CharSequence.class) {
                     String string = resources.getString(resourceId);
                     return (T) string;
+                } else if (valueClass == int.class || valueClass == Integer.class) {
+                    return (T) value;
                 }
                 return defaultValue;
             }
             case "color": {
-                if (valueClass == int.class) {
+                if (valueClass == int.class || valueClass == Integer.class) {
                     Integer color = resources.getColor(resourceId);
                     return (T) color;
                 } else if (valueClass == ColorStateList.class) {
@@ -259,6 +273,8 @@ public class ViewAttrUtil {
                 if (valueClass == Drawable.class) {
                     Drawable drawable = resources.getDrawable(resourceId);
                     return (T) drawable;
+                } else if (valueClass == int.class || valueClass == Integer.class) {
+                    return (T) value;
                 }
                 return defaultValue;
             }
@@ -287,6 +303,8 @@ public class ViewAttrUtil {
                     } catch (Exception e) {
                         Logger.w("value convert to StateListAnimator failed ", e);
                     }
+                } else if (valueClass == int.class || valueClass == Integer.class) {
+                    return (T) value;
                 }
                 return defaultValue;
             }
@@ -303,7 +321,10 @@ public class ViewAttrUtil {
                     } catch (Exception e) {
                         Logger.w("value convert to String[] failed ", e);
                     }
+                } else if (valueClass == int.class || valueClass == Integer.class) {
+                    return (T) value;
                 }
+                return defaultValue;
             }
             default: {
                 return defaultValue;
@@ -349,8 +370,33 @@ public class ViewAttrUtil {
                 .method("parseTintMode", PorterDuff.Mode.class)
                 .param(int.class, index)
                 .param(PorterDuff.Mode.class, null)
-                .defaultValue(defaultMode)
+                .defaultValue(new Lazy<PorterDuff.Mode>() {
+                    @Override
+                    protected PorterDuff.Mode create() {
+                        return parseTintMode(index, defaultMode);
+                    }
+                })
                 .invoke(null);
+    }
+
+
+    private static PorterDuff.Mode parseTintMode(int value, PorterDuff.Mode defaultMode) {
+        switch (value) {
+            case 3:
+                return PorterDuff.Mode.SRC_OVER;
+            case 5:
+                return PorterDuff.Mode.SRC_IN;
+            case 9:
+                return PorterDuff.Mode.SRC_ATOP;
+            case 14:
+                return PorterDuff.Mode.MULTIPLY;
+            case 15:
+                return PorterDuff.Mode.SCREEN;
+            case 16:
+                return PorterDuff.Mode.ADD;
+            default:
+                return defaultMode;
+        }
     }
 
     private static ImageView.ScaleType getImageScaleType(int index, ImageView.ScaleType defaultScaleType) {

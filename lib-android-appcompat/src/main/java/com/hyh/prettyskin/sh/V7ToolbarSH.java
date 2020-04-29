@@ -28,17 +28,8 @@ import java.util.List;
 
 public class V7ToolbarSH extends ViewGroupSH {
 
-    private final Class mStyleableClass;
-
-    private final String mStyleableName;
-
-    private final int[] mAttrs;
-
-    {
-        mStyleableClass = Reflect.classForName("android.support.v7.appcompat.R$styleable");
-        mStyleableName = "Toolbar";
-        mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
-    }
+    private final Class mStyleableClass = android.support.v7.appcompat.R.styleable.class;
+    private final String mStyleableName = "Toolbar";
 
     private List<String> mSupportAttrNames = new ArrayList<>();
 
@@ -80,7 +71,6 @@ public class V7ToolbarSH extends ViewGroupSH {
 
 
     public V7ToolbarSH() {
-        //android.support.v7.appcompat.R.attr.toolbarStyle
         this(android.support.v7.appcompat.R.attr.toolbarStyle);
     }
 
@@ -103,7 +93,11 @@ public class V7ToolbarSH extends ViewGroupSH {
     public void prepareParse(View view, AttributeSet set) {
         super.prepareParse(view, set);
         Context context = view.getContext();
-        mTypedArray = context.obtainStyledAttributes(set, mAttrs, mDefStyleAttr, mDefStyleRes);
+        mTypedArray = context.obtainStyledAttributes(
+                set,
+                android.support.v7.appcompat.R.styleable.Toolbar,
+                mDefStyleAttr,
+                mDefStyleRes);
     }
 
     @Override

@@ -74,7 +74,7 @@ public class ProjectFragment extends CommonBaseFragment {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
-                outRect.bottom = DisplayUtil.dip2px(view.getContext(), 5);
+                outRect.bottom = DisplayUtil.dip2px(view.getContext(), 8);
             }
         });
 

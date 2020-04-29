@@ -12,7 +12,6 @@ import android.view.View;
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.AttrValueHelper;
-import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,17 +22,9 @@ import java.util.List;
 
 public class SwitchCompatSH extends CompoundButtonSH {
 
-    private final Class mStyleableClass;
+    private final Class mStyleableClass = android.support.v7.appcompat.R.styleable.class;
 
-    private final String mStyleableName;
-
-    private final int[] mAttrs;
-
-    {
-        mStyleableClass = Reflect.classForName("android.support.v7.appcompat.R$styleable");
-        mStyleableName = "SwitchCompat";
-        mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
-    }
+    private final String mStyleableName = "SwitchCompat";
 
     private List<String> mSupportAttrNames = new ArrayList<>();
 
@@ -78,7 +69,11 @@ public class SwitchCompatSH extends CompoundButtonSH {
     public void prepareParse(View view, AttributeSet set) {
         super.prepareParse(view, set);
         Context context = view.getContext();
-        mTypedArray = context.obtainStyledAttributes(set, mAttrs, mDefStyleAttr, mDefStyleRes);
+        mTypedArray = context.obtainStyledAttributes(
+                set,
+                android.support.v7.appcompat.R.styleable.SwitchCompat,
+                mDefStyleAttr,
+                mDefStyleRes);
     }
 
     @Override

@@ -42,6 +42,7 @@ ext {
 
 
     androidx_appcompat = 'androidx.appcompat:appcompat:1.0.0'
+    androidx_material = 'com.google.android.material:material:1.0.0'
 
     okhttp = 'com.squareup.okhttp3:okhttp:3.12.2'
     okio = 'com.squareup.okio:okio:1.15.0'
