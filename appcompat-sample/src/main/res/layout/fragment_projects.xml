@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -11,15 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         app:tabBackground="?attr/selectableItemBackground"
-        app:tabIndicatorColor="@color/red"
+        app:tabIndicatorColor="?attr/project_category_tab_color_select"
         app:tabIndicatorHeight="1dp"
         app:tabMinWidth="50dp"
         app:tabMode="scrollable"
         app:tabPaddingEnd="10dp"
         app:tabPaddingStart="10dp"
-        app:tabSelectedTextColor="@color/red"
+        app:tabSelectedTextColor="?attr/project_category_tab_color_select"
         app:tabTextAppearance="@style/TabTextAppearance"
-        app:tabTextColor="@color/black" />
+        app:tabTextColor="?attr/project_category_tab_color_nor"
+        skin:skin_attrs="tabIndicatorColor=project_category_tab_color_select
+        |tabTextColor=project_category_tab_color_nor
+        |tabSelectedTextColor=project_category_tab_color_select" />
 
 
     <android.support.v4.view.ViewPager

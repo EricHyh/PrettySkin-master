@@ -47,6 +47,8 @@
         <attr name="status_bar_color" format="color" />
 
         <attr name="toolbar_bg" format="color|reference" />
+        <attr name="toolbar_title_color" format="color|reference" />
+
         <attr name="content_bg_color" format="color" />
         <attr name="list_bg_color" format="color" />
         <attr name="item_bg_color" format="color" />
@@ -56,9 +58,8 @@
 
         <attr name="web_progress_drawable" format="reference" />
 
-        <attr name="bottom_tab_color_nor" format="color" />
-        <attr name="bottom_tab_color_select" format="color" />
-
+        <attr name="tabhost_indicator_text_color" format="color|reference" />
+        <attr name="tabhost_decoration_color" format="color" />
 
         <attr name="swipe_refresh_progress_bg_color" format="color" />
         <attr name="swipe_refresh_color_schemes" format="reference" />
@@ -103,6 +104,7 @@
 
         <item name="status_bar_color">@color/status_bar_color_white_style</item>
         <item name="toolbar_bg">@color/white</item>
+        <item name="toolbar_title_color">#212121</item>
 
         <item name="content_bg_color">@color/white</item>
         <item name="list_bg_color">#F4F4F4</item>
@@ -113,11 +115,12 @@
 
         <item name="web_progress_drawable">@drawable/web_progress_white_style</item>
 
-        <item name="bottom_tab_color_nor">@color/black</item>
-        <item name="bottom_tab_color_select">@color/primary_red</item>
+        <item name="tabhost_indicator_text_color">@color/bottom_tab_text_color_white_style</item>
+        <item name="tabhost_decoration_color">#FFDDDDDD</item>
 
         <item name="swipe_refresh_progress_bg_color">#FFFAFAFA</item>
-        <item name="swipe_refresh_color_schemes">@array/swipe_refresh_color_schemes_white_style</item>
+        <item name="swipe_refresh_color_schemes">@array/swipe_refresh_color_schemes_white_style
+        </item>
 
 
         <item name="project_category_tab_color_nor">@color/black</item>
@@ -151,6 +154,9 @@
 
         <item name="status_bar_color">@color/status_bar_color_white_style</item>
         <item name="toolbar_bg">#373737</item>
+        <item name="toolbar_title_color">#8F8F8F</item>
+
+
         <item name="content_bg_color">#373737</item>
         <item name="list_bg_color">#2B2B2B</item>
         <item name="item_bg_color">#373737</item>
@@ -161,11 +167,11 @@
 
         <item name="web_progress_drawable">@drawable/web_progress_white_style</item>
 
-        <item name="bottom_tab_color_nor">#D1D7DE</item>
-        <item name="bottom_tab_color_select">#FF4D5AAF</item>
+        <item name="tabhost_indicator_text_color">@color/bottom_tab_text_color_black_style</item>
+        <item name="tabhost_decoration_color">#404040</item>
 
-        <item name="project_category_tab_color_nor">#D1D7DE</item>
-        <item name="project_category_tab_color_select">#FF4D5AAF</item>
+        <item name="project_category_tab_color_nor">#797979</item>
+        <item name="project_category_tab_color_select">#B35F76</item>
         <item name="project_title_color">#8F8F8F</item>
         <item name="project_des_color">#8F8F8F</item>
         <item name="project_tag_color">#6E6E6E</item>

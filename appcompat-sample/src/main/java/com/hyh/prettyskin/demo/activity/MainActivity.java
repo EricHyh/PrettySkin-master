@@ -8,7 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,14 +124,12 @@ public class MainActivity extends BaseActivity {
     }
 
     private View getIndicatorView(String text) {
-        TextView textView = new TextView(this);
+        TextView textView = (TextView) LayoutInflater.from(this)
+                .inflate(R.layout.tabhost_indicator, mTabHost, false);
         LinearLayout.LayoutParams layoutParams =
                 new LinearLayout.LayoutParams(0, DisplayUtil.dip2px(this, 60), 1);
         textView.setLayoutParams(layoutParams);
         textView.setText(text);
-        textView.setTextSize(14);
-        textView.setTextColor(getResources().getColorStateList(R.color.bottom_tab_text_color));
-        textView.setGravity(Gravity.CENTER);
         return textView;
     }
 
