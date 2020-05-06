@@ -3,10 +3,14 @@ package com.hyh.prettyskin.demo.fragment;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.hyh.prettyskin.AttrValue;
@@ -14,6 +18,7 @@ import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.R;
 import com.hyh.prettyskin.SkinView;
 import com.hyh.prettyskin.ValueType;
+import com.hyh.prettyskin.demo.pop.DimBackgroundPopWindow;
 import com.hyh.prettyskin.demo.utils.DisplayUtil;
 
 import java.util.HashMap;
@@ -76,11 +81,27 @@ public class OtherFragment extends CommonBaseFragment {
 
     @OnClick(R.id.btn_show_dialog)
     public void showDialog(View view) {
-
+        View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.view_dialog, null);
+        AlertDialog alertDialog = new AlertDialog
+                .Builder(view.getContext())
+                .setView(dialogView)
+                .create();
+        //PrettySkin.getInstance().setContextSkinable(alertDialog.getContext());
+        dialogView.findViewById(R.id.dialog_close_btn).setOnClickListener(v -> alertDialog.dismiss());
+        alertDialog.show();
     }
 
     @OnClick(R.id.btn_show_popup_window)
     public void showPopupWindow(View view) {
-
+        View popupView = LayoutInflater.from(view.getContext()).inflate(R.layout.view_popup, null);
+        PopupWindow popupWindow = new DimBackgroundPopWindow(popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT) {
+        };
+        popupView.findViewById(R.id.popup_close_btn).setOnClickListener(v -> popupWindow.dismiss());
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.showAtLocation(view.getRootView(), Gravity.CENTER, 0, 0);
     }
 }
