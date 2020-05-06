@@ -21,21 +21,15 @@ import java.util.List;
 
 public class ChronometerSH extends TextViewSH {
 
-    private final Class mStyleableClass;
+    private Class mStyleableClass;
 
-    private final String mStyleableName;
+    private String mStyleableName;
 
-    private final int[] mAttrs;
+    private int[] mAttrs;
 
     private TypedArray mTypedArray;
 
-    {
-        mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
-        mStyleableName = "Chronometer";
-        mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
-    }
-
-    private List<String> mSupportAttrNames = new ArrayList<>();
+    private final List<String> mSupportAttrNames = new ArrayList<>();
 
     {
         mSupportAttrNames.add("format");
@@ -64,6 +58,13 @@ public class ChronometerSH extends TextViewSH {
     public void prepareParse(View view, AttributeSet set) {
         super.prepareParse(view, set);
         Context context = view.getContext();
+
+        if (mStyleableClass == null) {
+            mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
+            mStyleableName = "Chronometer";
+            mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
+        }
+
         mTypedArray = context.obtainStyledAttributes(set, mAttrs, mDefStyleAttr, mDefStyleRes);
     }
 

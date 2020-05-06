@@ -172,14 +172,11 @@ public class AttrValueHelper {
             Drawable drawable = typedArray.getDrawable(styleableIndex);
             if (tentative && drawable == null) return null;
             if (drawable != null && typedArrayFactory != null) {
-                value = new DrawableFactory() {
-                    @Override
-                    public Drawable create() {
-                        TypedArray newTypedArray = typedArrayFactory.create();
-                        Drawable newDrawable = newTypedArray.getDrawable(styleableIndex);
-                        newTypedArray.recycle();
-                        return newDrawable;
-                    }
+                value = (DrawableFactory) () -> {
+                    TypedArray newTypedArray = typedArrayFactory.create();
+                    Drawable newDrawable = newTypedArray.getDrawable(styleableIndex);
+                    newTypedArray.recycle();
+                    return newDrawable;
                 };
                 type = ValueType.TYPE_LAZY_DRAWABLE;
             } else {

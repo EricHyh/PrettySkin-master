@@ -41,6 +41,15 @@
     </style>
 
 
+    <style name="MainToolbarTitleAppearance">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="WebToolbarTitleAppearance">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+
     <!--定义皮肤属性-->
     <declare-styleable name="PrettySkin">
 
@@ -48,6 +57,8 @@
 
         <attr name="toolbar_bg" format="color|reference" />
         <attr name="toolbar_title_color" format="color|reference" />
+
+        <attr name="tablayout_bg" format="color|reference" />
 
         <attr name="content_bg_color" format="color" />
         <attr name="list_bg_color" format="color" />
@@ -62,7 +73,7 @@
         <attr name="tabhost_decoration_color" format="color" />
 
         <attr name="swipe_refresh_progress_bg_color" format="color" />
-        <attr name="swipe_refresh_color_schemes" format="reference" />
+        <attr name="swipe_refresh_color_scheme" format="color|reference" />
 
 
         <attr name="project_category_tab_color_nor" format="color" />
@@ -106,6 +117,8 @@
         <item name="toolbar_bg">@color/white</item>
         <item name="toolbar_title_color">#212121</item>
 
+        <item name="tablayout_bg">@drawable/tablayout_bg_white_style</item>
+
         <item name="content_bg_color">@color/white</item>
         <item name="list_bg_color">#F4F4F4</item>
         <item name="item_bg_color">@color/white</item>
@@ -116,15 +129,14 @@
         <item name="web_progress_drawable">@drawable/web_progress_white_style</item>
 
         <item name="tabhost_indicator_text_color">@color/bottom_tab_text_color_white_style</item>
-        <item name="tabhost_decoration_color">#FFDDDDDD</item>
+        <item name="tabhost_decoration_color">#E7E7E7</item>
 
         <item name="swipe_refresh_progress_bg_color">#FFFAFAFA</item>
-        <item name="swipe_refresh_color_schemes">@array/swipe_refresh_color_schemes_white_style
-        </item>
+        <item name="swipe_refresh_color_scheme">#FB7299</item>
 
 
-        <item name="project_category_tab_color_nor">@color/black</item>
-        <item name="project_category_tab_color_select">@color/primary_red</item>
+        <item name="project_category_tab_color_nor">#757575</item>
+        <item name="project_category_tab_color_select">#FB7299</item>
         <item name="project_image_default">@drawable/img_default_white_style</item>
         <item name="project_title_color">@color/black</item>
         <item name="project_des_color">#767676</item>
@@ -133,15 +145,15 @@
 
         <item name="explanation_text_color">@color/black</item>
 
-        <item name="shape_view_bg">@color/black</item>
+        <item name="shape_view_bg">?attr/list_bg_color</item>
         <item name="shape_view_shape">@integer/shape_rectangle</item>
-        <item name="shape_view_bord_color">@color/primary_red</item>
+        <item name="shape_view_bord_color">#FB7299</item>
         <item name="shape_view_bord_width">10dp</item>
 
         <item name="test_dynamic_drawable">@drawable/test_dynamic_drawable_white_style</item>
-        <item name="add_drawable_color">@color/primary_red</item>
+        <item name="add_drawable_color">#FB7299</item>
 
-        <item name="new_text_view_bg">@color/primary_red</item>
+        <item name="new_text_view_bg">#FB7299</item>
         <item name="new_text_view_text_color">@color/white</item>
         <item name="new_text_view_text_size">16sp</item>
 
@@ -156,38 +168,42 @@
         <item name="toolbar_bg">#373737</item>
         <item name="toolbar_title_color">#8F8F8F</item>
 
+        <item name="tablayout_bg">@drawable/tablayout_bg_black_style</item>
 
         <item name="content_bg_color">#373737</item>
         <item name="list_bg_color">#2B2B2B</item>
         <item name="item_bg_color">#373737</item>
 
 
-        <item name="main_toolbar_navigation">@mipmap/main_toolbar_navigation_white_style</item>
-        <item name="web_toolbar_navigation">@mipmap/web_toolbar_navigation_white_style</item>
+        <item name="main_toolbar_navigation">@mipmap/main_toolbar_navigation_black_style</item>
+        <item name="web_toolbar_navigation">@mipmap/web_toolbar_navigation_black_style</item>
 
         <item name="web_progress_drawable">@drawable/web_progress_white_style</item>
 
         <item name="tabhost_indicator_text_color">@color/bottom_tab_text_color_black_style</item>
         <item name="tabhost_decoration_color">#404040</item>
 
+        <item name="swipe_refresh_progress_bg_color">#EDEDED</item>
+        <item name="swipe_refresh_color_scheme">#B35F76</item>
+
         <item name="project_category_tab_color_nor">#797979</item>
         <item name="project_category_tab_color_select">#B35F76</item>
         <item name="project_title_color">#8F8F8F</item>
         <item name="project_des_color">#8F8F8F</item>
         <item name="project_tag_color">#6E6E6E</item>
-        <item name="project_landing_page_mask_color">#22555555</item>
+        <item name="project_landing_page_mask_color">#33000000</item>
 
         <item name="explanation_text_color">#8F8F8F</item>
 
-        <item name="shape_view_bg">@color/white</item>
+        <item name="shape_view_bg">?attr/list_bg_color</item>
         <item name="shape_view_shape">@integer/shape_ring</item>
-        <item name="shape_view_bord_color">@android:color/holo_orange_dark</item>
+        <item name="shape_view_bord_color">#B35F76</item>
         <item name="shape_view_bord_width">20dp</item>
 
         <item name="test_dynamic_drawable">@drawable/test_dynamic_drawable_black_style</item>
-        <item name="add_drawable_color">#FF4D5AAF</item>
+        <item name="add_drawable_color">#B35F76</item>
 
-        <item name="new_text_view_bg">#FF4D5AAF</item>
+        <item name="new_text_view_bg">#B35F76</item>
         <item name="new_text_view_text_color">@color/black</item>
         <item name="new_text_view_text_size">12sp</item>
 

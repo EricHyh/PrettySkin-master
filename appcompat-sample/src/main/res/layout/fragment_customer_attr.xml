@@ -43,8 +43,10 @@
             app:border_color="?attr/shape_view_bord_color"
             app:border_width="?attr/shape_view_bord_width"
             app:shape="?attr/shape_view_shape"
-            skin:skin_attrs="background=shape_view_bg|shape=shape_view_shape
-            |border_color=shape_view_bord_color|border_width=shape_view_bord_width" />
+            skin:skin_attrs="background=shape_view_bg
+            |shape=shape_view_shape
+            |border_color=shape_view_bord_color
+            |border_width=shape_view_bord_width" />
 
     </LinearLayout>
 </ScrollView>

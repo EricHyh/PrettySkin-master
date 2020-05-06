@@ -21,7 +21,6 @@ import com.hyh.prettyskin.R;
 public class ShapeView extends View {
 
     private int mShape;
-    private int mBorderColor;
     private float mBorderWidth;
     private Paint mPaint;
 
@@ -37,12 +36,12 @@ public class ShapeView extends View {
         super(context, attrs, defStyleAttr);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ShapeView);
         mShape = typedArray.getInt(R.styleable.ShapeView_shape, 0);
-        mBorderColor = typedArray.getColor(R.styleable.ShapeView_border_color, 0);
+        int borderColor = typedArray.getColor(R.styleable.ShapeView_border_color, 0);
         mBorderWidth = typedArray.getDimension(R.styleable.ShapeView_border_width, 0.0f);
         typedArray.recycle();
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setColor(mBorderColor);
+        mPaint.setColor(borderColor);
         mPaint.setStrokeWidth(mBorderWidth);
         mPaint.setStyle(Paint.Style.STROKE);
     }
@@ -112,12 +111,13 @@ public class ShapeView extends View {
     }
 
     public void setBorderColor(int borderColor) {
-        mBorderColor = borderColor;
+        mPaint.setColor(borderColor);
         postInvalidate();
     }
 
     public void setBorderWidth(float borderWidth) {
         mBorderWidth = borderWidth;
+        mPaint.setStrokeWidth(borderWidth);
         postInvalidate();
     }
 }

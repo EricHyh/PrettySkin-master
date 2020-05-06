@@ -28,17 +28,11 @@ import java.util.List;
 
 public class SwitchSH extends CompoundButtonSH {
 
-    private final Class mStyleableClass;
+    private Class<?> mStyleableClass;
 
-    private final String mStyleableName;
+    private String mStyleableName;
 
-    private final int[] mAttrs;
-
-    {
-        mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
-        mStyleableName = "Switch";
-        mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
-    }
+    private int[] mAttrs;
 
     private List<String> mSupportAttrNames = new ArrayList<>();
 
@@ -84,6 +78,14 @@ public class SwitchSH extends CompoundButtonSH {
     public void prepareParse(View view, AttributeSet set) {
         super.prepareParse(view, set);
         Context context = view.getContext();
+
+        if (mStyleableClass == null) {
+            mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
+            mStyleableName = "Switch";
+            mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
+        }
+
+
         mTypedArray = context.obtainStyledAttributes(set, mAttrs, mDefStyleAttr, mDefStyleRes);
     }
 

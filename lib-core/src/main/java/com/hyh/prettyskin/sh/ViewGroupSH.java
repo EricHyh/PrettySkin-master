@@ -26,18 +26,11 @@ import java.util.List;
 
 public class ViewGroupSH extends ViewSH {
 
+    private Class<?> mStyleableClass;
 
-    private final Class mStyleableClass;
+    private String mStyleableName;
 
-    private final String mStyleableName;
-
-    private final int[] mAttrs;
-
-    {
-        mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
-        mStyleableName = "ViewGroup";
-        mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
-    }
+    private int[] mAttrs;
 
     private final List<String> mSupportAttrNames = new ArrayList<>();
 
@@ -80,6 +73,13 @@ public class ViewGroupSH extends ViewSH {
     public void prepareParse(View view, AttributeSet set) {
         super.prepareParse(view, set);
         Context context = view.getContext();
+
+        if (mStyleableClass == null) {
+            mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
+            mStyleableName = "ViewGroup";
+            mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
+        }
+
         mTypedArray = context.obtainStyledAttributes(set, mAttrs, mDefStyleAttr, mDefStyleRes);
     }
 

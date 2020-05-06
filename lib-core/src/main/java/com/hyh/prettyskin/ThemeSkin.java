@@ -1,5 +1,6 @@
 package com.hyh.prettyskin;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
@@ -37,7 +38,7 @@ public class ThemeSkin extends BaseSkin {
     @Override
     public boolean loadSkinAttrs() {
         if (mInnerSkinAttrMap != null) return true;
-        final Class styleableClass = mStyleableClass;
+        final Class<?> styleableClass = mStyleableClass;
         final String styleableName = mStyleableName;
         if (styleableClass == null || TextUtils.isEmpty(styleableName)) {
             return false;
@@ -52,12 +53,7 @@ public class ThemeSkin extends BaseSkin {
         }
         TypedArray typedArray = mContext.obtainStyledAttributes(attrs);
 
-        TypedArrayFactory typedArrayFactory = new TypedArrayFactory() {
-            @Override
-            public TypedArray create() {
-                return mContext.obtainStyledAttributes(attrs);
-            }
-        };
+        @SuppressLint("Recycle") TypedArrayFactory typedArrayFactory = () -> mContext.obtainStyledAttributes(attrs);
 
         mInnerSkinAttrMap = new HashMap<>(filedNameMap.size());
         Set<Map.Entry<String, Integer>> entrySet = filedNameMap.entrySet();

@@ -26,19 +26,13 @@ import java.util.List;
 
 public class MediaRouteButtonSH extends ViewSH {
 
-    private final Class mStyleableClass;
+    private Class<?> mStyleableClass;
 
-    private final String mStyleableName;
+    private String mStyleableName;
 
-    private final int[] mAttrs;
+    private int[] mAttrs;
 
-    {
-        mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
-        mStyleableName = "MediaRouteButton";
-        mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
-    }
-
-    private List<String> mSupportAttrNames = new ArrayList<>();
+    private final List<String> mSupportAttrNames = new ArrayList<>();
 
     private TypedArray mTypedArray;
 
@@ -71,6 +65,14 @@ public class MediaRouteButtonSH extends ViewSH {
     public void prepareParse(View view, AttributeSet set) {
         super.prepareParse(view, set);
         Context context = view.getContext();
+
+        if (mStyleableClass == null) {
+            mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
+            mStyleableName = "MediaRouteButton";
+            mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
+        }
+
+
         mTypedArray = context.obtainStyledAttributes(set, mAttrs, mDefStyleAttr, mDefStyleRes);
     }
 

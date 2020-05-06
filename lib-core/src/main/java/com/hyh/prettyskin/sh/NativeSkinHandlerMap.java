@@ -1,27 +1,11 @@
 package com.hyh.prettyskin.sh;
 
-import android.app.MediaRouteButton;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsSeekBar;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CheckedTextView;
-import android.widget.Chronometer;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.QuickContactBadge;
-import android.widget.RadioButton;
-import android.widget.RatingBar;
-import android.widget.SeekBar;
-import android.widget.Switch;
-import android.widget.TextClock;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.hyh.prettyskin.ISkinHandler;
 import com.hyh.prettyskin.ISkinHandlerMap;
@@ -37,51 +21,103 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class NativeSkinHandlerMap implements ISkinHandlerMap {
 
-    private final Map<Class<? extends View>, ISkinHandler> mSkinHandlerMap = new ConcurrentHashMap<>();
+    private final Map<Class, ISkinHandler> mSkinHandlerMap = new ConcurrentHashMap<>();
 
     {
         mSkinHandlerMap.put(View.class, new ViewSH());
         mSkinHandlerMap.put(ViewGroup.class, new ViewGroupSH());
 
         mSkinHandlerMap.put(TextView.class, new TextViewSH());
-        mSkinHandlerMap.put(EditText.class, new EditTextSH());
-        mSkinHandlerMap.put(Chronometer.class, new ChronometerSH());
-        mSkinHandlerMap.put(CheckedTextView.class, new CheckedTextViewSH());
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            mSkinHandlerMap.put(TextClock.class, new TextClockSH());
-        }
-
         mSkinHandlerMap.put(Button.class, new ButtonSH());
 
-        mSkinHandlerMap.put(CompoundButton.class, new CompoundButtonSH());
-
-        mSkinHandlerMap.put(Switch.class, new SwitchSH());
-        mSkinHandlerMap.put(CheckBox.class, new CheckBoxSH());
-        mSkinHandlerMap.put(RadioButton.class, new RadioButtonSH());
-        mSkinHandlerMap.put(ToggleButton.class, new ToggleButtonSH());
-
         mSkinHandlerMap.put(ImageView.class, new ImageViewSH());
-        mSkinHandlerMap.put(ImageButton.class, new ImageButtonSH());
-
-        mSkinHandlerMap.put(ProgressBar.class, new ProgressBarSH());
-        mSkinHandlerMap.put(AbsSeekBar.class, new AbsSeekBarSH());
-        mSkinHandlerMap.put(SeekBar.class, new SeekBarSH());
-        mSkinHandlerMap.put(RatingBar.class, new RatingBarSH());
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mSkinHandlerMap.put(MediaRouteButton.class, new MediaRouteButtonSH());
-        }
-
-        mSkinHandlerMap.put(QuickContactBadge.class, new QuickContactBadgeSH());
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mSkinHandlerMap.put(android.widget.Toolbar.class, new ToolbarSH());
-        }
     }
 
     @Override
     public ISkinHandler get(Class viewClass) {
-        return mSkinHandlerMap.get(viewClass);
+        ISkinHandler skinHandler = mSkinHandlerMap.get(viewClass);
+        if (skinHandler != null) {
+            return skinHandler;
+        }
+        switch (viewClass.getName()) {
+            case "android.widget.EditText": {
+                skinHandler = new EditTextSH();
+                break;
+            }
+            case "android.widget.Chronometer": {
+                skinHandler = new ChronometerSH();
+                break;
+            }
+            case "android.widget.CheckedTextView": {
+                skinHandler = new CheckedTextViewSH();
+                break;
+            }
+            case "android.widget.TextClock": {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    skinHandler = new TextClockSH();
+                }
+                break;
+            }
+            case "android.widget.CompoundButton": {
+                skinHandler = new CompoundButtonSH();
+                break;
+            }
+            case "android.widget.Switch": {
+                skinHandler = new SwitchSH();
+                break;
+            }
+            case "android.widget.CheckBox": {
+                skinHandler = new CheckBoxSH();
+                break;
+            }
+            case "android.widget.RadioButton": {
+                skinHandler = new RadioButtonSH();
+                break;
+            }
+            case "android.widget.ToggleButton": {
+                skinHandler = new ToggleButtonSH();
+                break;
+            }
+            case "android.widget.ImageButton": {
+                skinHandler = new ImageButtonSH();
+                break;
+            }
+            case "android.widget.ProgressBar": {
+                skinHandler = new ProgressBarSH();
+                break;
+            }
+            case "android.widget.AbsSeekBar": {
+                skinHandler = new AbsSeekBarSH();
+                break;
+            }
+            case "android.widget.SeekBar": {
+                skinHandler = new SeekBarSH();
+                break;
+            }
+            case "android.widget.RatingBar": {
+                skinHandler = new RatingBarSH();
+                break;
+            }
+            case "android.app.MediaRouteButton": {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    skinHandler = new MediaRouteButtonSH();
+                }
+                break;
+            }
+            case "android.widget.QuickContactBadge": {
+                skinHandler = new QuickContactBadgeSH();
+                break;
+            }
+            case "android.widget.Toolbar": {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    skinHandler = new ToolbarSH();
+                }
+                break;
+            }
+        }
+        if (skinHandler != null) {
+            mSkinHandlerMap.put(viewClass, skinHandler);
+        }
+        return skinHandler;
     }
 }

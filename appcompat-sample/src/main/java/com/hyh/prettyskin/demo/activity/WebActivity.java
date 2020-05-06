@@ -45,7 +45,9 @@ public class WebActivity extends BaseActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
+            actionBar.setTitle(null);
         }
+
 
         ProgressBar progressBar = findViewById(R.id.web_progressbar);
         CustomWebView webView = findViewById(R.id.web_view);

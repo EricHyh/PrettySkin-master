@@ -33,26 +33,18 @@ import java.util.List;
 
 public class ViewSH implements ISkinHandler {
 
-    private List<String> mSupportAttrNames = new ArrayList<>();
-
-    private TypedArray mTypedArray;
-
-    private final Class mStyleableClass;
-
-    private final String mStyleableName;
-
-    private final int[] mAttrs;
-
-    {
-        mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
-        mStyleableName = "View";
-        mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
-    }
-
     protected int mDefStyleAttr;
-
     protected int mDefStyleRes;
 
+    private final List<String> mSupportAttrNames = new ArrayList<>();
+
+    private Class mStyleableClass;
+
+    private String mStyleableName;
+
+    private int[] mAttrs;
+
+    private TypedArray mTypedArray;
 
     {
         mSupportAttrNames.add("background");
@@ -169,6 +161,13 @@ public class ViewSH implements ISkinHandler {
     @Override
     public void prepareParse(View view, AttributeSet set) {
         Context context = view.getContext();
+
+        if (mStyleableClass == null) {
+            mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
+            mStyleableName = "View";
+            mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
+        }
+
         mTypedArray = context.obtainStyledAttributes(set, mAttrs, mDefStyleAttr, mDefStyleRes);
     }
 
@@ -220,10 +219,9 @@ public class ViewSH implements ISkinHandler {
                 }
                 break;
             }
-            case "padding": {
-                //TODO 暂不实现
+            /*case "padding": {
                 break;
-            }
+            }*/
             case "paddingLeft": {
                 int paddingLeft = attrValue.getTypedValue(int.class, 0);
                 int paddingTop = view.getPaddingTop();
@@ -478,34 +476,27 @@ public class ViewSH implements ISkinHandler {
                 }
                 break;
             }
-            case "scrollbarTrackHorizontal": {
-                //TODO 暂不实现
+            /*case "scrollbarTrackHorizontal": {
                 break;
             }
             case "scrollbarThumbHorizontal": {
-                //TODO 暂不实现
                 break;
             }
             case "scrollbarAlwaysDrawHorizontalTrack": {
-                //TODO 暂不实现
                 break;
             }
             case "scrollbarTrackVertical": {
-                //TODO 暂不实现
                 break;
             }
             case "scrollbarThumbVertical": {
-                //TODO 暂不实现
                 break;
             }
             case "scrollbarAlwaysDrawVerticalTrack": {
-                //TODO 暂不实现
                 break;
             }
             case "fadingEdge": {
-                //TODO 暂不实现
                 break;
-            }
+            }*/
             case "requiresFadingEdge": {
                 final int FADING_EDGE_NONE = 0x00000000;
                 final int FADING_EDGE_HORIZONTAL = 0x00001000;

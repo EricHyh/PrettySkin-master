@@ -1,5 +1,6 @@
 package com.hyh.prettyskin;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.res.Resources;
@@ -37,7 +38,7 @@ public class ApkThemeSkin extends BaseSkin {
     private int mSkinIndex;
 
     private SkinContext mSkinContext;
-    private HashMap<String, AttrValue> mInnerSkinAttrMap;
+    private Map<String, AttrValue> mInnerSkinAttrMap;
 
     public ApkThemeSkin(Context context, String apkPath) {
         this(context, apkPath, 0);
@@ -77,10 +78,10 @@ public class ApkThemeSkin extends BaseSkin {
         DexClassLoader classLoader = new DexClassLoader(mApkPath,
                 skinDexDir.getAbsolutePath(),
                 null,
-                mApplicationContext.getClassLoader().getParent());
+                Context.class.getClassLoader());
 
 
-        final Class styleableClass = getStyleableClass(classLoader, skinRClassPath);
+        final Class<?> styleableClass = getStyleableClass(classLoader, skinRClassPath);
         final String styleableName = skinDeclareStyleable;
 
         if (styleableClass == null || TextUtils.isEmpty(styleableName)) {
@@ -98,12 +99,7 @@ public class ApkThemeSkin extends BaseSkin {
         mSkinContext = new SkinContext(mApplicationContext, resources, skinThemeId);
         TypedArray typedArray = mSkinContext.obtainStyledAttributes(attrs);
 
-        TypedArrayFactory typedArrayFactory = new TypedArrayFactory() {
-            @Override
-            public TypedArray create() {
-                return mSkinContext.obtainStyledAttributes(attrs);
-            }
-        };
+        @SuppressLint("Recycle") TypedArrayFactory typedArrayFactory = () -> mSkinContext.obtainStyledAttributes(attrs);
 
         mInnerSkinAttrMap = new HashMap<>(filedNameMap.size());
         Set<Map.Entry<String, Integer>> entrySet = filedNameMap.entrySet();

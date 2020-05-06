@@ -147,6 +147,9 @@ public class BasePrettySkin {
 
     public void setParseDefaultAttrValueEnabled(boolean enabled) {
         this.mParseDefaultAttrValueEnabled = enabled;
+        if (enabled) {
+            Reflect.exemptAll();
+        }
     }
 
     public boolean isParseDefaultAttrValueEnabled() {

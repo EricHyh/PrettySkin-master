@@ -19,5 +19,4 @@ public class ButtonSH extends TextViewSH {
     public ButtonSH(int defStyleAttr, int defStyleRes) {
         super(defStyleAttr, defStyleRes);
     }
-
 }

@@ -15,7 +15,12 @@
         android:background="?attr/toolbar_bg"
         android:elevation="2dp"
         app:navigationIcon="?attr/web_toolbar_navigation"
-        skin:skin_attrs="background=toolbar_bg|navigationIcon=web_toolbar_navigation" />
+        app:titleTextAppearance="@style/WebToolbarTitleAppearance"
+        app:titleTextColor="?attr/toolbar_title_color"
+        skin:skin_attrs="background=toolbar_bg
+            |navigationIcon=web_toolbar_navigation
+            |titleTextColor=toolbar_title_color"
+        tools:targetApi="lollipop" />
 
     <ProgressBar
         android:id="@+id/web_progressbar"
@@ -27,14 +32,18 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:foreground="?attr/project_landing_page_mask_color"
-        skin:skin_attrs="foreground=project_landing_page_mask_color">
+        android:layout_height="match_parent">
 
         <com.hyh.prettyskin.demo.widget.CustomWebView
             android:id="@+id/web_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/project_landing_page_mask_color"
+            skin:skin_attrs="background=project_landing_page_mask_color" />
 
     </FrameLayout>
 

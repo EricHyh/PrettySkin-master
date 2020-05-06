@@ -8,21 +8,28 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.R;
+import com.hyh.prettyskin.ThemeSkin;
+import com.hyh.prettyskin.demo.base.SkinStyle;
 import com.hyh.prettyskin.demo.fragment.CustomerAttrFragment;
 import com.hyh.prettyskin.demo.fragment.DynamicDrawableFragment;
 import com.hyh.prettyskin.demo.fragment.OtherFragment;
 import com.hyh.prettyskin.demo.fragment.ProjectsFragment;
 import com.hyh.prettyskin.demo.utils.DisplayUtil;
+import com.hyh.prettyskin.demo.utils.PreferenceUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 /**
@@ -35,6 +42,8 @@ public class MainActivity extends BaseActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private FragmentTabHost mTabHost;
+
+    private long mLastBackPressedTimeMillis;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +75,51 @@ public class MainActivity extends BaseActivity {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close);
         mDrawerLayout.removeDrawerListener(mDrawerToggle);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
+
+        RadioGroup skinRadioGroup = findViewById(R.id.skin_radio_group);
+        int skinStyle = PreferenceUtil.getInt(this, "skin_style", 0);
+        switch (skinStyle) {
+            case SkinStyle.WHITE: {
+                skinRadioGroup.check(R.id.skin_white_style);
+                break;
+            }
+            case SkinStyle.BLACK: {
+                skinRadioGroup.check(R.id.skin_black_style);
+                break;
+            }
+            case SkinStyle.PURPLE: {
+                skinRadioGroup.check(R.id.skin_purple_style);
+                break;
+            }
+            case SkinStyle.ORANGE: {
+                skinRadioGroup.check(R.id.skin_orange_style);
+                break;
+            }
+        }
+        skinRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.skin_white_style: {
+                    PreferenceUtil.putInt(this, "skin_style", SkinStyle.WHITE);
+                    ThemeSkin themeSkin = new ThemeSkin(this, R.style.PrettySkin_white, R.styleable.class, "PrettySkin");
+                    PrettySkin.getInstance().replaceSkinAsync(themeSkin, null);
+                    break;
+                }
+                case R.id.skin_black_style: {
+                    PreferenceUtil.putInt(this, "skin_style", SkinStyle.BLACK);
+                    ThemeSkin themeSkin = new ThemeSkin(this, R.style.PrettySkin_black, R.styleable.class, "PrettySkin");
+                    PrettySkin.getInstance().replaceSkinAsync(themeSkin, null);
+                    break;
+                }
+                case R.id.skin_purple_style: {
+                    PreferenceUtil.putInt(this, "skin_style", SkinStyle.PURPLE);
+                    break;
+                }
+                case R.id.skin_orange_style: {
+                    PreferenceUtil.putInt(this, "skin_style", SkinStyle.ORANGE);
+                    break;
+                }
+            }
+        });
     }
 
     private void initFragmentTabHost() {
@@ -141,9 +195,26 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(Gravity.START)) {
+            mDrawerLayout.closeDrawer(Gravity.START);
+            return;
+        }
+
+        long currentTimeMillis = System.currentTimeMillis();
+        long timeInterval = Math.abs(currentTimeMillis - mLastBackPressedTimeMillis);
+        if (timeInterval > 3000) {
+            mLastBackPressedTimeMillis = currentTimeMillis;
+            Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
-
 }

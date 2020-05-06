@@ -4,20 +4,20 @@
     <item android:id="@android:id/background">
         <shape>
             <gradient android:angle="270"
-                android:centerColor="#FFDDDDDD"
+                android:centerColor="#2B2B2B"
                 android:centerY="0.75"
-                android:endColor="#FFDDDDDD"
-                android:startColor="#FFDDDDDD" />
+                android:endColor="#2B2B2B"
+                android:startColor="#2B2B2B" />
         </shape>
     </item>
     <item android:id="@android:id/progress">
         <clip>
             <shape>
                 <gradient android:angle="270"
-                    android:centerColor="#FB7299"
+                    android:centerColor="#B35F76"
                     android:centerY="0.75"
-                    android:endColor="#FB7299"
-                    android:startColor="#FB7299" />
+                    android:endColor="#B35F76"
+                    android:startColor="#B35F76" />
             </shape>
         </clip>
     </item>

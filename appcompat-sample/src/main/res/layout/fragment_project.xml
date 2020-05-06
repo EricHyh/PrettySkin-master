@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout
+<com.hyh.prettyskin.demo.widget.CustomSwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:skin="http://schemas.android.com/android/skin"
     android:id="@+id/swipe_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    skin:skin_attrs="progressBackground=swipe_refresh_progress_bg_color|progressColorSchemes=swipe_refresh_color_schemes">
+    app:progressBackground="?attr/swipe_refresh_progress_bg_color"
+    app:progressColorScheme="?attr/swipe_refresh_color_scheme"
+    skin:skin_attrs="progressBackground=swipe_refresh_progress_bg_color|progressColorScheme=swipe_refresh_color_scheme">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -18,4 +21,4 @@
         android:paddingRight="8dp"
         skin:skin_attrs="background=list_bg_color" />
 
-</android.support.v4.widget.SwipeRefreshLayout>
+</com.hyh.prettyskin.demo.widget.CustomSwipeRefreshLayout>

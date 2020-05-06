@@ -1,6 +1,8 @@
 package com.hyh.prettyskin.utils.reflect;
 
+import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -8,7 +10,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Administrator
@@ -48,16 +49,18 @@ import java.util.Map;
 //                  不见满街漂亮妹，哪个归得程序员？
 public class Reflect {
 
-    private static final Map<String, Class> CLASS_MAP = new HashMap<>();
+    private static final String TAG = "Reflect";
 
-    private static final Map<String, Field> FIELD_MAP = new HashMap<>();
+    private static final HashMap<String, Class> CLASS_MAP = new HashMap<>();
 
-    private static final Map<String, Method> METHOD_MAP = new HashMap<>();
+    private static final HashMap<String, Field> FIELD_MAP = new HashMap<>();
 
-    private static final Map<String, Constructor> CONSTRUCTOR_MAP = new HashMap<>();
+    private static final HashMap<String, Method> METHOD_MAP = new HashMap<>();
+
+    private static final HashMap<String, Constructor> CONSTRUCTOR_MAP = new HashMap<>();
 
     //用于保证返回值为基础数据类型时，不返回null
-    private static final Map<Class, Object> PRIMITIVE_DEFAULT_VALUE = new HashMap<>(8);
+    private static final HashMap<Class, Object> PRIMITIVE_DEFAULT_VALUE = new HashMap<>(8);
 
     static {
         PRIMITIVE_DEFAULT_VALUE.put(byte.class, Byte.valueOf("0"));
@@ -155,34 +158,32 @@ public class Reflect {
 
     public static Class classForName(String className) {
         String key = generateClassMapKey(Reflect.class.getClassLoader(), className);
-        Class result = CLASS_MAP.get(key);
-        if (result == null) {
-            try {
-                result = Class.forName(className);
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-            if (result != null) {
-                CLASS_MAP.put(key, result);
-            }
+        if (CLASS_MAP.containsKey(key)) {
+            return CLASS_MAP.get(key);
         }
+        Class result = null;
+        try {
+            result = Class.forName(className);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        CLASS_MAP.put(key, result);
         return result;
     }
 
 
     public static Class classForName(ClassLoader classLoader, String className) {
         String key = generateClassMapKey(classLoader, className);
-        Class result = CLASS_MAP.get(key);
-        if (result == null) {
-            try {
-                result = classLoader.loadClass(className);
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-            if (result != null) {
-                CLASS_MAP.put(key, result);
-            }
+        if (CLASS_MAP.containsKey(key)) {
+            return CLASS_MAP.get(key);
         }
+        Class result = null;
+        try {
+            result = classLoader.loadClass(className);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        CLASS_MAP.put(key, result);
         return result;
     }
 
@@ -205,9 +206,7 @@ public class Reflect {
         Class result = CLASS_MAP.get(key);
         if (result == null) {
             result = classLoader.loadClass(className);
-            if (result != null) {
-                CLASS_MAP.put(key, result);
-            }
+            CLASS_MAP.put(key, result);
         }
         return result;
     }
@@ -215,133 +214,119 @@ public class Reflect {
 
     public static Field getDeclaredField(Class cls, String fieldName) {
         String key = generateFieldMapKey(cls, fieldName);
-        Field field = FIELD_MAP.get(key);
-        if (field != null) {
-            return field;
+        if (FIELD_MAP.containsKey(key)) {
+            return FIELD_MAP.get(key);
         }
-        try {
-            field = cls.getDeclaredField(fieldName);
-            field.setAccessible(true);
-        } catch (Exception e) {
-            //IGNORE
-        }
-        if (field == null) {
-            Class<?> superclass = cls.getSuperclass();
-            if (superclass != null) {
-                return getDeclaredField(superclass, fieldName);
-            } else {
-                return null;
+        Field field = null;
+        Class target = cls;
+        do {
+            try {
+                field = target.getDeclaredField(fieldName);
+                field.setAccessible(true);
+            } catch (Exception e) {
+                //IGNORE
             }
-        } else {
-            FIELD_MAP.put(key, field);
-            return field;
-        }
+            if (field != null) break;
+            target = target.getSuperclass();
+        } while (target != null);
+        FIELD_MAP.put(key, field);
+        return field;
     }
 
     public static Field getDeclaredFieldWithException(Class cls, String fieldName) throws Throwable {
-        return getDeclaredFieldWithException(null, cls, fieldName);
-    }
-
-    private static Field getDeclaredFieldWithException(Throwable throwable, Class cls, String fieldName) throws Throwable {
         String key = generateFieldMapKey(cls, fieldName);
         Field field = FIELD_MAP.get(key);
         if (field != null) {
             return field;
         }
-        try {
-            field = cls.getDeclaredField(fieldName);
-            field.setAccessible(true);
-        } catch (Exception e) {
-            if (throwable == null) {
-                throwable = e;
+
+        Throwable throwable = null;
+        Class target = cls;
+        do {
+            try {
+                field = target.getDeclaredField(fieldName);
+                field.setAccessible(true);
+            } catch (Throwable e) {
+                if (throwable == null) {
+                    throwable = e;
+                }
             }
-        }
+            if (field != null) break;
+            target = target.getSuperclass();
+        } while (target != null);
+
         if (field == null) {
-            Class<?> superclass = cls.getSuperclass();
-            if (superclass != null) {
-                return getDeclaredFieldWithException(throwable, superclass, fieldName);
-            } else {
-                throw throwable;
-            }
-        } else {
-            FIELD_MAP.put(key, field);
-            return field;
+            throw throwable;
         }
+
+        FIELD_MAP.put(key, field);
+        return field;
     }
 
 
     public static Method getDeclaredMethod(Class cls, String methodName, Class... parameterTypes) {
         String key = generateMethodMapKey(cls, methodName, parameterTypes);
-        Method method = METHOD_MAP.get(key);
-        if (method != null) {
-            return method;
+        if (METHOD_MAP.containsKey(key)) {
+            return METHOD_MAP.get(key);
         }
-        try {
-            method = cls.getDeclaredMethod(methodName, parameterTypes);
-            method.setAccessible(true);
-        } catch (Exception e) {
-            //IGNORE
-        }
-        if (method == null) {
-            Class<?> superclass = cls.getSuperclass();
-            if (superclass != null) {
-                return getDeclaredMethod(superclass, methodName, parameterTypes);
-            } else {
-                return null;
+        Method method = null;
+        Class target = cls;
+        do {
+            try {
+                method = target.getDeclaredMethod(methodName, parameterTypes);
+                method.setAccessible(true);
+            } catch (Exception e) {
+                //IGNORE
             }
-        } else {
-            METHOD_MAP.put(key, method);
-            return method;
-        }
+            if (method != null) break;
+            target = target.getSuperclass();
+        } while (target != null);
+        METHOD_MAP.put(key, method);
+        return method;
     }
+
 
     public static Method getDeclaredMethodWithException(Class cls, String methodName, Class... parameterTypes) throws Throwable {
-        return getDeclaredMethodWithException(null, cls, methodName, parameterTypes);
-    }
-
-    private static Method getDeclaredMethodWithException(Throwable throwable, Class cls, String methodName, Class... parameterTypes) throws Throwable {
         String key = generateMethodMapKey(cls, methodName, parameterTypes);
         Method method = METHOD_MAP.get(key);
         if (method != null) {
             return method;
         }
-        try {
-            method = cls.getDeclaredMethod(methodName, parameterTypes);
-            method.setAccessible(true);
-        } catch (Exception e) {
-            if (throwable == null) {
-                throwable = e;
+        Throwable throwable = null;
+        Class target = cls;
+        do {
+            try {
+                method = target.getDeclaredMethod(methodName, parameterTypes);
+                method.setAccessible(true);
+            } catch (Throwable e) {
+                if (throwable == null) {
+                    throwable = e;
+                }
             }
-        }
+            if (method != null) break;
+            target = target.getSuperclass();
+        } while (target != null);
+
         if (method == null) {
-            Class<?> superclass = cls.getSuperclass();
-            if (superclass != null) {
-                return getDeclaredMethodWithException(throwable, superclass, methodName, parameterTypes);
-            } else {
-                throw throwable;
-            }
-        } else {
-            METHOD_MAP.put(key, method);
-            return method;
+            throw throwable;
         }
+
+        METHOD_MAP.put(key, method);
+        return method;
     }
 
 
     public static <T> Constructor<T> getDeclaredConstructor(Class<T> cls, Class[] parameterTypes) {
         String key = generateConstructorMapKey(cls, parameterTypes);
-        Constructor constructor = CONSTRUCTOR_MAP.get(key);
-        if (constructor != null) {
-            return constructor;
-        }
+        if (CONSTRUCTOR_MAP.containsKey(key)) return CONSTRUCTOR_MAP.get(key);
+        Constructor constructor = null;
         try {
             constructor = cls.getDeclaredConstructor(parameterTypes);
             constructor.setAccessible(true);
         } catch (Exception e) {
             //IGNORE
         }
-        if (constructor != null) {
-            CONSTRUCTOR_MAP.put(key, constructor);
-        }
+        CONSTRUCTOR_MAP.put(key, constructor);
         return constructor;
     }
 
@@ -432,6 +417,41 @@ public class Reflect {
             Reflect.from(dest.getClass()).filed(fieldName).setWithException(dest, result.getResult());
             return true;
         } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private static Object sVmRuntime;
+    private static Method setHiddenApiExemptions;
+
+    static {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            try {
+                Method forName = Class.class.getDeclaredMethod("forName", String.class);
+                Method getDeclaredMethod = Class.class.getDeclaredMethod("getDeclaredMethod", String.class, Class[].class);
+
+                Class<?> vmRuntimeClass = (Class<?>) forName.invoke(null, "dalvik.system.VMRuntime");
+                Method getRuntime = (Method) getDeclaredMethod.invoke(vmRuntimeClass, "getRuntime", null);
+                setHiddenApiExemptions = (Method) getDeclaredMethod.invoke(vmRuntimeClass, "setHiddenApiExemptions", new Class[]{String[].class});
+                sVmRuntime = getRuntime.invoke(null);
+            } catch (Throwable e) {
+                Log.e(TAG, "reflect bootstrap failed:", e);
+            }
+        }
+    }
+
+    public static boolean exemptAll() {
+        return exempt("L");
+    }
+
+    public static boolean exempt(String... methods) {
+        if (sVmRuntime == null || setHiddenApiExemptions == null) {
+            return false;
+        }
+        try {
+            setHiddenApiExemptions.invoke(sVmRuntime, new Object[]{methods});
+            return true;
+        } catch (Throwable e) {
             return false;
         }
     }

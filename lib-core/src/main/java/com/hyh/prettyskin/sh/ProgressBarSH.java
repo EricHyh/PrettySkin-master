@@ -27,19 +27,13 @@ import java.util.List;
 
 public class ProgressBarSH extends ViewSH {
 
-    private final Class mStyleableClass;
+    private Class<?> mStyleableClass;
 
-    private final String mStyleableName;
+    private String mStyleableName;
 
-    private final int[] mAttrs;
+    private int[] mAttrs;
 
-    {
-        mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
-        mStyleableName = "ProgressBar";
-        mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
-    }
-
-    private List<String> mSupportAttrNames = new ArrayList<>();
+    private final List<String> mSupportAttrNames = new ArrayList<>();
 
     private TypedArray mTypedArray;
 
@@ -92,6 +86,14 @@ public class ProgressBarSH extends ViewSH {
     public void prepareParse(View view, AttributeSet set) {
         super.prepareParse(view, set);
         Context context = view.getContext();
+
+        if (mStyleableClass == null) {
+            mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
+            mStyleableName = "ProgressBar";
+            mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
+        }
+
+
         mTypedArray = context.obtainStyledAttributes(set, mAttrs, mDefStyleAttr, mDefStyleRes);
     }
 
@@ -129,17 +131,12 @@ public class ProgressBarSH extends ViewSH {
                 switch (attrName) {
                     case "progressDrawable": {
                         Drawable progressDrawable = attrValue.getTypedValue(Drawable.class, null);
-                        if (progressDrawable != null
-                                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
                                 && ViewAttrUtil.needsTileify(progressDrawable)) {
                             progressBar.setProgressDrawableTiled(progressDrawable);
                         } else {
                             progressBar.setProgressDrawable(progressDrawable);
                         }
-                        break;
-                    }
-                    case "indeterminateDuration": {
-                        //TODO 暂不支持
                         break;
                     }
                     case "minWidth": {
@@ -172,10 +169,6 @@ public class ProgressBarSH extends ViewSH {
                                 .filed("mMaxHeight", int.class)
                                 .set(progressBar, maxHeight);
                         progressBar.requestLayout();
-                        break;
-                    }
-                    case "indeterminateBehavior": {
-                        //TODO 暂不支持
                         break;
                     }
                     case "interpolator": {

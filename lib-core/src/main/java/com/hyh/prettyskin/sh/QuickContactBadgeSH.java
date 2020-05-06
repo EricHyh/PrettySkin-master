@@ -22,18 +22,11 @@ import com.hyh.prettyskin.utils.reflect.Reflect;
 
 public class QuickContactBadgeSH extends ImageViewSH {
 
+    private Class<?> mStyleableClass;
 
-    private final Class mStyleableClass;
+    private String mStyleableName;
 
-    private final String mStyleableName;
-
-    private final int[] mAttrs;
-
-    {
-        mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
-        mStyleableName = "Theme";
-        mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
-    }
+    private int[] mAttrs;
 
     private TypedArray mTypedArray;
 
@@ -59,6 +52,13 @@ public class QuickContactBadgeSH extends ImageViewSH {
     public void prepareParse(View view, AttributeSet set) {
         super.prepareParse(view, set);
         Context context = view.getContext();
+
+        if (mStyleableClass == null) {
+            mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
+            mStyleableName = "Theme";
+            mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
+        }
+
         mTypedArray = context.obtainStyledAttributes(set, mAttrs, mDefStyleAttr, mDefStyleRes);
     }
 

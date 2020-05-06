@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:skin="http://schemas.android.com/android/skin"
     xmlns:tools="http://schemas.android.com/tools"
@@ -22,10 +23,12 @@
             android:background="?attr/toolbar_bg"
             android:elevation="2dp"
             app:navigationIcon="?attr/main_toolbar_navigation"
+            app:titleTextAppearance="@style/MainToolbarTitleAppearance"
             app:titleTextColor="?attr/toolbar_title_color"
             skin:skin_attrs="background=toolbar_bg
             |navigationIcon=main_toolbar_navigation
-            |titleTextColor=toolbar_title_color" />
+            |titleTextColor=toolbar_title_color"
+            tools:ignore="UnusedAttribute" />
 
         <FrameLayout
             android:id="@+id/fragment_container"
@@ -58,6 +61,7 @@
 
 
     <RadioGroup
+        android:id="@+id/skin_radio_group"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
@@ -68,30 +72,12 @@
         skin:skin_attrs="background=content_bg_color">
 
 
-        <com.hyh.prettyskin.demo.widget.CustomView
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            app:attr_int_array="@array/custom_int_array" />
-
-
         <RadioButton
+            android:id="@+id/skin_white_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="10dp"
-            android:button="?attr/drawer_radio_left_drawable"
-            android:gravity="center_vertical"
-            android:padding="10dp"
-            android:text="跟随系统设置"
-            android:textAlignment="gravity"
-            android:textColor="?attr/drawer_radio_text_color"
-            android:textSize="16sp"
-            skin:skin_attrs="textColor=drawer_radio_text_color|button=drawer_radio_left_drawable" />
-
-        <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
             android:button="?attr/drawer_radio_left_drawable"
             android:gravity="center_vertical"
             android:padding="10dp"
@@ -102,6 +88,7 @@
             skin:skin_attrs="textColor=drawer_radio_text_color|button=drawer_radio_left_drawable" />
 
         <RadioButton
+            android:id="@+id/skin_black_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -115,6 +102,7 @@
             skin:skin_attrs="textColor=drawer_radio_text_color|button=drawer_radio_left_drawable" />
 
         <RadioButton
+            android:id="@+id/skin_purple_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -128,6 +116,7 @@
             skin:skin_attrs="textColor=drawer_radio_text_color|button=drawer_radio_left_drawable" />
 
         <RadioButton
+            android:id="@+id/skin_orange_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"

@@ -30,19 +30,14 @@ import java.util.List;
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class ToolbarSH extends ViewGroupSH {
 
-    private final Class mStyleableClass;
+    private Class<?> mStyleableClass;
 
-    private final String mStyleableName;
+    private String mStyleableName;
 
-    private final int[] mAttrs;
+    private int[] mAttrs;
 
-    {
-        mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
-        mStyleableName = "Toolbar";
-        mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
-    }
 
-    private List<String> mSupportAttrNames = new ArrayList<>();
+    private final List<String> mSupportAttrNames = new ArrayList<>();
 
     private TypedArray mTypedArray;
 
@@ -105,6 +100,13 @@ public class ToolbarSH extends ViewGroupSH {
     public void prepareParse(View view, AttributeSet set) {
         super.prepareParse(view, set);
         Context context = view.getContext();
+
+        if (mStyleableClass == null) {
+            mStyleableClass = Reflect.classForName("com.android.internal.R$styleable");
+            mStyleableName = "Toolbar";
+            mAttrs = Reflect.from(mStyleableClass).filed(mStyleableName, int[].class).get(null);
+        }
+
         mTypedArray = context.obtainStyledAttributes(set, mAttrs, mDefStyleAttr, mDefStyleRes);
     }
 
