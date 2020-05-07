@@ -36,6 +36,8 @@ public class WebActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
 
+        initStatusBar();
+
         String url = getIntent().getStringExtra("url");
 
         Toolbar toolbar = findViewById(R.id.tool_bar);

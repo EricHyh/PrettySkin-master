@@ -8,10 +8,14 @@
     <integer name="shape_ring">1</integer>
     <integer name="shape_triangle">2</integer>
 
+    <integer name="status_bar_mode_light">0</integer>
+    <integer name="status_bar_mode_dark">1</integer>
+
 
     <declare-styleable name="PrettySkin">
 
         <attr name="status_bar_color" format="color" />
+        <attr name="status_bar_mode" format="enum" />
 
         <attr name="toolbar_bg" format="color|reference" />
         <attr name="toolbar_title_color" format="color|reference" />
@@ -80,6 +84,8 @@
     <style name="PrettySkin_purple">
 
         <item name="status_bar_color">#500BC1</item>
+        <item name="status_bar_mode">@integer/status_bar_mode_dark</item>
+
         <item name="toolbar_bg">#500BC1</item>
         <item name="toolbar_title_color">#B19BEA</item>
 
@@ -141,6 +147,9 @@
     <style name="PrettySkin_orange">
 
         <item name="status_bar_color">#FF7C61</item>
+        <item name="status_bar_mode">@integer/status_bar_mode_light</item>
+
+
         <item name="toolbar_bg">#FF7C61</item>
         <item name="toolbar_title_color">#7F3E30</item>
 

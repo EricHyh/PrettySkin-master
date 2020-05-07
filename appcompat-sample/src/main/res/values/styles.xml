@@ -53,6 +53,7 @@
     <declare-styleable name="PrettySkin">
 
         <attr name="status_bar_color" format="color" />
+        <attr name="status_bar_mode" format="enum" />
 
         <attr name="toolbar_bg" format="color|reference" />
         <attr name="toolbar_title_color" format="color|reference" />
@@ -115,7 +116,9 @@
 
     <style name="PrettySkin_white" parent="AppTheme">
 
-        <item name="status_bar_color">@color/status_bar_color_white_style</item>
+        <item name="status_bar_color">#DDDDDD</item>
+        <item name="status_bar_mode">@integer/status_bar_mode_light</item>
+
         <item name="toolbar_bg">@color/white</item>
         <item name="toolbar_title_color">#212121</item>
 
@@ -177,7 +180,9 @@
 
     <style name="PrettySkin_black" parent="AppTheme">
 
-        <item name="status_bar_color">@color/status_bar_color_white_style</item>
+        <item name="status_bar_color">#373737</item>
+        <item name="status_bar_mode">@integer/status_bar_mode_dark</item>
+
         <item name="toolbar_bg">#373737</item>
         <item name="toolbar_title_color">#8F8F8F</item>
 

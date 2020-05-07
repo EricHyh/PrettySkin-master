@@ -4,6 +4,9 @@
     <integer name="shape_ring">1</integer>
     <integer name="shape_triangle">2</integer>
 
+    <integer name="status_bar_mode_light">0</integer>
+    <integer name="status_bar_mode_dark">1</integer>
+
 
     <integer name="int1">1</integer>
     <integer name="int2">2</integer>
