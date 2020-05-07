@@ -1,27 +1,32 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.hyh.prettyskin">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.hyh.prettyskin">
 
-    <application>
+    <application tools:ignore="all">
 
+        <!--R文件路径-->
         <meta-data
             android:name="skin_r_class_path"
-            android:value="com.hyh.prettyskin.R"/>
+            android:value="com.hyh.prettyskin.R" />
+
+        <!--皮肤属性表名-->
         <meta-data
             android:name="skin_declare_styleable"
-            android:value="skin_first"/>
+            android:value="PrettySkin" />
+
+        <!--皮肤名称列表-->
         <meta-data
             android:name="skin_theme_list"
-            android:resource="@array/skin_list"/>
+            android:resource="@array/skin_list" />
 
+        <!--皮肤名称对应的主题-->
         <meta-data
-            android:name="skin_first_1"
-            android:resource="@style/skin_first_1"/>
+            android:name="PrettySkin_purple"
+            android:resource="@style/PrettySkin_purple" />
         <meta-data
-            android:name="skin_first_2"
-            android:resource="@style/skin_first_2"/>
-        <meta-data
-            android:name="skin_first_3"
-            android:resource="@style/skin_first_3"/>
+            android:name="PrettySkin_orange"
+            android:resource="@style/PrettySkin_orange" />
+        <!--皮肤名称对应的主题-->
 
     </application>
 

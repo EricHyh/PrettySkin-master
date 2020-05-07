@@ -1,5 +1,6 @@
 package com.hyh.prettyskin.demo.utils;
 
+import android.content.res.TypedArray;
 import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
@@ -18,7 +19,12 @@ public class BindingAdapterUtil {
 
     @BindingAdapter({"app:imageUrl"})
     public static void setImageUrl(ImageView imageView, String url) {
-        Drawable drawable = imageView.getResources().getDrawable(R.drawable.img_default_white_style);
+        TypedArray typedArray = imageView.getContext().obtainStyledAttributes(R.styleable.PrettySkin);
+        Drawable drawable = typedArray.getDrawable(R.styleable.PrettySkin_project_image_default);
+        typedArray.recycle();
+        if (drawable == null) {
+            drawable = imageView.getResources().getDrawable(R.drawable.img_default_white_style);
+        }
         DynamicDrawable imageDefault = new DynamicDrawable("project_image_default", drawable);
         Glide.with(imageView.getContext())
                 .load(url)
@@ -27,5 +33,7 @@ public class BindingAdapterUtil {
                 .placeholder(imageDefault)
                 .error(imageDefault)
                 .into(imageView);
+
+        //project_image_default
     }
 }

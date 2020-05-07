@@ -2,9 +2,11 @@ package com.hyh.prettyskin.demo.fragment;
 
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,6 @@ import com.hyh.prettyskin.R;
 import com.hyh.prettyskin.SkinView;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.demo.pop.DimBackgroundPopWindow;
-import com.hyh.prettyskin.demo.utils.DisplayUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,22 +54,29 @@ public class OtherFragment extends CommonBaseFragment {
         textView.setText("我是一个通过代码new出来的TextView，我的文字颜色、背景、文字大小属性加入了皮肤管理，换个皮肤再来看看我吧！");
         mFrameLayout.addView(textView);
 
-        int defaultBg = context.getResources().getColor(R.color.primary_red);
-        int defaultTextColor = Color.WHITE;
-        float defaultTextSize = DisplayUtil.dip2px(context, 16);
+        int textBg;
+        int textColor;
+        float textSize;
+        {
+            TypedArray typedArray = context.obtainStyledAttributes(R.styleable.PrettySkin);
+            textBg = typedArray.getColor(R.styleable.PrettySkin_new_text_view_bg, 0);
+            textColor = typedArray.getColor(R.styleable.PrettySkin_new_text_view_text_color, 0);
+            textSize = typedArray.getDimension(R.styleable.PrettySkin_new_text_view_text_size, 0.0f);
+            typedArray.recycle();
+        }
 
-        textView.setBackgroundColor(defaultBg);
-        textView.setTextColor(defaultTextColor);
-        textView.setTextSize(16);
+        textView.setBackgroundColor(textBg);
+        textView.setTextColor(textColor);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);
 
         Map<String, String> attrKeyMap = new HashMap<>();
         attrKeyMap.put("background", "new_text_view_bg");
         attrKeyMap.put("textColor", "new_text_view_text_color");
         attrKeyMap.put("textSize", "new_text_view_text_size");
         Map<String, AttrValue> defaultAttrValueMap = new HashMap<>();
-        defaultAttrValueMap.put("new_text_view_bg", new AttrValue(context, ValueType.TYPE_COLOR_INT, defaultBg));
-        defaultAttrValueMap.put("new_text_view_text_color", new AttrValue(context, ValueType.TYPE_COLOR_INT, defaultTextColor));
-        defaultAttrValueMap.put("new_text_view_text_size", new AttrValue(context, ValueType.TYPE_FLOAT, defaultTextSize));
+        defaultAttrValueMap.put("new_text_view_bg", new AttrValue(context, ValueType.TYPE_COLOR_INT, textBg));
+        defaultAttrValueMap.put("new_text_view_text_color", new AttrValue(context, ValueType.TYPE_COLOR_INT, textColor));
+        defaultAttrValueMap.put("new_text_view_text_size", new AttrValue(context, ValueType.TYPE_FLOAT, textSize));
         SkinView skinView = new SkinView(textView, attrKeyMap, defaultAttrValueMap);
 
         PrettySkin.getInstance().addSkinView(skinView);

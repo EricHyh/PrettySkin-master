@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTabHost;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,6 +21,8 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hyh.prettyskin.ApkThemeSkin;
+import com.hyh.prettyskin.ISkin;
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.R;
 import com.hyh.prettyskin.ThemeSkin;
@@ -28,8 +31,10 @@ import com.hyh.prettyskin.demo.fragment.CustomerAttrFragment;
 import com.hyh.prettyskin.demo.fragment.DynamicDrawableFragment;
 import com.hyh.prettyskin.demo.fragment.OtherFragment;
 import com.hyh.prettyskin.demo.fragment.ProjectsFragment;
+import com.hyh.prettyskin.demo.utils.AssetsSkinHelper;
 import com.hyh.prettyskin.demo.utils.DisplayUtil;
 import com.hyh.prettyskin.demo.utils.PreferenceUtil;
+import com.hyh.prettyskin.demo.utils.ThreadUtil;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 /**
@@ -77,7 +82,7 @@ public class MainActivity extends BaseActivity {
         mDrawerLayout.addDrawerListener(mDrawerToggle);
 
         RadioGroup skinRadioGroup = findViewById(R.id.skin_radio_group);
-        int skinStyle = PreferenceUtil.getInt(this, "skin_style", 0);
+        int skinStyle = PreferenceUtil.getInt(this, "skin_style", -1);
         switch (skinStyle) {
             case SkinStyle.WHITE: {
                 skinRadioGroup.check(R.id.skin_white_style);
@@ -111,11 +116,55 @@ public class MainActivity extends BaseActivity {
                     break;
                 }
                 case R.id.skin_purple_style: {
-                    PreferenceUtil.putInt(this, "skin_style", SkinStyle.PURPLE);
+                    if (AssetsSkinHelper.isUnziped(this)) {
+                        String skinPath = AssetsSkinHelper.getSkinPath(this);
+                        ISkin skin = new ApkThemeSkin(getApplicationContext(), skinPath, 0);
+                        PrettySkin.getInstance().replaceSkinAsync(skin, null);
+                        PreferenceUtil.putInt(this, "skin_style", SkinStyle.PURPLE);
+                    } else {
+                        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                                .setView(R.layout.loading_dialog)
+                                .setOnDismissListener(dialog -> {
+                                    if (AssetsSkinHelper.isUnziped(this)) {
+                                        String skinPath = AssetsSkinHelper.getSkinPath(this);
+                                        ISkin skin = new ApkThemeSkin(getApplicationContext(), skinPath, 0);
+                                        PrettySkin.getInstance().replaceSkinAsync(skin, null);
+                                        PreferenceUtil.putInt(this, "skin_style", SkinStyle.PURPLE);
+                                    } else {
+                                        Toast.makeText(this, "未找到资源", Toast.LENGTH_SHORT).show();
+                                    }
+                                }).show();
+                        ThreadUtil.execute(() -> {
+                            AssetsSkinHelper.unzipAssetsSkin(this);
+                            runOnUiThread(alertDialog::dismiss);
+                        });
+                    }
                     break;
                 }
                 case R.id.skin_orange_style: {
-                    PreferenceUtil.putInt(this, "skin_style", SkinStyle.ORANGE);
+                    if (AssetsSkinHelper.isUnziped(this)) {
+                        String skinPath = AssetsSkinHelper.getSkinPath(this);
+                        ISkin skin = new ApkThemeSkin(getApplicationContext(), skinPath, 1);
+                        PrettySkin.getInstance().replaceSkinAsync(skin, null);
+                        PreferenceUtil.putInt(this, "skin_style", SkinStyle.ORANGE);
+                    } else {
+                        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                                .setView(R.layout.loading_dialog)
+                                .setOnDismissListener(dialog -> {
+                                    if (AssetsSkinHelper.isUnziped(this)) {
+                                        String skinPath = AssetsSkinHelper.getSkinPath(this);
+                                        ISkin skin = new ApkThemeSkin(getApplicationContext(), skinPath, 1);
+                                        PrettySkin.getInstance().replaceSkinAsync(skin, null);
+                                        PreferenceUtil.putInt(this, "skin_style", SkinStyle.ORANGE);
+                                    } else {
+                                        Toast.makeText(this, "未找到资源", Toast.LENGTH_SHORT).show();
+                                    }
+                                }).show();
+                        ThreadUtil.execute(() -> {
+                            AssetsSkinHelper.unzipAssetsSkin(this);
+                            runOnUiThread(alertDialog::dismiss);
+                        });
+                    }
                     break;
                 }
             }

@@ -1,6 +1,7 @@
 package com.hyh.prettyskin.demo.fragment;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,13 @@ public class DynamicDrawableFragment extends CommonBaseFragment {
 
         {
             String attrKey = "test_dynamic_drawable";
-            Drawable defaultDrawable = context.getResources().getDrawable(R.drawable.test_dynamic_drawable_white_style);
+            TypedArray typedArray = context.obtainStyledAttributes(R.styleable.PrettySkin);
+            Drawable defaultDrawable = typedArray.getDrawable(R.styleable.PrettySkin_test_dynamic_drawable);
+            typedArray.recycle();
+            if (defaultDrawable == null) {
+                defaultDrawable = context.getResources().getDrawable(R.drawable.test_dynamic_drawable_white_style);
+            }
+            //test_dynamic_drawable
             mButton.setBackgroundDrawable(new DynamicDrawable(attrKey, defaultDrawable));
         }
 
