@@ -171,7 +171,7 @@
         <item name="swipe_refresh_color_scheme">#FF7C61</item>
 
 
-        <item name="project_category_tab_color_nor">#5A1E1C</item>
+        <item name="project_category_tab_color_nor">#CE5246</item>
         <item name="project_category_tab_color_select">#FFF799</item>
         <item name="project_image_default">@drawable/img_default_orange_style</item>
         <item name="project_title_color">#5A1E1C</item>

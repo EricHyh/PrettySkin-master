@@ -33,7 +33,5 @@ public class BindingAdapterUtil {
                 .placeholder(imageDefault)
                 .error(imageDefault)
                 .into(imageView);
-
-        //project_image_default
     }
 }
