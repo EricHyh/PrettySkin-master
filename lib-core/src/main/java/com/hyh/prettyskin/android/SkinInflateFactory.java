@@ -11,7 +11,7 @@ import com.hyh.prettyskin.BasePrettySkin;
 import com.hyh.prettyskin.ISkinHandler;
 import com.hyh.prettyskin.ISkinable;
 import com.hyh.prettyskin.SkinView;
-import com.hyh.prettyskin.utils.Logger;
+import com.hyh.prettyskin.utils.SkinLogger;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.util.Collection;
@@ -64,7 +64,7 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
             }
         }
         boolean isSkinable = mPrettySkin.isSkinableContext(context);
-        Logger.d(context.getClass().getName() + " isSkinable = " + isSkinable);
+        SkinLogger.d(context.getClass().getName() + " isSkinable = " + isSkinable);
         if (isSkinable) {
             String skinAttrs = attrs.getAttributeValue(NAMESPACE, SKIN_ATTRS);
             if (!TextUtils.isEmpty(skinAttrs)) {
@@ -135,7 +135,7 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
     //background=ma_btn_bg|textColor=ma_btn_text_color
     private Map<String, String> getAttrKeyMap(String skinAttrs) {
         if (!skinAttrs.matches("(.+=.+\\|)*(.+=.+)")) {
-            Logger.e("parse skin attrs error: [" + skinAttrs + "] is not matched [attrName=attrValueKey|attrName=attrValueKey]");
+            SkinLogger.e("parse skin attrs error: [" + skinAttrs + "] is not matched [attrName=attrValueKey|attrName=attrValueKey]");
             return null;
         }
         String[] attrArr = skinAttrs.split("\\|");
@@ -159,7 +159,7 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
         skinHandler.prepareParse(view, attrs);
         for (String attrName : attrNames) {
             AttrValue attrValue = skinHandler.parse(view, attrs, attrName);
-            Logger.d("getDefaultAttrValueMap attrName = " + attrName + ", attrValue = " + attrValue);
+            SkinLogger.d("getDefaultAttrValueMap attrName = " + attrName + ", attrValue = " + attrValue);
             attrValueMap.put(attrName, attrValue);
         }
         skinHandler.finishParse();

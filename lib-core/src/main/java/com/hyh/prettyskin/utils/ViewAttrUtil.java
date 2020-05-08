@@ -219,7 +219,7 @@ public class ViewAttrUtil {
                         }
                     }
                 } catch (Exception e) {
-                    Logger.w("convert reference value to fraction failed, resourceId = " + resourceId + " ", e);
+                    SkinLogger.w("convert reference value to fraction failed, resourceId = " + resourceId + " ", e);
                 }
                 if (fraction == null) return defaultValue;
 
@@ -283,25 +283,25 @@ public class ViewAttrUtil {
                     try {
                         return (T) AnimationUtils.loadAnimation(themeContext, resourceId);
                     } catch (Exception e) {
-                        Logger.w("value convert to animation failed ", e);
+                        SkinLogger.w("value convert to animation failed ", e);
                     }
                 } else if (valueClass == LayoutAnimationController.class) {
                     try {
                         return (T) AnimationUtils.loadLayoutAnimation(themeContext, resourceId);
                     } catch (Exception e) {
-                        Logger.w("value convert to layout animation failed ", e);
+                        SkinLogger.w("value convert to layout animation failed ", e);
                     }
                 } else if (valueClass == Interpolator.class) {
                     try {
                         return (T) AnimationUtils.loadInterpolator(themeContext, resourceId);
                     } catch (Exception e) {
-                        Logger.w("value convert to interpolator failed ", e);
+                        SkinLogger.w("value convert to interpolator failed ", e);
                     }
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && valueClass == StateListAnimator.class) {
                     try {
                         return (T) AnimatorInflater.loadStateListAnimator(themeContext, resourceId);
                     } catch (Exception e) {
-                        Logger.w("value convert to StateListAnimator failed ", e);
+                        SkinLogger.w("value convert to StateListAnimator failed ", e);
                     }
                 } else if (valueClass == int.class || valueClass == Integer.class) {
                     return (T) value;
@@ -313,13 +313,13 @@ public class ViewAttrUtil {
                     try {
                         return (T) resources.getIntArray(resourceId);
                     } catch (Exception e) {
-                        Logger.w("value convert to int[] failed ", e);
+                        SkinLogger.w("value convert to int[] failed ", e);
                     }
                 } else if (valueClass == String[].class) {
                     try {
                         return (T) resources.getStringArray(resourceId);
                     } catch (Exception e) {
-                        Logger.w("value convert to String[] failed ", e);
+                        SkinLogger.w("value convert to String[] failed ", e);
                     }
                 } else if (valueClass == int.class || valueClass == Integer.class) {
                     return (T) value;

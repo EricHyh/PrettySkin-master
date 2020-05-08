@@ -106,6 +106,8 @@ public final class SkinView {
         if (skinHandler == null) {
             return;
         }
+
+
         Set<Map.Entry<String, String>> entrySet = attrKeyMap.entrySet();
         for (Map.Entry<String, String> entry : entrySet) {
             String attrName = entry.getKey();

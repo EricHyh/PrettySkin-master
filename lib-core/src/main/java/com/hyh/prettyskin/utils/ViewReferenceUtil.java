@@ -57,10 +57,10 @@ public class ViewReferenceUtil {
                     // This behavior has been tested and reproduced with heap dumps.
                     remove = (ViewReference) sReferenceQueue.remove(5000);
                 } catch (InterruptedException e) {
-                    Logger.e("CleanupThread interrupted ", e);
+                    SkinLogger.e("CleanupThread interrupted ", e);
                     break;
                 } catch (Exception e) {
-                    Logger.e("CleanupThread error ", e);
+                    SkinLogger.e("CleanupThread error ", e);
                 }
                 if (remove != null) {
                     WeakReference<SkinView> skinViewRef = remove.skinViewRef;

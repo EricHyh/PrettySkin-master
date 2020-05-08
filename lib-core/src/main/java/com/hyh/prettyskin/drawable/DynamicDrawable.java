@@ -22,7 +22,7 @@ import com.hyh.prettyskin.ISkin;
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.SkinChangedListener;
 import com.hyh.prettyskin.ValueType;
-import com.hyh.prettyskin.utils.Logger;
+import com.hyh.prettyskin.utils.SkinLogger;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.lang.ref.WeakReference;
@@ -528,7 +528,7 @@ public class DynamicDrawable extends Drawable implements Drawable.Callback {
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        Logger.d("DynamicDrawable finalize: " + this);
+        SkinLogger.d("DynamicDrawable finalize: " + this);
         mPrettySkin.removeSkinReplaceListener(mSkinChangedListener);
     }
 

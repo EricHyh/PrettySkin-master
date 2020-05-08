@@ -13,7 +13,7 @@ import android.view.View;
 
 import com.hyh.prettyskin.android.SkinInflateFactory;
 import com.hyh.prettyskin.sh.SkinHandlerMaps;
-import com.hyh.prettyskin.utils.Logger;
+import com.hyh.prettyskin.utils.SkinLogger;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
 import java.lang.ref.WeakReference;
@@ -119,7 +119,7 @@ public class BasePrettySkin {
             }
             return true;
         } else {
-            Logger.w("You need set your context skinable, but your context has not self layout inflater. You can refer to ContextThemeWrapper.");
+            SkinLogger.w("You need set your context skinable, but your context has not self layout inflater. You can refer to ContextThemeWrapper.");
             if (force) {
                 return installViewFactory(layoutInflaterContext, false);
             }

@@ -10,7 +10,7 @@ import java.util.Locale;
  * @data 2018/3/16
  */
 
-public class Logger {
+public class SkinLogger {
 
     private static final String TAG = "PRETTY_SKIN";
 

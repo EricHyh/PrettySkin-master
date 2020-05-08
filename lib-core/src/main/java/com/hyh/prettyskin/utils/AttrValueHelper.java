@@ -155,7 +155,7 @@ public class AttrValueHelper {
                 result = new Object[]{ValueType.TYPE_REFERENCE, value};
             }
         } catch (Exception e) {
-            Logger.d("AttrValueHelper getAttrValue [" + string + "] getResourceId failed ", e);
+            SkinLogger.d("AttrValueHelper getAttrValue [" + string + "] getResourceId failed ", e);
         }
         return result;
     }
@@ -184,7 +184,7 @@ public class AttrValueHelper {
                 type = ValueType.TYPE_DRAWABLE;
             }
         } catch (Exception e) {
-            Logger.d("AttrValueHelper getAttrValue [" + string + "] getDrawable failed ", e);
+            SkinLogger.d("AttrValueHelper getAttrValue [" + string + "] getDrawable failed ", e);
         }
         if (value != null) {
             result = new Object[]{type, value};
@@ -221,7 +221,7 @@ public class AttrValueHelper {
                 type = ValueType.TYPE_COLOR_STATE_LIST;
             }
         } catch (Exception e) {
-            Logger.d("AttrValueHelper getAttrValue [" + string + "] getColorStateList failed ", e);
+            SkinLogger.d("AttrValueHelper getAttrValue [" + string + "] getColorStateList failed ", e);
         }
         if (value != null) {
             result = new Object[]{type, value};
@@ -240,7 +240,7 @@ public class AttrValueHelper {
             }
             return new Object[]{ValueType.TYPE_REFERENCE, value};
         } catch (Exception e) {
-            Logger.d("AttrValueHelper getAttrValue [" + string + "] getResourceId failed ", e);
+            SkinLogger.d("AttrValueHelper getAttrValue [" + string + "] getResourceId failed ", e);
         }
         return null;
     }

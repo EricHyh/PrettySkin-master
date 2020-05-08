@@ -54,7 +54,7 @@ public abstract class BaseActivity extends AppCompatActivity implements SkinChan
 
     @Override
     public void onSkinAttrChanged(ISkin skin, List<String> changedAttrKeys) {
-        if (changedAttrKeys.contains("status_bar_color")) {
+        if (changedAttrKeys.contains("status_bar_color") || changedAttrKeys.contains("status_bar_mode")) {
             setStatusBar(skin);
         }
     }
