@@ -1,0 +1,167 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <!-- <item name="colorControlNormal">@android:color/white</item>-->
+
+        <!--<item name="android:background">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>-->
+
+        <item name="android:windowDisablePreview">true</item>
+
+    </style>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@android:color/white</item>
+    </style>
+
+    <style name="TransparentTheme" parent="Base.Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item> <!-- 无标题 -->
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 屏幕背景不变暗 -->
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="PrettySkin_white" parent="AppTheme">
+
+        <item name="status_bar_color">#DDDDDD</item>
+        <item name="status_bar_mode">@integer/status_bar_mode_light</item>
+
+        <item name="toolbar_bg">@color/white</item>
+        <item name="toolbar_title_color">#212121</item>
+
+        <item name="tablayout_bg">@drawable/tablayout_bg_white_style</item>
+
+        <item name="content_bg_color">@color/white</item>
+        <item name="list_bg_color">#F4F4F4</item>
+        <item name="item_bg_color">@color/white</item>
+
+        <item name="main_toolbar_navigation">@mipmap/main_toolbar_navigation_white_style</item>
+        <item name="web_toolbar_navigation">@mipmap/web_toolbar_navigation_white_style</item>
+
+        <item name="web_progress_drawable">@drawable/web_progress_white_style</item>
+
+        <item name="tabhost_indicator_text_color">@color/bottom_tab_text_color_white_style</item>
+        <item name="tabhost_decoration_color">#E7E7E7</item>
+
+        <item name="swipe_refresh_progress_bg_color">#FFFAFAFA</item>
+        <item name="swipe_refresh_color_scheme">#FB7299</item>
+
+
+        <item name="project_category_tab_color_nor">#757575</item>
+        <item name="project_category_tab_color_select">#FB7299</item>
+        <item name="project_image_default">@drawable/img_default_white_style</item>
+        <item name="project_title_color">@color/black</item>
+        <item name="project_des_color">#767676</item>
+        <item name="project_tag_color">#767676</item>
+        <item name="project_landing_page_mask_color">@color/transparent</item>
+
+        <item name="explanation_text_color">@color/black</item>
+
+        <item name="shape_view_bg">?attr/list_bg_color</item>
+        <item name="shape_view_shape">@integer/shape_rectangle</item>
+        <item name="shape_view_bord_color">#FB7299</item>
+        <item name="shape_view_bord_width">10dp</item>
+
+        <item name="test_dynamic_drawable">@drawable/test_dynamic_drawable_white_style</item>
+        <item name="add_drawable_color">#FB7299</item>
+
+        <item name="new_text_view_bg">#FB7299</item>
+        <item name="new_text_view_text_color">@color/white</item>
+        <item name="new_text_view_text_size">14sp</item>
+
+        <item name="drawer_radio_text_color">@color/black</item>
+        <item name="drawer_radio_left_drawable">@drawable/radio_button_drawable_white_style</item>
+
+
+        <item name="dialog_bg">?attr/content_bg_color</item>
+        <item name="dialog_title_color">?attr/project_title_color</item>
+        <item name="dialog_btn_bg">#FB7299</item>
+        <item name="dialog_btn_text_color">@color/white</item>
+
+        <item name="popup_bg">?attr/dialog_bg</item>
+        <item name="popup_title_color">?attr/dialog_title_color</item>
+        <item name="popup_btn_bg">?attr/dialog_btn_bg</item>
+        <item name="popup_btn_text_color">?attr/dialog_btn_text_color</item>
+
+    </style>
+
+    <style name="PrettySkin_black" parent="AppTheme">
+
+        <item name="status_bar_color">#373737</item>
+        <item name="status_bar_mode">@integer/status_bar_mode_dark</item>
+
+        <item name="toolbar_bg">#373737</item>
+        <item name="toolbar_title_color">#8F8F8F</item>
+
+        <item name="tablayout_bg">@drawable/tablayout_bg_black_style</item>
+
+        <item name="content_bg_color">#373737</item>
+        <item name="list_bg_color">#2B2B2B</item>
+        <item name="item_bg_color">#373737</item>
+
+
+        <item name="main_toolbar_navigation">@mipmap/main_toolbar_navigation_black_style</item>
+        <item name="web_toolbar_navigation">@mipmap/web_toolbar_navigation_black_style</item>
+
+        <item name="web_progress_drawable">@drawable/web_progress_black_style</item>
+
+        <item name="tabhost_indicator_text_color">@color/bottom_tab_text_color_black_style</item>
+        <item name="tabhost_decoration_color">#404040</item>
+
+        <item name="swipe_refresh_progress_bg_color">#EDEDED</item>
+        <item name="swipe_refresh_color_scheme">#B35F76</item>
+
+        <item name="project_category_tab_color_nor">#797979</item>
+        <item name="project_category_tab_color_select">#B35F76</item>
+        <item name="project_image_default">@drawable/img_default_black_style</item>
+        <item name="project_title_color">#8F8F8F</item>
+        <item name="project_des_color">#8F8F8F</item>
+        <item name="project_tag_color">#6E6E6E</item>
+        <item name="project_landing_page_mask_color">#33000000</item>
+
+        <item name="explanation_text_color">#8F8F8F</item>
+
+        <item name="shape_view_bg">?attr/list_bg_color</item>
+        <item name="shape_view_shape">@integer/shape_ring</item>
+        <item name="shape_view_bord_color">#B35F76</item>
+        <item name="shape_view_bord_width">20dp</item>
+
+        <item name="test_dynamic_drawable">@drawable/test_dynamic_drawable_black_style</item>
+        <item name="add_drawable_color">#B35F76</item>
+
+        <item name="new_text_view_bg">#B35F76</item>
+        <item name="new_text_view_text_color">@color/black</item>
+        <item name="new_text_view_text_size">12sp</item>
+
+        <item name="drawer_radio_text_color">@color/white</item>
+        <item name="drawer_radio_left_drawable">@drawable/radio_button_drawable_black_style</item>
+
+
+        <item name="dialog_bg">?attr/content_bg_color</item>
+        <item name="dialog_title_color">?attr/project_title_color</item>
+        <item name="dialog_btn_bg">#B35F76</item>
+        <item name="dialog_btn_text_color">#DADADA</item>
+
+        <item name="popup_bg">?attr/dialog_bg</item>
+        <item name="popup_title_color">?attr/dialog_title_color</item>
+        <item name="popup_btn_bg">?attr/dialog_btn_bg</item>
+        <item name="popup_btn_text_color">?attr/dialog_btn_text_color</item>
+
+    </style>
+
+</resources>

@@ -36,84 +36,6 @@
         <item name="textAllCaps">true</item>
     </style>
 
-    <style name="WebProgressBarStyle" parent="@android:style/Widget.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">?attr/web_progress_drawable</item>
-    </style>
-
-
-    <style name="MainToolbarTitleAppearance">
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name="WebToolbarTitleAppearance">
-        <item name="android:textSize">18sp</item>
-    </style>
-
-    <!--定义皮肤属性-->
-    <declare-styleable name="PrettySkin">
-
-        <attr name="status_bar_color" format="color" />
-        <attr name="status_bar_mode" format="enum" />
-
-        <attr name="toolbar_bg" format="color|reference" />
-        <attr name="toolbar_title_color" format="color|reference" />
-
-        <attr name="tablayout_bg" format="color|reference" />
-
-        <attr name="content_bg_color" format="color" />
-        <attr name="list_bg_color" format="color" />
-        <attr name="item_bg_color" format="color" />
-
-        <attr name="main_toolbar_navigation" format="reference" />
-        <attr name="web_toolbar_navigation" format="reference" />
-
-        <attr name="web_progress_drawable" format="reference" />
-
-        <attr name="tabhost_indicator_text_color" format="color|reference" />
-        <attr name="tabhost_decoration_color" format="color" />
-
-        <attr name="swipe_refresh_progress_bg_color" format="color" />
-        <attr name="swipe_refresh_color_scheme" format="color|reference" />
-
-
-        <attr name="project_category_tab_color_nor" format="color" />
-        <attr name="project_category_tab_color_select" format="color" />
-        <attr name="project_image_default" format="reference" />
-        <attr name="project_title_color" format="color" />
-        <attr name="project_des_color" format="color" />
-        <attr name="project_tag_color" format="color" />
-
-        <attr name="project_landing_page_mask_color" format="color" />
-
-        <attr name="explanation_text_color" format="color" />
-
-        <attr name="shape_view_bg" format="color|reference" />
-        <attr name="shape_view_shape" format="enum" />
-        <attr name="shape_view_bord_color" format="color" />
-        <attr name="shape_view_bord_width" format="dimension" />
-
-        <attr name="test_dynamic_drawable" format="reference" />
-        <attr name="add_drawable_color" format="color" />
-
-        <attr name="new_text_view_bg" format="color|reference" />
-        <attr name="new_text_view_text_color" format="color|reference" />
-        <attr name="new_text_view_text_size" format="dimension" />
-
-        <attr name="drawer_radio_text_color" format="color|reference" />
-        <attr name="drawer_radio_left_drawable" format="reference" />
-
-        <attr name="dialog_bg" format="color|reference" />
-        <attr name="dialog_title_color" format="color|reference" />
-        <attr name="dialog_btn_bg" format="color|reference" />
-        <attr name="dialog_btn_text_color" format="color|reference" />
-
-        <attr name="popup_bg" format="color|reference" />
-        <attr name="popup_title_color" format="color|reference" />
-        <attr name="popup_btn_bg" format="color|reference" />
-        <attr name="popup_btn_text_color" format="color|reference" />
-
-    </declare-styleable>
-
     <style name="PrettySkin_white" parent="AppTheme">
 
         <item name="status_bar_color">#DDDDDD</item>
@@ -196,7 +118,7 @@
         <item name="main_toolbar_navigation">@mipmap/main_toolbar_navigation_black_style</item>
         <item name="web_toolbar_navigation">@mipmap/web_toolbar_navigation_black_style</item>
 
-        <item name="web_progress_drawable">@drawable/web_progress_white_style</item>
+        <item name="web_progress_drawable">@drawable/web_progress_black_style</item>
 
         <item name="tabhost_indicator_text_color">@color/bottom_tab_text_color_black_style</item>
         <item name="tabhost_decoration_color">#404040</item>
@@ -206,6 +128,7 @@
 
         <item name="project_category_tab_color_nor">#797979</item>
         <item name="project_category_tab_color_select">#B35F76</item>
+        <item name="project_image_default">@drawable/img_default_black_style</item>
         <item name="project_title_color">#8F8F8F</item>
         <item name="project_des_color">#8F8F8F</item>
         <item name="project_tag_color">#6E6E6E</item>

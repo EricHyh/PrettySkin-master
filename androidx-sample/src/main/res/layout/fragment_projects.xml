@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="?attr/tablayout_bg"
+        app:tabBackground="?attr/selectableItemBackground"
+        app:tabIndicatorColor="?attr/project_category_tab_color_select"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorHeight="2dp"
+        app:tabMinWidth="50dp"
+        app:tabMode="scrollable"
+        app:tabPaddingEnd="10dp"
+        app:tabPaddingStart="10dp"
+        app:tabSelectedTextColor="?attr/project_category_tab_color_select"
+        app:tabTextAppearance="@style/TabTextAppearance"
+        app:tabTextColor="?attr/project_category_tab_color_nor"
+        skin:skin_attrs="background=tablayout_bg
+        |tabIndicatorColor=project_category_tab_color_select
+        |tabTextColor=project_category_tab_color_nor
+        |tabSelectedTextColor=project_category_tab_color_select" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.R;
-import com.hyh.prettyskin.sh.SwipeRefreshLayoutSH;
+import com.hyh.prettyskin.sh.support.SwipeRefreshLayoutSH;
 import com.hyh.prettyskin.utils.AttrValueHelper;
 
 import java.util.ArrayList;

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="project"
+            type="com.hyh.prettyskin.demo.bean.ProjectBean" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/item_bg_color"
+        app:background="?attr/item_bg_color"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="1dp"
+        skin:skin_attrs="background=item_bg_color">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/item_bg_color"
+            android:padding="8dp"
+            skin:skin_attrs="background=item_bg_color">
+
+            <ImageView
+                android:id="@+id/iv_project_image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:imageUrl="@{project.envelopePic}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="618:1000"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_default="percent"
+                app:layout_constraintWidth_percent="0.3" />
+
+            <TextView
+                android:id="@+id/tv_project_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{project.title}"
+                android:textColor="?attr/project_title_color"
+                android:textSize="16sp"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintLeft_toRightOf="@id/iv_project_image"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/iv_project_image"
+                skin:skin_attrs="textColor=project_title_color"
+                tools:text="This is project title" />
+
+            <TextView
+                android:id="@+id/tv_project_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:maxLines="4"
+                android:text="@{project.desc}"
+                android:textColor="?attr/project_des_color"
+                android:textSize="14sp"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintLeft_toRightOf="@id/iv_project_image"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_project_title"
+                skin:skin_attrs="textColor=project_des_color"
+                tools:text="This is project description" />
+
+
+            <TextView
+                android:id="@+id/tv_share_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@{project.niceDate}"
+                android:textColor="?attr/project_tag_color"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@id/iv_project_image"
+                app:layout_constraintLeft_toRightOf="@id/iv_project_image"
+                skin:skin_attrs="textColor=project_tag_color"
+                tools:text="2020-01-01 01:01" />
+
+            <TextView
+                android:id="@+id/tv_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="@{project.author}"
+                android:textColor="?attr/project_tag_color"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@id/tv_share_date"
+                app:layout_constraintLeft_toRightOf="@id/tv_share_date"
+                skin:skin_attrs="textColor=project_tag_color"
+                tools:text="Eric" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

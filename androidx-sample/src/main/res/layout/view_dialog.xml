@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/dialog_bg"
+    android:orientation="vertical"
+    android:padding="10dp"
+    skin:skin_attrs="background=dialog_bg">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="这是一个简单的Dialog"
+        android:textColor="?attr/dialog_title_color"
+        skin:skin_attrs="textColor=dialog_title_color" />
+
+    <Button
+        android:id="@+id/dialog_close_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="?attr/dialog_btn_bg"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="关    闭"
+        android:textColor="?attr/dialog_btn_text_color"
+        android:textSize="16sp"
+        skin:skin_attrs="background=dialog_btn_bg|textColor=dialog_btn_text_color" />
+
+</LinearLayout>

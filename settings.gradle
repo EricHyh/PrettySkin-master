@@ -1,4 +1,4 @@
-include ':appcompat-sample',
+include ':appcompat-sample', ':androidx-sample', ':sample-common',
         ':lib-core',
         ':lib-android-appcompat',
         ':lib-androidx-appcompat',

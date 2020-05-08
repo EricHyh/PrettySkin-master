@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/customer_attr_explain"
+            android:textColor="?attr/explanation_text_color"
+            android:textSize="16sp"
+            skin:skin_attrs="textColor=explanation_text_color" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="16dp"
+            android:text="换个肤再来看看吧："
+            android:textColor="@color/red"
+            android:textSize="16sp" />
+
+        <com.hyh.prettyskin.demo.widget.ShapeView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="?attr/shape_view_bg"
+            app:border_color="?attr/shape_view_bord_color"
+            app:border_width="?attr/shape_view_bord_width"
+            app:shape="?attr/shape_view_shape"
+            skin:skin_attrs="background=shape_view_bg
+            |shape=shape_view_shape
+            |border_color=shape_view_bord_color
+            |border_width=shape_view_bord_width" />
+
+    </LinearLayout>
+</ScrollView>

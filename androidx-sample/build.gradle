@@ -1,0 +1,60 @@
+apply plugin: 'com.android.application'
+apply from: rootProject.getRootDir().getAbsolutePath() + File.separator + 'common.gradle'
+
+apply plugin: 'com.jakewharton.butterknife'
+
+android {
+    defaultConfig {
+        applicationId "com.hyh.prettyskin.demo.androidx"
+        versionCode 100
+        versionName "1.0.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+}
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.jakewharton:butterknife-gradle-plugin:10.2.1'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation rootProject.ext.androidx_appcompat
+    implementation rootProject.ext.androidx_material
+    implementation rootProject.ext.androidx_constraint
+    implementation rootProject.ext.androidx_swiperefreshlayout
+
+    implementation rootProject.ext.okhttp
+    implementation rootProject.ext.okio
+    implementation rootProject.ext.retrofit
+    implementation rootProject.ext.gson
+    implementation rootProject.ext.gsonconverter
+
+    implementation 'com.jakewharton:butterknife:10.2.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
+
+    implementation project(':lib-core')
+    implementation project(':sample-common')
+    implementation project(':lib-androidx-appcompat')
+
+
+    implementation('com.github.bumptech.glide:glide:4.11.0') {
+        exclude group: "com.android.support"
+    }
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+}
