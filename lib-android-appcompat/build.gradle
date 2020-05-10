@@ -15,10 +15,43 @@ android {
         }
     }
 
+    lintOptions {
+        abortOnError false // 即使有报错也不会停止打包
+        checkReleaseBuilds false // 打包Release版本的时候也不进行Lint检测
+    }
 }
 
 dependencies {
     implementation rootProject.ext.appcompat
     implementation rootProject.ext.design
-    compileOnly project(':lib-core')
+    implementation project(':lib-core')
 }
+
+
+apply plugin: 'com.novoda.bintray-release'
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+publish {
+    repoName = 'PrettySkin'
+    userOrg = properties.getProperty("bintray.user")
+    bintrayUser = properties.getProperty("bintray.user")
+    bintrayKey = properties.getProperty("bintray.apikey")
+
+    groupId = 'com.hyh.prettyskin'
+    artifactId = 'skinhandler-support'
+
+    publishVersion = '1.0.0-alpha1'
+    desc = 'android support-v4、v7、design控件换肤支持包'
+    website = 'https://github.com/EricHyh/PrettySkin-master'
+}
+
+/*
+ext {
+    publishVersion = '1.0.0-alpha1'
+    publishGroup = 'com.hyh.prettyskin'
+    moduleName = 'skinhandler-support'
+    descContent = 'android support-v4、v7、design控件换肤支持包'
+}
+
+apply from: rootProject.getRootDir().getAbsolutePath() + File.separator + 'publishing_maven.gradle'*/

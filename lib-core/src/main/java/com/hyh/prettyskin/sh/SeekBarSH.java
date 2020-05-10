@@ -2,11 +2,6 @@ package com.hyh.prettyskin.sh;
 
 import com.hyh.prettyskin.utils.ViewAttrUtil;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/6
- */
 
 public class SeekBarSH extends AbsSeekBarSH {
 

@@ -6,11 +6,7 @@ import com.hyh.prettyskin.utils.ViewAttrUtil;
 
 import java.lang.ref.WeakReference;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/10/18
- */
+
 
 public class AttrValue {
 

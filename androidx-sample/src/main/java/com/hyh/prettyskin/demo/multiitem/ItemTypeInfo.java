@@ -1,10 +1,6 @@
 package com.hyh.prettyskin.demo.multiitem;
 
-/**
- * @author Administrator
- * @description
- * @data 2019/5/29
- */
+
 class ItemTypeInfo {
 
     MultiItemFactory multiItemFactory;

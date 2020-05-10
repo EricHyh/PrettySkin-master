@@ -16,11 +16,6 @@ import com.hyh.prettyskin.ISkinHandler;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/13
- */
 
 public class AppCompatTextSH implements ISkinHandler {
 

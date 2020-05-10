@@ -10,11 +10,7 @@ import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.sh.RatingBarSH;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/6
- */
+
 
 public class AppCompatRatingBarSH extends RatingBarSH {
 

@@ -11,11 +11,6 @@ import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/9/30
- */
 
 public class SkinResources extends Resources {
 

@@ -6,11 +6,7 @@ import android.view.ViewGroup;
 
 import com.hyh.prettyskin.R;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/10
- */
+
 public class CustomerAttrFragment extends CommonBaseFragment {
 
     @Override

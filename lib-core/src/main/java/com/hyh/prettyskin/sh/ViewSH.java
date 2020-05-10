@@ -24,12 +24,6 @@ import com.hyh.prettyskin.utils.reflect.Reflect;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/10/19
- */
-
 
 public class ViewSH implements ISkinHandler {
 

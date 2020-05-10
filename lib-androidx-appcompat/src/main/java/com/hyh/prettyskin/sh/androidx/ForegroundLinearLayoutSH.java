@@ -12,11 +12,7 @@ import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.sh.ViewGroupSH;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/23
- */
+
 @SuppressLint("RestrictedApi")
 public class ForegroundLinearLayoutSH extends ViewGroupSH {
 

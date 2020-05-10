@@ -14,11 +14,7 @@ import com.hyh.prettyskin.utils.AttrValueHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/16
- */
+
 public class CardViewSH extends ViewGroupSH {
 
 

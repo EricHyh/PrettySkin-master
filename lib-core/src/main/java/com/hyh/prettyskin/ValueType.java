@@ -1,11 +1,5 @@
 package com.hyh.prettyskin;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/10/18
- */
-
 public class ValueType {
 
 

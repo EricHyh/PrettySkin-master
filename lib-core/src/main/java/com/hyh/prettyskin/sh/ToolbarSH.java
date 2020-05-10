@@ -22,11 +22,7 @@ import com.hyh.prettyskin.utils.reflect.Reflect;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Administrator
- * @description
- * @data 2019/5/7
- */
+
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class ToolbarSH extends ViewGroupSH {
 

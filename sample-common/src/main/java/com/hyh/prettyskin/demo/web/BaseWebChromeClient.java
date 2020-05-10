@@ -3,11 +3,6 @@ package com.hyh.prettyskin.demo.web;
 import android.graphics.Bitmap;
 import android.webkit.WebView;
 
-/**
- * @author Administrator
- * @description
- * @data 2019/7/29
- */
 
 public class BaseWebChromeClient implements IWebChromeClient {
 

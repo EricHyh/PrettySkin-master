@@ -10,11 +10,7 @@ import com.hyh.prettyskin.utils.ViewAttrUtil;
 import androidx.appcompat.widget.AppCompatBackgroundSH;
 import androidx.appcompat.widget.AppCompatTextSH;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/20
- */
+
 public class AppCompatEditTextSH extends EditTextSH {
 
     private final AppCompatBackgroundSH mBackgroundSH;

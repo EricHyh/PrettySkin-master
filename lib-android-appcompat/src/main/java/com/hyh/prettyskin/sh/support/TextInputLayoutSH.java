@@ -16,11 +16,7 @@ import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.sh.ViewGroupSH;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/20
- */
+
 public class TextInputLayoutSH extends ViewGroupSH {
 
     private TypedArray mTypedArray;

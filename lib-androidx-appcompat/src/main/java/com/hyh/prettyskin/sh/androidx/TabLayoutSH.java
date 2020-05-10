@@ -15,11 +15,7 @@ import com.hyh.prettyskin.utils.AttrValueHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/15
- */
+
 public class TabLayoutSH extends ViewGroupSH {
 
     private final Class<?> mStyleableClass = com.google.android.material.R.styleable.class;

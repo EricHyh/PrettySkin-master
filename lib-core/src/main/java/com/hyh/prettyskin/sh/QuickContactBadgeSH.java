@@ -14,11 +14,7 @@ import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.AttrValueHelper;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/6
- */
+
 
 public class QuickContactBadgeSH extends ImageViewSH {
 

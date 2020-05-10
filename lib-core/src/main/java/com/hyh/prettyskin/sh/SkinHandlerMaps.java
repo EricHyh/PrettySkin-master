@@ -8,11 +8,6 @@ import com.hyh.prettyskin.ISkinHandlerMap;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/15
- */
 public class SkinHandlerMaps implements ISkinHandlerMap {
 
     private final List<ISkinHandlerMap> mSkinHandlerMaps = new ArrayList<>();

@@ -19,9 +19,7 @@ import com.hyh.prettyskin.utils.reflect.Reflect;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Eric_He on 2018/10/28.
- */
+
 
 public class ImageViewSH extends ViewSH {
 

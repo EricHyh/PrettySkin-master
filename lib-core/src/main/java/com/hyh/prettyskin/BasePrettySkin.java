@@ -22,12 +22,7 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/9/30
- */
-//@SuppressWarnings("all")
+
 public class BasePrettySkin {
 
     public static final int REPLACE_CODE_OK = 1;

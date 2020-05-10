@@ -14,12 +14,6 @@ import com.hyh.prettyskin.utils.reflect.Reflect;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/6
- */
-
 public class RatingBarSH extends AbsSeekBarSH {
 
     private Class<?> mStyleableClass;

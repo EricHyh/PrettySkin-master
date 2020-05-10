@@ -1,10 +1,6 @@
 package com.hyh.prettyskin.utils.reflect;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/21
- */
+
 
 public abstract class RefAccessible<E, T extends RefAccessible<E, T>> {
 

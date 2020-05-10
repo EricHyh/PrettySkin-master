@@ -2,11 +2,7 @@ package com.hyh.prettyskin;
 
 import java.util.List;
 
-/**
- * @author Administrator
- * @description
- * @data 2019/5/21
- */
+
 
 public interface SkinChangedListener {
 

@@ -5,12 +5,6 @@ import android.text.TextUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/10/17
- */
-
 public class NumberUtil {
 
     public static boolean isBinNumber(String str) {

@@ -4,11 +4,6 @@ import android.util.Log;
 
 import java.util.Locale;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/3/16
- */
 
 public class SkinLogger {
 

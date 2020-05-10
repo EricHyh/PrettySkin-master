@@ -1,10 +1,6 @@
 package com.hyh.prettyskin.demo.multiitem.load;
 
-/**
- * @author Administrator
- * @description
- * @data 2017/11/25
- */
+
 
 public interface RefreshViewClient {
 

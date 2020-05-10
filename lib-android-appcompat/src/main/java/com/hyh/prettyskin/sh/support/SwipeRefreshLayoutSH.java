@@ -12,11 +12,7 @@ import com.hyh.prettyskin.sh.ViewGroupSH;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/15
- */
+
 public class SwipeRefreshLayoutSH extends ViewGroupSH {
 
     private List<String> mSupportAttrNames = new ArrayList<>();

@@ -13,11 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-/**
- * @author Administrator
- * @description
- * @data 2017/11/24
- */
 
 public class LoadingItemFactory extends EmptyDataItemFactory {
 

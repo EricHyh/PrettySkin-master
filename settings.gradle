@@ -1,5 +1,7 @@
-include ':appcompat-sample', ':androidx-sample', ':sample-common',
-        ':lib-core',
-        ':lib-android-appcompat',
-        ':lib-androidx-appcompat',
-        ':skin-package-first'
+include ':appcompat-sample'
+//include ':androidx-sample'
+include ':sample-common'
+include ':lib-core'
+include ':lib-android-appcompat'
+include ':lib-androidx-appcompat'
+include ':skin-package-first'

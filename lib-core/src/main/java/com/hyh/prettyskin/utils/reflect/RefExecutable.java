@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/16
- */
 
 public abstract class RefExecutable<E, T extends RefExecutable<E, T>> extends RefAccessible<E, T> {
 

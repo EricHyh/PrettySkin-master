@@ -3,11 +3,7 @@ package com.hyh.prettyskin;
 import android.app.Application;
 import android.content.Context;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/9/30
- */
+
 //@SuppressWarnings("all")
 public class PrettySkin extends BasePrettySkin {
 

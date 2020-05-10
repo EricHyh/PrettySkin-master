@@ -21,11 +21,6 @@ import com.hyh.prettyskin.utils.reflect.Reflect;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Administrator
- * @description
- * @data 2019/5/7
- */
 
 public class V7ToolbarSH extends ViewGroupSH {
 

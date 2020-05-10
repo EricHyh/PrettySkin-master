@@ -20,9 +20,6 @@ import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ISkinHandler;
 import com.hyh.prettyskin.ValueType;
 
-/**
- * Created by Eric_He on 2018/12/4.
- */
 @SuppressLint({"RestrictedApi", "PrivateResource"})
 public class AppCompatCompoundButtonSH implements ISkinHandler {
 

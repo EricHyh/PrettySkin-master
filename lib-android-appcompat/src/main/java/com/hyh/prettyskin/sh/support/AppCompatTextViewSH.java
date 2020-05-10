@@ -9,11 +9,7 @@ import android.view.View;
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.sh.TextViewSH;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/13
- */
+
 
 public class AppCompatTextViewSH extends TextViewSH {
 

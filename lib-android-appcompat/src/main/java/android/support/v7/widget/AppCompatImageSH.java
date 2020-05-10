@@ -17,11 +17,6 @@ import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ISkinHandler;
 import com.hyh.prettyskin.ValueType;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/13
- */
 @SuppressLint("RestrictedApi")
 public class AppCompatImageSH implements ISkinHandler {
 

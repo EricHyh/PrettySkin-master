@@ -13,11 +13,7 @@ import com.hyh.prettyskin.utils.AttrValueHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/23
- */
+
 @SuppressLint("RestrictedApi")
 public class ChipGroupSH extends FlowLayoutSH {
 

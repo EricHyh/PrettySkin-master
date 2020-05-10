@@ -12,11 +12,6 @@ import com.hyh.prettyskin.demo.multiitem.EmptyDataItemFactory;
 
 import java.lang.ref.WeakReference;
 
-/**
- * @author Administrator
- * @description
- * @data 2017/11/24
- */
 
 public class LoadingItemFactory extends EmptyDataItemFactory {
 

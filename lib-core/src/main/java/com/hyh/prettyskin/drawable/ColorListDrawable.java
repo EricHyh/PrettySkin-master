@@ -16,11 +16,7 @@ import android.os.Build;
 import com.hyh.prettyskin.utils.reflect.Lazy;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
-/**
- * @author Administrator
- * @description
- * @data 2019/5/23
- */
+
 
 class ColorListDrawable extends Drawable {
 

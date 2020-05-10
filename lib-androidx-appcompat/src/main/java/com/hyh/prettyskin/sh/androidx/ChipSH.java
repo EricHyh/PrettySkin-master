@@ -15,11 +15,7 @@ import com.google.android.material.resources.TextAppearance;
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/23
- */
+
 @SuppressLint("RestrictedApi")
 public class ChipSH extends AppCompatCheckBoxSH {
 

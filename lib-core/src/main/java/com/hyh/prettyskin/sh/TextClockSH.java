@@ -17,11 +17,7 @@ import com.hyh.prettyskin.utils.reflect.Reflect;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/7
- */
+
 
 public class TextClockSH extends TextViewSH {
 

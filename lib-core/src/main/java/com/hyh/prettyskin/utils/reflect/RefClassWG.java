@@ -1,10 +1,5 @@
 package com.hyh.prettyskin.utils.reflect;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/20
- */
 
 public class RefClassWG<T> extends RefClass {
 

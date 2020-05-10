@@ -1,10 +1,6 @@
 package com.hyh.prettyskin.utils.reflect;
 
-/**
- * @author Administrator
- * @description
- * @data 2019/7/1
- */
+
 
 public abstract class RefAction<T> {
 

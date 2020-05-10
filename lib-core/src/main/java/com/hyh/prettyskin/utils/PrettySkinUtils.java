@@ -5,11 +5,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/9/30
- */
 
 public class PrettySkinUtils {
 

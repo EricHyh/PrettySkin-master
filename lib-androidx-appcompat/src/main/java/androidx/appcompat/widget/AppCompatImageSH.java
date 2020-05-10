@@ -19,11 +19,6 @@ import com.hyh.prettyskin.ValueType;
 
 import androidx.core.widget.TintableImageSourceView;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/13
- */
 @SuppressLint("RestrictedApi")
 public class AppCompatImageSH implements ISkinHandler {
 

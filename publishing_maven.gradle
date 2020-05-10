@@ -1,0 +1,91 @@
+/*
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+version = publishVersion
+group = publishGroup
+
+def siteUrl = 'https://github.com/EricHyh/PrettySkin-master'
+def gitUrl = 'https://github.com/EricHyh/PrettySkin-master.git'
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+    configurations = ['archives'] //When uploading configuration files
+    pkg {
+        repo = "PrettySkin"
+        name = moduleName
+        desc = descContent
+        websiteUrl = siteUrl
+        issueTrackerUrl = 'https://github.com/EricHyh/PrettySkin-master/issues'
+        vcsUrl = gitUrl
+        licenses = ['MIT']
+        labels = ['skin', 'support', 'theme', 'android']
+        publicDownloadNumbers = true
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                name moduleName
+                url siteUrl
+                licenses {
+                    license {
+                        name 'MIT'
+                        url 'https://github.com/EricHyh/PrettySkin-master/blob/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'hyh'
+                        name 'Yuanhui.He'
+                        email 'hyh123147@gmail.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+task findConventions {
+    doLast {
+        println project.getConvention()
+    }
+}*/

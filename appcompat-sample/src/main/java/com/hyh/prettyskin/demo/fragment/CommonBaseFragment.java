@@ -23,11 +23,6 @@ import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/3/6
- */
 
 public abstract class CommonBaseFragment extends Fragment  {
 

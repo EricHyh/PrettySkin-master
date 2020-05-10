@@ -3,11 +3,7 @@ package com.hyh.prettyskin.demo.web;
 import android.graphics.Bitmap;
 import android.webkit.WebView;
 
-/**
- * @author Administrator
- * @description
- * @data 2017/10/24
- */
+
 
 public interface IWebViewClient {
 

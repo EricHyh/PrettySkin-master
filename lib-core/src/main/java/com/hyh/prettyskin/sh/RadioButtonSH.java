@@ -2,9 +2,7 @@ package com.hyh.prettyskin.sh;
 
 import com.hyh.prettyskin.utils.ViewAttrUtil;
 
-/**
- * Created by Eric_He on 2018/11/8.
- */
+
 
 public class RadioButtonSH extends CompoundButtonSH {
 

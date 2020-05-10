@@ -35,11 +35,6 @@ import com.hyh.prettyskin.sh.support.V7ToolbarSH;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Administrator
- * @description
- * @data 2019/4/10
- */
 
 public class AppCompatSkinHandlerMap implements ISkinHandlerMap {
 

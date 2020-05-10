@@ -28,11 +28,7 @@ import com.hyh.prettyskin.utils.reflect.Reflect;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-/**
- * @author Administrator
- * @description
- * @data 2019/5/20
- */
+
 
 public class DynamicDrawable extends Drawable implements Drawable.Callback {
 

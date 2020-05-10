@@ -2,11 +2,7 @@ package com.hyh.prettyskin.utils.reflect;
 
 import java.lang.reflect.Field;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/15
- */
+
 
 public class RefField<E> extends RefAccessible<E, RefField<E>> {
 

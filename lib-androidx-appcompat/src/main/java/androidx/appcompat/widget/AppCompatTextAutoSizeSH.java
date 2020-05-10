@@ -14,11 +14,6 @@ import com.hyh.prettyskin.ValueType;
 
 import androidx.core.widget.AutoSizeableTextView;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/23
- */
 @SuppressLint("RestrictedApi")
 public class AppCompatTextAutoSizeSH implements ISkinHandler {
 

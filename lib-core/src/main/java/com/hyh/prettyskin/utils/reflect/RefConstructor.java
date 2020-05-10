@@ -3,11 +3,7 @@ package com.hyh.prettyskin.utils.reflect;
 import java.lang.reflect.Constructor;
 import java.util.Locale;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/16
- */
+
 
 public class RefConstructor<E> extends RefExecutable<E, RefConstructor<E>> {
 

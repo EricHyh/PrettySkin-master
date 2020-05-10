@@ -15,11 +15,7 @@ import com.hyh.prettyskin.sh.ViewGroupSH;
 
 import androidx.core.view.GravityCompat;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/20
- */
+
 public class CollapsingToolbarLayoutSH extends ViewGroupSH {
 
     private TypedArray mTypedArray;

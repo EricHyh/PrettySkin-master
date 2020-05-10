@@ -9,11 +9,6 @@ import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 
-/**
- * @author Administrator
- * @description
- * @data 2019/4/2
- */
 
 public class ViewReferenceUtil {
 

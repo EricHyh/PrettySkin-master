@@ -3,11 +3,7 @@ package com.hyh.prettyskin.demo.multiitem.load;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-/**
- * @author Administrator
- * @description
- * @data 2017/11/25
- */
+
 
 public class SwipeRefreshClient implements RefreshViewClient, SwipeRefreshLayout.OnRefreshListener {
 

@@ -8,11 +8,6 @@ import android.view.View;
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.sh.EditTextSH;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/20
- */
 public class AppCompatEditTextSH extends EditTextSH {
 
     private final AppCompatBackgroundSH mBackgroundSH;

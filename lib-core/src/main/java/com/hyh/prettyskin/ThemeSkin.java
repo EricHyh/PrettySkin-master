@@ -13,9 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Created by Eric_He on 2018/10/14.
- */
+
 public class ThemeSkin extends BaseSkin {
 
     private Context mContext;

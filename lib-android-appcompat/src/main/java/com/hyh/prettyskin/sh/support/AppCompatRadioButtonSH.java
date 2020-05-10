@@ -8,9 +8,7 @@ import android.view.View;
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.sh.RadioButtonSH;
 
-/**
- * Created by Eric_He on 2018/11/8.
- */
+
 
 public class AppCompatRadioButtonSH extends RadioButtonSH {
 

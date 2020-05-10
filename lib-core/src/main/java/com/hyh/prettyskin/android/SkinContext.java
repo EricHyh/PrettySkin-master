@@ -4,11 +4,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.Resources;
 
-/**
- * @author Administrator
- * @description
- * @data 2019/5/6
- */
+
 
 public class SkinContext extends ContextWrapper {
 

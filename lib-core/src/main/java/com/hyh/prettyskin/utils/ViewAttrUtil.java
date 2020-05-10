@@ -26,9 +26,6 @@ import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.reflect.Lazy;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
-/**
- * Created by Eric_He on 2018/11/4.
- */
 
 public class ViewAttrUtil {
 

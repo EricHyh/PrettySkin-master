@@ -12,9 +12,7 @@ import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
-/**
- * Created by Eric_He on 2018/12/4.
- */
+
 @SuppressLint("PrivateResource")
 public class ActionMenuItemViewSH extends AppCompatCheckedTextViewSH {
 

@@ -23,11 +23,7 @@ import java.util.List;
 
 import androidx.appcompat.widget.Toolbar;
 
-/**
- * @author Administrator
- * @description
- * @data 2019/5/7
- */
+
 
 public class XToolbarSH extends ViewGroupSH {
 

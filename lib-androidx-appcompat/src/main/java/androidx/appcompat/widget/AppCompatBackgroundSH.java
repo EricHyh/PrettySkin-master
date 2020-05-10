@@ -18,11 +18,7 @@ import com.hyh.prettyskin.appcompatx.R;
 import androidx.core.view.TintableBackgroundView;
 
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/13
- */
+
 @SuppressLint({"RestrictedApi", "PrivateResource"})
 public class AppCompatBackgroundSH implements ISkinHandler {
 

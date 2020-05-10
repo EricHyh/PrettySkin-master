@@ -8,11 +8,7 @@ import com.hyh.prettyskin.ISkinHandlerMap;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/15
- */
+
 public class CustomSkinHandlerMap implements ISkinHandlerMap {
 
     private final Map<Class, ISkinHandler> mMap = new HashMap<>();

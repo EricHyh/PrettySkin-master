@@ -29,11 +29,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/10
- */
 public class OtherFragment extends CommonBaseFragment {
 
     @BindView(R.id.frame_layout)

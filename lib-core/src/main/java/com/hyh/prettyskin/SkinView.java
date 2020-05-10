@@ -10,11 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/10/9
- */
 
 public final class SkinView {
 

@@ -11,11 +11,7 @@ import com.hyh.prettyskin.utils.ViewAttrUtil;
 import androidx.appcompat.widget.AppCompatBackgroundSH;
 import androidx.appcompat.widget.AppCompatImageSH;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/6
- */
+
 @SuppressLint("RestrictedApi")
 public class AppCompatImageButtonSH extends ImageButtonSH {
 

@@ -1,10 +1,5 @@
 package com.hyh.prettyskin.utils.reflect;
 
-/**
- * @author Administrator
- * @description
- * @data 2019/5/23
- */
 
 public abstract class Lazy<T> {
 

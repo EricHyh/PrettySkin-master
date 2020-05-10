@@ -26,11 +26,6 @@ import com.hyh.prettyskin.demo.viewmodel.ProjectViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/10
- */
 public class ProjectFragment extends CommonBaseFragment {
 
 

@@ -5,11 +5,6 @@ import android.text.TextUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Administrator
- * @description
- * @data 2019/5/17
- */
 
 public abstract class BaseSkin implements ISkin {
 

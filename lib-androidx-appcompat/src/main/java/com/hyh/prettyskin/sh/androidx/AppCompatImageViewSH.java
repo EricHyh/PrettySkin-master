@@ -10,11 +10,6 @@ import com.hyh.prettyskin.sh.ImageViewSH;
 import androidx.appcompat.widget.AppCompatBackgroundSH;
 import androidx.appcompat.widget.AppCompatImageSH;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/12
- */
 @SuppressLint("RestrictedApi")
 public class AppCompatImageViewSH extends ImageViewSH {
 

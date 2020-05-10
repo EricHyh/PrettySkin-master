@@ -3,11 +3,7 @@ package com.hyh.prettyskin.utils.reflect;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/15
- */
+
 
 public class RefMethod<E> extends RefExecutable<E, RefMethod<E>> {
 

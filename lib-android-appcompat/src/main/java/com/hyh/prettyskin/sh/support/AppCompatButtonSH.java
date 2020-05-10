@@ -9,11 +9,7 @@ import android.view.View;
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.sh.ButtonSH;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/7
- */
+
 
 public class AppCompatButtonSH extends ButtonSH {
 

@@ -9,11 +9,7 @@ import android.view.View;
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.sh.ImageViewSH;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/11/12
- */
+
 @SuppressLint("RestrictedApi")
 public class AppCompatImageViewSH extends ImageViewSH {
 

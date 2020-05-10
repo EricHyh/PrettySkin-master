@@ -2,9 +2,7 @@ package com.hyh.prettyskin.sh;
 
 import com.hyh.prettyskin.utils.ViewAttrUtil;
 
-/**
- * Created by Eric_He on 2018/10/21.
- */
+
 
 public class ButtonSH extends TextViewSH {
 

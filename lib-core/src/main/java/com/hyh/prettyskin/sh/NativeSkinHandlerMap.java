@@ -13,11 +13,7 @@ import com.hyh.prettyskin.ISkinHandlerMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * @author Administrator
- * @description
- * @data 2019/4/10
- */
+
 
 public class NativeSkinHandlerMap implements ISkinHandlerMap {
 

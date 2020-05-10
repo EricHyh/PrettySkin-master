@@ -19,11 +19,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/9/30
- */
 
 public class SkinInflateFactory implements LayoutInflater.Factory2 {
 

@@ -3,11 +3,6 @@ package com.hyh.prettyskin;
 import android.util.AttributeSet;
 import android.view.View;
 
-/**
- * @author Administrator
- * @description
- * @data 2018/9/30
- */
 
 public interface ISkinHandler {
 

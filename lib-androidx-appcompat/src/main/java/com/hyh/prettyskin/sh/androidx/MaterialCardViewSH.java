@@ -8,11 +8,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/23
- */
+
 public class MaterialCardViewSH extends CardViewSH {
 
     public MaterialCardViewSH() {

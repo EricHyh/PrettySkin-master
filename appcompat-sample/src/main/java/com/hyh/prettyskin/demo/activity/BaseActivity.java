@@ -12,11 +12,7 @@ import com.hyh.prettyskin.demo.utils.StatusBarUtil;
 
 import java.util.List;
 
-/**
- * @author Administrator
- * @description
- * @data 2019/4/29
- */
+
 
 public abstract class BaseActivity extends AppCompatActivity implements SkinChangedListener {
 

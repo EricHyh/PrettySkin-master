@@ -17,10 +17,6 @@ import com.hyh.prettyskin.utils.AttrValueHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Eric_He on 2018/11/8.
- */
-
 public class SwitchCompatSH extends CompoundButtonSH {
 
     private final Class mStyleableClass = android.support.v7.appcompat.R.styleable.class;

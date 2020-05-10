@@ -14,11 +14,7 @@ import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ValueType;
 import com.hyh.prettyskin.sh.ImageButtonSH;
 
-/**
- * @author Administrator
- * @description
- * @data 2020/4/20
- */
+
 public class FloatingActionButtonSH extends ImageButtonSH {
 
     public FloatingActionButtonSH() {

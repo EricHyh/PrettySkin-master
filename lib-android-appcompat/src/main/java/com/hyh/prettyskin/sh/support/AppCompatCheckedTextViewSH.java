@@ -16,9 +16,7 @@ import com.hyh.prettyskin.utils.ViewAttrUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Eric_He on 2018/11/11.
- */
+
 
 public class AppCompatCheckedTextViewSH extends CheckedTextViewSH {
 
