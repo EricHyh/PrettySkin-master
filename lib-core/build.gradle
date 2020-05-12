@@ -20,3 +20,15 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
+
+//android dynamically replacing skin core library
+ext {
+    repoName = 'PrettySkin'
+    groupId = 'com.hyh.prettyskin'
+    artifactId = 'prettyskin-core'
+
+    publishVersion = '1.0.0'
+    desc = 'Android动态换肤核心库'
+}
+
+apply from: rootProject.getRootDir().getAbsolutePath() + File.separator + 'publishing_maven.gradle'
