@@ -16,4 +16,32 @@ Android平台动态换肤框架，无需重启应用即可实现换肤功能，�
 - [ ] 暂不支持AsyncLayoutInflater动态布局
 
 
+## 效果图
+<img width="300"  src="https://raw.githubusercontent.com/EricHyh/PrettySkin-master/master/gif/homepage.gif"/>
 
+
+## 接入框架
+### 导入aar包
+```
+dependencies {
+
+    //框架核心库，没有引用其他库
+	implementation 'com.hyh.prettyskin:prettyskin-core:1.0.0'        
+
+    //如果用到了support包下某View的自定义属性，可引入该模块，其中包含v4、v7、design包下的View
+    implementation ('com.hyh.prettyskin:skinhandler-support:1.0.0') {
+
+        transitive = false  //去除依赖传递
+
+    } 
+
+    //如果用到了androidx包下某View的自定义属性，可引入该模块，其中包含androidx、material包下的View
+    implementation ('com.hyh.prettyskin:skinhandler-androidx:1.0.0') {
+
+        transitive = false  //去除依赖传递
+
+    }   
+}    
+```
+
+### Application中初始化

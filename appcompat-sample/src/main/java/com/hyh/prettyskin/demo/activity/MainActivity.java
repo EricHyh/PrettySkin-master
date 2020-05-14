@@ -1,5 +1,7 @@
 package com.hyh.prettyskin.demo.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTabHost;
@@ -44,6 +46,12 @@ import com.hyh.prettyskin.utils.reflect.Reflect;
  */
 public class MainActivity extends BaseActivity {
 
+    public static void start(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private FragmentTabHost mTabHost;
@@ -53,6 +61,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         initStatusBar();
