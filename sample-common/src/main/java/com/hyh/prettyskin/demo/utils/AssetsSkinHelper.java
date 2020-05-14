@@ -19,7 +19,7 @@ public class AssetsSkinHelper {
         File filesDir = context.getFilesDir();
         File skinDir = new File(filesDir, "skin");
         skinDir.mkdirs();
-        return new File(skinDir, "assets.skin-package-first").exists();
+        return new File(skinDir, "assets_skin_package_1.apk").exists();
     }
 
     public static boolean unzipAssetsSkin(Context context) {
@@ -28,7 +28,7 @@ public class AssetsSkinHelper {
             File filesDir = context.getFilesDir();
             File skinDir = new File(filesDir, "skin");
             skinDir.mkdirs();
-            File file = new File(skinDir, "assets.skin-package-first");
+            File file = new File(skinDir, "assets_skin_package_1.apk");
             return copyFileToTargetPath(inputStream, file.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,6 +60,6 @@ public class AssetsSkinHelper {
     public static String getSkinPath(Context context) {
         File filesDir = context.getFilesDir();
         File skinDir = new File(filesDir, "skin");
-        return new File(skinDir, "assets.skin-package-first").getAbsolutePath();
+        return new File(skinDir, "assets_skin_package_1.apk").getAbsolutePath();
     }
 }

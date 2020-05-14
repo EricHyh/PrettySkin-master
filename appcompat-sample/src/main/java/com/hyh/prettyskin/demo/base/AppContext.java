@@ -1,6 +1,6 @@
 package com.hyh.prettyskin.demo.base;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 import com.hyh.prettyskin.ApkThemeSkin;
 import com.hyh.prettyskin.AppCompatSkinHandlerMap;
@@ -22,7 +22,7 @@ import com.hyh.prettyskin.demo.widget.ShapeView;
  * @data 2018/9/30
  */
 
-public class AppContext extends Application {
+public class AppContext extends MultiDexApplication {
 
     @Override
     public void onCreate() {

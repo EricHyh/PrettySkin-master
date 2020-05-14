@@ -6,12 +6,20 @@ android {
         applicationId "com.hyh.prettyskin.demo"
         versionCode 100
         versionName "1.0.0"
+
+        multiDexEnabled false
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    lintOptions {
+        abortOnError false
+    }
+    dexOptions {
+        preDexLibraries = false
     }
 }
 

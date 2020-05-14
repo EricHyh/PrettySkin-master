@@ -22,7 +22,6 @@ import java.util.Set;
 import dalvik.system.DexClassLoader;
 
 
-
 public class ApkThemeSkin extends BaseSkin {
 
     private static final String SKIN_R_CLASS_PATH = "skin_r_class_path";
@@ -69,13 +68,13 @@ public class ApkThemeSkin extends BaseSkin {
         int skinThemeId = metaData.getInt(skinTheme);
         if (skinThemeId == 0) return false;
 
-        File dataDir = mApplicationContext.getFilesDir();
-        File skinDexDir = new File(dataDir, "skin".concat(File.separator).concat("dex"));
+        File filesDir = mApplicationContext.getFilesDir();
+        File skinDexDir = new File(filesDir, "skin".concat(File.separator).concat("dex"));
+        skinDexDir.mkdirs();
         DexClassLoader classLoader = new DexClassLoader(mApkPath,
                 skinDexDir.getAbsolutePath(),
                 null,
                 Context.class.getClassLoader());
-
 
         final Class<?> styleableClass = getStyleableClass(classLoader, skinRClassPath);
         final String styleableName = skinDeclareStyleable;
