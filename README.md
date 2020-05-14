@@ -17,7 +17,7 @@ Android平台动态换肤框架，无需重启应用即可实现换肤功能，�
 
 
 ## 效果图
-<img width="300"  src="https://raw.githubusercontent.com/EricHyh/PrettySkin-master/master/gif/homepage.gif"/>
+<img width="300"  src="https://raw.githubusercontent.com/EricHyh/file-repo/master/PrettySkin/gif/homepage.gif"/>
 
 
 ## 接入框架
