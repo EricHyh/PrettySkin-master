@@ -57,7 +57,7 @@ public class AppContext extends MultiDexApplication {
             case SkinStyle.PURPLE: {
                 if (AssetsSkinHelper.isUnziped(this)) {
                     skin = new ApkThemeSkin(this, AssetsSkinHelper.getSkinPath(this), 0);
-                }else {
+                } else {
                     PreferenceUtil.putInt(this, "skin_style", -1);
                 }
                 break;
