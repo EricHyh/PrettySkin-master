@@ -15,7 +15,8 @@
 
 <!-- /TOC -->
 
-<div id="1"></div>
+
+<span id="1"></span>
 ## 1. 扩展View的皮肤属性
 ### 1.1 为已有的View扩展皮肤属性
 框架中几乎已经将native-view、support-view、androidx-view中大部分属性都已经实现换肤功能，如果你想让某个View的某些属性支持换肤功能，可以通过扩展**com.hyh.prettyskin.ISkinHandler**实现，例如我们将**LinearLayout**的**orientation、gravity**属性支持换肤能力；
@@ -178,7 +179,7 @@ PrettySkin.getInstance().addSkinHandler(LinearLayout.class, new LinearLayoutSH()
 扩展方式同上，可参考DEMO项目中的**com.hyh.prettyskin.demo.sh.ShapeViewSH**
 
 
-<div id="2"></div>
+<span id="2"></span>
 ## 2. 动态修改或添加皮肤包属性
 ```
 ISkin skin = your skin obj;
@@ -309,7 +310,7 @@ public class ValueType {
 ```
 
 
-<div id="3"></div>
+<span id="3"></span>
 ## 3. 监听皮肤包变化事件
 ```
 PrettySkin.getInstance().addSkinReplaceListener(new SkinChangedListener() {
@@ -340,9 +341,10 @@ PrettySkin.getInstance().addSkinReplaceListener(new SkinChangedListener() {
 });
 ```
 
-<div id="4"></div>
+<span id="4"></span>
 ## 4. 动态Drawable的使用
 ### 4.1 XML中定义的Drawable
+
 ```
 String attrKey = attr name declared in styleable;;  //定义在declare-styleable中属性名称
 Drawable defaultDrawable = 默认Drawable;            //不能为null，当没有设置皮肤时，使用该值
@@ -366,9 +368,9 @@ DynamicDrawable dynamicDrawable = new DynamicDrawable(attrKey, new AddDrawable(c
 };
 ```
 
-<div id="5"></div>
+<span id="5"></span>
 ## 5. 扩展皮肤包实现方式
 
 
-<div id="6"></div>
+<span id="6"></span>
 ## 6. 动态禁用layout布局中某些View使用皮肤
