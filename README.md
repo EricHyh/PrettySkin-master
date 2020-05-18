@@ -24,8 +24,9 @@ Android平台动态换肤框架，无需重启应用即可实现换肤功能，�
     - [9. 其他问题](#9-其他问题)
         - [9.1 外部APK皮肤包后缀问题](#91-外部apk皮肤包后缀问题)
         - [9.2 某个布局换肤失效](#92-某个布局换肤失效)
-        - [9.3 状态栏颜色跟随皮肤动态变化](#93-状态栏颜色跟随皮肤动态变化)
-        - [9.4 想查看框架中实现了View的哪些属性](#94-想查看框架中实现了view的哪些属性)
+        - [9.3 使用了AsyncLayoutInflater](#93-使用了asynclayoutinflater)
+        - [9.4 状态栏颜色跟随皮肤动态变化](#94-状态栏颜色跟随皮肤动态变化)
+        - [9.5 想查看框架中实现了View的哪些属性](#95-想查看框架中实现了view的哪些属性)
     - [TODO](#todo)
     - [特别鸣谢](#特别鸣谢)
     - [联系我](#联系我)
@@ -46,7 +47,6 @@ Android平台动态换肤框架，无需重启应用即可实现换肤功能，�
 - [x] 支持动态drawable，让drawable也跟随皮肤动态变化
 - [x] 支持监听皮肤变化事件，可用于实现状态栏，导航栏跟随皮肤动态变化
 - [x] 支持AndResGuard资源混淆
-- [ ] <span style="color:red">暂不支持AsyncLayoutInflater动态布局</span>
 
 
 ## 2. 效果图
@@ -581,11 +581,34 @@ Dialog(@NonNull Context context, @StyleRes int themeResId, boolean createContext
 }
 ```
 
-### 9.3 状态栏颜色跟随皮肤动态变化
+### 9.3 使用了AsyncLayoutInflater
+如果在项目中使用了AsyncLayoutInflater也会导致布局换肤失效，原因是因为AsyncLayoutInflater内部会重新创建一个LayoutInflater去加载布局，目前可以通过以下方式解决该问题
+```
+//创建AsyncLayoutInflater对象
+AsyncLayoutInflater asyncLayoutInflater = new AsyncLayoutInflater(this);
+//反射获取AsyncLayoutInflater中创建的LayoutInflater对象，注意代码混淆问题
+LayoutInflater inflater = Reflect.from(AsyncLayoutInflater.class).filed("mInflater",LayoutInflater.class) .get(asyncLayoutInflater);
+//让该LayoutInflater支持换肤
+PrettySkin.getInstance().setLayoutInflaterSkinable(inflater);
+
+asyncLayoutInflater.inflate(R.layout.activity_main, null, (view, i, viewGroup) -> {
+    setContentView(view);
+    initStatusBar();
+    initToolBar();
+    initDrawerLayout();
+    initFragmentTabHost();
+    initLeftDrawer();
+});
+```
+
+
+
+
+### 9.4 状态栏颜色跟随皮肤动态变化
 可参考Demo中的**com.hyh.prettyskin.demo.activity.BaseActivity**实现，相关接口详细说明[传送门](https://github.com/EricHyh/PrettySkin-master/blob/master/README_MORE.md/#3)
 
 
-### 9.4 想查看框架中实现了View的哪些属性
+### 9.5 想查看框架中实现了View的哪些属性
 例如你想查看**android.view.View**实现了哪些属性，你可以在源码中查找**ViewSH**类，在该类中搜索你想查看的属性，如果代码中有该属性的具体实现，那么表示支持该属性；  
 有些**View**本身是没有自定义属性或者它的些自定义属性没有被实现为皮肤属性，此时可以查看该View父类的支持情况；例如**LinearLayout**，它本身的属性有**orientation、gravity**等，但是框架中没有实现这些属性的换肤功能，所以它没有对应的**LinearLayoutSH**，查看它的属性支持情况时可以查看它的父类**ViewGroup**对应的**ViewGroupSH**，而**ViewGroupSH**继承自**ViewSH**，所以**LinearLayout**的属性支持情况=**ViewGroupSH**+**ViewSH**。
 

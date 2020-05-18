@@ -18,7 +18,7 @@ import com.hyh.prettyskin.utils.reflect.Reflect;
 
 
 
-class ColorListDrawable extends Drawable {
+public class ColorListDrawable extends Drawable {
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final ColorStateList mColorStateList;
@@ -29,7 +29,7 @@ class ColorListDrawable extends Drawable {
     private PorterDuff.Mode mTintMode = PorterDuff.Mode.SRC_IN;
     private PorterDuffColorFilter mTintFilter;
 
-    ColorListDrawable(ColorStateList colorStateList) {
+    public ColorListDrawable(ColorStateList colorStateList) {
         this.mColorStateList = colorStateList;
         this.mDefaultColor = mColorStateList.getDefaultColor();
     }

@@ -7,6 +7,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
@@ -23,6 +24,7 @@ import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ColorStateListFactory;
 import com.hyh.prettyskin.DrawableFactory;
 import com.hyh.prettyskin.ValueType;
+import com.hyh.prettyskin.drawable.ColorListDrawable;
 import com.hyh.prettyskin.utils.reflect.Lazy;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
@@ -114,6 +116,9 @@ public class ViewAttrUtil {
                 } else if (valueClass == ColorStateList.class) {
                     int color = (int) value;
                     return (T) ColorStateList.valueOf(color);
+                } else if (valueClass == Drawable.class) {
+                    int color = (int) value;
+                    return (T) new ColorDrawable(color);
                 } else {
                     return defaultValue;
                 }
@@ -127,6 +132,9 @@ public class ViewAttrUtil {
                     }
                 } else if (valueClass == ColorStateList.class) {
                     return (T) value;
+                } else if (valueClass == Drawable.class) {
+                    ColorStateList colorStateList = (ColorStateList) value;
+                    return (T) new ColorListDrawable(colorStateList);
                 }
                 return defaultValue;
             }
@@ -137,9 +145,11 @@ public class ViewAttrUtil {
                     if (colorStateList == null) {
                         return null;
                     }
-                    if (Reflect.isAssignableFrom(colorStateList.getClass(), valueClass)) {
+                    if (valueClass == ColorStateList.class) {
                         return (T) colorStateList;
-                    } else {
+                    } else if(valueClass == Drawable.class){
+                        return (T) new ColorListDrawable(colorStateList);
+                    }else {
                         return defaultValue;
                     }
                 } else {

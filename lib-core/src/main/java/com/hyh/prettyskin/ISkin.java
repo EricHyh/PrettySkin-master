@@ -19,7 +19,7 @@ public interface ISkin {
     AttrValue getAttrValue(String attrKey);
 
     /**
-     * 设置皮肤属性，如果该KEY已存在则替换属性
+     * 设置外部属性，设置后会优先使用该属性，若先删除设置的属性，可将attrValue设置为null
      */
     void setOuterAttrValue(String attrKey, AttrValue attrValue);
 

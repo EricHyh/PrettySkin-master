@@ -370,7 +370,88 @@ DynamicDrawable dynamicDrawable = new DynamicDrawable(attrKey, new AddDrawable(c
 
 <span id="5"></span>
 ## 5. 扩展皮肤包实现方式
+方式一：实现**com.hyh.prettyskin.ISkin**接口
+```
+public interface ISkin {
 
+    /**
+     * 加载皮肤属性
+     *
+     * @return 是否加载成功
+     */
+    boolean loadSkinAttrs();
+
+    /**
+     * 根据属性的Key获取属性的Value
+     *
+     * @param attrKey 属性的Key
+     * @return 属性值
+     */
+    AttrValue getAttrValue(String attrKey);
+
+    /**
+     * 设置外部属性，设置后会优先使用该属性，若先删除设置的属性，可将attrValue设置为null
+     */
+    void setOuterAttrValue(String attrKey, AttrValue attrValue);
+
+}
+```
+方式二：继承**com.hyh.prettyskin.BaseSkin**类，该类已实现设置外部属性（**ISkin#setOuterAttrValue**）的功能
+```
+public class CustomSkin extends BaseSkin {
+
+    /**
+     * 获取内部属性，即在{@link CustomSkin#loadSkinAttrs()}中加载的属性
+     */
+    @Override
+    protected AttrValue getInnerAttrValue(String attrKey) {
+        return null;
+    }
+
+    /**
+     * 加载属性
+     * @return  加载结果，true/false
+     */
+    @Override
+    public boolean loadSkinAttrs() {
+        return false;
+    }
+}
+```
 
 <span id="6"></span>
 ## 6. 动态禁用layout布局中某些View使用皮肤
+方式一：让需要禁用皮肤的Activity或Context实现**com.hyh.prettyskin.ISkinable**接口
+```
+public class YourActivity extends Activity implements ISkinable {
+
+    /**
+     * 判断该Activity下的某View是否需要使用皮肤
+     *
+     * @param view 需要判断的View对象
+     * @return 返回true表示可以使用皮肤，返回false表示不可以使用皮肤
+     */
+    @Override
+    public boolean isSkinable(View view) {
+        return false;
+    }
+}
+```
+
+
+方式二：让需要禁用皮肤的View实现**com.hyh.prettyskin.ISkinable**接口
+```
+public class YourView extends View implements ISkinable {
+
+    /**
+     * 判断当前View是否需要使用皮肤
+     *
+     * @param view 当前View对象
+     * @return 返回true表示可以使用皮肤，返回false表示不可以使用皮肤
+     */
+    @Override
+    public boolean isSkinable(View view) {
+        return false;
+    }
+}
+```

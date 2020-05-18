@@ -2,13 +2,16 @@ package com.hyh.prettyskin.demo.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTabHost;
+import android.support.v4.view.AsyncLayoutInflater;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hyh.prettyskin.AssetsApkThemeSkin;
+import com.hyh.prettyskin.AttrValue;
 import com.hyh.prettyskin.ISkin;
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.R;
@@ -33,6 +37,7 @@ import com.hyh.prettyskin.demo.fragment.OtherFragment;
 import com.hyh.prettyskin.demo.fragment.ProjectsFragment;
 import com.hyh.prettyskin.demo.utils.DisplayUtil;
 import com.hyh.prettyskin.demo.utils.PreferenceUtil;
+import com.hyh.prettyskin.utils.reflect.Reflect;
 
 /**
  * @author Administrator
@@ -56,7 +61,16 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*AsyncLayoutInflater asyncLayoutInflater = new AsyncLayoutInflater(this);
+
+        ISkin currentSkin = PrettySkin.getInstance().getCurrentSkin();
+        if(currentSkin!=null){
+            AttrValue contentBgColor = currentSkin.getAttrValue("content_bg_color");
+            Drawable typedValue = contentBgColor.getTypedValue(Drawable.class, null);
+            Log.d("XXXX_", "onCreate: " + typedValue);
+            getWindow().setBackgroundDrawable(typedValue);
+        }
+
+        AsyncLayoutInflater asyncLayoutInflater = new AsyncLayoutInflater(this);
         LayoutInflater inflater = Reflect.from(AsyncLayoutInflater.class).filed("mInflater",
                 LayoutInflater.class)
                 .get(asyncLayoutInflater);
@@ -69,14 +83,14 @@ public class MainActivity extends BaseActivity {
             initDrawerLayout();
             initFragmentTabHost();
             initLeftDrawer();
-        });*/
+        });
 
-        setContentView(R.layout.activity_main);
+        /*setContentView(R.layout.activity_main);
         initStatusBar();
         initToolBar();
         initDrawerLayout();
         initFragmentTabHost();
-        initLeftDrawer();
+        initLeftDrawer();*/
     }
 
     private void initToolBar() {
