@@ -8,9 +8,7 @@ import android.support.v4.app.FragmentTabHost;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -23,7 +21,7 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.hyh.prettyskin.ApkThemeSkin;
+import com.hyh.prettyskin.AssetsApkThemeSkin;
 import com.hyh.prettyskin.ISkin;
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.R;
@@ -33,11 +31,8 @@ import com.hyh.prettyskin.demo.fragment.CustomerAttrFragment;
 import com.hyh.prettyskin.demo.fragment.DynamicDrawableFragment;
 import com.hyh.prettyskin.demo.fragment.OtherFragment;
 import com.hyh.prettyskin.demo.fragment.ProjectsFragment;
-import com.hyh.prettyskin.demo.utils.AssetsSkinHelper;
 import com.hyh.prettyskin.demo.utils.DisplayUtil;
 import com.hyh.prettyskin.demo.utils.PreferenceUtil;
-import com.hyh.prettyskin.demo.utils.ThreadUtil;
-import com.hyh.prettyskin.utils.reflect.Reflect;
 
 /**
  * @author Administrator
@@ -61,19 +56,27 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*AsyncLayoutInflater asyncLayoutInflater = new AsyncLayoutInflater(this);
+        LayoutInflater inflater = Reflect.from(AsyncLayoutInflater.class).filed("mInflater",
+                LayoutInflater.class)
+                .get(asyncLayoutInflater);
+        PrettySkin.getInstance().setLayoutInflaterSkinable(inflater);
+
+        asyncLayoutInflater.inflate(R.layout.activity_main, null, (view, i, viewGroup) -> {
+            setContentView(view);
+            initStatusBar();
+            initToolBar();
+            initDrawerLayout();
+            initFragmentTabHost();
+            initLeftDrawer();
+        });*/
 
         setContentView(R.layout.activity_main);
-
         initStatusBar();
         initToolBar();
         initDrawerLayout();
         initFragmentTabHost();
         initLeftDrawer();
-
-        int defaultValue = Reflect.from("android.support.design.R$style")
-                .filed("TextAppearance_Design_Tab", int.class)
-                .get(null);
-        Log.d("MainActivity_", "onCreate: defaultValue = " + defaultValue);
     }
 
     private void initToolBar() {
@@ -127,55 +130,15 @@ public class MainActivity extends BaseActivity {
                     break;
                 }
                 case R.id.skin_purple_style: {
-                    if (AssetsSkinHelper.isUnziped(this)) {
-                        String skinPath = AssetsSkinHelper.getSkinPath(this);
-                        ISkin skin = new ApkThemeSkin(getApplicationContext(), skinPath, 0);
-                        PrettySkin.getInstance().replaceSkinAsync(skin, null);
-                        PreferenceUtil.putInt(this, "skin_style", SkinStyle.PURPLE);
-                    } else {
-                        AlertDialog alertDialog = new AlertDialog.Builder(this)
-                                .setView(R.layout.loading_dialog)
-                                .setOnDismissListener(dialog -> {
-                                    if (AssetsSkinHelper.isUnziped(this)) {
-                                        String skinPath = AssetsSkinHelper.getSkinPath(this);
-                                        ISkin skin = new ApkThemeSkin(getApplicationContext(), skinPath, 0);
-                                        PrettySkin.getInstance().replaceSkinAsync(skin, null);
-                                        PreferenceUtil.putInt(this, "skin_style", SkinStyle.PURPLE);
-                                    } else {
-                                        Toast.makeText(this, "未找到资源", Toast.LENGTH_SHORT).show();
-                                    }
-                                }).show();
-                        ThreadUtil.execute(() -> {
-                            AssetsSkinHelper.unzipAssetsSkin(this);
-                            runOnUiThread(alertDialog::dismiss);
-                        });
-                    }
+                    PreferenceUtil.putInt(this, "skin_style", SkinStyle.PURPLE);
+                    ISkin skin = new AssetsApkThemeSkin(this, "skin-package-first", 0);
+                    PrettySkin.getInstance().replaceSkinAsync(skin, null);
                     break;
                 }
                 case R.id.skin_orange_style: {
-                    if (AssetsSkinHelper.isUnziped(this)) {
-                        String skinPath = AssetsSkinHelper.getSkinPath(this);
-                        ISkin skin = new ApkThemeSkin(getApplicationContext(), skinPath, 1);
-                        PrettySkin.getInstance().replaceSkinAsync(skin, null);
-                        PreferenceUtil.putInt(this, "skin_style", SkinStyle.ORANGE);
-                    } else {
-                        AlertDialog alertDialog = new AlertDialog.Builder(this)
-                                .setView(R.layout.loading_dialog)
-                                .setOnDismissListener(dialog -> {
-                                    if (AssetsSkinHelper.isUnziped(this)) {
-                                        String skinPath = AssetsSkinHelper.getSkinPath(this);
-                                        ISkin skin = new ApkThemeSkin(getApplicationContext(), skinPath, 1);
-                                        PrettySkin.getInstance().replaceSkinAsync(skin, null);
-                                        PreferenceUtil.putInt(this, "skin_style", SkinStyle.ORANGE);
-                                    } else {
-                                        Toast.makeText(this, "未找到资源", Toast.LENGTH_SHORT).show();
-                                    }
-                                }).show();
-                        ThreadUtil.execute(() -> {
-                            AssetsSkinHelper.unzipAssetsSkin(this);
-                            runOnUiThread(alertDialog::dismiss);
-                        });
-                    }
+                    PreferenceUtil.putInt(this, "skin_style", SkinStyle.ORANGE);
+                    ISkin skin = new AssetsApkThemeSkin(this, "skin-package-first", 1);
+                    PrettySkin.getInstance().replaceSkinAsync(skin, null);
                     break;
                 }
             }

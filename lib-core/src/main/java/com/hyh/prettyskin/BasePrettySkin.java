@@ -16,7 +16,6 @@ import com.hyh.prettyskin.sh.SkinHandlerMaps;
 import com.hyh.prettyskin.utils.SkinLogger;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
-import java.lang.ref.WeakReference;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
@@ -40,7 +39,9 @@ public class BasePrettySkin {
 
     final SkinHandlerMaps mSkinHandlerMaps = new SkinHandlerMaps();
 
-    private final List<ContextReference> mSkinableContextList = new CopyOnWriteArrayList<>();
+    //private final List<ContextReference> mSkinableContextList = new CopyOnWriteArrayList<>();
+
+    private final List<Integer> mSkinableContextHashList = new CopyOnWriteArrayList<>();
 
     private final List<SkinChangedListener> mListeners = new CopyOnWriteArrayList<>();
 
@@ -86,6 +87,31 @@ public class BasePrettySkin {
         return installViewFactory(context, force);
     }
 
+    public void setLayoutInflaterSkinable(LayoutInflater layoutInflater) {
+        Context context = layoutInflater.getContext();
+        addSkinableContext(context);
+        LayoutInflater.Factory factory = layoutInflater.getFactory();
+        if (factory == null) {
+            layoutInflater.setFactory2(new SkinInflateFactory(this));
+        } else {
+            if (factory instanceof SkinInflateFactory) {
+                return;
+            }
+            LayoutInflater.Factory2 factory2 = layoutInflater.getFactory2();
+            if (factory2 == null) {
+                SkinInflateFactory skinInflateFactory = new SkinInflateFactory(this, factory);
+                Reflect.from(LayoutInflater.class)
+                        .filed("mFactory", LayoutInflater.Factory.class)
+                        .set(layoutInflater, skinInflateFactory);
+            } else {
+                SkinInflateFactory skinInflateFactory = new SkinInflateFactory(this, factory2);
+                Reflect.from(LayoutInflater.class)
+                        .filed("mFactory2", LayoutInflater.Factory.class)
+                        .set(layoutInflater, skinInflateFactory);
+            }
+        }
+    }
+
     synchronized boolean installViewFactory(Context context, boolean force) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         Context layoutInflaterContext = layoutInflater.getContext();
@@ -123,20 +149,13 @@ public class BasePrettySkin {
     }
 
     public boolean isSkinableContext(Context context) {
-        ContextReference contextReference = new ContextReference(context);
-        return mSkinableContextList.contains(contextReference);
+        return mSkinableContextHashList.contains(System.identityHashCode(context));
     }
 
     private void addSkinableContext(Context context) {
-        ContextReference contextReference = new ContextReference(context);
-        if (!mSkinableContextList.contains(contextReference)) {
-            mSkinableContextList.add(contextReference);
-        }
-        //清除被回收的Context
-        for (ContextReference reference : mSkinableContextList) {
-            if (reference.get() == null) {
-                mSkinableContextList.remove(reference);
-            }
+        int hashCode = System.identityHashCode(context);
+        if (!mSkinableContextHashList.contains(hashCode)) {
+            mSkinableContextHashList.add(hashCode);
         }
     }
 
@@ -580,35 +599,6 @@ public class BasePrettySkin {
                     break;
                 }
             }
-        }
-    }
-
-    private static class ContextReference {
-
-        private final WeakReference<Context> mContextRef;
-        private final int mHashCode;
-
-        ContextReference(Context context) {
-            mContextRef = new WeakReference<>(context);
-            mHashCode = (context == null) ? 0 : context.hashCode();
-        }
-
-        Context get() {
-            return mContextRef.get();
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Context thatContext = ((ContextReference) o).get();
-            Context thisContext = this.get();
-            return thatContext == thisContext;
-        }
-
-        @Override
-        public int hashCode() {
-            return mHashCode;
         }
     }
 

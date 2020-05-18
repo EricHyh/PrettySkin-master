@@ -112,7 +112,7 @@ public class CompoundButtonSH extends ButtonSH {
                     }
                     Drawable drawable = attrValue.getTypedValue(Drawable.class, oldButtonDrawable);
                     if (drawable != null) {
-                        compoundButton.setButtonDrawable(oldButtonDrawable);
+                        compoundButton.setButtonDrawable(drawable);
                     }
                     break;
                 }

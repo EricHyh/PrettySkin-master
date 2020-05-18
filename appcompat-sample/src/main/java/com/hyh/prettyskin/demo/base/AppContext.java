@@ -2,8 +2,8 @@ package com.hyh.prettyskin.demo.base;
 
 import android.support.multidex.MultiDexApplication;
 
-import com.hyh.prettyskin.ApkThemeSkin;
 import com.hyh.prettyskin.AppCompatSkinHandlerMap;
+import com.hyh.prettyskin.AssetsApkThemeSkin;
 import com.hyh.prettyskin.ISkin;
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.R;
@@ -11,7 +11,6 @@ import com.hyh.prettyskin.ThemeSkin;
 import com.hyh.prettyskin.demo.lifecycle.ActivityLifecycleHelper;
 import com.hyh.prettyskin.demo.sh.CustomSwipeRefreshLayoutSH;
 import com.hyh.prettyskin.demo.sh.ShapeViewSH;
-import com.hyh.prettyskin.demo.utils.AssetsSkinHelper;
 import com.hyh.prettyskin.demo.utils.PreferenceUtil;
 import com.hyh.prettyskin.demo.widget.CustomSwipeRefreshLayout;
 import com.hyh.prettyskin.demo.widget.ShapeView;
@@ -55,19 +54,11 @@ public class AppContext extends MultiDexApplication {
                 break;
             }
             case SkinStyle.PURPLE: {
-                if (AssetsSkinHelper.isUnziped(this)) {
-                    skin = new ApkThemeSkin(this, AssetsSkinHelper.getSkinPath(this), 0);
-                } else {
-                    PreferenceUtil.putInt(this, "skin_style", -1);
-                }
+                skin = new AssetsApkThemeSkin(this, "skin-package-first",0);
                 break;
             }
             case SkinStyle.ORANGE: {
-                if (AssetsSkinHelper.isUnziped(this)) {
-                    skin = new ApkThemeSkin(this, AssetsSkinHelper.getSkinPath(this), 1);
-                } else {
-                    PreferenceUtil.putInt(this, "skin_style", -1);
-                }
+                skin = new AssetsApkThemeSkin(this, "skin-package-first",1);
                 break;
             }
         }

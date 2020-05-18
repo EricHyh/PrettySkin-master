@@ -13,30 +13,30 @@ import java.util.Set;
 
 public final class SkinView {
 
-    private final Reference<View> viewReference;
+    private final Reference<View> mViewReference;
 
-    private final int hashCode;
+    private final int mHashCode;
 
     //attrName --> attrKey
-    private final Map<String, String> attrKeyMap;
+    private final Map<String, String> mAttrKeyMap;
 
     //attrName --> attrValue
-    private final Map<String, AttrValue> defaultAttrValueMap;
+    private final Map<String, AttrValue> mDefaultAttrValueMap;
 
     private BasePrettySkin mPrettySkin;
 
     public SkinView(View view, Map<String, String> attrKeyMap, Map<String, AttrValue> defaultAttrValueMap) {
-        this.viewReference = ViewReferenceUtil.createViewReference(this, view);
-        this.hashCode = view == null ? 0 : System.identityHashCode(view);
-        this.attrKeyMap = attrKeyMap;
-        this.defaultAttrValueMap = defaultAttrValueMap;
+        this.mViewReference = ViewReferenceUtil.createViewReference(this, view);
+        this.mHashCode = view == null ? 0 : System.identityHashCode(view);
+        this.mAttrKeyMap = attrKeyMap;
+        this.mDefaultAttrValueMap = defaultAttrValueMap;
     }
 
     SkinView(View view) {
-        this.viewReference = new WeakReference<>(view);
-        this.hashCode = view == null ? 0 : System.identityHashCode(view);
-        this.attrKeyMap = null;
-        this.defaultAttrValueMap = null;
+        this.mViewReference = new WeakReference<>(view);
+        this.mHashCode = view == null ? 0 : System.identityHashCode(view);
+        this.mAttrKeyMap = null;
+        this.mDefaultAttrValueMap = null;
     }
 
     final void bindPrettySkin(BasePrettySkin prettySkin) {
@@ -44,15 +44,15 @@ public final class SkinView {
     }
 
     final View getView() {
-        return viewReference == null ? null : viewReference.get();
+        return mViewReference == null ? null : mViewReference.get();
     }
 
     final boolean isRecycled() {
-        return viewReference.get() == null;
+        return mViewReference.get() == null;
     }
 
     final boolean isSupportAttr(String attrKey) {
-        return attrKeyMap != null && attrKeyMap.containsValue(attrKey);
+        return mAttrKeyMap != null && mAttrKeyMap.containsValue(attrKey);
     }
 
     final void changeSkin(ISkin skin) {
@@ -60,10 +60,10 @@ public final class SkinView {
         if (prettySkin == null) {
             return;
         }
-        if (skin == null || attrKeyMap == null || attrKeyMap.isEmpty()) {
+        if (skin == null || mAttrKeyMap == null || mAttrKeyMap.isEmpty()) {
             return;
         }
-        View view = viewReference.get();
+        View view = mViewReference.get();
         if (view == null) {
             return;
         }
@@ -71,7 +71,7 @@ public final class SkinView {
         if (skinHandler == null) {
             return;
         }
-        Set<Map.Entry<String, String>> entrySet = attrKeyMap.entrySet();
+        Set<Map.Entry<String, String>> entrySet = mAttrKeyMap.entrySet();
         for (Map.Entry<String, String> entry : entrySet) {
             String attrName = entry.getKey();
             String attrKey = entry.getValue();
@@ -90,10 +90,10 @@ public final class SkinView {
         if (prettySkin == null) {
             return;
         }
-        if (skin == null || attrKeyMap == null || attrKeyMap.isEmpty()) {
+        if (skin == null || mAttrKeyMap == null || mAttrKeyMap.isEmpty()) {
             return;
         }
-        View view = viewReference.get();
+        View view = mViewReference.get();
         if (view == null) {
             return;
         }
@@ -103,7 +103,7 @@ public final class SkinView {
         }
 
 
-        Set<Map.Entry<String, String>> entrySet = attrKeyMap.entrySet();
+        Set<Map.Entry<String, String>> entrySet = mAttrKeyMap.entrySet();
         for (Map.Entry<String, String> entry : entrySet) {
             String attrName = entry.getKey();
             String attrKey = entry.getValue();
@@ -124,16 +124,16 @@ public final class SkinView {
         if (prettySkin == null) {
             return;
         }
-        if (defaultAttrValueMap == null || defaultAttrValueMap.isEmpty()) {
+        if (mDefaultAttrValueMap == null || mDefaultAttrValueMap.isEmpty()) {
             return;
         }
-        View view = viewReference.get();
+        View view = mViewReference.get();
         if (view == null) {
             return;
         }
         ISkinHandler skinHandler = prettySkin.getSkinHandler(view);
         if (skinHandler != null) {
-            Set<Map.Entry<String, AttrValue>> entrySet = defaultAttrValueMap.entrySet();
+            Set<Map.Entry<String, AttrValue>> entrySet = mDefaultAttrValueMap.entrySet();
             for (Map.Entry<String, AttrValue> entry : entrySet) {
                 String attrName = entry.getKey();
                 AttrValue defaultAttrValue = entry.getValue();
@@ -146,7 +146,7 @@ public final class SkinView {
 
     @Override
     public int hashCode() {
-        return this.hashCode;
+        return this.mHashCode;
     }
 
     @Override

@@ -29,6 +29,7 @@ Android平台动态换肤框架，无需重启应用即可实现换肤功能，�
     - [TODO](#todo)
     - [特别鸣谢](#特别鸣谢)
     - [联系我](#联系我)
+    - [License](#license)
 
 <!-- /TOC -->
 
@@ -495,12 +496,12 @@ PrettySkin.getInstance().recoverDefaultSkin();
 
 ## 6. 更多用法
 传送门：
-1. [扩展View的皮肤属性]()
-2. [动态修改或添加皮肤包属性]()
-3. [监听皮肤包变化事件]()
-4. [动态Drawable的使用]()
-5. [扩展皮肤包实现方式]()
-6. [动态禁用layout布局中某些View使用皮肤]()
+1. [扩展View的皮肤属性](https://github.com/EricHyh/PrettySkin-master/blob/master/README_MORE.md/#1)
+2. [动态修改或添加皮肤包属性](https://github.com/EricHyh/PrettySkin-master/blob/master/README_MORE.md/#2)
+3. [监听皮肤包变化事件](https://github.com/EricHyh/PrettySkin-master/blob/master/README_MORE.md/#3)
+4. [动态Drawable的使用](https://github.com/EricHyh/PrettySkin-master/blob/master/README_MORE.md/#4)
+5. [扩展皮肤包实现方式](https://github.com/EricHyh/PrettySkin-master/blob/master/README_MORE.md/#5)
+6. [动态禁用layout布局中某些View使用皮肤](https://github.com/EricHyh/PrettySkin-master/blob/master/README_MORE.md/#6)
 
 
 ## 7. 代码混淆配置
@@ -581,7 +582,7 @@ Dialog(@NonNull Context context, @StyleRes int themeResId, boolean createContext
 ```
 
 ### 9.3 状态栏颜色跟随皮肤动态变化
-可参考Demo中的**com.hyh.prettyskin.demo.activity.BaseActivity**实现，相关接口详细说明[传送门]()
+可参考Demo中的**com.hyh.prettyskin.demo.activity.BaseActivity**实现，相关接口详细说明[传送门](https://github.com/EricHyh/PrettySkin-master/blob/master/README_MORE.md/#3)
 
 
 ### 9.4 想查看框架中实现了View的哪些属性

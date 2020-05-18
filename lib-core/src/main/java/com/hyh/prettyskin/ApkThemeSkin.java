@@ -71,6 +71,7 @@ public class ApkThemeSkin extends BaseSkin {
         File filesDir = mApplicationContext.getFilesDir();
         File skinDexDir = new File(filesDir, "skin".concat(File.separator).concat("dex"));
         skinDexDir.mkdirs();
+
         DexClassLoader classLoader = new DexClassLoader(mApkPath,
                 skinDexDir.getAbsolutePath(),
                 null,

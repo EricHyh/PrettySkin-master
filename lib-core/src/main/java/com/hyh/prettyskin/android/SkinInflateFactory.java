@@ -78,6 +78,7 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
                             return view;
                         }
                     }
+
                     //attrName --> attrKey
                     Map<String, String> attrKeyMap = getAttrKeyMap(skinAttrs);
                     if (attrKeyMap != null && !attrKeyMap.isEmpty()) {
@@ -130,7 +131,7 @@ public class SkinInflateFactory implements LayoutInflater.Factory2 {
     //background=ma_btn_bg|textColor=ma_btn_text_color
     private Map<String, String> getAttrKeyMap(String skinAttrs) {
         if (!skinAttrs.matches("(.+=.+\\|)*(.+=.+)")) {
-            SkinLogger.e("parse skin attrs error: [" + skinAttrs + "] is not matched [attrName=attrValueKey|attrName=attrValueKey]");
+            SkinLogger.e("parse skin attrs error: [" + skinAttrs + "] is not matched [attrName=attrKey|attrName=attrValuKey]");
             return null;
         }
         String[] attrArr = skinAttrs.split("\\|");

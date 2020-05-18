@@ -43,7 +43,7 @@ public class ViewReferenceUtil {
         public void run() {
             Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
             while (true) {
-                ViewReference remove = null;
+                ViewReference remove;
                 try {
                     // Prior to Android 5.0, even when there is no local variable, the result from
                     // remove() & obtainMessage() is kept as a stack local variable.
@@ -56,6 +56,7 @@ public class ViewReferenceUtil {
                     break;
                 } catch (Exception e) {
                     SkinLogger.e("CleanupThread error ", e);
+                    break;
                 }
                 if (remove != null) {
                     WeakReference<SkinView> skinViewRef = remove.skinViewRef;
