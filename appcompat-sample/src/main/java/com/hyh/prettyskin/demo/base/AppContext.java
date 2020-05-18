@@ -3,15 +3,10 @@ package com.hyh.prettyskin.demo.base;
 import android.support.multidex.MultiDexApplication;
 
 import com.hyh.prettyskin.AppCompatSkinHandlerMap;
-import com.hyh.prettyskin.AssetsApkThemeSkin;
-import com.hyh.prettyskin.ISkin;
 import com.hyh.prettyskin.PrettySkin;
-import com.hyh.prettyskin.R;
-import com.hyh.prettyskin.ThemeSkin;
 import com.hyh.prettyskin.demo.lifecycle.ActivityLifecycleHelper;
 import com.hyh.prettyskin.demo.sh.CustomSwipeRefreshLayoutSH;
 import com.hyh.prettyskin.demo.sh.ShapeViewSH;
-import com.hyh.prettyskin.demo.utils.PreferenceUtil;
 import com.hyh.prettyskin.demo.widget.CustomSwipeRefreshLayout;
 import com.hyh.prettyskin.demo.widget.ShapeView;
 
@@ -26,6 +21,7 @@ public class AppContext extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+
         ActivityLifecycleHelper.getInstance().init(this);
 
         //初始化
@@ -42,7 +38,7 @@ public class AppContext extends MultiDexApplication {
         //添加appcompat包中所有View的自定义属性处理器
         PrettySkin.getInstance().addSkinHandler(new AppCompatSkinHandlerMap());
 
-        ISkin skin = null;
+        /*ISkin skin = null;
         int skinStyle = PreferenceUtil.getInt(this, "skin_style", -1);
         switch (skinStyle) {
             case SkinStyle.WHITE: {
@@ -64,7 +60,7 @@ public class AppContext extends MultiDexApplication {
         }
         if (skin != null) {
             PrettySkin.getInstance().replaceSkinAsync(skin, null);
-        }
+        }*/
     }
 
     private static final String TAG = "AppContext";

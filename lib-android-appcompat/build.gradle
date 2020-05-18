@@ -3,11 +3,6 @@ apply from: rootProject.getRootDir().getAbsolutePath() + File.separator + 'commo
 
 android {
 
-    defaultConfig {
-        versionCode 100
-        versionName "1.0.0"
-    }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -24,7 +19,8 @@ android {
 dependencies {
     implementation rootProject.ext.appcompat
     implementation rootProject.ext.design
-    implementation project(':lib-core')
+    //implementation project(':lib-core')
+    implementation 'com.hyh.prettyskin:prettyskin-core:1.0.1'
 }
 
 //android dynamically replacing skin for appcompat support-views
@@ -34,7 +30,7 @@ ext {
     groupId = 'com.hyh.prettyskin'
     artifactId = 'skinhandler-support'
 
-    publishVersion = '1.0.0-alpha1'
+    publishVersion = '1.0.1'
     desc = 'android support-v4、v7、design控件换肤支持包'
 }
 

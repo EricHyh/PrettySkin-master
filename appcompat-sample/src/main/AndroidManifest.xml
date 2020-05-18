@@ -16,22 +16,22 @@
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
 
 
-        <!--<activity android:name=".demo.activity.SplashActivity">
+        <activity android:name=".demo.activity.SplashActivity">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
-        </activity>-->
+        </activity>
 
 
         <activity
             android:name=".demo.activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
-            <intent-filter>
+            <!--<intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <activity

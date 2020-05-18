@@ -4,8 +4,8 @@ apply from: rootProject.getRootDir().getAbsolutePath() + File.separator + 'commo
 android {
 
     defaultConfig {
-        versionCode 100
-        versionName "1.0.0"
+        versionCode 101
+        versionName "1.0.1"
     }
 
     buildTypes {
@@ -27,8 +27,8 @@ ext {
     groupId = 'com.hyh.prettyskin'
     artifactId = 'prettyskin-core'
 
-    publishVersion = '1.0.0'
+    publishVersion = '1.0.1'
     desc = 'Android动态换肤核心库'
 }
 
-apply from: rootProject.getRootDir().getAbsolutePath() + File.separator + 'publishing_maven.gradle'
+//apply from: rootProject.getRootDir().getAbsolutePath() + File.separator + 'publishing_maven.gradle'

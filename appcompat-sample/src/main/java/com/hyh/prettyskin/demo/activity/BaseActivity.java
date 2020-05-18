@@ -8,10 +8,10 @@ import com.hyh.prettyskin.ISkin;
 import com.hyh.prettyskin.PrettySkin;
 import com.hyh.prettyskin.R;
 import com.hyh.prettyskin.SkinChangedListener;
+import com.hyh.prettyskin.demo.utils.SoftInputUitl;
 import com.hyh.prettyskin.demo.utils.StatusBarUtil;
 
 import java.util.List;
-
 
 
 public abstract class BaseActivity extends AppCompatActivity implements SkinChangedListener {
@@ -95,5 +95,6 @@ public abstract class BaseActivity extends AppCompatActivity implements SkinChan
     protected void onDestroy() {
         super.onDestroy();
         PrettySkin.getInstance().removeSkinReplaceListener(this);
+        SoftInputUitl.resolveActivityLeaked(this);
     }
 }

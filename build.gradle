@@ -3,6 +3,7 @@
 buildscript {
 
     repositories {
+        maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
         google()
         jcenter()
         mavenCentral()
@@ -24,12 +25,13 @@ buildscript {
 
 allprojects {
     repositories {
+        maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
         google()
         jcenter()
         mavenCentral()
     }
     tasks.withType(Javadoc) {
-        options{
+        options {
             encoding "UTF-8"
             charSet 'UTF-8'
             links "http://docs.oracle.com/javase/7/docs/api"
@@ -46,6 +48,9 @@ ext {
     buildToolsVersion = '28.0.3'
     minSdkVersion = 14
     targetSdkVersion = 28
+
+    versionName = '1.0.1'
+    versionCode = 101
 
     appcompat = 'com.android.support:appcompat-v7:28.0.0'
     supportAnnotations = 'com.android.support:support-annotations:28.0.0'
