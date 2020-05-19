@@ -61,7 +61,7 @@ public class LinearLayoutSH extends ViewGroupSH {
     }
 
 
-    //如果你的项目中没有，恢复应用默认皮肤的需求，那么可以不需要重写这三个函数
+    //如果你的项目中没有恢复应用默认皮肤的需求，那么可以不需要重写以下这三个函数
     //解析解析XML中的默认属性-------------START-------------
 
     private Class<?> mStyleableClass;
@@ -101,7 +101,7 @@ public class LinearLayoutSH extends ViewGroupSH {
         //但是这里是系统类的LinearLayout，它构造函数中的用到的资源都是隐藏的，无法直接使用，
         //这里提供两种实现方式供大家参考（自定义View也可以用以下方式实现）：
 
-        //方式一，适合你有很多属性需要支持时使用：
+        //方式一，使用框架提供的工具类解析属性，适合你有很多属性需要支持时使用：
         if (TextUtils.equals(attrName, "orientation")
                 || TextUtils.equals(attrName, "gravity")) {
             int styleableIndex = AttrValueHelper.getStyleableIndex(mStyleableClass, mStyleableName, attrName);
@@ -187,9 +187,13 @@ ISkin skin = your skin obj;
 String attrKey = attr name declared in styleable;//定义在declare-styleable中属性名称
 AttrValue attrValue = new AttrValue(themeContext, type, value);//属性对应的值
 
+//设置外部属性值，设置后会优先采用该属性值，如果需要恢复，可将对应属性设置为null
 skin.setOuterAttrValue(attrKey, attrValue);
 
+//被改变属性的集合
 List<String> changedAttrKeys = your changed attr keys;
+
+//通知属性被改变
 PrettySkin.getInstance().notifySkinAttrChanged(changedAttrKeys);
 ```
 AttrValue说明：
@@ -213,10 +217,10 @@ public class AttrValue {
 
     /**
      * 获取指定类型的属性值，目前支持以下类型：
-     * 1.int：enum类型，例如gravity          （根据attrName可知是否为enum类型）
-     * 2.int：数值类型，例如progress         （根据attrName可知是否为数值类型）
+     * 1.int：enum类型，例如gravity           （根据attrName可知是否为enum类型）
+     * 2.int：数值类型，例如progress          （根据attrName可知是否为数值类型）
      * 3.int：color类型                      （根据attrName可知是否为color类型）
-     * 4.int：resourceId类型，例如style id   （根据attrName可知是否为resourceId类型）
+     * 4.int：resourceId类型，例如style id    （根据attrName可知是否为resourceId类型）
      * 5.float
      * 6.boolean
      * 7.String
@@ -346,7 +350,7 @@ PrettySkin.getInstance().addSkinReplaceListener(new SkinChangedListener() {
 ### 4.1 XML中定义的Drawable
 
 ```
-String attrKey = attr name declared in styleable;;  //定义在declare-styleable中属性名称
+String attrKey = attr name declared in styleable;;  //定义在declare-styleable中属性名称，DynamicDrawable会监听该属性对应值的变化
 Drawable defaultDrawable = 默认Drawable;            //不能为null，当没有设置皮肤时，使用该值
 
 Drawable drawable = new DynamicDrawable(attrKey, defaultDrawable)
@@ -354,7 +358,7 @@ Drawable drawable = new DynamicDrawable(attrKey, defaultDrawable)
 
 ### 4.2 代码中创建的自定义的Drawable
 ```
-String attrKey = "add_drawable_color";
+String attrKey = attr name declared in styleable;
 int defaultColor = context.getResources().getColor(R.color.primary_red);
 DynamicDrawable dynamicDrawable = new DynamicDrawable(attrKey, new AddDrawable(context, defaultColor)) {
 
