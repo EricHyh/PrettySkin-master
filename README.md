@@ -38,6 +38,7 @@ Android平台动态换肤框架，无需重启应用即可实现换肤功能，�
 ## 1. 功能介绍
 - [x] 支持使用应用内的主题换肤
 - [x] 支持使用外部APK文件中的主题换肤
+- [X] 支持使用Assets目录APK文件中主题换肤
 - [x] 支持动态替换或新增皮肤包中的属性
 - [x] 支持自定义皮肤包实现方式
 - [x] 支持原生View中的大部分属性
@@ -104,9 +105,6 @@ PrettySkin.getInstance().init(this);
 //PrettySkin.getInstance().addSkinHandler(new AndroidXSkinHandlerMap());
 
 
-
-
-//设置皮肤的操作，也可以放在应用Splash页面中，可参考DEMO中SplashActivity的做法
 Context context      = this;
 int style            = R.style.your_theme;  //当前使用的皮肤主题ID
 Class clzz           = R.styleable.class;   //皮肤样式表所在的styleable类
@@ -374,13 +372,27 @@ android {
 > DEMO参考位置： skin-package-first/src/main/AndroidManifest.xml
 
 6. 创建皮肤对象
+
+方式一：使用文件系统中的APK文件
 ```
 Context context  = applicationContext;
-String apkPath   = "your skin package path";    //皮肤包路径
+String apkPath   = "your skin package path";    //文件系统中皮肤包路径
 int index        = your theme index;            //该皮肤包中的第几个皮肤，从0开始，对应在第4步中定义的顺序
 
 //创建主题皮肤
 ISkin skin = new ApkThemeSkin(context, apkPath, index);
+
+//执行换肤函数
+PrettySkin.getInstance().replaceSkinAsync(skin, null);
+```
+方式二：使用Assets目录中的APK文件
+```
+Context context     = applicationContext;
+String assetsPath   = "your skin package path";    //Assets目录中皮肤包路径
+int index           = your theme index;            //该皮肤包中的第几个皮肤，从0开始，对应在第4步中定义的顺序
+
+//创建主题皮肤
+ISkin skin = new AssetsApkThemeSkin(context, assetsPath, index);
 
 //执行换肤函数
 PrettySkin.getInstance().replaceSkinAsync(skin, null);
@@ -587,37 +599,19 @@ Dialog(@NonNull Context context, @StyleRes int themeResId, boolean createContext
 ### 9.3 使用了AsyncLayoutInflater
 如果在项目中使用了AsyncLayoutInflater也会导致布局换肤失效，原因是因为AsyncLayoutInflater内部会重新创建一个LayoutInflater去加载布局，目前可以通过以下方式解决该问题
 ```
- @Override
-protected void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+//创建AsyncLayoutInflater对象
+AsyncLayoutInflater asyncLayoutInflater = new AsyncLayoutInflater(this);
+//反射获取AsyncLayoutInflater中创建的LayoutInflater对象，注意代码混淆问题
+LayoutInflater inflater = Reflect.from(AsyncLayoutInflater.class).filed("mInflater",LayoutInflater.class) .get(asyncLayoutInflater);
+//让该LayoutInflater支持换肤
+PrettySkin.getInstance().setLayoutInflaterSkinable(inflater);
 
-    //设置Window背景，否则会出现背景色与皮肤不匹配的情况
-    ISkin currentSkin = PrettySkin.getInstance().getCurrentSkin();
-    if(currentSkin!=null){
-        AttrValue attrValue = currentSkin.getAttrValue("content_bg_color");
-        Drawable typedValue = attrValue.getTypedValue(Drawable.class, null);
-        getWindow().setBackgroundDrawable(typedValue);
-    }
-
-
-    //创建AsyncLayoutInflater对象
-    AsyncLayoutInflater asyncLayoutInflater = new AsyncLayoutInflater(this);
-    //反射获取AsyncLayoutInflater中创建的LayoutInflater对象，注意代码混淆问题
-    LayoutInflater inflater = Reflect.from(AsyncLayoutInflater.class).filed("mInflater",LayoutInflater.class) .get(asyncLayoutInflater);
-    //让该LayoutInflater支持换肤
-    PrettySkin.getInstance().setLayoutInflaterSkinable(inflater);
-
-    asyncLayoutInflater.inflate(R.layout.activity_main, null, (view, i, viewGroup) -> {
-        setContentView(view);
-        initStatusBar();
-        initToolBar();
-        initDrawerLayout();
-        initFragmentTabHost();
-        initLeftDrawer();
-    });
-}
+//动态解析布局
+asyncLayoutInflater.inflate(R.layout.activity_main, null, (view, i, viewGroup) -> {
+    //使用布局
+    setContentView(view);
+});
 ```
-
 
 
 
