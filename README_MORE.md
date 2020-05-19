@@ -19,7 +19,7 @@
 <span id="1"></span>
 ## 1. 扩展View的皮肤属性
 ### 1.1 为已有的View扩展皮肤属性
-框架中几乎已经将native-view、support-view、androidx-view中大部分属性都已经实现换肤功能，如果你想让某个View的某些属性支持换肤功能，可以通过扩展**com.hyh.prettyskin.ISkinHandler**实现，例如我们将**LinearLayout**的**orientation、gravity**属性支持换肤能力；
+框架中几乎已经将native-view、support-view、androidx-view中大部分属性都已经实现换肤功能，如果你想让某个View的某些属性支持换肤功能，可以通过扩展**com.hyh.prettyskin.ISkinHandler**实现，例如我们将**LinearLayout**的**orientation、baselineAligned**属性支持换肤能力；
 
 1. 找到源码中**LinearLayout**中当前匹配的**com.hyh.prettyskin.ISkinHandler**实现类，可通过以下测试代码拿到实现类的路径：
 ```
@@ -57,7 +57,7 @@ public class LinearLayoutSH extends ViewGroupSH {
         return (
                 TextUtils.equals(attrName, "orientation")
                         || TextUtils.equals(attrName, "baselineAligned"))
-                || super.isSupportAttrName(view, attrName);
+                || super.isSupportAttrName(view, attrName);//父类支持的属性
     }
 
 
@@ -107,7 +107,7 @@ public class LinearLayoutSH extends ViewGroupSH {
             int styleableIndex = AttrValueHelper.getStyleableIndex(mStyleableClass, mStyleableName, attrName);
             return AttrValueHelper.getAttrValue(view, mTypedArray, styleableIndex);
         } else {
-            return super.parse(view, set, attrName);
+            return super.parse(view, set, attrName);//其他属性让父类处理
         }
 
         //方式二，适合你有少量属性需要支持，且View提供了相应的get函数：
@@ -122,7 +122,7 @@ public class LinearLayoutSH extends ViewGroupSH {
                 return new AttrValue(linearLayout.getContext(), ValueType.TYPE_BOOLEAN, baselineAligned);
             }
             default: {
-                return super.parse(view, set, attrName);
+                return super.parse(view, set, attrName);//其他属性让父类处理
             }
         }
     }
@@ -162,7 +162,7 @@ public class LinearLayoutSH extends ViewGroupSH {
                 break;
             }
             default: {
-                super.replace(view, attrName, attrValue);
+                super.replace(view, attrName, attrValue);//其他属性让父类处理
                 break;
             }
         }
