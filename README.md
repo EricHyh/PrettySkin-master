@@ -542,7 +542,7 @@ PrettySkin.getInstance().recoverDefaultSkin();
 
 ## 9. 其他问题
 ### 9.1 外部APK皮肤包后缀问题
-在android低版本中，APK文件的后缀目前已知必须为.apk、.dex或者.jar，否则会导致DexClassLoader创建失败而无法读取APK中的R文件，所以为了兼容低版本，请将皮肤包的后缀设置为这三个中的一种；具体从android哪个版本开始我也没细测，实测android4.4会出现该问题。
+在android低版本中，APK文件的后缀目前已知必须为.apk、.dex或者.jar，否则会导致DexClassLoader创建失败而无法读取APK中的R文件，所以为了兼容低版本，请将皮肤包的后缀设置为这三个中的一种。
 
 
 ### 9.2 某个布局换肤失效
@@ -578,7 +578,7 @@ dialog.setContentView(R.layout.your_layout);
 dialog.show();
 ```
 
-情况二本质上有情况一是一样的，因为Dialog内部会创建一个ContextThemeWrapper，Dialog代码片段：
+情况二本质上与情况一是一样的，因为Dialog内部会创建一个ContextThemeWrapper，Dialog代码片段：
 ```
 Dialog(@NonNull Context context, @StyleRes int themeResId, boolean createContextThemeWrapper) {
     if (createContextThemeWrapper) {
@@ -612,8 +612,6 @@ asyncLayoutInflater.inflate(R.layout.activity_main, null, (view, i, viewGroup) -
     setContentView(view);
 });
 ```
-
-
 
 ### 9.4 状态栏颜色跟随皮肤动态变化
 可参考Demo中的**com.hyh.prettyskin.demo.activity.BaseActivity**实现，相关接口详细说明[传送门](https://github.com/EricHyh/PrettySkin-master/blob/master/README_MORE.md/#3)
