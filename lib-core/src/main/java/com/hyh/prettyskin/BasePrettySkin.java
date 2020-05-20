@@ -16,6 +16,7 @@ import com.hyh.prettyskin.sh.SkinHandlerMaps;
 import com.hyh.prettyskin.utils.SkinLogger;
 import com.hyh.prettyskin.utils.reflect.Reflect;
 
+import java.lang.ref.WeakReference;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
@@ -39,7 +40,7 @@ public class BasePrettySkin {
 
     final SkinHandlerMaps mSkinHandlerMaps = new SkinHandlerMaps();
 
-    //private final List<ContextReference> mSkinableContextList = new CopyOnWriteArrayList<>();
+    private final List<ContextReference> mSkinableContextList = new CopyOnWriteArrayList<>();
 
     private final List<Integer> mSkinableContextHashList = new CopyOnWriteArrayList<>();
 
@@ -149,13 +150,20 @@ public class BasePrettySkin {
     }
 
     public boolean isSkinableContext(Context context) {
-        return mSkinableContextHashList.contains(System.identityHashCode(context));
+        ContextReference contextReference = new ContextReference(context);
+        return mSkinableContextList.contains(contextReference);
     }
 
     private void addSkinableContext(Context context) {
-        int hashCode = System.identityHashCode(context);
-        if (!mSkinableContextHashList.contains(hashCode)) {
-            mSkinableContextHashList.add(hashCode);
+        ContextReference contextReference = new ContextReference(context);
+        if (!mSkinableContextList.contains(contextReference)) {
+            mSkinableContextList.add(contextReference);
+        }
+        //清除被回收的Context
+        for (ContextReference reference : mSkinableContextList) {
+            if (reference.get() == null) {
+                mSkinableContextList.remove(reference);
+            }
         }
     }
 
@@ -599,6 +607,35 @@ public class BasePrettySkin {
                     break;
                 }
             }
+        }
+    }
+
+    private static class ContextReference {
+
+        private final WeakReference<Context> mContextRef;
+        private final int mHashCode;
+
+        ContextReference(Context context) {
+            mContextRef = new WeakReference<>(context);
+            mHashCode = (context == null) ? 0 : context.hashCode();
+        }
+
+        Context get() {
+            return mContextRef.get();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Context thatContext = ((ContextReference) o).get();
+            Context thisContext = this.get();
+            return thatContext == thisContext;
+        }
+
+        @Override
+        public int hashCode() {
+            return mHashCode;
         }
     }
 
