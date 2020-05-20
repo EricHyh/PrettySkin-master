@@ -65,17 +65,17 @@ allprojects {
 dependencies {
 
     //框架核心库，没有引用其他库
-	implementation 'com.hyh.prettyskin:prettyskin-core:1.0.0'        
+	implementation 'com.hyh.prettyskin:prettyskin-core:1.0.1'        
 
     //如果用到了support包下某View的自定义属性，可引入该模块，其中包含v4、v7、design包下的View
-    implementation ('com.hyh.prettyskin:skinhandler-support:1.0.0') {
+    implementation ('com.hyh.prettyskin:skinhandler-support:1.0.1') {
 
         transitive = false  //去除依赖传递
 
     } 
 
     //如果用到了androidx包下某View的自定义属性，可引入该模块，其中包含androidx、material包下的View
-    implementation ('com.hyh.prettyskin:skinhandler-androidx:1.0.0') {
+    implementation ('com.hyh.prettyskin:skinhandler-androidx:1.0.1') {
 
         transitive = false  //去除依赖传递
 
